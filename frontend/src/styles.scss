@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  background-color: #f4fcf0 !important;
+  margin: 0;
+  padding: 0;
+}
+
+.app-layout {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+
+}
+
+.main-content-wrapper {
+  flex: 1;
+  display: flex;
+  margin-left: 210px;
+  min-height: 100vh;
+  padding: 0;
+  width: auto;
+}
+
+app-sidebar {
+  display: block;
+    width: 0px;
+  flex-shrink: 0;
+}
+
+app-footer {
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  clear: both;
+}

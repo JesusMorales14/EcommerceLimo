@@ -1,0 +1,129 @@
+.container {
+  width: 100%;
+  background-color: #DDE5DA;
+  max-width: none !important;
+  margin: 0 auto;
+  padding: 80px 40px ;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: block;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+              url('https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  width: 100% ;
+  max-width: 100%;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 50px;
+  color: white;
+  margin-bottom: 60px;
+}
+
+.badge-new { font-size: 12px; font-weight: 800; letter-spacing: 2px; }
+.hero h1 { font-size: 64px; margin: 20px 0; max-width: 600px; line-height: 1.1; }
+.hero p { max-width: 450px; opacity: 0.9; margin-bottom: 30px; }
+
+.hero-actions { display: flex; gap: 15px; }
+.btn-fill { background: #006b2d; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.btn-outline { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; backdrop-filter: blur(5px); }
+
+/* CATEGORIAS BENTO GRID */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+.section-header h2 {
+  font-size: 32px;
+  color: #171d17;
+  margin: 0;
+}
+.view-all {
+  color: #006b2d;
+  text-decoration: none;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bold;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  gap: 15px;
+}
+
+.bento-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #eee;
+  cursor: pointer;
+}
+
+.bento-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.bento-item:hover img { transform: scale(1.05); }
+
+.main-cat { grid-column: span 2; grid-row: span 2; }
+
+.bento-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.bento-info h3 { margin: 0; font-size: 18px; }
+
+.offer-box {
+  background: #006b2d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.offer-box span { font-size: 40px; margin-bottom: 10px; }
+
+.deals-wrapper {
+  display: block;
+  width: 100%;
+  clear: both;
+  margin-top: 40px;
+  float: none;
+}
+
+.deals-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 25px;
+  width: 100%;
+
+  h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    text-align: left;
+  }
+}
+
+.deals-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+

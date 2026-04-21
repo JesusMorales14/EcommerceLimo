@@ -1,0 +1,91 @@
+.sidebar-static {
+  width: 210px;
+  height: calc(100vh - 64px);
+  background-color: #DDE5DA;
+  position: sticky;
+  top: 64px;
+  padding: 30px 0 30px 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  z-index: 10;
+}
+
+.sidebar-header {
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #006E2E;
+  margin: 0 0 5px 0;
+}
+
+.sidebar-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #555555;
+  border-radius: 50px 0 0 50px;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(4px);
+}
+
+.nav-icon {
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.nav-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  background-color: #ffffff;
+  color: #006E2E;
+  font-weight: 700;
+  box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+}
+
+.offers-item {
+  margin-top: 10px;
+}
+
+.offers-text {
+  color: #ba1a1a;
+  font-weight: 700;
+}
+
+.offers-item .nav-icon {
+  color: #ba1a1a;
+  opacity: 1;
+}
