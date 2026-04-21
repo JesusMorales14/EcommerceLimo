@@ -1,18 +1,23 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private service: OrdersService) {}
 
+  // 🔐 SOLO USUARIO LOGUEADO
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getAll() {
-    return this.service.getOrders();
+  getMyOrders(@Req() req) {
+    return this.service.getByUser(req.user.userId);
   }
 
+  // 🔐 CREAR ORDEN CON USUARIO AUTENTICADO
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body: CreateOrderDto) {
-    return this.service.createOrder(body);
+  create(@Req() req, @Body() body: CreateOrderDto) {
+    return this.service.createOrder(req.user.userId, body);
   }
 }

@@ -8,8 +8,8 @@ datasource db {
 }
 
 model Product {
-   id          Int         @id @default(autoincrement())
-  name        String
+  id          Int         @id @default(autoincrement())
+  name        String      @unique   
   description String
   price       Float
   discount    Float?
@@ -18,26 +18,29 @@ model Product {
   colors      String[]
   sizes       String[]
   categoryId  Int
+
   orderItems  OrderItem[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
 model Cart {
-  id     Int        @id @default(autoincrement())
-  items  CartItem[]
+  id    Int        @id @default(autoincrement())
+  items CartItem[]
 }
 
 model CartItem {
-  id        Int    @id @default(autoincrement())
+  id        Int  @id @default(autoincrement())
   productId Int
   quantity  Int
-
-  cartId Int
-  cart   Cart   @relation(fields: [cartId], references: [id])
+  cartId    Int
+  cart      Cart @relation(fields: [cartId], references: [id])
 }
 
 model Order {
@@ -45,17 +48,25 @@ model Order {
   status    String
   total     Float
   createdAt DateTime    @default(now())
-
+  userId    Int                          
+  user      User        @relation(fields: [userId], references: [id])
   items     OrderItem[]
 }
 
 model OrderItem {
   id        Int     @id @default(autoincrement())
   quantity  Int
-
   orderId   Int
-  order     Order   @relation(fields: [orderId], references: [id])
-
   productId Int
+  order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  orders    Order[]  
 }

@@ -6,63 +6,99 @@ import { CreateOrderDto } from './dto/create-order.dto';
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
 
-  async createOrder(cart: CreateOrderDto) {
-    let total = 0;
+  // 🔥 CREAR ORDEN CON USER
+  async createOrder(userId: number, cart: CreateOrderDto) {
+    return await this.prisma.$transaction(async (prisma) => {
+      let total = 0;
 
-    const orderItemsData: {
-      productId: number;
-      quantity: number;
-    }[] = [];
+      const groupedItems = new Map<number, number>();
 
-    for (const item of cart.items) {
-      const product = await this.prisma.product.findUnique({
-        where: { id: item.productId },
-      });
-
-      if (!product) {
-        throw new BadRequestException(`Producto ${item.productId} no existe`);
+      for (const item of cart.items) {
+        const current = groupedItems.get(item.productId) || 0;
+        groupedItems.set(item.productId, current + item.quantity);
       }
 
-      if (product.stock < item.quantity) {
-        throw new BadRequestException(
-          `Stock insuficiente para ${product.name}`,
-        );
+      const orderItemsData: {
+        productId: number;
+        quantity: number;
+      }[] = [];
+
+      for (const [productId, quantity] of groupedItems.entries()) {
+        const product = await prisma.product.findUnique({
+          where: { id: productId },
+        });
+
+        if (!product) {
+          throw new BadRequestException(`Producto ${productId} no existe`);
+        }
+
+        if (product.stock < quantity) {
+          throw new BadRequestException(
+            `Stock insuficiente para ${product.name}`,
+          );
+        }
+
+        total += product.price * quantity;
+
+        orderItemsData.push({
+          productId: product.id,
+          quantity: quantity,
+        });
+
+        // 🔥 DESCONTAR STOCK
+        await prisma.product.update({
+          where: { id: product.id },
+          data: {
+            stock: product.stock - quantity,
+          },
+        });
       }
 
-      total += product.price * item.quantity;
-
-      orderItemsData.push({
-        productId: product.id,
-        quantity: item.quantity,
-      });
-    }
-
-    const order = await this.prisma.order.create({
-      data: {
-        status: 'pending',
-        total: total,
-        items: {
-          create: orderItemsData,
-        },
-      },
-      include: {
-        items: {
-          include: {
-            product: true,
+      const order = await prisma.order.create({
+        data: {
+          status: 'pending',
+          total: total,
+          userId: userId, // 🔥 CLAVE (ANTES FALTABA)
+          items: {
+            create: orderItemsData,
           },
         },
-      },
-    });
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
+      });
 
-    return order;
+      return order;
+    });
   }
 
-  async getOrders() {
-    return await this.prisma.order.findMany({
-      include: {
+  // 🔥 SOLO ÓRDENES DEL USUARIO
+  async getByUser(userId: number) {
+    return this.prisma.order.findMany({
+      where: {
+        userId: Number(userId),
+      },
+      select: {
+        id: true,
+        status: true,
+        total: true,
+        createdAt: true,
         items: {
-          include: {
-            product: true,
+          select: {
+            id: true,
+            quantity: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                images: true,
+              },
+            },
           },
         },
       },
