@@ -1,8 +1,8 @@
 <app-header></app-header>
 
 <div class="app-layout">
-  <app-sidebar></app-sidebar>
-  <main class="main-content-wrapper">
+  <app-sidebar *ngIf="showSidebar()"></app-sidebar>
+  <main class="main-content-wrapper" [class.full-width]="!showSidebar()">
     <router-outlet></router-outlet>
   </main>
 </div>

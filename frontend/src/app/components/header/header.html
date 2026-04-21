@@ -14,9 +14,9 @@
       <button class="icon-btn">
         <span class="material-symbols-outlined">favorite</span>
       </button>
-      <button class="icon-btn cart-container">
+      <button class="icon-btn cart-container" routerLink="/cart">
         <span class="material-symbols-outlined">shopping_cart</span>
-        <span class="badge">3</span>
+        <span class="badge" *ngIf="cartCount() > 0">{{ cartCount() }}</span>
       </button>
     </nav>
   </div>

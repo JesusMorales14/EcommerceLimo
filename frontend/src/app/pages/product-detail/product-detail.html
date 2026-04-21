@@ -1,0 +1,104 @@
+<div class="product-detail-container" *ngIf="producto">
+  <nav class="breadcrumb">
+    HOME / {{ producto.category | uppercase }} / <strong>{{ producto.name | uppercase }}</strong>
+  </nav>
+
+  <div class="main-layout">
+    <div class="gallery-col">
+      <div class="thumbnails">
+        <img *ngFor="let img of producto.images" [src]="img" class="thumb">
+      </div>
+      <div class="featured-image">
+        <img [src]="producto.images[0]" [alt]="producto.name">
+        <span class="badge-sustainable">SUSTAINABLE CHOICE</span>
+        <button class="zoom-btn"><span class="material-symbols-outlined">search</span></button>
+      </div>
+    </div>
+
+    <div class="info-col">
+      <p class="editorial-tag">EDITORIAL GREENHOUSE SELECT</p>
+      <h1 class="product-title">{{ producto.name }}</h1>
+      <div class="reviews-row">
+        <span class="stars">★★★★★</span>
+        <span class="reviews-count">(128 Reviews)</span>
+      </div>
+
+      <div class="price-row">
+        <h2 class="price">{{ producto.price | currency }}</h2>
+        <span class="discount-badge">-35% OFF</span>
+      </div>
+      <p class="regular-price">Regular: <span>{{ producto.price * 1.35 | currency }}</span></p>
+
+      <div class="promo-box">
+        <span class="material-symbols-outlined">credit_card</span>
+        12 interest-free installments of {{ producto.price / 12 | currency }} with GreenCard
+      </div>
+
+      <div class="product-options">
+        <div class="option-group">
+          <p class="option-label">PLANTER COLOR: <strong>SAGE MIST</strong></p>
+          <div class="color-dots">
+            <span class="dot active" style="background-color: #cbd5c0;"></span>
+            <span class="dot" style="background-color: #556b5d;"></span>
+            <span class="dot" style="background-color: #e2d1d1;"></span>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <p class="option-label">SIZE: <strong>LARGE (80-100CM)</strong></p>
+          <div class="size-chips">
+            <button class="chip">Small</button>
+            <button class="chip active">Large</button>
+            <button class="chip">Extra Large</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-buy">
+          <span class="material-symbols-outlined">shopping_bag</span> Buy Now
+        </button>
+        <button class="btn-add">Add to Cart</button>
+      </div>
+
+      <div class="shipping-info">
+        <div class="info-item">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <div><strong>Standard Home Delivery</strong><br><small>Arrives between Oct 24 - Oct 26</small></div>
+          <span class="free">FREE</span>
+        </div>
+        <div class="info-item">
+          <span class="material-symbols-outlined">store</span>
+          <div><strong>Store Pickup Available</strong><br><small>Pick up in 2 hours at Greenhouse Central</small></div>
+          <span class="free">FREE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="extra-info">
+    <div class="tabs-header">
+      <button class="tab active">DESCRIPTION</button>
+      <button class="tab">SPECIFICATIONS</button>
+      <button class="tab">REVIEWS (128)</button>
+    </div>
+
+    <div class="tab-content">
+      <div class="text-block">
+        <h3>Curated Elegance for Modern Living</h3>
+        <p>{{ producto.description }}</p>
+        <ul class="features-list">
+          <li><span class="material-symbols-outlined">check_circle</span> Ethically sourced from organic nurseries</li>
+          <li><span class="material-symbols-outlined">check_circle</span> Pre-conditioned for low-light indoor environments</li>
+          <li><span class="material-symbols-outlined">check_circle</span> Includes a 1-year vitality guarantee</li>
+        </ul>
+      </div>
+
+      <div class="care-card">
+        <h3>Care Instructions</h3>
+        <p>Learn how to keep your Monstera flourishing with our digital guide.</p>
+        <button class="btn-download">Download PDF <span class="material-symbols-outlined">download</span></button>
+      </div>
+    </div>
+  </section>
+</div>

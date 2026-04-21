@@ -4,35 +4,97 @@
     <p class="sidebar-subtitle">THE CURATED EDIT</p>
   </div>
 
-  <nav class="sidebar-nav">
-    <a href="#" class="nav-item active">
+<nav class="sidebar-nav">
+
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'fashion']" routerLinkActive="active" class="nav-item">
       <span class="material-symbols-outlined nav-icon">apparel</span>
       <span class="nav-text">Fashion</span>
     </a>
+    <div class="submenu-floating">
+      <p class="submenu-header">CATEGORÍAS</p>
+      <ul class="submenu-list">
+        <li [routerLink]="['/category', 'fashion', 'hombre']">Ropa de Hombre</li>
+        <li [routerLink]="['/category', 'fashion', 'mujer']">Ropa de Mujer</li>
+        <li [routerLink]="['/category', 'fashion', 'calzado']">Calzado</li>
+        <li [routerLink]="['/category', 'fashion', 'accesorios']">Accesorios</li>
+      </ul>
+      <button class="btn-offers-sub" [routerLink]="['/category', 'offers']">Ver Ofertas</button>
+    </div>
+  </div>
 
-    <a href="#" class="nav-item">
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'electronics']" routerLinkActive="active" class="nav-item">
       <span class="material-symbols-outlined nav-icon">devices</span>
       <span class="nav-text">Electronics</span>
     </a>
+    <div class="submenu-floating">
+      <p class="submenu-header">CATEGORÍAS</p>
+      <ul class="submenu-list">
+        <li [routerLink]="['/category', 'electronics', 'consolas']">Consolas y Videojuegos</li>
+        <li [routerLink]="['/category', 'electronics', 'laptops']">PCs y Laptops</li>
+        <li [routerLink]="['/category', 'electronics', 'audio']">Audio Pro</li>
+        <li [routerLink]="['/category', 'electronics', 'smartphones']">Smartphones</li>
+      </ul>
+      <button class="btn-offers-sub" [routerLink]="['/category', 'offers']">Ver Ofertas</button>
+    </div>
+  </div>
 
-    <a href="#" class="nav-item">
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'home-decor']" routerLinkActive="active" class="nav-item">
       <span class="material-symbols-outlined nav-icon">weekend</span>
       <span class="nav-text">Home & Decor</span>
     </a>
+    <div class="submenu-floating">
+      <p class="submenu-header">CATEGORÍAS</p>
+      <ul class="submenu-list">
+        <li [routerLink]="['/category', 'home-decor', 'muebles']">Muebles</li>
+        <li [routerLink]="['/category', 'home-decor', 'iluminacion']">Iluminación</li>
+        <li [routerLink]="['/category', 'home-decor', 'decoracion']">Decoración</li>
+      </ul>
+      <button class="btn-offers-sub" [routerLink]="['/category', 'offers']">Ver Ofertas</button>
+    </div>
+  </div>
 
-    <a href="#" class="nav-item">
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'beauty']" routerLinkActive="active" class="nav-item">
       <span class="material-symbols-outlined nav-icon">face</span>
       <span class="nav-text">Beauty</span>
     </a>
+    <div class="submenu-floating">
+      <p class="submenu-header">CATEGORÍAS</p>
+      <ul class="submenu-list">
+        <li [routerLink]="['/category', 'beauty', 'maquillaje']">Maquillaje</li>
+        <li [routerLink]="['/category', 'beauty', 'skincare']">Cuidado de la Piel</li>
+        <li [routerLink]="['/category', 'beauty', 'perfumes']">Perfumes</li>
+      </ul>
+      <button class="btn-offers-sub" [routerLink]="['/category', 'offers']">Ver Ofertas</button>
+    </div>
+  </div>
 
-    <a href="#" class="nav-item">
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'sports']" routerLinkActive="active" class="nav-item">
       <span class="material-symbols-outlined nav-icon">fitness_center</span>
       <span class="nav-text">Sports</span>
     </a>
+    <div class="submenu-floating">
+      <p class="submenu-header">CATEGORÍAS</p>
+      <ul class="submenu-list">
+        <li [routerLink]="['/category', 'sports', 'ropa-deportiva']">Ropa Deportiva</li>
+        <li [routerLink]="['/category', 'sports', 'maquinas-gym']">Máquinas de Gym</li>
+        <li [routerLink]="['/category', 'sports', 'suplementos']">Suplementos</li>
+        <li [routerLink]="['/category', 'sports', 'outdoor']">Outdoor / Camping</li>
+      </ul>
+      <button class="btn-offers-sub" [routerLink]="['/category', 'offers']">Ver Ofertas</button>
+    </div>
+  </div>
 
-    <a href="#" class="nav-item offers-item">
+  <div class="nav-item-wrapper">
+    <a [routerLink]="['/category', 'offers']" routerLinkActive="active" class="nav-item offers-item">
       <span class="material-symbols-outlined nav-icon">local_offer</span>
       <span class="nav-text offers-text">Offers</span>
     </a>
-  </nav>
+  </div>
+
+</nav>
 </aside>

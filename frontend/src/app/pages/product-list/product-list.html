@@ -1,0 +1,49 @@
+<div class="product-page">
+  <header class="category-header">
+    <div class="breadcrumb">{{ breadcrumb }}</div>
+
+    <div class="header-main-content">
+      <div class="text-group">
+        <h1 class="title">{{ titulo }}</h1>
+        <p class="description">{{ descripcion }}</p>
+      </div>
+
+      <div class="filters-bar">
+        <div class="product-count">
+          <span class="count-num">120</span>
+          <span class="count-label">PRODUCTS</span>
+        </div>
+        <select class="sort-select">
+          <option>Relevance</option>
+          <option>Price: Low to High</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let producto of productosMostrados">
+
+    <div class="image-container" [routerLink]="['/product', producto.id]">
+      <img [src]="producto.images[0]" [alt]="producto.name">
+
+      <button class="wishlist-btn" (click)="$event.stopPropagation()">
+        <span class="material-symbols-outlined">favorite</span>
+      </button>
+    </div>
+
+    <div class="product-info">
+      <p class="brand">{{ producto.brand }}</p>
+      <h3 class="product-name">{{ producto.name }}</h3>
+      <div class="price-row">
+        <span class="price">{{ producto.price | currency }}</span>
+      </div>
+      <button class="add-to-cart-btn" (click)="agregarAlCarrito(producto)">
+        Añadir al carrito
+      </button>
+    </div>
+
+  </div>
+     </div>
+</div>
+
