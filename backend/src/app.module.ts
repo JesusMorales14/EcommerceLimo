@@ -14,7 +14,19 @@ import { RecommendationsModule } from './recommendations/recommendations.module'
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [ProductsModule, CategoriesModule, CartModule, OrdersModule, UsersModule, AuthModule, PaymentsModule, ShippingModule, ReviewsModule, RecommendationsModule, PrismaModule],
+  imports: [
+    ProductsModule,
+    CategoriesModule,
+    CartModule,
+    OrdersModule,
+    UsersModule,
+    AuthModule,
+    PaymentsModule,
+    ShippingModule,
+    ReviewsModule,
+    RecommendationsModule,
+    PrismaModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -4,15 +4,15 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Iniciando seed completo...');
+  console.log('🚀 Iniciando seed completo...');
 
-  // USER
+  // =========================
+  // 🔐 USER
+  // =========================
   const passwordHash = await bcrypt.hash('123456', 10);
 
   const user = await prisma.user.upsert({
-    where: {
-      email: 'test@test.com',
-    },
+    where: { email: 'test@test.com' },
     update: {},
     create: {
       email: 'test@test.com',
@@ -21,11 +21,14 @@ async function main() {
     },
   });
 
-  console.log('User creado:', user.id);
+  console.log('👤 User creado:', user.id);
 
-  // CATEGORIES
+  // =========================
+  // 🏷️ CATEGORIES
+  // (IMPORTANTE: usamos id para evitar errores de unique)
+  // =========================
   const electronics = await prisma.category.upsert({
-    where: { id: 1 }, // o usa name si lo haces único
+    where: { id: 1 },
     update: {},
     create: { name: 'Electronics' },
   });
@@ -36,7 +39,11 @@ async function main() {
     create: { name: 'Clothing' },
   });
 
-  // 🛒 PRODUCTS (idempotente con upsert)
+  console.log('🏷️ Categories listas');
+
+  // =========================
+  // 📦 PRODUCTS
+  // =========================
   const iphone = await prisma.product.upsert({
     where: { name: 'iPhone 15 Pro' },
     update: {},
@@ -44,11 +51,16 @@ async function main() {
       name: 'iPhone 15 Pro',
       description: 'Apple smartphone premium',
       price: 1200,
+      discount: null,
       stock: 10,
       images: ['iphone.jpg'],
       colors: ['black'],
       sizes: ['M'],
       categoryId: electronics.id,
+
+      // 🔥 NUEVO (FRONTEND COMPATIBILITY)
+      categoryName: 'electronics',
+      subCategory: 'smartphones',
     },
   });
 
@@ -59,11 +71,15 @@ async function main() {
       name: 'MacBook Pro',
       description: 'Laptop Apple M3',
       price: 2500,
+      discount: null,
       stock: 5,
       images: ['macbook.jpg'],
       colors: ['gray'],
       sizes: ['M'],
       categoryId: electronics.id,
+
+      categoryName: 'electronics',
+      subCategory: 'laptops',
     },
   });
 
@@ -74,30 +90,36 @@ async function main() {
       name: 'Nike Air Force 1',
       description: 'Classic sneakers',
       price: 150,
+      discount: null,
       stock: 20,
       images: ['nike.jpg'],
       colors: ['white'],
       sizes: ['40', '41'],
       categoryId: clothing.id,
+
+      categoryName: 'fashion',
+      subCategory: 'shoes',
     },
   });
 
-  // 👇 opcional: mantener array como antes
-  const products = [iphone, macbook, nike];
+  console.log('📦 Products creados');
 
-  console.log('Products creados o actualizados');
-
-  // 🛒 CART REAL
+  // =========================
+  // 🛒 CART
+  // (SIN userId porque tu schema aún no lo soporta)
+  // =========================
   const cart = await prisma.cart.create({
     data: {
+      userId: user.id, // ✔ obligatorio por schema
+
       items: {
         create: [
           {
-            productId: products[0].id,
+            productId: iphone.id,
             quantity: 1,
           },
           {
-            productId: products[2].id,
+            productId: nike.id,
             quantity: 2,
           },
         ],
@@ -105,23 +127,24 @@ async function main() {
     },
   });
 
-  console.log('Cart creado');
+  console.log('🛒 Cart creado:', cart.id);
 
-  // ORDER REALISTA
+  // =========================
+  // 📦 ORDER
+  // =========================
   const order = await prisma.order.create({
     data: {
       status: 'pending',
       userId: user.id,
-      total: products[0].price * 1 + products[2].price * 2,
-
+      total: iphone.price * 1 + nike.price * 2,
       items: {
         create: [
           {
-            productId: products[0].id,
+            productId: iphone.id,
             quantity: 1,
           },
           {
-            productId: products[2].id,
+            productId: nike.id,
             quantity: 2,
           },
         ],
@@ -129,14 +152,14 @@ async function main() {
     },
   });
 
-  console.log('Order creada:', order.id);
+  console.log('📦 Order creada:', order.id);
 
-  console.log('Seed COMPLETO listo');
+  console.log('✅ SEED COMPLETO LISTO');
 }
 
 main()
   .catch((e) => {
-    console.error('Error seed:', e);
+    console.error('❌ Error seed:', e);
   })
   .finally(async () => {
     await prisma.$disconnect();

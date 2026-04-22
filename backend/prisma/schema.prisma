@@ -8,8 +8,9 @@ datasource db {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String      @unique   
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  brand       String?
   description String
   price       Float
   discount    Float?
@@ -17,22 +18,35 @@ model Product {
   images      String[]
   colors      String[]
   sizes       String[]
+
   categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
 
-  orderItems  OrderItem[]
+  categoryName String?
+  subCategory  String?
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  tags    String[] @default([])
+  isOffer Boolean  @default(false)
+
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @unique
+
+  products Product[]
 }
 
 model Cart {
-  id    Int        @id @default(autoincrement())
-  items CartItem[]
+  id     Int        @id @default(autoincrement())
+  userId Int        @unique
+  user   User       @relation(fields: [userId], references: [id])
+  items  CartItem[]
 }
 
 model CartItem {
@@ -48,9 +62,11 @@ model Order {
   status    String
   total     Float
   createdAt DateTime    @default(now())
-  userId    Int                          
+  userId    Int
   user      User        @relation(fields: [userId], references: [id])
   items     OrderItem[]
+
+  shipping Shipping?
 }
 
 model OrderItem {
@@ -68,5 +84,44 @@ model User {
   password  String
   name      String?
   createdAt DateTime @default(now())
-  orders    Order[]  
+
+  cart    Cart?
+  orders  Order[]
+  reviews Review[]
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  rating    Int
+  comment   String?
+  userId    Int
+  productId Int
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Shipping {
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @unique
+  address   String
+  city      String
+  country   String
+  status    String   @default("pending") // pending, shipped, delivered
+  tracking  String?
+  createdAt DateTime @default(now())
+
+  order  Order           @relation(fields: [orderId], references: [id])
+  events ShippingEvent[]
+}
+
+model ShippingEvent {
+  id         Int      @id @default(autoincrement())
+  shippingId Int
+  status     String
+  createdAt  DateTime @default(now())
+
+  shipping Shipping @relation(fields: [shippingId], references: [id])
 }
