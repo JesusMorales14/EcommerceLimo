@@ -7,7 +7,13 @@ async function bootstrap() {
   // rawBody: true es necesario para verificar la firma del webhook de Stripe
   const app = await NestFactory.create(AppModule, { rawBody: true });
 
-  app.enableCors({ origin: 'http://localhost:4200', credentials: true });
+  app.enableCors({
+    origin: [
+      'http://localhost:4200',
+      'https://tranquil-gumdrop-ebfdda.netlify.app',
+    ],
+    credentials: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, whitelist: true }),
