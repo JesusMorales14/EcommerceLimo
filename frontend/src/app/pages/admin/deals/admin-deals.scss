@@ -244,3 +244,26 @@
   to { transform: rotate(360deg); }
 }
 .spin { animation: spin 0.8s linear infinite; display: inline-block; }
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .admin-deals-page { padding: 16px 12px; gap: 16px; }
+
+  .page-header .header-left h1 { font-size: 20px; }
+
+  .status-card {
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 12px;
+
+    .btn-cancel { width: 100%; justify-content: center; }
+  }
+
+  .form-card, .offers-card { padding: 18px 16px; }
+
+  .field-row { flex-direction: column; align-items: stretch; }
+
+  .btn-activate { width: 100%; justify-content: center; }
+
+  .offers-grid { grid-template-columns: 1fr 1fr; }
+}
