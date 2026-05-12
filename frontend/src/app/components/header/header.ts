@@ -20,17 +20,21 @@ export class Header {
   private router  = inject(Router);
 
   showAccountMenu = signal(false);
+  mobileSearchOpen = signal(false);
   searchQuery     = '';
 
   openCart() { this.cartService.openCart(); }
   toggleAccountMenu() { this.showAccountMenu.update(v => !v); }
   closeAccountMenu()  { this.showAccountMenu.set(false); }
+  openMobileSearch()  { this.mobileSearchOpen.set(true); }
+  closeMobileSearch() { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
 
   search() {
     const q = this.searchQuery.trim();
     if (!q) return;
     void this.router.navigate(['/search'], { queryParams: { q } });
     this.searchQuery = '';
+    this.mobileSearchOpen.set(false);
   }
 
   logout() {

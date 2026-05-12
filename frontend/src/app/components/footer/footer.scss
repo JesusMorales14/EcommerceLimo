@@ -1,6 +1,6 @@
 .main-footer {
-  background-color: #ECF3E8;
-  color: #006E2E;
+  background-color: #ecf3e8;
+  color: #006e2e;
   padding: 60px 40px 30px;
   font-family: sans-serif;
 }
@@ -60,6 +60,12 @@
 /* Redes sociales */
 .social-links {
   display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.card-social {
+  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -78,7 +84,9 @@
   background: white;
   transition: all 0.2s;
 
-  svg { flex-shrink: 0; }
+  svg {
+    flex-shrink: 0;
+  }
 
   &:hover {
     color: #006b2d;
@@ -116,7 +124,9 @@
 
 // ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .main-footer { display: none; }
+  .main-footer {
+    display: none;
+  }
 }
 
 @media (max-width: 1024px) {

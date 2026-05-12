@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 
 export interface DealSession {
   id: number;
+  startsAt: string;
   endsAt: string;
   active: boolean;
   createdAt: string;
@@ -16,8 +17,11 @@ export class DealSessionService {
     return this.api.get<DealSession | null>('/deal-sessions/active');
   }
 
-  create(endsAt: Date) {
-    return this.api.post<DealSession>('/deal-sessions', { endsAt: endsAt.toISOString() });
+  create(endsAt: Date, startsAt?: Date) {
+    return this.api.post<DealSession>('/deal-sessions', {
+      endsAt: endsAt.toISOString(),
+      ...(startsAt ? { startsAt: startsAt.toISOString() } : {}),
+    });
   }
 
   cancel() {

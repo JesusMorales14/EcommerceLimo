@@ -24,7 +24,8 @@ export class AdminDealsPage implements OnInit {
   error      = signal('');
   success    = signal('');
 
-  endsAtInput = '';
+  startsAtInput = '';
+  endsAtInput   = '';
 
   ngOnInit() {
     this.load();
@@ -63,11 +64,19 @@ export class AdminDealsPage implements OnInit {
     this.error.set('');
     this.success.set('');
     if (!this.endsAtInput) { this.error.set('Selecciona una fecha y hora de fin.'); return; }
-    const endsAt = new Date(this.endsAtInput);
-    if (endsAt <= new Date()) { this.error.set('La fecha debe ser futura.'); return; }
+    const endsAt   = new Date(this.endsAtInput);
+    const startsAt = this.startsAtInput ? new Date(this.startsAtInput) : undefined;
+    if (endsAt <= new Date()) { this.error.set('La fecha de fin debe ser futura.'); return; }
+    if (startsAt && startsAt >= endsAt) { this.error.set('La fecha de inicio debe ser anterior a la de fin.'); return; }
     this.saving.set(true);
-    this.dealService.create(endsAt).subscribe({
-      next: () => { this.saving.set(false); this.success.set('¡Oferta activada!'); this.endsAtInput = ''; this.load(); },
+    this.dealService.create(endsAt, startsAt).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.success.set('¡Oferta activada!');
+        this.startsAtInput = '';
+        this.endsAtInput   = '';
+        this.load();
+      },
       error: () => { this.saving.set(false); this.error.set('Error al activar la oferta.'); },
     });
   }

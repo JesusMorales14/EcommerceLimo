@@ -62,6 +62,10 @@
 
       <div class="field-row">
         <div class="field">
+          <label>Fecha y hora de inicio <span class="optional">(opcional — por defecto: ahora)</span></label>
+          <input type="datetime-local" [(ngModel)]="startsAtInput" />
+        </div>
+        <div class="field">
           <label>Fecha y hora de fin *</label>
           <input type="datetime-local" [(ngModel)]="endsAtInput" [min]="minDatetime()" />
         </div>

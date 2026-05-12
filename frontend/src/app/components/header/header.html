@@ -1,4 +1,26 @@
 <header class="main-header">
+  <!-- Mobile search overlay -->
+  @if (mobileSearchOpen()) {
+    <div class="mobile-search-overlay" (click)="closeMobileSearch()"></div>
+    <div class="mobile-search-bar">
+      <button class="mobile-search-close" (click)="closeMobileSearch()" aria-label="Cerrar buscador">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <input
+        #mobileInput
+        type="text"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="search()"
+        placeholder="Buscar productos..."
+        aria-label="Buscar productos"
+        autofocus
+      />
+      <button class="mobile-search-go" (click)="search()" aria-label="Buscar">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </div>
+  }
+
   <!-- Row 1: Logo · Search · User actions -->
   <div class="header-top">
     <div class="header-container">
@@ -15,6 +37,11 @@
         />
         <button class="search-btn" (click)="search()">Buscar</button>
       </div>
+
+      <!-- Mobile: icon-only search trigger -->
+      <button class="mobile-search-btn" (click)="openMobileSearch()" aria-label="Buscar">
+        <span class="material-symbols-outlined">search</span>
+      </button>
 
       <nav class="user-menu" aria-label="Acciones de usuario">
         <div class="account-wrap">

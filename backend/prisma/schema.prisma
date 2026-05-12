@@ -120,6 +120,7 @@ model Review {
 
 model DealSession {
   id        Int      @id @default(autoincrement())
+  startsAt  DateTime @default(now())
   endsAt    DateTime
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
