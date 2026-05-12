@@ -3,10 +3,16 @@
   <!-- Breadcrumb -->
   <nav class="breadcrumb" aria-label="Navegación">{{ breadcrumb }}</nav>
 
+  <!-- Filter toggle (mobile) -->
+  <button class="filter-toggle-btn" (click)="showFilters.set(!showFilters())">
+    <span class="material-symbols-outlined">tune</span>
+    {{ showFilters() ? 'Ocultar filtros' : 'Filtrar' }}
+  </button>
+
   <div class="plp-layout">
 
     <!-- ── Filter Sidebar ──────────────────────────────────────────────────── -->
-    <aside class="filter-sidebar">
+    <aside class="filter-sidebar" [class.filters-visible]="showFilters()">
 
       <div class="filter-header">
         <h3>Filtrar por</h3>

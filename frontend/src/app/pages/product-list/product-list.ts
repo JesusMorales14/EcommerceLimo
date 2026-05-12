@@ -37,6 +37,7 @@ export class ProductListComponent implements OnInit {
   priceMax       = signal<number | null>(null);
   selectedBrands = signal<string[]>([]);
   sortBy         = signal('relevance');
+  showFilters    = signal(false);
 
   private currentId    = '';
   private currentSubId = '';

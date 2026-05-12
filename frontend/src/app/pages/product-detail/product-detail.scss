@@ -712,7 +712,21 @@ $radius:     12px;
 
 @media (max-width: 640px) {
   .pdp { padding: 0 12px 40px; }
-  .qty-actions { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
-  .btn-buy, .btn-add { grid-column: span 1; }
+  .gallery-main { height: 280px; }
+  .info-col { padding: 18px; }
+  .info-title { font-size: 18px; }
+  .price-now { font-size: 24px; }
+
+  .qty-actions {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+  }
+
   .trust-strip { gap: 4px; }
+  .trust-item { font-size: 10px; .material-symbols-outlined { font-size: 18px; } }
+
+  .tab-btn { padding: 12px 14px; font-size: 12px; }
+  .tab-body { padding: 18px; }
+
+  .reviews-summary { flex-direction: column; gap: 20px; }
 }

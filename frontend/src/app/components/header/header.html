@@ -17,8 +17,8 @@
       </div>
 
       <nav class="user-menu" aria-label="Acciones de usuario">
-        <!-- Mi Cuenta -->
-        <div class="account-wrap">
+        <!-- Mi Cuenta (desktop) -->
+        <div class="account-wrap desktop-only">
           @if (showAccountMenu()) {
             <div class="account-backdrop" (click)="closeAccountMenu()"></div>
           }
@@ -44,11 +44,7 @@
                   <span class="material-symbols-outlined">person</span> Mi Perfil y Pedidos
                 </a>
                 @if (authService.isAdmin()) {
-                  <a
-                    routerLink="/admin"
-                    class="dropdown-item admin-item"
-                    (click)="closeAccountMenu()"
-                  >
+                  <a routerLink="/admin" class="dropdown-item admin-item" (click)="closeAccountMenu()">
                     <span class="material-symbols-outlined">admin_panel_settings</span> Panel Admin
                   </a>
                 }
@@ -67,8 +63,8 @@
           }
         </div>
 
-        <!-- Favoritos -->
-        <a routerLink="/favorites" class="icon-btn" title="Favoritos">
+        <!-- Favoritos (desktop) -->
+        <a routerLink="/favorites" class="icon-btn desktop-only" title="Favoritos">
           <span class="icon-wrap">
             <span class="material-symbols-outlined">favorite</span>
             @if (favService.count() > 0) {
@@ -88,44 +84,110 @@
           </span>
           <span class="icon-label">Mi Carro</span>
         </button>
+
+        <!-- Hamburger (mobile) -->
+        <button class="icon-btn hamburger-btn" (click)="toggleMobileMenu()" title="Menú" aria-label="Abrir menú">
+          <span class="material-symbols-outlined">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
+        </button>
       </nav>
     </div>
   </div>
 
-  <!-- Row 2: Category navigation -->
+  <!-- Row 2: Category navigation (desktop) -->
   <nav class="category-nav" aria-label="Categorías">
-    <div class="header-container">
-      <a
-        [routerLink]="['/category', 'electrodomesticos']"
-        routerLinkActive="active"
-        class="cat-link"
-        >Electrodomésticos</a
-      >
-      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link"
-        >Tecnología</a
-      >
-      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link"
-        >Moda Mujer</a
-      >
-      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link"
-        >Moda Hombre</a
-      >
-      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link"
-        >Hogar & Deco</a
-      >
-      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link"
-        >Deporte</a
-      >
-      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link"
-        >Belleza</a
-      >
-      <a
-        [routerLink]="['/category', 'ofertas']"
-        routerLinkActive="active"
-        class="cat-link offers-link"
-      >
+    <div class="header-container cat-scroll">
+      <a [routerLink]="['/category', 'electrodomesticos']" routerLinkActive="active" class="cat-link">Electrodomésticos</a>
+      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link">Tecnología</a>
+      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link">Moda Mujer</a>
+      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link">Moda Hombre</a>
+      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link">Hogar & Deco</a>
+      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link">Deporte</a>
+      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link">Belleza</a>
+      <a [routerLink]="['/category', 'ofertas']" routerLinkActive="active" class="cat-link offers-link">
         <span class="material-symbols-outlined">local_offer</span> Ofertas
       </a>
     </div>
   </nav>
 </header>
+
+<!-- Mobile Menu Drawer -->
+@if (mobileMenuOpen()) {
+  <div class="mobile-backdrop" (click)="closeMobileMenu()"></div>
+}
+<div class="mobile-menu" [class.open]="mobileMenuOpen()">
+  <div class="mobile-menu-head">
+    <span class="logo">EcommerceLimo</span>
+    <button class="mobile-close-btn" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- Account section -->
+  <div class="mobile-section">
+    @if (authService.isLoggedIn()) {
+      <div class="mobile-user-info">
+        <span class="material-symbols-outlined">account_circle</span>
+        <div>
+          <strong>{{ authService.user()?.name }}</strong>
+          <span>{{ authService.user()?.email }}</span>
+        </div>
+      </div>
+      <a routerLink="/account" class="mobile-link" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">receipt_long</span> Mi Perfil y Pedidos
+      </a>
+      <a routerLink="/favorites" class="mobile-link" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">favorite</span> Favoritos
+        @if (favService.count() > 0) {
+          <span class="mobile-badge">{{ favService.count() }}</span>
+        }
+      </a>
+      @if (authService.isAdmin()) {
+        <a routerLink="/admin" class="mobile-link admin" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined">admin_panel_settings</span> Panel Admin
+        </a>
+      }
+      <button class="mobile-link logout" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span> Cerrar sesión
+      </button>
+    } @else {
+      <a routerLink="/login" class="mobile-link" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">login</span> Iniciar sesión
+      </a>
+      <a routerLink="/register" class="mobile-link" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">person_add</span> Crear cuenta
+      </a>
+      <a routerLink="/favorites" class="mobile-link" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">favorite</span> Favoritos
+      </a>
+    }
+  </div>
+
+  <!-- Categories section -->
+  <div class="mobile-section">
+    <p class="mobile-section-title">Categorías</p>
+    <a [routerLink]="['/category', 'electrodomesticos']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">kitchen</span> Electrodomésticos
+    </a>
+    <a [routerLink]="['/category', 'tecnologia']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">devices</span> Tecnología
+    </a>
+    <a [routerLink]="['/category', 'moda-mujer']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">checkroom</span> Moda Mujer
+    </a>
+    <a [routerLink]="['/category', 'moda-hombre']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">checkroom</span> Moda Hombre
+    </a>
+    <a [routerLink]="['/category', 'hogar']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">chair</span> Hogar & Deco
+    </a>
+    <a [routerLink]="['/category', 'deporte']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">fitness_center</span> Deporte
+    </a>
+    <a [routerLink]="['/category', 'belleza']" class="mobile-link" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">spa</span> Belleza
+    </a>
+    <a [routerLink]="['/category', 'ofertas']" class="mobile-link offers" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">local_offer</span> Ofertas
+    </a>
+  </div>
+</div>

@@ -382,9 +382,18 @@ $gap:        56px;
 }
 
 @media (max-width: 640px) {
-  .hero { padding: 40px 20px; min-height: 360px; }
+  .hero { padding: 40px 20px; min-height: 300px; }
+  .hero h1 { font-size: 28px; }
+  .hero p { font-size: 14px; }
   .products-row, .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .promo-banners { grid-template-columns: 1fr; }
-  .section-block { padding: 28px 16px; }
-  .category-strip-section { padding: 16px; }
+  .promo-banners { grid-template-columns: 1fr; padding: 0 16px 28px; }
+  .promo-card { padding: 28px 24px; }
+  .section-block { padding: 24px 16px; }
+  .category-strip-section { padding: 14px 16px; }
+  .cat-chip { padding: 10px 14px; }
+  .cat-chip-icon { font-size: 22px; }
+}
+
+@media (max-width: 400px) {
+  .products-row, .products-grid { grid-template-columns: 1fr; }
 }

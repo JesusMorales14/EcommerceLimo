@@ -20,11 +20,14 @@ export class Header {
   private router  = inject(Router);
 
   showAccountMenu = signal(false);
+  mobileMenuOpen  = signal(false);
   searchQuery     = '';
 
   openCart() { this.cartService.openCart(); }
   toggleAccountMenu() { this.showAccountMenu.update(v => !v); }
   closeAccountMenu()  { this.showAccountMenu.set(false); }
+  toggleMobileMenu()  { this.mobileMenuOpen.update(v => !v); }
+  closeMobileMenu()   { this.mobileMenuOpen.set(false); }
 
   search() {
     const q = this.searchQuery.trim();
@@ -36,5 +39,6 @@ export class Header {
   logout() {
     this.authService.logout();
     this.showAccountMenu.set(false);
+    this.mobileMenuOpen.set(false);
   }
 }

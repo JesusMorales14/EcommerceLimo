@@ -776,3 +776,27 @@
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .checkout-page { padding: 16px 12px 48px; }
+
+  .step-bar { gap: 0; }
+  .step-line { width: 32px; }
+  .step-label { font-size: 10px; }
+
+  .field-row { grid-template-columns: 1fr; gap: 12px; }
+
+  .card-section { grid-template-columns: 1fr; gap: 24px; }
+  .card-3d { max-width: 100%; height: 180px; }
+
+  .step-footer {
+    flex-direction: column-reverse;
+    gap: 12px;
+
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  }
+
+  .confirm-layout { grid-template-columns: 1fr; }
+  .order-total-card { position: static; top: auto; }
+}
