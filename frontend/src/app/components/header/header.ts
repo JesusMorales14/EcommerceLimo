@@ -1,15 +1,40 @@
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart';
+import { AuthService } from '../../core/services/auth.service';
+import { FavoritesService } from '../../core/services/favorites.service';
+
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule],
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
-  private cartService = inject(CartService);
+  cartService     = inject(CartService);
+  authService     = inject(AuthService);
+  favService      = inject(FavoritesService);
+  private router  = inject(Router);
 
-  cartCount = this.cartService.count;
+  showAccountMenu = signal(false);
+  searchQuery     = '';
+
+  openCart() { this.cartService.openCart(); }
+  toggleAccountMenu() { this.showAccountMenu.update(v => !v); }
+  closeAccountMenu()  { this.showAccountMenu.set(false); }
+
+  search() {
+    const q = this.searchQuery.trim();
+    if (!q) return;
+    void this.router.navigate(['/search'], { queryParams: { q } });
+    this.searchQuery = '';
+  }
+
+  logout() {
+    this.authService.logout();
+    this.showAccountMenu.set(false);
+  }
 }

@@ -1,98 +1,118 @@
 .deal-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(0,0,0,0.05);
-}
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-.deal-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
+  }
 }
 
 .image-box {
   position: relative;
-  background-color: #f8f8f8;
-  height: 200px;
+  background-color: #f4f6f3;
+  height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  overflow: hidden;
 }
 
 .image-box img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.deal-card:hover .image-box img {
+  transform: scale(1.04);
 }
 
 .discount-badge {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 12px;
+  left: 12px;
   background: #ba1a1a;
   color: white;
   font-size: 10px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 4px 9px;
+  border-radius: 6px;
 }
 
 .wish-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   background: white;
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  color: #64748b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: #94a3b8;
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+
+  .material-symbols-outlined { font-size: 18px; }
+
+  &:hover {
+    color: #e53935;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .deal-content {
-  padding: 15px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .category {
   font-size: 10px;
   color: #94a3b8;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  margin-bottom: 5px;
+  letter-spacing: 1px;
+  margin: 0 0 6px;
+  text-transform: uppercase;
 }
 
 .product-name {
   font-size: 14px;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 10px;
-  height: 40px;
+  margin: 0 0 12px;
+  line-height: 1.45;
+  flex: 1;
 }
 
 .price-row {
-  margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 14px;
 }
 
 .price-now {
   color: #ba1a1a;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .price-before {
-  color: #94a3b8;
+  color: #b0bec5;
   text-decoration: line-through;
   font-size: 12px;
 }
@@ -102,8 +122,8 @@
   background: #006b2d;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 11px;
+  border-radius: 8px;
   font-weight: 700;
   font-size: 13px;
   display: flex;
@@ -111,4 +131,14 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  .material-symbols-outlined { font-size: 18px; }
+
+  &:hover {
+    background: #005124;
+    transform: translateY(-1px);
+  }
+
+  &:active { transform: translateY(0); }
 }

@@ -1,27 +1,29 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { Header} from './components/header/header';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
-import { Sidebar } from './components/sidebar/sidebar';
-import { DealsDay } from './components/deals-day/deals-day';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './core/services/auth.service';
+import { CartService } from './core/services/cart';
+import { CategoryService } from './core/services/category.service';
+import { FavoritesService } from './core/services/favorites.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    Header,
-    Footer,
-    Sidebar,
-    CommonModule,
-  ],
+  imports: [RouterOutlet, RouterLink, Header, Footer, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('frontend');
-  private router = inject(Router);
-  showSidebar(): boolean {
-    return !this.router.url.includes('/product/')&& !this.router.url.includes('/cart');
+export class App implements OnInit {
+  cartService = inject(CartService);
+  private authService    = inject(AuthService);
+  private favService     = inject(FavoritesService);
+  private categoryService = inject(CategoryService);
+
+  ngOnInit() {
+    this.authService.initSession();
+    this.favService.loadFavorites();
+    this.categoryService.load();
   }
 }

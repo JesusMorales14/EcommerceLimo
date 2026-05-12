@@ -1,84 +1,126 @@
-<div class="container">
+<div class="home">
+
+  <!-- ── Hero Banner ────────────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-content">
-      <span class="badge-new">NUEVA COLECCIÓN 2024</span>
+      <span class="badge-new">NUEVA COLECCIÓN 2025</span>
       <h1>Revive tu espacio con esencia natural.</h1>
-      <p>Explora nuestra curaduría exclusiva de piezas que conectan tu hogar con la vitalidad del exterior.</p>
+      <p>Descubre nuestra curaduría exclusiva de piezas que conectan tu hogar con la vitalidad del exterior.</p>
       <div class="hero-actions">
-        <button class="btn-fill">Ver Colección</button>
-        <button class="btn-outline">Ofertas Especiales</button>
+        <button class="btn-fill" [routerLink]="['/category', 'hogar']">Ver Colección</button>
+        <button class="btn-outline" [routerLink]="['/category', 'ofertas']">Ver Ofertas</button>
       </div>
     </div>
   </section>
 
-  <section class="categories">
-    <div class="section-header">
-      <h2>Explora por Categoría</h2>
-      <a href="#" class="view-all">Ver todas →</a>
+  <!-- ── Category Strip ────────────────────────────────────────────────────── -->
+  <section class="category-strip-section">
+    <div class="category-strip">
+      @for (cat of categoryService.categories(); track cat.id) {
+        <a class="cat-chip" [routerLink]="['/category', cat.id]">
+          <span class="cat-chip-icon material-symbols-outlined">{{ cat.icon }}</span>
+          <span class="cat-chip-label">{{ cat.label }}</span>
+        </a>
+      }
     </div>
+  </section>
 
-    <div class="bento-grid">
-      <div class="bento-item main-cat">
-        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kYXxlbnwwfHwwfHx8MA%3D%3D" alt="Moda">
-        <div class="bento-info">
-          <h3>Moda Sostenible</h3>
-          <p>Curaduría de Verano</p>
+  <!-- ── Ofertas del Día ────────────────────────────────────────────────────── -->
+  @if (dealActive()) {
+  <section class="section-block">
+    <div class="section-head">
+      <div class="section-title-group">
+        <h2>Ofertas del Día</h2>
+        <div class="timer">
+          <span class="material-symbols-outlined">timer</span>
+          Termina en {{ countdown() }}
         </div>
       </div>
-      <div class="bento-item">
-        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGVjbm9sb2dpYXxlbnwwfHwwfHx8MA%3D%3D" alt="Tecno">
-        <div class="bento-info"><h3>Tecnología</h3></div>
+      <a [routerLink]="['/category', 'ofertas']" class="link-ver-mas">Ver todas las ofertas →</a>
+    </div>
+
+    <div class="products-row">
+      @for (p of offerProducts(); track p.id) {
+        <div class="product-card">
+          <div class="card-img-wrap" [routerLink]="['/product', p.id]">
+            <img [src]="p.images[0]" [alt]="p.name">
+            <span class="badge-off">-20%</span>
+            <button class="btn-wish" aria-label="Agregar a favoritos">
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-brand">{{ p.brand }}</p>
+            <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
+            <div class="card-stars">★★★★☆ <span>(38)</span></div>
+            <div class="card-prices">
+              <span class="price-now">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              <span class="price-old">{{ p.price * 1.25 | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            </div>
+            <p class="card-shipping">
+              <span class="material-symbols-outlined">local_shipping</span> Despacho gratis
+            </p>
+            <button class="btn-add-card" (click)="addToCart(p)">
+              <span class="material-symbols-outlined">shopping_cart</span> Agregar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+  }
+
+  <!-- ── Promotional Banners ────────────────────────────────────────────────── -->
+  <section class="promo-banners">
+    <div class="promo-card promo-green" [routerLink]="['/category', 'tecnologia']">
+      <div class="promo-text">
+        <span class="promo-tag">TECNOLOGÍA</span>
+        <h3>Hasta 40% off en electrónica</h3>
+        <span class="promo-cta">Comprar ahora →</span>
       </div>
-      <div class="bento-item">
-        <img src="https://plus.unsplash.com/premium_photo-1734095822843-e694c5b36a7c?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGhvZ2FyJTIwZGVjb3JhZG98ZW58MHx8MHx8fDA%3D" alt="Hogar">
-        <div class="bento-info"><h3>Hogar & Deco</h3></div>
-      </div>
-      <div class="bento-item">
-        <img src="https://plus.unsplash.com/premium_photo-1674675646725-5b4aca5adb21?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8eW9nYXxlbnwwfHwwfHx8MA%3D%3D" alt="Bienestar">
-        <div class="bento-info"><h3>Bienestar</h3></div>
-      </div>
-      <div class="bento-item offer-box">
-        <span class="material-symbols-outlined">local_offer</span>
-        <h3>Ofertas del Día</h3>
-        <p>Descuentos de hasta 50%</p>
+    </div>
+    <div class="promo-card promo-dark" [routerLink]="['/category', 'moda-mujer']">
+      <div class="promo-text">
+        <span class="promo-tag">MODA</span>
+        <h3>Nueva colección verano 2025</h3>
+        <span class="promo-cta">Explorar →</span>
       </div>
     </div>
   </section>
 
-  <section class="deals-wrapper"> <div class="deals-header">
-    <h2>Ofertas del Día</h2>
-    <div class="timer">Termina en 04:23:12</div>
-  </div>
-
-  <div class="deals-grid">
-    <app-deals-day
-      name="Nordic Minimalist Watch"
-      category="RELOJERÍA"
-      [price]="42500"
-      [oldPrice]="50000"
-      image="assets/reloj.png">
-    </app-deals-day>
-    <app-deals-day
-      name="Nordic Minimalist Watch"
-      category="RELOJERÍA"
-      [price]="42500"
-      [oldPrice]="50000"
-      image="assets/reloj.png">
-    </app-deals-day>
-    <app-deals-day
-      name="Nordic Minimalist Watch"
-      category="RELOJERÍA"
-      [price]="42500"
-      [oldPrice]="50000"
-      image="assets/reloj.png">
-    </app-deals-day>
-    <app-deals-day
-      name="Nordic Minimalist Watch"
-      category="RELOJERÍA"
-      [price]="42500"
-      [oldPrice]="50000"
-      image="assets/reloj.png">
-    </app-deals-day>
+  <!-- ── Productos Destacados ───────────────────────────────────────────────── -->
+  <section class="section-block">
+    <div class="section-head">
+      <h2>Productos Destacados</h2>
+      <a [routerLink]="['/category', 'tecnologia']" class="link-ver-mas">Ver todos →</a>
     </div>
-</section>
+
+    <div class="products-grid">
+      @for (p of featuredProducts(); track p.id) {
+        <div class="product-card">
+          <div class="card-img-wrap" [routerLink]="['/product', p.id]">
+            <img [src]="p.images[0]" [alt]="p.name">
+            <button class="btn-wish" aria-label="Agregar a favoritos">
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-brand">{{ p.brand }}</p>
+            <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
+            <div class="card-stars">★★★★★ <span>(112)</span></div>
+            <div class="card-prices">
+              <span class="price-now">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            </div>
+            <p class="card-shipping">
+              <span class="material-symbols-outlined">local_shipping</span> Despacho gratis
+            </p>
+            <button class="btn-add-card" (click)="addToCart(p)">
+              <span class="material-symbols-outlined">shopping_cart</span> Agregar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
 </div>

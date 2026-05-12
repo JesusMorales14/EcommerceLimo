@@ -7,44 +7,86 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ── Enums ─────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPING
+  READY_FOR_PICKUP
+  DELIVERED
+  CANCELLED
+}
+
+// ── Models ────────────────────────────────────────────────────────────────────
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(USER)
+  phone     String?
+  address   String?
+  createdAt DateTime  @default(now())
+
+  orders    Order[]
+  favorites Favorite[]
+  reviews   Review[]
+}
+
 model Product {
-   id          Int         @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String
   price       Float
   discount    Float?
   stock       Int
+  brand       String      @default("GENERIC")
+  category    String
+  subCategory String?
+  isOffer     Boolean     @default(false)
   images      String[]
-  colors      String[]
-  sizes       String[]
-  categoryId  Int
+  colors      String[]    @default([])
+  sizes       String[]    @default([])
+
   orderItems  OrderItem[]
+  favorites   Favorite[]
+  reviews     Review[]
 }
 
-model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
-}
-
-model Cart {
-  id     Int        @id @default(autoincrement())
-  items  CartItem[]
-}
-
-model CartItem {
-  id        Int    @id @default(autoincrement())
+model Favorite {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId Int
-  quantity  Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  cartId Int
-  cart   Cart   @relation(fields: [cartId], references: [id])
+  @@unique([userId, productId])
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
-  status    String
-  total     Float
-  createdAt DateTime    @default(now())
+  id              Int          @id @default(autoincrement())
+  status          OrderStatus  @default(PENDING)
+  total           Float
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  deliveryAddress String?
+  deliveryName    String?
+  deliveryPhone   String?
+  deliveryNotes   String?
+  deliveryLat     Float?
+  deliveryLng     Float?
+  paymentMethod   String?
+
+  userId    Int
+  user      User         @relation(fields: [userId], references: [id])
 
   items     OrderItem[]
 }
@@ -52,10 +94,46 @@ model Order {
 model OrderItem {
   id        Int     @id @default(autoincrement())
   quantity  Int
+  price     Float
 
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id])
 
   productId Int
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model DealSession {
+  id        Int      @id @default(autoincrement())
+  endsAt    DateTime
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Coupon {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  discount   Float
+  isPercent  Boolean  @default(true)
+  minAmount  Float    @default(0)
+  maxUses    Int      @default(100)
+  usedCount  Int      @default(0)
+  active     Boolean  @default(true)
+  expiresAt  DateTime?
+  createdAt  DateTime @default(now())
 }

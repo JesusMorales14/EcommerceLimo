@@ -1,17 +1,28 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
 export class Cart {
   cartService = inject(CartService);
-  items = this.cartService.getItems();
-  get total() {
-    return this.items().reduce((acc, item) => acc + item.price, 0);
+  authService = inject(AuthService);
+  private router = inject(Router);
+
+  get items() { return this.cartService.getItems()(); }
+
+  checkout() {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], { state: { redirect: '/checkout' } });
+      return;
+    }
+    this.router.navigate(['/checkout']);
   }
 }

@@ -1,0 +1,49 @@
+<div class="favorites-page">
+  <div class="page-header">
+    <h1>
+      <span class="material-symbols-outlined">favorite</span>
+      Mis Favoritos
+      <span class="count">({{ favService.favoriteItems().length }})</span>
+    </h1>
+  </div>
+
+  @if (favService.favoriteItems().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">heart_broken</span>
+      <p>Aún no tienes productos favoritos</p>
+      <a routerLink="/" class="btn-shop">Explorar productos</a>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (product of favService.favoriteItems(); track product.id) {
+        <div class="product-card">
+          <a [routerLink]="['/product', product.id]" class="card-img-link">
+            <img [src]="product.images[0]" [alt]="product.name">
+            @if (product.isOffer) { <span class="badge-offer">Oferta</span> }
+          </a>
+          <div class="card-body">
+            <p class="brand">{{ product.brand }}</p>
+            <a [routerLink]="['/product', product.id]" class="product-name">{{ product.name }}</a>
+            <div class="price-row">
+              @if (product.discount) {
+                <span class="price-discounted">{{ product.price * (1 - product.discount / 100) | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="price-original">{{ product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              } @else {
+                <span class="price-normal">{{ product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              }
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-add" (click)="cartService.addToCart(product)">
+              <span class="material-symbols-outlined">add_shopping_cart</span>
+              Agregar
+            </button>
+            <button class="btn-unfav" (click)="favService.toggle(product)" title="Quitar favorito">
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,110 +1,102 @@
 <div class="cart-page-wrapper">
   <div class="cart-header">
-    <h1>Tu Carrito <span>({{ items().length }} Productos)</span></h1>
+    <h1>Tu Carrito <span>({{ items.length }} {{ items.length === 1 ? 'producto' : 'productos' }})</span></h1>
   </div>
 
-  <div class="cart-content" *ngIf="items().length > 0; else emptyCart">
+  @if (items.length > 0) {
+    <div class="cart-content">
+      <div class="left-column">
+        <div class="items-list">
+          @for (item of items; track item.product.id) {
+            <div class="cart-item-card">
+              <div class="item-img">
+                <img [src]="item.product.images[0]" [alt]="item.product.name">
+              </div>
+              <div class="item-details">
+                <span class="category-tag">{{ item.product.brand }}</span>
+                <h3>{{ item.product.name }}</h3>
+                @if (item.product.discount) {
+                  <div class="price-row">
+                    <span class="price-final">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                    <span class="price-original">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                    <span class="badge-discount">-{{ item.product.discount }}%</span>
+                  </div>
+                } @else {
+                  <span class="price-final">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                }
+                <div class="item-actions">
+                  <button class="action-btn delete" (click)="cartService.removeFromCart(item.product.id)">
+                    <span class="material-symbols-outlined">delete</span> Eliminar
+                  </button>
+                </div>
+              </div>
+              <div class="item-price-qty">
+                <span class="subtotal">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <div class="qty-selector">
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity - 1)">−</button>
+                  <span>{{ item.quantity }}</span>
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity + 1)">+</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
 
-    <div class="left-column">
-      <div class="items-list">
-        <div class="cart-item-card" *ngFor="let item of items()">
-          <div class="item-img">
-            <img [src]="item.images[0]" [alt]="item.name">
+      <div class="right-column">
+        <div class="summary-card">
+          <h3>Resumen del Pedido</h3>
+
+          @for (item of items; track item.product.id) {
+            <div class="summary-product-line">
+              <span class="sp-name">{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
+              <span>{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            </div>
+          }
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          </div>
+          <div class="summary-line">
+            <span>Envío</span>
+            <span class="free">Gratis</span>
           </div>
 
-          <div class="item-details">
-            <span class="category-tag">COLECCIÓN INTERIOR</span>
-            <h3>{{ item.name }}</h3>
-            <p class="specs">Maceta: Cerámica Natural 24cm</p>
+          <div class="total-line">
+            <div class="total-label">
+              <strong>Total</strong>
+              <small>IVA INCLUIDO</small>
+            </div>
+            <span class="total-amount">{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          </div>
 
-            <div class="item-actions">
-              <button class="action-btn delete">
-                <span class="material-symbols-outlined">delete</span> Eliminar
-              </button>
-              <button class="action-btn save">
-                <span class="material-symbols-outlined">favorite</span> Guardar
-              </button>
+          <button class="btn-checkout" (click)="checkout()">
+            <span class="material-symbols-outlined">lock</span>
+            {{ authService.isLoggedIn() ? 'Proceder al pago' : 'Iniciar sesión y pagar' }}
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+
+          <div class="trust-badges">
+            <div class="badge-item">
+              <span class="material-symbols-outlined">verified_user</span>
+              <p><strong>Compra Segura:</strong> Encriptación de grado bancario.</p>
+            </div>
+            <div class="badge-item">
+              <span class="material-symbols-outlined">local_shipping</span>
+              <p><strong>Envío Priority:</strong> 24 a 48 horas hábiles.</p>
             </div>
           </div>
-
-          <div class="item-price-qty">
-            <span class="price">{{ item.price | currency:'USD':'symbol':'1.0-0' }}</span>
-            <div class="qty-selector">
-              <button>-</button>
-              <span>1</span>
-              <button>+</button>
-            </div>
-          </div>
         </div>
       </div>
-
-      <div class="info-grid">
-        <div class="info-card blue-card">
-          <h3>Sustentabilidad en cada envío</h3>
-          <p>Nuestros empaques son 100% compostables y libres de plásticos de un solo uso.</p>
-          <a href="#">Leer más sobre nuestra ética</a>
-        </div>
-
-        <div class="info-card green-card">
-          <span class="material-symbols-outlined eco-icon">leafy_page</span>
-          <h3>Regalo de Bienvenida</h3>
-          <p>Añade una bolsa de sustrato orgánico por solo $5.000</p>
-          <button class="btn-mini-add">Añadir al carrito</button>
-        </div>
-      </div>
-    </div> <div class="right-column">
-      <div class="summary-card">
-        <h3>Resumen del Pedido</h3>
-
-        <div class="summary-line">
-          <span>Subtotal</span>
-          <span>{{ total | currency:'USD':'symbol':'1.0-0' }}</span>
-        </div>
-        <div class="summary-line">
-          <span>Envío</span>
-          <span class="free">Gratis</span>
-        </div>
-        <div class="summary-line discount">
-          <span>Descuentos</span>
-          <span>-$6.400</span>
-        </div>
-
-        <div class="total-line">
-          <div class="total-label">
-            <strong>Total</strong>
-            <small>IVA INCLUIDO</small>
-          </div>
-          <span class="total-amount">{{ total - 6400 | currency:'USD':'symbol':'1.0-0' }}</span>
-        </div>
-
-        <div class="coupon-section">
-          <label>CUPÓN DE DESCUENTO</label>
-          <div class="coupon-input">
-            <input type="text" placeholder="Código">
-            <button>APLICAR</button>
-          </div>
-        </div>
-
-        <button class="btn-checkout">
-          Continuar compra <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-
-        <div class="trust-badges">
-          <div class="badge-item">
-            <span class="material-symbols-outlined">verified_user</span>
-            <p><strong>Compra Segura:</strong> Tus datos están protegidos por encriptación de grado bancario.</p>
-          </div>
-          <div class="badge-item">
-            <span class="material-symbols-outlined">local_shipping</span>
-            <p><strong>Envío Priority:</strong> Recibe tu pedido entre 24 a 48 horas hábiles.</p>
-          </div>
-        </div>
-      </div>
-    </div> </div> <ng-template #emptyCart>
+    </div>
+  } @else {
     <div class="empty-state">
       <span class="material-symbols-outlined">shopping_cart_off</span>
       <p>Tu carrito está vacío</p>
-      <button routerLink="/">Volver a la tienda</button>
+      <a routerLink="/" class="btn-back">Volver a la tienda</a>
     </div>
-  </ng-template>
+  }
 </div>

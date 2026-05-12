@@ -1,0 +1,123 @@
+<div class="admin-coupons-page">
+
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div>
+        <h1>Cupones de descuento</h1>
+        <p>Crea y gestiona cupones para tus clientes</p>
+      </div>
+    </div>
+    <button class="btn-new" (click)="openForm()">
+      <span class="material-symbols-outlined">add</span>
+      Nuevo cupón
+    </button>
+  </div>
+
+  <!-- Create form -->
+  @if (showForm()) {
+    <div class="coupon-form-card">
+      <h3>Crear cupón</h3>
+      @if (error()) {
+        <div class="form-error">{{ error() }}</div>
+      }
+      <div class="form-grid">
+        <div class="field">
+          <label>Código *</label>
+          <input [(ngModel)]="form.code" placeholder="VERANO20" style="text-transform:uppercase">
+        </div>
+        <div class="field">
+          <label>Descuento *</label>
+          <div class="discount-row">
+            <input type="number" [(ngModel)]="form.discount" min="1" max="100" style="width:80px">
+            <label class="toggle-label">
+              <input type="checkbox" [(ngModel)]="form.isPercent">
+              <span>%</span>
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Monto mínimo</label>
+          <input type="number" [(ngModel)]="form.minAmount" min="0" placeholder="0">
+        </div>
+        <div class="field">
+          <label>Usos máximos</label>
+          <input type="number" [(ngModel)]="form.maxUses" min="1" placeholder="100">
+        </div>
+        <div class="field full">
+          <label>Expira (opcional)</label>
+          <input type="datetime-local" [(ngModel)]="form.expiresAt">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" (click)="closeForm()">Cancelar</button>
+        <button class="btn-save" (click)="save()" [disabled]="saving()">
+          @if (saving()) {
+            <span class="material-symbols-outlined spin">progress_activity</span>
+          } @else {
+            <span class="material-symbols-outlined">check</span>
+          }
+          Guardar
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Coupon list -->
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span> Cargando...
+    </div>
+  } @else if (coupons().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">local_offer</span>
+      <p>No hay cupones creados aún.</p>
+    </div>
+  } @else {
+    <div class="coupons-table-wrap">
+      <table class="coupons-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descuento</th>
+            <th>Mín.</th>
+            <th>Usos</th>
+            <th>Expira</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of coupons(); track c.id) {
+            <tr [class.inactive]="!c.active">
+              <td><span class="code-chip">{{ c.code }}</span></td>
+              <td>
+                @if (c.isPercent) { {{ c.discount }}% }
+                @else { S/ {{ c.discount }} }
+              </td>
+              <td>{{ c.minAmount | currency:'PEN':'S/ ':'1.0-0' }}</td>
+              <td>{{ c.usedCount }} / {{ c.maxUses }}</td>
+              <td>{{ c.expiresAt ? (c.expiresAt | date:'dd/MM/yy HH:mm') : '—' }}</td>
+              <td>
+                <span class="status-dot" [class.active]="c.active">
+                  {{ c.active ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="actions">
+                <button class="btn-toggle" (click)="toggle(c)" [title]="c.active ? 'Desactivar' : 'Activar'">
+                  <span class="material-symbols-outlined">{{ c.active ? 'toggle_on' : 'toggle_off' }}</span>
+                </button>
+                <button class="btn-delete" (click)="remove(c)" title="Eliminar">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

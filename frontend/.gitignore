@@ -42,3 +42,16 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+
+# environments sensibles
+src/environments/*.local.ts
+
+# Angular cache
+.angular/
+
+# cache
+.cache/
+
+# Claude
+.claude/

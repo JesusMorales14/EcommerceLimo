@@ -1,0 +1,230 @@
+<div class="admin-section">
+  <div class="section-header">
+    <div class="title-head">
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span> Admin
+      </a>
+      <h1>Productos</h1>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Buscar por nombre o marca..."
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+        />
+        @if (search()) {
+          <button class="clear-btn" (click)="search.set('')">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        }
+      </div>
+      <button class="btn-primary" (click)="openCreate()">
+        <span class="material-symbols-outlined">add</span> Nuevo producto
+      </button>
+    </div>
+  </div>
+
+  @if (showForm()) {
+    <div class="form-overlay" (click)="closeForm()"></div>
+    <div class="product-form-panel">
+      <div class="form-header">
+        <h2>{{ editId() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+        <button class="close-form" (click)="closeForm()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      @if (error()) {
+        <div class="form-error">{{ error() }}</div>
+      }
+
+      <form (ngSubmit)="submit()">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Nombre *</label>
+            <input [(ngModel)]="form.name" name="name" required placeholder="Nombre del producto" />
+          </div>
+          <div class="field full">
+            <label>Descripción</label>
+            <textarea
+              [(ngModel)]="form.description"
+              name="description"
+              rows="3"
+              placeholder="Descripción del producto"
+            ></textarea>
+          </div>
+          <div class="field">
+            <label>Precio (S/) *</label>
+            <input
+              type="number"
+              [(ngModel)]="form.price"
+              name="price"
+              required
+              min="0"
+              placeholder="0"
+            />
+          </div>
+          <div class="field">
+            <label>Descuento (%)</label>
+            <input
+              type="number"
+              [(ngModel)]="form.discount"
+              name="discount"
+              min="0"
+              max="100"
+              placeholder="0"
+            />
+          </div>
+          <div class="field">
+            <label>Stock *</label>
+            <input
+              type="number"
+              [(ngModel)]="form.stock"
+              name="stock"
+              required
+              min="0"
+              placeholder="0"
+            />
+          </div>
+          <div class="field">
+            <label>Marca</label>
+            <input [(ngModel)]="form.brand" name="brand" placeholder="Marca" />
+          </div>
+          <div class="field">
+            <label>Categoría *</label>
+            <input
+              [(ngModel)]="form.category"
+              name="category"
+              required
+              placeholder="ej: tecnologia"
+            />
+          </div>
+          <div class="field">
+            <label>Subcategoría</label>
+            <input
+              [(ngModel)]="form.subCategory"
+              name="subCategory"
+              placeholder="ej: smartphones"
+            />
+          </div>
+          <div class="field full">
+            <label>Imágenes (URLs separadas por coma)</label>
+            <input
+              [ngModel]="asString(form.images)"
+              (ngModelChange)="form.images = $event"
+              name="images"
+              placeholder="https://..., https://..."
+            />
+          </div>
+          <div class="field">
+            <label>Colores (separados por coma)</label>
+            <input
+              [ngModel]="asString(form.colors)"
+              (ngModelChange)="form.colors = $event"
+              name="colors"
+              placeholder="Verde, Blanco"
+            />
+          </div>
+          <div class="field">
+            <label>Tallas (separadas por coma)</label>
+            <input
+              [ngModel]="asString(form.sizes)"
+              (ngModelChange)="form.sizes = $event"
+              name="sizes"
+              placeholder="S, M, L"
+            />
+          </div>
+          <div class="field check">
+            <label>
+              <input type="checkbox" [(ngModel)]="form.isOffer" name="isOffer" />
+              Marcar como oferta
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeForm()">Cancelar</button>
+          <button type="submit" class="btn-save" [disabled]="saving()">
+            {{ saving() ? 'Guardando...' : editId() ? 'Actualizar' : 'Crear producto' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="loading">Cargando productos...</div>
+  } @else {
+    <div class="category-chips">
+      <button
+        class="chip"
+        [class.active]="selectedCategory() === ''"
+        (click)="selectedCategory.set('')"
+      >
+        Todas
+      </button>
+      @for (cat of categories(); track cat) {
+        <button
+          class="chip"
+          [class.active]="selectedCategory() === cat"
+          (click)="selectedCategory.set(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+
+    <!-- Tabla -->
+    <div class="products-table-wrapper">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Oferta</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of filteredProducts(); track product.id) {
+            <tr>
+              <td class="td-id">#{{ product.id }}</td>
+              <td><img [src]="product.images[0]" [alt]="product.name" class="product-thumb" /></td>
+              <td class="td-name">{{ product.name }}</td>
+              <td>
+                <span class="cat-badge">{{ product.category }}</span>
+              </td>
+              <td class="td-price">{{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</td>
+              <td [class.low-stock]="product.stock < 5">{{ product.stock }}</td>
+              <td>
+                @if (product.isOffer) {
+                  <span class="offer-badge">Oferta</span>
+                }
+              </td>
+              <td class="td-actions">
+                <button class="btn-edit" (click)="openEdit(product)">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button class="btn-del" (click)="delete(product.id)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-row">No se encontraron productos.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,410 @@
+<div class="checkout-page">
+
+  <!-- Step bar -->
+  <div class="step-bar">
+    <div class="step-item" [class.active]="step() >= 1" [class.done]="step() > 1">
+      <span class="step-num">@if(step() > 1){✓}@else{1}</span>
+      <span class="step-label">Entrega</span>
+    </div>
+    <div class="step-line" [class.active]="step() > 1"></div>
+    <div class="step-item" [class.active]="step() >= 2" [class.done]="step() > 2">
+      <span class="step-num">@if(step() > 2){✓}@else{2}</span>
+      <span class="step-label">Pago</span>
+    </div>
+    <div class="step-line" [class.active]="step() > 2"></div>
+    <div class="step-item" [class.active]="step() >= 3">
+      <span class="step-num">3</span>
+      <span class="step-label">Confirmar</span>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="checkout-error">
+      <span class="material-symbols-outlined">error</span> {{ error() }}
+    </div>
+  }
+
+  <!-- ───────────── STEP 1: DELIVERY ───────────── -->
+  @if (step() === 1) {
+    <div class="checkout-step">
+      <h2><span class="material-symbols-outlined">local_shipping</span> Dirección de entrega</h2>
+
+      <div class="delivery-layout">
+        <div class="delivery-form">
+
+          <div class="field-row">
+            <div class="field">
+              <label>Nombre completo *</label>
+              <input [(ngModel)]="delivery.name" name="dname" placeholder="Juan Pérez" autocomplete="name">
+            </div>
+            <div class="field">
+              <label>Teléfono *</label>
+              <input [(ngModel)]="delivery.phone" name="dphone" placeholder="+56 9 1234 5678" type="tel" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Buscar dirección en el mapa</label>
+            <div class="search-row">
+              <input [(ngModel)]="searchAddress" name="search" placeholder="Ej: Av. Providencia 1234, Santiago"
+                (keyup.enter)="searchOnMap()">
+              <button type="button" class="btn-map-search" (click)="searchOnMap()">
+                <span class="material-symbols-outlined">search</span> Buscar
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Dirección exacta *</label>
+            <input [(ngModel)]="delivery.address" name="daddr"
+              placeholder="Se completa al hacer clic en el mapa, o escríbela aquí">
+          </div>
+
+          <div class="field">
+            <label>Instrucciones de entrega (opcional)</label>
+            <textarea [(ngModel)]="delivery.notes" name="dnotes" rows="3"
+              placeholder="Ej: Dejar en portería, tocar timbre 2B, piso 3..."></textarea>
+          </div>
+
+          @if (delivery.lat && delivery.lng) {
+            <div class="coords-badge">
+              <span class="material-symbols-outlined">location_on</span>
+              Ubicación confirmada en el mapa
+            </div>
+          }
+
+        </div>
+
+        <div class="map-col">
+          <div id="delivery-map"></div>
+          <p class="map-tip">
+            <span class="material-symbols-outlined">touch_app</span>
+            Haz clic en el mapa para marcar la ubicación exacta de entrega
+          </p>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <a routerLink="/cart" class="btn-secondary">
+          <span class="material-symbols-outlined">arrow_back</span> Volver al carro
+        </a>
+        <button class="btn-primary" (click)="nextStep()">
+          Siguiente: Método de pago
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- ───────────── STEP 2: PAYMENT ───────────── -->
+  @if (step() === 2) {
+    <div class="checkout-step">
+      <h2><span class="material-symbols-outlined">credit_card</span> Método de pago</h2>
+
+      <div class="payment-grid">
+        @for (m of PAYMENT_METHODS; track m.id) {
+          <label class="method-card" [class.selected]="paymentMethod() === m.id">
+            <input type="radio" name="payment" [value]="m.id"
+              (change)="paymentMethod.set(m.id)" style="display:none">
+            <span class="method-icon material-symbols-outlined">{{ m.icon }}</span>
+            <div class="method-text">
+              <strong>{{ m.label }}</strong>
+              <span>{{ m.desc }}</span>
+            </div>
+            @if (paymentMethod() === m.id) {
+              <span class="check material-symbols-outlined">check_circle</span>
+            }
+          </label>
+        }
+      </div>
+
+      <!-- Stripe Card Section -->
+      @if (paymentMethod() === 'card') {
+        <div class="card-section">
+
+          <!-- Preview 3D -->
+          <div class="card-3d" [class.flipped]="cardFlipped()">
+            <div class="card-face front">
+              <div class="card-header-row">
+                <span class="card-chip material-symbols-outlined">sim_card</span>
+                <span class="card-brand-chip">{{ cardBrandDisplay }}</span>
+              </div>
+              <div class="card-number-display">•••• •••• •••• ••••</div>
+              <div class="card-footer-row">
+                <div>
+                  <div class="card-field-label">TITULAR</div>
+                  <div class="card-field-value">{{ cardHolderName || 'NOMBRE APELLIDO' }}</div>
+                </div>
+                <div>
+                  <div class="card-field-label">VENCE</div>
+                  <div class="card-field-value">••/••</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div class="card-stripe"></div>
+              <div class="card-cvv-zone">
+                <span>CVV</span>
+                <div class="card-cvv-box">•••</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stripe Form -->
+          <div class="card-form">
+            <div class="field">
+              <label>Nombre del titular</label>
+              <input type="text" [(ngModel)]="cardHolderName" name="cname"
+                placeholder="COMO APARECE EN LA TARJETA" autocomplete="cc-name" style="text-transform:uppercase">
+            </div>
+            <div class="field">
+              <label>Datos de tarjeta</label>
+              <div id="stripe-card-element" class="stripe-element-wrap"></div>
+              @if (stripeError()) {
+                <span class="stripe-field-error">{{ stripeError() }}</span>
+              }
+              @if (stripeCardComplete()) {
+                <span class="stripe-field-ok">
+                  <span class="material-symbols-outlined">check_circle</span> Tarjeta válida
+                </span>
+              }
+            </div>
+            <div class="accepted-cards">
+              <span class="card-logo visa">VISA</span>
+              <span class="card-logo mc">MC</span>
+              <span class="card-logo amex">AMEX</span>
+              <span class="ssl-badge">
+                <span class="material-symbols-outlined">lock</span> Pago 256-bit SSL
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (paymentMethod() === 'paypal') {
+        <div class="external-method paypal">
+          <div class="ext-logo">PayPal</div>
+          <p>Serás redirigido a PayPal para completar tu pago de forma segura.</p>
+          <div class="ext-icons">
+            <span class="material-symbols-outlined">verified_user</span> Protección al comprador incluida
+          </div>
+        </div>
+      }
+
+      @if (paymentMethod() === 'mercadopago') {
+        <div class="external-method mp">
+          <div class="ext-logo">Mercado Pago</div>
+          <p>Paga en cuotas sin interés con todas tus tarjetas a través de Mercado Pago.</p>
+          <div class="ext-icons">
+            <span class="material-symbols-outlined">payments</span> Hasta 12 cuotas sin interés
+          </div>
+        </div>
+      }
+
+      @if (paymentMethod() === 'transfer') {
+        <div class="transfer-box">
+          <h4>Datos para transferencia bancaria</h4>
+          <div class="transfer-row"><span>Banco</span><strong>Banco de Chile</strong></div>
+          <div class="transfer-row"><span>Tipo de cuenta</span><strong>Cuenta corriente</strong></div>
+          <div class="transfer-row"><span>N° de cuenta</span><strong>12345678-9</strong></div>
+          <div class="transfer-row"><span>RUT</span><strong>76.543.210-K</strong></div>
+          <div class="transfer-row"><span>Razón social</span><strong>GreenHouse SpA</strong></div>
+          <div class="transfer-row"><span>Email</span><strong>pagos&#64;greenhouse.com</strong></div>
+          <p class="transfer-note">
+            <span class="material-symbols-outlined">info</span>
+            Tu pedido se procesará tras confirmar la recepción del pago (máx. 24 hrs hábiles).
+          </p>
+        </div>
+      }
+
+      @if (paymentMethod() === 'cash') {
+        <div class="cash-box">
+          <span class="material-symbols-outlined">payments</span>
+          <div>
+            <h4>Pago en efectivo al recibir</h4>
+            <p>El repartidor cobrará el monto exacto al entregar. Ten listo el efectivo.</p>
+            <p class="cash-amount">
+              Monto a pagar: <strong>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</strong>
+            </p>
+          </div>
+        </div>
+      }
+
+      <div class="step-footer">
+        <button class="btn-secondary" (click)="prevStep()">
+          <span class="material-symbols-outlined">arrow_back</span> Volver
+        </button>
+        <button class="btn-primary" (click)="nextStep()">
+          Revisar pedido
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- ───────────── STEP 3: CONFIRM ───────────── -->
+  @if (step() === 3) {
+    <div class="checkout-step">
+      <h2><span class="material-symbols-outlined">receipt_long</span> Confirmar pedido</h2>
+
+      <div class="confirm-layout">
+        <div class="confirm-left">
+
+          <!-- Products -->
+          <div class="confirm-block">
+            <div class="confirm-block-title">
+              <span class="material-symbols-outlined">shopping_cart</span>
+              Productos ({{ cartService.count() }})
+            </div>
+            @for (item of cartService.getItems()(); track item.product.id) {
+              <div class="confirm-item">
+                <img [src]="item.product.images[0]" [alt]="item.product.name" class="ci-img">
+                <div class="ci-info">
+                  <p class="ci-name">{{ item.product.name }}</p>
+                  <p class="ci-brand">{{ item.product.brand }}</p>
+                </div>
+                <div class="ci-right">
+                  <span class="ci-qty">x{{ item.quantity }}</span>
+                  <span class="ci-price">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Delivery -->
+          <div class="confirm-block">
+            <div class="confirm-block-title">
+              <span class="material-symbols-outlined">local_shipping</span>
+              Dirección de entrega
+              <button class="edit-btn" (click)="goToStep(1)">
+                <span class="material-symbols-outlined">edit</span> Editar
+              </button>
+            </div>
+            <div class="confirm-detail">
+              <span class="material-symbols-outlined">person</span>
+              <span>{{ delivery.name }} — {{ delivery.phone }}</span>
+            </div>
+            <div class="confirm-detail">
+              <span class="material-symbols-outlined">location_on</span>
+              <span>{{ delivery.address }}</span>
+            </div>
+            @if (delivery.notes) {
+              <div class="confirm-detail">
+                <span class="material-symbols-outlined">comment</span>
+                <span>{{ delivery.notes }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Payment -->
+          <div class="confirm-block">
+            <div class="confirm-block-title">
+              <span class="material-symbols-outlined">{{ getMethodIcon(paymentMethod()) }}</span>
+              Método de pago
+              <button class="edit-btn" (click)="goToStep(2)">
+                <span class="material-symbols-outlined">edit</span> Editar
+              </button>
+            </div>
+            <div class="confirm-detail">
+              <span class="material-symbols-outlined">{{ getMethodIcon(paymentMethod()) }}</span>
+              <strong>{{ getMethodLabel(paymentMethod()) }}</strong>
+              @if (paymentMethod() === 'card' && cardHolderName) {
+                <span class="card-masked">{{ cardHolderName }}</span>
+              }
+            </div>
+          </div>
+
+        </div>
+
+        <div class="confirm-right">
+          <div class="order-total-card">
+            <h3>Resumen</h3>
+
+            @for (item of cartService.getItems()(); track item.product.id) {
+              <div class="total-line-item">
+                <span>{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
+                <span>{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              </div>
+            }
+
+            <div class="total-divider"></div>
+
+            <!-- Coupon input -->
+            @if (!couponResult()) {
+              <div class="coupon-row">
+                <input
+                  class="coupon-input"
+                  [(ngModel)]="couponCode"
+                  placeholder="Código de cupón"
+                  (keyup.enter)="applyCoupon()"
+                  name="coupon">
+                <button class="btn-coupon" (click)="applyCoupon()" [disabled]="applyingCoupon()">
+                  @if (applyingCoupon()) {
+                    <span class="material-symbols-outlined spin">progress_activity</span>
+                  } @else {
+                    Aplicar
+                  }
+                </button>
+              </div>
+              @if (couponError()) {
+                <p class="coupon-error">{{ couponError() }}</p>
+              }
+            } @else {
+              <div class="coupon-applied">
+                <span class="material-symbols-outlined">local_offer</span>
+                <span>Cupón <strong>{{ couponResult()!.code }}</strong> aplicado</span>
+                <button class="btn-remove-coupon" (click)="removeCoupon()" title="Quitar cupón">✕</button>
+              </div>
+            }
+
+            <div class="total-row">
+              <span>Subtotal</span>
+              <span>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            </div>
+            @if (couponResult()) {
+              <div class="total-row discount-row">
+                <span>Descuento</span>
+                <span>−{{ couponResult()!.discountAmount | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              </div>
+            }
+            <div class="total-row">
+              <span>Envío</span>
+              <span class="free-tag">Gratis</span>
+            </div>
+
+            <div class="grand-total">
+              <strong>Total a pagar</strong>
+              <strong class="grand-amount">{{ finalTotal() | currency:'PEN':'S/ ':'1.0-0' }}</strong>
+            </div>
+
+            @if (error()) {
+              <div class="confirm-error">{{ error() }}</div>
+            }
+
+            <button class="btn-confirm" [disabled]="placing()" (click)="confirmOrder()">
+              @if (placing()) {
+                <span class="material-symbols-outlined spin">progress_activity</span>
+                Procesando pago...
+              } @else {
+                <span class="material-symbols-outlined">lock</span>
+                Confirmar y pagar
+              }
+            </button>
+
+            <div class="security-row">
+              <span><span class="material-symbols-outlined">verified_user</span> Pago 100% seguro</span>
+              <span><span class="material-symbols-outlined">replay</span> Devolución garantizada</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <button class="btn-secondary" (click)="prevStep()">
+          <span class="material-symbols-outlined">arrow_back</span> Volver
+        </button>
+      </div>
+    </div>
+  }
+
+</div>

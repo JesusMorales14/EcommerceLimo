@@ -1,23 +1,131 @@
 <header class="main-header">
-  <div class="header-container">
-    <div class="logo">The Editorial Greenhouse</div>
+  <!-- Row 1: Logo · Search · User actions -->
+  <div class="header-top">
+    <div class="header-container">
+      <a class="logo" routerLink="/">EcommerceLimo</a>
 
-    <div class="search-bar">
-      <span class="material-symbols-outlined">search</span>
-      <input type="text" placeholder="Buscar productos...">
+      <div class="search-bar">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="search()"
+          placeholder="Buscar en todo el sitio..."
+          aria-label="Buscar productos"
+        />
+        <button class="search-btn" (click)="search()">Buscar</button>
+      </div>
+
+      <nav class="user-menu" aria-label="Acciones de usuario">
+        <!-- Mi Cuenta -->
+        <div class="account-wrap">
+          @if (showAccountMenu()) {
+            <div class="account-backdrop" (click)="closeAccountMenu()"></div>
+          }
+          <button class="icon-btn" (click)="toggleAccountMenu()" title="Mi Cuenta">
+            <span class="material-symbols-outlined">person</span>
+            <span class="icon-label">
+              @if (authService.isLoggedIn()) {
+                {{ (authService.user()?.name || '').split(' ')[0] }}
+              } @else {
+                Mi Cuenta
+              }
+            </span>
+          </button>
+
+          @if (showAccountMenu()) {
+            <div class="account-dropdown">
+              @if (authService.isLoggedIn()) {
+                <div class="dropdown-user">
+                  <strong>{{ authService.user()?.name }}</strong>
+                  <span>{{ authService.user()?.email }}</span>
+                </div>
+                <a routerLink="/account" class="dropdown-item" (click)="closeAccountMenu()">
+                  <span class="material-symbols-outlined">person</span> Mi Perfil y Pedidos
+                </a>
+                @if (authService.isAdmin()) {
+                  <a
+                    routerLink="/admin"
+                    class="dropdown-item admin-item"
+                    (click)="closeAccountMenu()"
+                  >
+                    <span class="material-symbols-outlined">admin_panel_settings</span> Panel Admin
+                  </a>
+                }
+                <button class="dropdown-item logout-item" (click)="logout()">
+                  <span class="material-symbols-outlined">logout</span> Cerrar sesión
+                </button>
+              } @else {
+                <a routerLink="/login" class="dropdown-item" (click)="closeAccountMenu()">
+                  <span class="material-symbols-outlined">login</span> Iniciar sesión
+                </a>
+                <a routerLink="/register" class="dropdown-item" (click)="closeAccountMenu()">
+                  <span class="material-symbols-outlined">person_add</span> Crear cuenta
+                </a>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Favoritos -->
+        <a routerLink="/favorites" class="icon-btn" title="Favoritos">
+          <span class="icon-wrap">
+            <span class="material-symbols-outlined">favorite</span>
+            @if (favService.count() > 0) {
+              <span class="badge badge-fav">{{ favService.count() }}</span>
+            }
+          </span>
+          <span class="icon-label">Favoritos</span>
+        </a>
+
+        <!-- Carro -->
+        <button class="icon-btn cart-btn" (click)="openCart()" title="Mi Carro">
+          <span class="icon-wrap">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            @if (cartService.count() > 0) {
+              <span class="badge">{{ cartService.count() }}</span>
+            }
+          </span>
+          <span class="icon-label">Mi Carro</span>
+        </button>
+      </nav>
     </div>
-
-    <nav class="user-menu">
-      <button class="icon-btn">
-        <span class="material-symbols-outlined">person</span>
-      </button>
-      <button class="icon-btn">
-        <span class="material-symbols-outlined">favorite</span>
-      </button>
-      <button class="icon-btn cart-container" routerLink="/cart">
-        <span class="material-symbols-outlined">shopping_cart</span>
-        <span class="badge" *ngIf="cartCount() > 0">{{ cartCount() }}</span>
-      </button>
-    </nav>
   </div>
+
+  <!-- Row 2: Category navigation -->
+  <nav class="category-nav" aria-label="Categorías">
+    <div class="header-container">
+      <a
+        [routerLink]="['/category', 'electrodomesticos']"
+        routerLinkActive="active"
+        class="cat-link"
+        >Electrodomésticos</a
+      >
+      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link"
+        >Tecnología</a
+      >
+      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link"
+        >Moda Mujer</a
+      >
+      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link"
+        >Moda Hombre</a
+      >
+      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link"
+        >Hogar & Deco</a
+      >
+      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link"
+        >Deporte</a
+      >
+      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link"
+        >Belleza</a
+      >
+      <a
+        [routerLink]="['/category', 'ofertas']"
+        routerLinkActive="active"
+        class="cat-link offers-link"
+      >
+        <span class="material-symbols-outlined">local_offer</span> Ofertas
+      </a>
+    </div>
+  </nav>
 </header>

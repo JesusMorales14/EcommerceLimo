@@ -1,117 +1,149 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Product, PRODUCTOS_MOCK } from '../../core/mocks/products.mock';
+import { FormsModule } from '@angular/forms';
+import { Product } from '../../core/models/product.model';
+import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
+import { FavoritesService } from '../../core/services/favorites.service';
+import { CategoryService } from '../../core/services/category.service';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
 export class ProductListComponent implements OnInit {
-  private cartService = inject(CartService);
-  titulo: string = '';
-  descripcion: string = '';
-  breadcrumb: string = '';
+  private productService  = inject(ProductService);
+  private cartService     = inject(CartService);
+  private categoryService = inject(CategoryService);
+  favService              = inject(FavoritesService);
 
-  productosMostrados: Product[] = [];
+  titulo      = '';
+  descripcion = '';
+  breadcrumb  = '';
+  loading     = signal(true);
+
+  baseProducts:    Product[] = [];
+  availableBrands: string[]  = [];
+
+  page  = signal(1);
+  pages = signal(1);
+  total = signal(0);
+
+  priceMin       = signal<number | null>(null);
+  priceMax       = signal<number | null>(null);
+  selectedBrands = signal<string[]>([]);
+  sortBy         = signal('relevance');
+
+  private currentId    = '';
+  private currentSubId = '';
+
+  filteredProducts = computed(() => {
+    let list = [...this.baseProducts];
+    const min    = this.priceMin();
+    const max    = this.priceMax();
+    const brands = this.selectedBrands();
+
+    if (min !== null) list = list.filter(p => p.price >= min);
+    if (max !== null) list = list.filter(p => p.price <= max);
+    if (brands.length) list = list.filter(p => brands.includes(p.brand));
+
+    switch (this.sortBy()) {
+      case 'price-asc':  return [...list].sort((a, b) => a.price - b.price);
+      case 'price-desc': return [...list].sort((a, b) => b.price - a.price);
+      default:           return list;
+    }
+  });
 
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.route.params.subscribe(params => {
-      const categoriaId = params['id'];
-      const subId = params['subid'];
-      this.actualizarContenido(categoriaId, subId);
+      this.currentId    = params['id'];
+      this.currentSubId = params['subid'];
+      this.page.set(1);
+      this.load(this.currentId, this.currentSubId);
     });
   }
-  agregarAlCarrito(producto: Product) {
-  console.log('Mi servicio es:', this.cartService); // Mira qué sale en la consola
-  this.cartService.addToCart(producto);
-}
 
-actualizarContenido(id: string, subId?: string) {
-  const diccionario: any = {
-    'fashion': {
-      t: 'Style & Trends',
-      d: 'Discover the latest in clothing and accessories designed for the modern wardrobe.',
-      b: 'HOME / FASHION',
-      subcategorias: {
-        'hombre': { t: 'Men\'s Collection', d: 'Premium tailoring and casual essentials for the modern man.' },
-        'mujer': { t: 'Women\'s Edit', d: 'Contemporary silhouettes and timeless pieces for every occasion.' },
-        'calzado': { t: 'Premium Footwear', d: 'From Italian leather boots to high-performance sneakers.' },
-        'accesorios': { t: 'Curated Accessories', d: 'The finishing touches: belts, watches, and premium leather goods.' }
-      }
-    },
-    'electronics': {
-      t: 'Premium Devices',
-      d: 'High-performance technology designed for the modern greenhouse of life.',
-      b: 'HOME / ELECTRONICS',
-      subcategorias: {
-        'consolas': { t: 'Gaming & Consoles', d: 'Immersive entertainment systems and next-gen gaming gear.' },
-        'laptops': { t: 'Laptops & Computing', d: 'Power and portability for professionals and creators.' },
-        'audio': { t: 'Pro Audio & Sound', d: 'Studio-quality headphones and high-fidelity sound systems.' },
-        'smartphones': { t: 'Smartphones', d: 'The latest flagship devices with cutting-edge camera technology.' }
-      }
-    },
-    'home-decor': {
-      t: 'Home Sanctuary',
-      d: 'Transform your living space with our exclusive selection of furniture and decor.',
-      b: 'HOME / HOME & DECOR',
-      subcategorias: {
-        'muebles': { t: 'Designer Furniture', d: 'Minimalist and functional pieces for every room in your home.' },
-        'iluminacion': { t: 'Architectural Lighting', d: 'Illuminate your space with our curated collection of lamps and fixtures.' },
-        'decoracion': { t: 'Art & Decoration', d: 'Small details that make a big difference in your sanctuary.' }
-      }
-    },
-    'beauty': {
-      t: 'Beauty & Wellness',
-      d: 'Elevate your self-care routine with our premium selection of skincare and cosmetics.',
-      b: 'HOME / BEAUTY',
-      subcategorias: {
-        'maquillaje': { t: 'Professional Makeup', d: 'High-pigment cosmetics for a flawless and lasting finish.' },
-        'skincare': { t: 'Advanced Skincare', d: 'Dermatologist-tested formulas for healthy, radiant skin.' },
-        'perfumes': { t: 'Signature Fragrances', d: 'Discover your new scent from the world’s most prestigious houses.' }
-      }
-    },
-    'sports': {
-      t: 'Active Performance',
-      d: 'High-quality gear and apparel designed to push your physical limits.',
-      b: 'HOME / SPORTS',
-      subcategorias: {
-        'ropa-deportiva': { t: 'Performance Apparel', d: 'Technical fabrics designed for comfort and durability during training.' },
-        'maquinas-gym': { t: 'Home Gym Equipment', d: 'Professional-grade machinery to build your dream gym at home.' },
-        'suplementos': { t: 'Nutrition & Health', d: 'Pure supplements to fuel your body and optimize recovery.' },
-        'outdoor': { t: 'Outdoor & Adventure', d: 'Rugged gear for your next camping or hiking expedition.' }
-      }
-    },
-    'offers': {
-      t: 'Special Offers',
-      d: 'Exclusive discounts on our most wanted products. Limited time only.',
-      b: 'HOME / OFFERS'
-    }
-  };
-  const categoriaBase = diccionario[id] || diccionario['electronics'];
+  addToCart(p: Product) { this.cartService.addToCart(p); }
+  toggleFav(p: Product, e: Event) { e.stopPropagation(); this.favService.toggle(p); }
 
-  if (subId && categoriaBase.subcategorias && categoriaBase.subcategorias[subId]) {
-    const subFormateada = subId.replace('-', ' ').toUpperCase();
-    this.titulo = categoriaBase.subcategorias[subId]?.t || categoriaBase.t;
-    this.descripcion = categoriaBase.subcategorias[subId]?.d || categoriaBase.d;
-    this.breadcrumb = `${categoriaBase.b} / ${subFormateada}`;
-
-    this.productosMostrados = PRODUCTOS_MOCK.filter(p =>
-      p.category === id && p.subCategory === subId
-    );
-
-  } else {
-    this.titulo = categoriaBase.t;
-    this.descripcion = categoriaBase.d;
-    this.breadcrumb = categoriaBase.b;
-    this.productosMostrados = PRODUCTOS_MOCK.filter(p => p.category === id);
+  discountedPrice(p: Product) {
+    return p.discount ? p.price * (1 - p.discount / 100) : p.price;
   }
-  console.log(`Mostrando ${this.productosMostrados.length} productos de ${id} ${subId || ''}`);
-}
+
+  toggleBrand(brand: string) {
+    this.selectedBrands.update(list =>
+      list.includes(brand) ? list.filter(b => b !== brand) : [...list, brand]
+    );
+  }
+
+  clearFilters() {
+    this.priceMin.set(null);
+    this.priceMax.set(null);
+    this.selectedBrands.set([]);
+    this.sortBy.set('relevance');
+  }
+
+  hasFilters() {
+    return this.priceMin() !== null || this.priceMax() !== null || this.selectedBrands().length > 0;
+  }
+
+  goToPage(p: number) {
+    this.page.set(p);
+    this.load(this.currentId, this.currentSubId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  private load(id: string, subId?: string) {
+    this.loading.set(true);
+    const cat = this.categoryService.findById(id);
+
+    if (cat) {
+      if (subId) {
+        const sub = cat.subCategories.find(s => s.id === subId);
+        this.titulo     = sub?.label ?? cat.label;
+        this.breadcrumb = sub ? `Inicio / ${cat.label} / ${sub.label}` : `Inicio / ${cat.label}`;
+      } else {
+        this.titulo     = cat.label;
+        this.breadcrumb = `Inicio / ${cat.label}`;
+      }
+    } else {
+      this.titulo     = id;
+      this.breadcrumb = `Inicio / ${id}`;
+    }
+
+    const isOffers = id === 'ofertas';
+    const category = isOffers ? undefined : id;
+
+    if (isOffers) {
+      this.productService.getOffers().subscribe({
+        next: (res) => {
+          this.baseProducts    = res.items.filter(p => p.isOffer);
+          this.availableBrands = [...new Set(this.baseProducts.map(p => p.brand))];
+          this.total.set(res.total);
+          this.pages.set(1);
+          this.clearFilters();
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
+      });
+    } else {
+      this.productService.getAll(category, subId, this.page()).subscribe({
+        next: (res) => {
+          this.baseProducts    = res.items;
+          this.availableBrands = [...new Set(this.baseProducts.map(p => p.brand))];
+          this.total.set(res.total);
+          this.pages.set(res.pages);
+          this.clearFilters();
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
+      });
+    }
+  }
 }

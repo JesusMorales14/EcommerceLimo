@@ -1,41 +1,29 @@
+*, *::before, *::after { box-sizing: border-box; }
+
 html, body {
-  background-color: #ECF3E8 !important;
   margin: 0;
   padding: 0;
+  background: #f4f7f4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #171d17;
+  -webkit-font-smoothing: antialiased;
 }
-*:focus {
-  outline: none !important;
-}
+
+*:focus { outline: none; }
+*:focus-visible { outline: 2px solid #006b2d; outline-offset: 2px; }
+
+a { color: inherit; }
+
+img { display: block; max-width: 100%; }
+
+button { font-family: inherit; }
+
+// ── App shell ─────────────────────────────────────────────────────────────────
 .app-layout {
-  display: flex;
-  width: 100%;
-  margin-top: 20px;
-
-}
-
-.main-content-wrapper {
-  flex: 1;
-  display: flex;
-  margin-left: 210px;
-  min-height: 100vh;
-  padding-top: 40px;
-  padding-left: 40px;
-  padding-right: 40px;
-  flex-grow: 1;
-  width: auto;
-}
-
-app-sidebar {
-  padding-right: 20px;
   display: block;
-    width: 0px;
-  flex-shrink: 0;
+  width: 100%;
 }
 
 app-footer {
   display: block;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-  clear: both;
 }

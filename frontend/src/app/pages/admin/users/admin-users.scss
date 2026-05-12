@@ -1,0 +1,130 @@
+.admin-users-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+
+  h1 { font-size: 26px; font-weight: 800; color: #1e293b; margin: 8px 0 4px; }
+  p  { font-size: 14px; color: #64748b; margin: 0; }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-decoration: none;
+  margin-bottom: 8px;
+  &:hover { color: #006b2d; }
+  .material-symbols-outlined { font-size: 18px; }
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #64748b;
+  font-size: 14px;
+  padding: 60px 0;
+  .spin { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 0;
+  .material-symbols-outlined { font-size: 64px; color: #e2e8f0; display: block; margin-bottom: 12px; }
+  p { color: #94a3b8; font-size: 15px; }
+}
+
+.table-wrap {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead tr {
+  background: #f8fafc;
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #f1f5f9;
+    white-space: nowrap;
+  }
+}
+
+tbody tr {
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.15s;
+  &:last-child { border-bottom: none; }
+  &:hover { background: #f8fafc; }
+
+  td { padding: 14px 16px; color: #374151; vertical-align: middle; }
+}
+
+.col-id    { color: #94a3b8; font-size: 13px; width: 48px; }
+.col-email { color: #64748b; }
+.col-phone { color: #64748b; }
+.col-date  { color: #94a3b8; font-size: 13px; white-space: nowrap; }
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: #006b2d;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #64748b;
+
+  &.admin {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+}
+
+.total-count {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: right;
+}
