@@ -25,22 +25,30 @@ export class Inicio implements OnInit, OnDestroy {
   dealActive       = signal(false);
   countdown        = signal('--:--:--');
 
-  private timerId: ReturnType<typeof setInterval> | null = null;
+  private timerId:  ReturnType<typeof setInterval> | null = null;
+  private pollerId: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit() {
     this.productService.getAll('tecnologia', undefined, 1, 8)
       .subscribe(res => this.featuredProducts.set(res.items));
 
+    this.checkDeal();
+    this.pollerId = setInterval(() => this.checkDeal(), 30_000);
+  }
+
+  ngOnDestroy() {
+    this.clearTimer();
+    this.clearPoller();
+  }
+
+  private checkDeal() {
+    if (this.dealActive()) return;
     this.dealSessionService.getActive().subscribe(session => {
       if (!session) return;
       this.dealActive.set(true);
       this.productService.getOffers().subscribe(res => this.offerProducts.set(res.items.slice(0, 4)));
       this.startCountdown(new Date(session.endsAt));
     });
-  }
-
-  ngOnDestroy() {
-    this.clearTimer();
   }
 
   addToCart(product: Product) {
@@ -54,6 +62,7 @@ export class Inicio implements OnInit, OnDestroy {
         this.clearTimer();
         this.dealActive.set(false);
         this.countdown.set('00:00:00');
+        this.pollerId = setInterval(() => this.checkDeal(), 30_000);
         return;
       }
       const h = Math.floor(remaining / 3_600_000);
@@ -63,6 +72,7 @@ export class Inicio implements OnInit, OnDestroy {
         `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
       );
     };
+    this.clearPoller();
     tick();
     this.timerId = setInterval(tick, 1000);
   }
@@ -71,6 +81,13 @@ export class Inicio implements OnInit, OnDestroy {
     if (this.timerId !== null) {
       clearInterval(this.timerId);
       this.timerId = null;
+    }
+  }
+
+  private clearPoller() {
+    if (this.pollerId !== null) {
+      clearInterval(this.pollerId);
+      this.pollerId = null;
     }
   }
 }
