@@ -16,10 +16,10 @@
                 <span class="category-tag">{{ item.product.brand }}</span>
                 <h3>{{ item.product.name }}</h3>
                 @if (item.selectedColor) {
-                  <span class="color-badge">
+                  <div class="color-badge">
+                    <span class="color-label">Color:</span>
                     <span class="color-dot" [style.background]="item.selectedColor"></span>
-                    {{ item.selectedColor }}
-                  </span>
+                  </div>
                 }
                 @if (item.product.discount) {
                   <div class="price-row">
