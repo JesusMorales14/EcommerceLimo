@@ -8,10 +8,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
 
   app.enableCors({
-    origin: [
-      'http://localhost:4200',
-      'https://tranquil-gumdrop-ebfdda.netlify.app',
-    ],
+    origin: (origin, callback) => {
+      const allowed = !origin
+        || origin === 'http://localhost:4200'
+        || /\.netlify\.app$/.test(origin);
+      callback(null, allowed ? origin : false);
+    },
     credentials: true,
   });
 
