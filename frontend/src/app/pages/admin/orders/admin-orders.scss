@@ -124,3 +124,30 @@
 
   .updating-text { font-size: 12px; color: #94a3b8; }
 }
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .admin-section { padding: 16px 12px; }
+  .section-header h1 { font-size: 20px; }
+
+  .order-card { border-radius: 12px; }
+
+  .order-card-header { padding: 14px 14px; }
+  .order-meta .order-id { font-size: 14px; }
+
+  .order-items { padding: 10px 14px; }
+  .order-item-row { font-size: 12px; }
+
+  .order-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .status-selector {
+    width: 100%;
+    flex-wrap: wrap;
+    select { flex: 1; }
+  }
+}

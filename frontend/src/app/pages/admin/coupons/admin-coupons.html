@@ -92,20 +92,20 @@
         <tbody>
           @for (c of coupons(); track c.id) {
             <tr [class.inactive]="!c.active">
-              <td><span class="code-chip">{{ c.code }}</span></td>
-              <td>
+              <td data-label="Código"><span class="code-chip">{{ c.code }}</span></td>
+              <td data-label="Descuento">
                 @if (c.isPercent) { {{ c.discount }}% }
                 @else { S/ {{ c.discount }} }
               </td>
-              <td>{{ c.minAmount | currency:'PEN':'S/ ':'1.0-0' }}</td>
-              <td>{{ c.usedCount }} / {{ c.maxUses }}</td>
-              <td>{{ c.expiresAt ? (c.expiresAt | date:'dd/MM/yy HH:mm') : '—' }}</td>
-              <td>
+              <td data-label="Mínimo">{{ c.minAmount | currency:'PEN':'S/ ':'1.0-0' }}</td>
+              <td data-label="Usos">{{ c.usedCount }} / {{ c.maxUses }}</td>
+              <td data-label="Expira">{{ c.expiresAt ? (c.expiresAt | date:'dd/MM/yy HH:mm') : '—' }}</td>
+              <td data-label="Estado">
                 <span class="status-dot" [class.active]="c.active">
                   {{ c.active ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-              <td class="actions">
+              <td class="actions" data-label="Acciones">
                 <button class="btn-toggle" (click)="toggle(c)" [title]="c.active ? 'Desactivar' : 'Activar'">
                   <span class="material-symbols-outlined">{{ c.active ? 'toggle_on' : 'toggle_off' }}</span>
                 </button>

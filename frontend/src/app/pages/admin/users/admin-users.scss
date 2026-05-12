@@ -128,3 +128,61 @@ tbody tr {
   color: #94a3b8;
   text-align: right;
 }
+
+// ── Responsive: tabla → tarjetas ──────────────────────────────────────────────
+@media (max-width: 768px) {
+  .admin-users-page { padding: 16px 12px; }
+  .page-header { margin-bottom: 20px; h1 { font-size: 20px; } }
+
+  .table-wrap { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
+
+  table { display: block; }
+  thead { display: none; }
+  tbody { display: block; }
+
+  tbody tr {
+    display: block;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+    &:hover { background: #fff; }
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+
+    &:last-child { border-bottom: none; }
+    &:nth-child(odd)  { background: #f8fafc; }
+    &:nth-child(even) { background: #fff; }
+
+    &::before {
+      content: attr(data-label);
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+  }
+
+  .col-id { display: none; }
+
+  .col-name {
+    background: #fff !important;
+    border-bottom: 2px solid #f1f5f9 !important;
+    &::before { display: none; }
+    .user-cell { font-size: 14px; font-weight: 700; }
+  }
+
+  .col-email { word-break: break-all; }
+}

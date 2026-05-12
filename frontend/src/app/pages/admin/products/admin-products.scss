@@ -434,32 +434,73 @@
   }
 }
 
+.no-offer { color: #cbd5e1; font-size: 13px; }
+
 // ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 768px) {
   .admin-section { padding: 16px 12px; }
-
   .section-header h1 { font-size: 20px; }
-
   .header-actions { flex-direction: column; align-items: stretch; gap: 10px; }
   .search-wrap { max-width: none; }
   .btn-primary { width: 100%; justify-content: center; }
-
-  .product-form-panel {
-    width: 100%;
-    max-width: 100%;
-    padding: 20px 16px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-
-    .field.full { grid-column: 1; }
-  }
-
+  .product-form-panel { width: 100%; max-width: 100%; padding: 20px 16px; }
+  .form-grid { grid-template-columns: 1fr; .field.full { grid-column: 1; } }
   .category-chips { gap: 6px; }
 
+  // ── Tabla → Tarjetas ──────────────────────────────────────────────────────
+  .products-table-wrapper { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
+
   .products-table {
-    th, td { padding: 10px 10px; font-size: 12px; }
-    .td-name { max-width: 130px; }
+    display: block;
+
+    thead { display: none; }
+
+    tbody { display: block; }
+
+    tbody tr {
+      display: block;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 1px solid #f1f5f9;
+
+      &:hover td { background: inherit; }
+    }
+
+    tbody td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+      color: #1e293b;
+
+      &:last-child { border-bottom: none; }
+      &:nth-child(odd)  { background: #f8fafc; }
+      &:nth-child(even) { background: #fff; }
+
+      &::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+        margin-right: 12px;
+      }
+    }
+
+    .td-img { display: none; }
+    .td-id  { display: none; }
+    .td-name { font-weight: 700; font-size: 14px; color: #1e293b; background: #fff !important; border-bottom: 2px solid #f1f5f9 !important; }
+    .td-name::before { display: none; }
+    .td-name { justify-content: flex-start; }
+    .td-price { color: #006b2d; font-weight: 700; }
+    .td-actions { justify-content: flex-end; gap: 8px; }
+    .td-actions::before { margin-right: auto; }
   }
 }
