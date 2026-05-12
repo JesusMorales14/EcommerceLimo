@@ -1,0 +1,39 @@
+<nav class="bottom-nav">
+
+  <a routerLink="/" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact:true}" class="nav-tab">
+    <span class="material-symbols-outlined">home</span>
+    <span class="nav-label">Inicio</span>
+  </a>
+
+  <a routerLink="/search" routerLinkActive="active" class="nav-tab">
+    <span class="material-symbols-outlined">search</span>
+    <span class="nav-label">Buscar</span>
+  </a>
+
+  <button class="nav-tab nav-cart-tab" (click)="openCart()">
+    <span class="nav-icon-wrap">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      @if (cartService.count() > 0) {
+        <span class="nav-badge">{{ cartService.count() }}</span>
+      }
+    </span>
+    <span class="nav-label">Carrito</span>
+  </button>
+
+  <a routerLink="/favorites" routerLinkActive="active" class="nav-tab">
+    <span class="nav-icon-wrap">
+      <span class="material-symbols-outlined">favorite</span>
+      @if (favService.count() > 0) {
+        <span class="nav-badge nav-badge-fav">{{ favService.count() }}</span>
+      }
+    </span>
+    <span class="nav-label">Favoritos</span>
+  </a>
+
+  <a routerLink="/account" routerLinkActive="active" class="nav-tab">
+    <span class="material-symbols-outlined">person</span>
+    <span class="nav-label">Cuenta</span>
+  </a>
+
+</nav>

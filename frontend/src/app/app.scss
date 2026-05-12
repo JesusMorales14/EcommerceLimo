@@ -1,10 +1,11 @@
 // ── Layout ────────────────────────────────────────────────────────────────────
 .main-content-wrapper {
   min-height: 100vh;
-  padding-top: 105px; // header row-1 (64px) + category nav (41px)
+  padding-top: 105px;
 
   @media (max-width: 768px) {
-    padding-top: 64px; // only top bar on mobile
+    padding-top: 56px;
+    padding-bottom: 72px; // space for bottom nav
   }
 }
 

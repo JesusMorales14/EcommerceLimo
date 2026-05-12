@@ -710,23 +710,25 @@ $radius:     12px;
   .gallery-main { height: 360px; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .pdp { padding: 0 12px 40px; }
+  .pdp-main { grid-template-columns: 1fr; gap: 16px; }
   .gallery-main { height: 280px; }
-  .info-col { padding: 18px; }
+  .info-col { padding: 16px; gap: 14px; }
   .info-title { font-size: 18px; }
-  .price-now { font-size: 24px; }
+  .price-now { font-size: 26px; }
+  .greencard-box { font-size: 12px; }
 
-  .qty-actions {
-    grid-template-columns: auto 1fr auto;
-    gap: 8px;
-  }
+  .qty-actions { grid-template-columns: auto 1fr auto; gap: 8px; }
 
   .trust-strip { gap: 4px; }
   .trust-item { font-size: 10px; .material-symbols-outlined { font-size: 18px; } }
 
-  .tab-btn { padding: 12px 14px; font-size: 12px; }
-  .tab-body { padding: 18px; }
+  .tab-btn { padding: 11px 14px; font-size: 12px; }
+  .tab-body { padding: 16px; }
 
   .reviews-summary { flex-direction: column; gap: 20px; }
+  .rating-num { font-size: 36px; }
+
+  .specs-table td { padding: 10px 12px; font-size: 13px; }
 }

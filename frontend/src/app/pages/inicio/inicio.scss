@@ -381,19 +381,36 @@ $gap:        56px;
   .products-row, .products-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 640px) {
-  .hero { padding: 40px 20px; min-height: 300px; }
-  .hero h1 { font-size: 28px; }
-  .hero p { font-size: 14px; }
-  .products-row, .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .promo-banners { grid-template-columns: 1fr; padding: 0 16px 28px; }
-  .promo-card { padding: 28px 24px; }
-  .section-block { padding: 24px 16px; }
-  .category-strip-section { padding: 14px 16px; }
-  .cat-chip { padding: 10px 14px; }
-  .cat-chip-icon { font-size: 22px; }
-}
+@media (max-width: 768px) {
+  .hero { min-height: 260px; padding: 36px 16px; }
+  .hero h1 { font-size: clamp(22px, 6vw, 32px); }
+  .hero p { font-size: 13px; margin-bottom: 20px; }
+  .btn-fill, .btn-outline { padding: 11px 20px; font-size: 13px; }
 
-@media (max-width: 400px) {
-  .products-row, .products-grid { grid-template-columns: 1fr; }
+  .category-strip-section { padding: 12px 12px; }
+  .cat-chip { padding: 8px 12px; gap: 4px; }
+  .cat-chip-icon { font-size: 20px; }
+  .cat-chip-label { font-size: 11px; }
+
+  .section-block { padding: 20px 12px; }
+  .section-head h2 { font-size: 18px; }
+
+  .products-row, .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .card-img-wrap { height: 160px; }
+  .card-body { padding: 10px; }
+  .card-name { font-size: 12px; }
+  .price-now { font-size: 15px; }
+  .btn-add-card { font-size: 12px; padding: 8px; gap: 4px; }
+
+  .promo-banners {
+    grid-template-columns: 1fr;
+    padding: 0 12px 24px;
+    gap: 10px;
+  }
+  .promo-card { padding: 24px 20px; }
+  .promo-card h3 { font-size: 18px; }
 }

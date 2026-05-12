@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
+import { BottomNav } from './components/bottom-nav/bottom-nav';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './core/services/auth.service';
 import { CartService } from './core/services/cart';
@@ -11,7 +12,7 @@ import { FavoritesService } from './core/services/favorites.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, Header, Footer, CommonModule],
+  imports: [RouterOutlet, RouterLink, Header, Footer, BottomNav, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

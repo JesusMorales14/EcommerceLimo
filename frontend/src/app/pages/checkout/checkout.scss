@@ -778,25 +778,32 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
-@media (max-width: 640px) {
-  .checkout-page { padding: 16px 12px 48px; }
+@media (max-width: 768px) {
+  .checkout-page { padding: 14px 12px 40px; }
 
-  .step-bar { gap: 0; }
-  .step-line { width: 32px; }
+  .step-bar { gap: 0; margin-bottom: 24px; }
+  .step-line { width: 28px; }
   .step-label { font-size: 10px; }
+  .step-num { width: 30px; height: 30px; font-size: 12px; }
 
+  .checkout-step h2 { font-size: 18px; margin-bottom: 18px; }
+
+  .delivery-layout { grid-template-columns: 1fr; gap: 20px; }
   .field-row { grid-template-columns: 1fr; gap: 12px; }
+  #delivery-map { height: 280px; }
 
-  .card-section { grid-template-columns: 1fr; gap: 24px; }
-  .card-3d { max-width: 100%; height: 180px; }
+  .card-section { grid-template-columns: 1fr; gap: 20px; }
+  .card-3d { max-width: 100%; height: 190px; }
+  .card-number-display { font-size: 16px; }
 
   .step-footer {
     flex-direction: column-reverse;
-    gap: 12px;
-
+    gap: 10px;
     .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
   }
 
   .confirm-layout { grid-template-columns: 1fr; }
   .order-total-card { position: static; top: auto; }
+
+  .payment-grid { grid-template-columns: 1fr; }
 }

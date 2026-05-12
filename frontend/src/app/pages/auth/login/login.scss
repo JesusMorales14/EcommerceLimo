@@ -102,3 +102,10 @@ h1 {
 
   a { color: #006b2d; font-weight: 700; text-decoration: none; &:hover { text-decoration: underline; } }
 }
+
+@media (max-width: 768px) {
+  .auth-page { padding: 16px; align-items: flex-start; padding-top: 32px; }
+  .auth-card { padding: 32px 20px; border-radius: 12px; }
+  .auth-logo { font-size: 18px; margin-bottom: 24px; }
+  h1 { font-size: 22px; }
+}
