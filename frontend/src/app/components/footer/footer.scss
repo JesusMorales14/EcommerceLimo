@@ -57,46 +57,34 @@
   color: #006b2d;
 }
 
-/* Newsletter */
-.newsletter-sub {
-  font-size: 11px;
-  font-style: italic;
-  color: #64748b;
-  margin-bottom: 15px;
-}
-
-.newsletter-form {
+/* Redes sociales */
+.social-links {
   display: flex;
-  background: white;
-  border-radius: 6px;
-  padding: 4px;
-  max-width: 250px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.newsletter-form input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 8px;
-  outline: none;
-  font-size: 12px;
-}
-
-.send-btn {
-  background-color: #006b2d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
+.social-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+  gap: 10px;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8e2;
+  background: white;
+  transition: all 0.2s;
 
-.send-btn .material-symbols-outlined {
-  font-size: 16px;
+  svg { flex-shrink: 0; }
+
+  &:hover {
+    color: #006b2d;
+    border-color: #006b2d;
+    background: #f0f8f4;
+  }
 }
 
 /* Parte Inferior */
