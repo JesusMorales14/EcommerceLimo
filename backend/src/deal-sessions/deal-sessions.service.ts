@@ -26,6 +26,15 @@ export class DealSessionsService {
     });
   }
 
+  async getScheduled() {
+    const now = new Date();
+    const session = await this.prisma.dealSession.findFirst({
+      where: { active: true, startsAt: { gt: now }, endsAt: { gt: now } },
+      orderBy: { startsAt: 'asc' },
+    });
+    return session ?? null;
+  }
+
   async cancel() {
     await this.prisma.dealSession.updateMany({ where: { active: true }, data: { active: false } });
     return { ok: true };

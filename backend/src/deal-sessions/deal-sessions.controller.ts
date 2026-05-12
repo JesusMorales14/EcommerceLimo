@@ -12,6 +12,11 @@ export class DealSessionsController {
     return this.service.getActive();
   }
 
+  @Get('scheduled')
+  getScheduled() {
+    return this.service.getScheduled();
+  }
+
   @UseGuards(JwtGuard, AdminGuard)
   @Post()
   create(@Body('endsAt') endsAt: string, @Body('startsAt') startsAt?: string) {

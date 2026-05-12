@@ -111,7 +111,155 @@ $gap:        56px;
   font-weight: 700;
 }
 
-// ── Section block ─────────────────────────────���─────────────────────────��──────
+// ── Deal Teaser ───────────────────────────────────────────────────────────────
+.deal-teaser {
+  position: relative;
+  margin: 0 max(32px, 5vw) 8px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a1628 0%, #0f2d1a 50%, #0a1628 100%);
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+
+  .teaser-glow {
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(251,191,36,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .teaser-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .teaser-left {
+    flex: 1;
+    min-width: 220px;
+
+    .teaser-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fbbf24;
+      margin-bottom: 10px;
+
+      .teaser-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #fbbf24;
+        animation: teaser-pulse 1.4s ease-in-out infinite;
+      }
+    }
+
+    .teaser-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 10px;
+      line-height: 1.2;
+    }
+
+    .teaser-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin: 0;
+      line-height: 1.5;
+      strong { color: rgba(255,255,255,0.9); }
+    }
+  }
+
+  .teaser-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    .teaser-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .teaser-clock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .clock-unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 12px 18px;
+        min-width: 64px;
+
+        .clock-num {
+          font-size: 32px;
+          font-weight: 900;
+          color: #fbbf24;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+
+        .clock-label {
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          color: rgba(255,255,255,0.4);
+        }
+      }
+
+      .clock-sep {
+        font-size: 28px;
+        font-weight: 900;
+        color: #fbbf24;
+        opacity: 0.6;
+        margin-bottom: 14px;
+        animation: blink 1s step-end infinite;
+      }
+    }
+
+    .teaser-end-note {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      margin: 0;
+      .material-symbols-outlined { font-size: 13px; }
+    }
+  }
+}
+
+@keyframes teaser-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 0.15; }
+}
+
+// ── Section block ─────────────────────────────────────────────────────────────
 .section-block {
   padding: 40px max(32px, 5vw);
 }
@@ -391,6 +539,19 @@ $gap:        56px;
   .cat-chip { padding: 8px 12px; gap: 4px; }
   .cat-chip-icon { font-size: 20px; }
   .cat-chip-label { font-size: 11px; }
+
+  .deal-teaser {
+    margin: 0 12px 8px;
+    padding: 24px 20px;
+    border-radius: 16px;
+
+    .teaser-content { gap: 24px; }
+    .teaser-left .teaser-title { font-size: 18px; }
+    .teaser-right {
+      width: 100%;
+      .clock-unit { min-width: 52px; padding: 10px 12px; .clock-num { font-size: 24px; } }
+    }
+  }
 
   .section-block { padding: 20px 12px; }
   .section-head h2 { font-size: 18px; }

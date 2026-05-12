@@ -17,30 +17,50 @@
     </div>
   } @else {
     <!-- Estado actual -->
-    <div class="status-card" [class.active]="session()" [class.inactive]="!session()">
-      <div class="status-icon">
-        <span class="material-symbols-outlined">{{
-          session() ? 'local_fire_department' : 'timer_off'
-        }}</span>
-      </div>
-      <div class="status-info">
-        @if (session()) {
-          <h3>Oferta activa</h3>
-          <p>
-            Tiempo restante: <strong class="countdown">{{ remainingLabel() }}</strong>
-          </p>
+    @if (session()) {
+      <div class="status-card active">
+        <div class="status-icon">
+          <span class="material-symbols-outlined">local_fire_department</span>
+        </div>
+        <div class="status-info">
+          <h3>Oferta activa ahora</h3>
+          <p>Tiempo restante: <strong class="countdown">{{ remainingLabel() }}</strong></p>
           <p class="ends-at">Termina el {{ session()!.endsAt | date: 'dd/MM/yyyy HH:mm' }}</p>
-        } @else {
-          <h3>Sin oferta activa</h3>
-          <p>La sección "Ofertas del Día" está oculta en el inicio.</p>
-        }
-      </div>
-      @if (session()) {
+        </div>
         <button class="btn-cancel" (click)="cancel()">
           <span class="material-symbols-outlined">cancel</span> Cancelar oferta
         </button>
-      }
-    </div>
+      </div>
+    } @else if (scheduled()) {
+      <div class="status-card scheduled">
+        <div class="status-icon">
+          <span class="material-symbols-outlined">event_upcoming</span>
+        </div>
+        <div class="status-info">
+          <div class="scheduled-badge">
+            <span class="material-symbols-outlined">schedule</span> Sesión programada
+          </div>
+          <h3>La oferta se activará el {{ scheduled()!.startsAt | date: 'dd/MM/yyyy' }} a las {{ scheduled()!.startsAt | date: 'HH:mm' }}</h3>
+          <p class="starts-in-row">
+            Comienza en: <strong class="countdown-scheduled">{{ startsInStr() }}</strong>
+          </p>
+          <p class="ends-at">Finaliza el {{ scheduled()!.endsAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <button class="btn-cancel" (click)="cancel()">
+          <span class="material-symbols-outlined">cancel</span> Cancelar programación
+        </button>
+      </div>
+    } @else {
+      <div class="status-card inactive">
+        <div class="status-icon">
+          <span class="material-symbols-outlined">timer_off</span>
+        </div>
+        <div class="status-info">
+          <h3>Sin oferta activa</h3>
+          <p>La sección "Ofertas del Día" está oculta en el inicio.</p>
+        </div>
+      </div>
+    }
 
     <!-- Formulario nueva sesión -->
     <div class="form-card">

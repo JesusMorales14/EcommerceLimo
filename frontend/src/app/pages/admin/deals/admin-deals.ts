@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -13,23 +13,29 @@ import { Product } from '../../../core/models/product.model';
   templateUrl: './admin-deals.html',
   styleUrl: './admin-deals.scss',
 })
-export class AdminDealsPage implements OnInit {
+export class AdminDealsPage implements OnInit, OnDestroy {
   private dealService    = inject(DealSessionService);
   private productService = inject(ProductService);
 
   session    = signal<DealSession | null>(null);
+  scheduled  = signal<DealSession | null>(null);
   offers     = signal<Product[]>([]);
   loading    = signal(true);
   saving     = signal(false);
   error      = signal('');
   success    = signal('');
 
+  remainingStr  = signal('--:--:--');
+  startsInStr   = signal('--:--:--');
+
+  private timerId: ReturnType<typeof setInterval> | null = null;
+
   startsAtInput = '';
   endsAtInput   = '';
 
-  ngOnInit() {
-    this.load();
-  }
+  ngOnInit() { this.load(); }
+
+  ngOnDestroy() { this.clearTimer(); }
 
   private load() {
     this.loading.set(true);
@@ -37,22 +43,46 @@ export class AdminDealsPage implements OnInit {
       next: (s) => {
         this.session.set(s);
         this.loading.set(false);
+        if (s) this.startCountdowns(new Date(s.endsAt), null);
       },
       error: () => this.loading.set(false),
+    });
+    this.dealService.getScheduled().subscribe(s => {
+      this.scheduled.set(s);
+      if (s && !this.session()) this.startCountdowns(null, new Date(s.startsAt));
     });
     this.productService.getOffers().subscribe(res => this.offers.set(res.items));
   }
 
-  remainingLabel(): string {
-    const s = this.session();
-    if (!s) return '';
-    const diff = new Date(s.endsAt).getTime() - Date.now();
-    if (diff <= 0) return 'Expirada';
-    const h = Math.floor(diff / 3_600_000);
-    const m = Math.floor((diff % 3_600_000) / 60_000);
-    const sec = Math.floor((diff % 60_000) / 1_000);
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  private startCountdowns(endsAt: Date | null, startsAt: Date | null) {
+    this.clearTimer();
+    const tick = () => {
+      const now = Date.now();
+      if (endsAt) {
+        const diff = endsAt.getTime() - now;
+        this.remainingStr.set(diff <= 0 ? 'Expirada' : this.fmt(diff));
+      }
+      if (startsAt) {
+        const diff = startsAt.getTime() - now;
+        this.startsInStr.set(diff <= 0 ? '¡Ahora!' : this.fmt(diff));
+      }
+    };
+    tick();
+    this.timerId = setInterval(tick, 1000);
   }
+
+  private fmt(ms: number): string {
+    const h = Math.floor(ms / 3_600_000);
+    const m = Math.floor((ms % 3_600_000) / 60_000);
+    const s = Math.floor((ms % 60_000) / 1_000);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  private clearTimer() {
+    if (this.timerId !== null) { clearInterval(this.timerId); this.timerId = null; }
+  }
+
+  remainingLabel(): string { return this.remainingStr(); }
 
   minDatetime(): string {
     const d = new Date();
@@ -82,7 +112,14 @@ export class AdminDealsPage implements OnInit {
   }
 
   cancel() {
-    if (!confirm('¿Cancelar la oferta activa?')) return;
-    this.dealService.cancel().subscribe(() => { this.session.set(null); this.success.set('Oferta cancelada.'); });
+    const isScheduled = !this.session() && this.scheduled();
+    const msg = isScheduled ? '¿Cancelar la sesión programada?' : '¿Cancelar la oferta activa?';
+    if (!confirm(msg)) return;
+    this.dealService.cancel().subscribe(() => {
+      this.session.set(null);
+      this.scheduled.set(null);
+      this.clearTimer();
+      this.success.set(isScheduled ? 'Sesión programada cancelada.' : 'Oferta cancelada.');
+    });
   }
 }

@@ -25,6 +25,50 @@
     </div>
   </section>
 
+  <!-- ── Teaser: Próximas Ofertas ─────────────────────────────────────────── -->
+  @if (!dealActive() && scheduledSession()) {
+  <section class="deal-teaser">
+    <div class="teaser-glow"></div>
+    <div class="teaser-content">
+      <div class="teaser-left">
+        <span class="teaser-eyebrow">
+          <span class="teaser-dot"></span>
+          PRÓXIMAMENTE
+        </span>
+        <h2 class="teaser-title">¡Ofertas del Día se activan pronto!</h2>
+        <p class="teaser-sub">
+          Prepárate para descuentos increíbles. Las ofertas comenzarán el
+          <strong>{{ scheduledSession()!.startsAt | date:'dd/MM/yyyy' }}</strong>
+          a las <strong>{{ scheduledSession()!.startsAt | date:'HH:mm' }}</strong>.
+        </p>
+      </div>
+      <div class="teaser-right">
+        <p class="teaser-label">Las ofertas comienzan en</p>
+        <div class="teaser-clock">
+          <div class="clock-unit">
+            <span class="clock-num">{{ teaserCountdown().split(':')[0] }}</span>
+            <span class="clock-label">HRS</span>
+          </div>
+          <span class="clock-sep">:</span>
+          <div class="clock-unit">
+            <span class="clock-num">{{ teaserCountdown().split(':')[1] }}</span>
+            <span class="clock-label">MIN</span>
+          </div>
+          <span class="clock-sep">:</span>
+          <div class="clock-unit">
+            <span class="clock-num">{{ teaserCountdown().split(':')[2] }}</span>
+            <span class="clock-label">SEG</span>
+          </div>
+        </div>
+        <p class="teaser-end-note">
+          <span class="material-symbols-outlined">timer</span>
+          Finaliza el {{ scheduledSession()!.endsAt | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+      </div>
+    </div>
+  </section>
+  }
+
   <!-- ── Ofertas del Día ────────────────────────────────────────────────────── -->
   @if (dealActive()) {
   <section class="section-block">

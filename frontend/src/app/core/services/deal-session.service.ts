@@ -17,6 +17,10 @@ export class DealSessionService {
     return this.api.get<DealSession | null>('/deal-sessions/active');
   }
 
+  getScheduled() {
+    return this.api.get<DealSession | null>('/deal-sessions/scheduled');
+  }
+
   create(endsAt: Date, startsAt?: Date) {
     return this.api.post<DealSession>('/deal-sessions', {
       endsAt: endsAt.toISOString(),

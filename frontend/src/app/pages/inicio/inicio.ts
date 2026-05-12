@@ -20,13 +20,16 @@ export class Inicio implements OnInit, OnDestroy {
   private dealSessionService = inject(DealSessionService);
   categoryService           = inject(CategoryService);
 
-  offerProducts    = signal<Product[]>([]);
-  featuredProducts = signal<Product[]>([]);
-  dealActive       = signal(false);
-  countdown        = signal('--:--:--');
+  offerProducts      = signal<Product[]>([]);
+  featuredProducts   = signal<Product[]>([]);
+  dealActive         = signal(false);
+  countdown          = signal('--:--:--');
+  scheduledSession   = signal<{ startsAt: string; endsAt: string } | null>(null);
+  teaserCountdown    = signal('--:--:--');
 
-  private timerId:  ReturnType<typeof setInterval> | null = null;
-  private pollerId: ReturnType<typeof setInterval> | null = null;
+  private timerId:      ReturnType<typeof setInterval> | null = null;
+  private pollerId:     ReturnType<typeof setInterval> | null = null;
+  private teaserTimerId: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit() {
     this.productService.getAll('tecnologia', undefined, 1, 8)
@@ -39,16 +42,57 @@ export class Inicio implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clearTimer();
     this.clearPoller();
+    this.clearTeaserTimer();
   }
 
   private checkDeal() {
     if (this.dealActive()) return;
     this.dealSessionService.getActive().subscribe(session => {
-      if (!session) return;
-      this.dealActive.set(true);
-      this.productService.getOffers().subscribe(res => this.offerProducts.set(res.items.slice(0, 4)));
-      this.startCountdown(new Date(session.endsAt));
+      if (session) {
+        this.scheduledSession.set(null);
+        this.clearTeaserTimer();
+        this.dealActive.set(true);
+        this.productService.getOffers().subscribe(res => this.offerProducts.set(res.items.slice(0, 4)));
+        this.startCountdown(new Date(session.endsAt));
+        return;
+      }
+      // Sin sesión activa — verificar si hay una programada
+      this.dealSessionService.getScheduled().subscribe(scheduled => {
+        if (scheduled && !this.scheduledSession()) {
+          this.scheduledSession.set(scheduled);
+          this.startTeaserCountdown(new Date(scheduled.startsAt));
+        } else if (!scheduled) {
+          this.scheduledSession.set(null);
+          this.clearTeaserTimer();
+        }
+      });
     });
+  }
+
+  private startTeaserCountdown(startsAt: Date) {
+    this.clearTeaserTimer();
+    const tick = () => {
+      const diff = startsAt.getTime() - Date.now();
+      if (diff <= 0) {
+        this.clearTeaserTimer();
+        this.teaserCountdown.set('00:00:00');
+        return;
+      }
+      this.teaserCountdown.set(this.fmt(diff));
+    };
+    tick();
+    this.teaserTimerId = setInterval(tick, 1000);
+  }
+
+  private fmt(ms: number): string {
+    const h = Math.floor(ms / 3_600_000);
+    const m = Math.floor((ms % 3_600_000) / 60_000);
+    const s = Math.floor((ms % 60_000) / 1_000);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  private clearTeaserTimer() {
+    if (this.teaserTimerId !== null) { clearInterval(this.teaserTimerId); this.teaserTimerId = null; }
   }
 
   addToCart(product: Product) {
@@ -65,12 +109,7 @@ export class Inicio implements OnInit, OnDestroy {
         this.pollerId = setInterval(() => this.checkDeal(), 30_000);
         return;
       }
-      const h = Math.floor(remaining / 3_600_000);
-      const m = Math.floor((remaining % 3_600_000) / 60_000);
-      const s = Math.floor((remaining % 60_000) / 1_000);
-      this.countdown.set(
-        `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-      );
+      this.countdown.set(this.fmt(remaining));
     };
     this.clearPoller();
     tick();
