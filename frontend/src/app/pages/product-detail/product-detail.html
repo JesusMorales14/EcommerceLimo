@@ -17,13 +17,13 @@
     <!-- Gallery -->
     <div class="gallery">
       <div class="gallery-main">
-        <img [src]="producto()!.images[selectedImage()]" [alt]="producto()!.name">
+        <img [src]="activeImages()[selectedImage()]" [alt]="producto()!.name">
         @if (producto()!.discount) {
           <span class="badge-sustainable">-{{ producto()!.discount }}% OFF</span>
         }
       </div>
       <div class="gallery-thumbs">
-        @for (img of producto()!.images; track $index) {
+        @for (img of activeImages(); track $index) {
           <button
             class="thumb"
             [class.active]="selectedImage() === $index"
@@ -81,7 +81,7 @@
                 class="dot"
                 [class.active]="selectedColor() === $index"
                 [style.background]="c"
-                (click)="selectedColor.set($index)"
+                (click)="selectColor($index)"
                 [attr.aria-label]="'Color ' + c">
               </button>
             }

@@ -12,4 +12,5 @@ export interface Product {
   images: string[];
   colors: string[];
   sizes: string[];
+  colorImages?: Record<string, string[]>;
 }

@@ -54,6 +54,7 @@ model Product {
   images      String[]
   colors      String[]    @default([])
   sizes       String[]    @default([])
+  colorImages Json?
 
   orderItems  OrderItem[]
   favorites   Favorite[]

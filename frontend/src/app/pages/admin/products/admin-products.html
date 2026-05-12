@@ -126,9 +126,36 @@
               [ngModel]="asString(form.colors)"
               (ngModelChange)="form.colors = $event"
               name="colors"
-              placeholder="Verde, Blanco"
+              placeholder="Rojo, Azul, Verde"
             />
           </div>
+
+          @if (parsedColors.length) {
+            <div class="field full color-images-section">
+              <label class="color-images-label">
+                <span class="material-symbols-outlined">photo_library</span>
+                Imágenes por color
+                <span class="hint">Ingresa las URLs de las imágenes de cada color (separadas por coma). Cuando el usuario seleccione un color, verá estas imágenes.</span>
+              </label>
+              @for (color of parsedColors; track color) {
+                <div class="color-image-row">
+                  <div class="color-dot-wrap">
+                    <span class="color-dot-preview" [style.background]="color"></span>
+                    <span class="color-name-label">{{ color }}</span>
+                  </div>
+                  <input
+                    type="text"
+                    [ngModel]="colorImagesRaw[color]"
+                    (ngModelChange)="colorImagesRaw[color] = $event"
+                    [name]="'ci_' + color"
+                    placeholder="https://..., https://..."
+                    class="color-image-input"
+                  />
+                </div>
+              }
+            </div>
+          }
+
           <div class="field">
             <label>Tallas (separadas por coma)</label>
             <input

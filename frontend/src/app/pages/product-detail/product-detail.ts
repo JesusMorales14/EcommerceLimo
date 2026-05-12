@@ -31,6 +31,16 @@ export class ProductDetailComponent implements OnInit {
   selectedSize  = signal('');
   selectedColor = signal(0);
 
+  activeImages = computed(() => {
+    const p = this.producto();
+    if (!p) return [];
+    const colorName = p.colors?.[this.selectedColor()];
+    if (colorName && p.colorImages?.[colorName]?.length) {
+      return p.colorImages[colorName];
+    }
+    return p.images;
+  });
+
   reviews        = signal<Review[]>([]);
   reviewStats    = signal<ReviewStats | null>(null);
   loadingReviews = signal(false);
@@ -118,6 +128,11 @@ export class ProductDetailComponent implements OnInit {
     this.quantity.update(q => Math.min(max, q + 1));
   }
   decQty() { this.quantity.update(q => Math.max(1, q - 1)); }
+
+  selectColor(index: number) {
+    this.selectedColor.set(index);
+    this.selectedImage.set(0);
+  }
 
   get discountedPrice() {
     const p = this.producto();

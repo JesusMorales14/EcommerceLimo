@@ -25,6 +25,7 @@ export class AdminProductsPage implements OnInit {
   selectedCategory = signal('');
 
   form: Partial<Product> = this.emptyForm();
+  colorImagesRaw: Record<string, string> = {};
 
   categories = computed(() =>
     [...new Set(this.products().map(p => p.category))].sort()
@@ -51,6 +52,7 @@ export class AdminProductsPage implements OnInit {
 
   openCreate() {
     this.form = this.emptyForm();
+    this.colorImagesRaw = {};
     this.editId.set(null);
     this.showForm.set(true);
   }
@@ -58,7 +60,17 @@ export class AdminProductsPage implements OnInit {
   openEdit(p: Product) {
     this.form = { ...p };
     this.editId.set(p.id);
+    this.colorImagesRaw = {};
+    if (p.colorImages) {
+      for (const [color, urls] of Object.entries(p.colorImages)) {
+        this.colorImagesRaw[color] = urls.join(', ');
+      }
+    }
     this.showForm.set(true);
+  }
+
+  get parsedColors(): string[] {
+    return this.asArray(this.form.colors).filter(Boolean);
   }
 
   closeForm() { this.showForm.set(false); this.error.set(''); }
@@ -66,11 +78,17 @@ export class AdminProductsPage implements OnInit {
   submit() {
     this.saving.set(true);
     this.error.set('');
+    const colorImages: Record<string, string[]> = {};
+    for (const [color, raw] of Object.entries(this.colorImagesRaw)) {
+      const urls = raw.split(',').map(s => s.trim()).filter(Boolean);
+      if (urls.length) colorImages[color] = urls;
+    }
     const formData: Partial<Product> = {
       ...this.form,
-      images: this.asArray(this.form.images),
-      colors: this.asArray(this.form.colors),
-      sizes:  this.asArray(this.form.sizes),
+      images:      this.asArray(this.form.images),
+      colors:      this.asArray(this.form.colors),
+      sizes:       this.asArray(this.form.sizes),
+      colorImages: Object.keys(colorImages).length ? colorImages : undefined,
     };
     const obs = this.editId()
       ? this.productService.update(this.editId()!, formData)
@@ -88,7 +106,7 @@ export class AdminProductsPage implements OnInit {
   }
 
   private emptyForm(): Partial<Product> {
-    return { name: '', description: '', price: 0, stock: 0, brand: '', category: '', isOffer: false, images: [], colors: [], sizes: [] };
+    return { name: '', description: '', price: 0, stock: 0, brand: '', category: '', isOffer: false, images: [], colors: [], sizes: [], colorImages: {} };
   }
 
   private asArray(val: unknown): string[] {
