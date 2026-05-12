@@ -2,6 +2,7 @@ import {
   IsArray,
   IsBoolean,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -19,4 +20,5 @@ export class UpdateProductDto {
   @IsOptional() @IsArray() images?: string[];
   @IsOptional() @IsArray() colors?: string[];
   @IsOptional() @IsArray() sizes?: string[];
+  @IsOptional() @IsObject() colorImages?: Record<string, string[]>;
 }

@@ -25,7 +25,17 @@ export class AdminProductsPage implements OnInit {
   selectedCategory = signal('');
 
   form: Partial<Product> = this.emptyForm();
-  colorImagesRaw: Record<string, string> = {};
+
+  // Signal para las URLs raw por color (objeto clave→string csv)
+  colorImagesRaw = signal<Record<string, string>>({});
+
+  // Colores actuales parseados desde el input de colores
+  parsedColors = computed(() => {
+    const raw = this.form.colors;
+    if (Array.isArray(raw)) return raw.filter(Boolean);
+    if (typeof raw === 'string') return (raw as string).split(',').map(s => s.trim()).filter(Boolean);
+    return [];
+  });
 
   categories = computed(() =>
     [...new Set(this.products().map(p => p.category))].sort()
@@ -52,7 +62,7 @@ export class AdminProductsPage implements OnInit {
 
   openCreate() {
     this.form = this.emptyForm();
-    this.colorImagesRaw = {};
+    this.colorImagesRaw.set({});
     this.editId.set(null);
     this.showForm.set(true);
   }
@@ -60,26 +70,45 @@ export class AdminProductsPage implements OnInit {
   openEdit(p: Product) {
     this.form = { ...p };
     this.editId.set(p.id);
-    this.colorImagesRaw = {};
+    const raw: Record<string, string> = {};
     if (p.colorImages) {
       for (const [color, urls] of Object.entries(p.colorImages)) {
-        this.colorImagesRaw[color] = urls.join(', ');
+        raw[color] = Array.isArray(urls) ? urls.join(', ') : '';
       }
     }
+    this.colorImagesRaw.set(raw);
     this.showForm.set(true);
   }
 
-  get parsedColors(): string[] {
-    return this.asArray(this.form.colors).filter(Boolean);
+  closeForm() { this.showForm.set(false); this.error.set(''); }
+
+  // Llamado cuando el usuario cambia el input de colores
+  onColorsChange(value: string) {
+    this.form.colors = value as unknown as string[];
+    // Mantener las entradas existentes y agregar nuevas vacías
+    const newColors = value.split(',').map(s => s.trim()).filter(Boolean);
+    const current = { ...this.colorImagesRaw() };
+    // No eliminar datos existentes aunque el color ya no esté listado
+    for (const c of newColors) {
+      if (!(c in current)) current[c] = '';
+    }
+    this.colorImagesRaw.set(current);
   }
 
-  closeForm() { this.showForm.set(false); this.error.set(''); }
+  // Llamado cuando el usuario escribe en el input de imagen de un color
+  setColorImage(color: string, value: string) {
+    this.colorImagesRaw.update(r => ({ ...r, [color]: value }));
+  }
+
+  getColorImage(color: string): string {
+    return this.colorImagesRaw()[color] ?? '';
+  }
 
   submit() {
     this.saving.set(true);
     this.error.set('');
     const colorImages: Record<string, string[]> = {};
-    for (const [color, raw] of Object.entries(this.colorImagesRaw)) {
+    for (const [color, raw] of Object.entries(this.colorImagesRaw())) {
       const urls = raw.split(',').map(s => s.trim()).filter(Boolean);
       if (urls.length) colorImages[color] = urls;
     }
@@ -88,7 +117,7 @@ export class AdminProductsPage implements OnInit {
       images:      this.asArray(this.form.images),
       colors:      this.asArray(this.form.colors),
       sizes:       this.asArray(this.form.sizes),
-      colorImages: Object.keys(colorImages).length ? colorImages : undefined,
+      colorImages: Object.keys(colorImages).length ? colorImages : {},
     };
     const obs = this.editId()
       ? this.productService.update(this.editId()!, formData)
@@ -96,7 +125,7 @@ export class AdminProductsPage implements OnInit {
 
     obs.subscribe({
       next: () => { this.loadProducts(); this.closeForm(); this.saving.set(false); },
-      error: (err) => { this.error.set(err.error?.message || 'Error'); this.saving.set(false); }
+      error: (err) => { this.error.set(err.error?.message || 'Error al guardar'); this.saving.set(false); }
     });
   }
 
@@ -111,11 +140,12 @@ export class AdminProductsPage implements OnInit {
 
   private asArray(val: unknown): string[] {
     if (Array.isArray(val)) return val;
-    if (typeof val === 'string') return val.split(',').map(s => s.trim()).filter(Boolean);
+    if (typeof val === 'string') return (val as string).split(',').map(s => s.trim()).filter(Boolean);
     return [];
   }
 
-  asString(val: string[] | undefined): string {
-    return Array.isArray(val) ? val.join(', ') : (val ?? '');
+  asString(val: string[] | string | undefined): string {
+    if (Array.isArray(val)) return val.join(', ');
+    return val ?? '';
   }
 }
