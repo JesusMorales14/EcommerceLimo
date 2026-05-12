@@ -125,6 +125,23 @@
   -webkit-box-orient: vertical;
 }
 
+.drawer-item-color {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #555;
+  margin: 0 0 5px;
+
+  .drawer-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+}
+
 .drawer-item-price {
   font-size: 15px;
   font-weight: 800;

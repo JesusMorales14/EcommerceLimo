@@ -4,6 +4,8 @@ import { Product } from '../models/product.model';
 export interface CartItem {
   product: Product;
   quantity: number;
+  selectedColor?: string;
+  selectedImageUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,28 +23,28 @@ export class CartService {
     return p.discount ? p.price * (1 - p.discount / 100) : p.price;
   }
 
-  addToCart(product: Product, qty = 1) {
+  addToCart(product: Product, qty = 1, selectedColor?: string, selectedImageUrl?: string) {
     this._items.update(list => {
-      const idx = list.findIndex(i => i.product.id === product.id);
+      const idx = list.findIndex(i => i.product.id === product.id && i.selectedColor === selectedColor);
       if (idx >= 0) {
         const updated = [...list];
-        updated[idx] = { ...updated[idx], quantity: updated[idx].quantity + qty };
+        updated[idx] = { ...updated[idx], quantity: updated[idx].quantity + qty, selectedColor, selectedImageUrl };
         return updated;
       }
-      return [...list, { product, quantity: qty }];
+      return [...list, { product, quantity: qty, selectedColor, selectedImageUrl }];
     });
     this.isOpen.set(true);
   }
 
-  updateQty(productId: number, qty: number) {
-    if (qty <= 0) { this.removeFromCart(productId); return; }
+  updateQty(productId: number, qty: number, selectedColor?: string) {
+    if (qty <= 0) { this.removeFromCart(productId, selectedColor); return; }
     this._items.update(list =>
-      list.map(i => i.product.id === productId ? { ...i, quantity: qty } : i)
+      list.map(i => i.product.id === productId && i.selectedColor === selectedColor ? { ...i, quantity: qty } : i)
     );
   }
 
-  removeFromCart(productId: number) {
-    this._items.update(list => list.filter(i => i.product.id !== productId));
+  removeFromCart(productId: number, selectedColor?: string) {
+    this._items.update(list => list.filter(i => !(i.product.id === productId && i.selectedColor === selectedColor)));
   }
 
   clear() { this._items.set([]); }

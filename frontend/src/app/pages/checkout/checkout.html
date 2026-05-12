@@ -258,10 +258,16 @@
             </div>
             @for (item of cartService.getItems()(); track item.product.id) {
               <div class="confirm-item">
-                <img [src]="item.product.images[0]" [alt]="item.product.name" class="ci-img">
+                <img [src]="item.selectedImageUrl || item.product.images[0]" [alt]="item.product.name" class="ci-img">
                 <div class="ci-info">
                   <p class="ci-name">{{ item.product.name }}</p>
                   <p class="ci-brand">{{ item.product.brand }}</p>
+                  @if (item.selectedColor) {
+                    <p class="ci-color">
+                      <span class="ci-color-dot" [style.background]="item.selectedColor"></span>
+                      {{ item.selectedColor }}
+                    </p>
+                  }
                 </div>
                 <div class="ci-right">
                   <span class="ci-qty">x{{ item.quantity }}</span>

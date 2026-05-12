@@ -118,8 +118,9 @@
               <div>
                 <strong>Colores e imágenes</strong>
                 <span class="hint">
-                  Ingresa los colores del producto. Por cada color agrega las URLs de sus imágenes separadas por coma.
-                  Las imágenes del <strong>primer color</strong> serán las que se muestren por defecto.
+                  Ingresa los colores del producto. Por cada color agrega las URLs de sus imágenes
+                  separadas por coma. Las imágenes del <strong>primer color</strong> serán las que
+                  se muestren por defecto.
                 </span>
               </div>
             </div>
@@ -129,7 +130,7 @@
               <input
                 [ngModel]="colorsInput()"
                 (ngModelChange)="onColorsChange($event)"
-                [ngModelOptions]="{standalone: true}"
+                [ngModelOptions]="{ standalone: true }"
                 placeholder="ej: Negro, Blanco, Azul"
                 class="colors-main-input"
               />
@@ -143,7 +144,9 @@
                       <span class="color-dot-preview" [style.background]="color"></span>
                       <span class="color-name-label">
                         {{ color }}
-                        @if (i === 0) { <span class="default-tag">Principal</span> }
+                        @if (i === 0) {
+                          <span class="default-tag">Principal</span>
+                        }
                       </span>
                     </div>
                     <div class="color-image-input-wrap">
@@ -151,7 +154,7 @@
                         type="text"
                         [ngModel]="getColorImage(color)"
                         (ngModelChange)="setColorImage(color, $event)"
-                        [ngModelOptions]="{standalone: true}"
+                        [ngModelOptions]="{ standalone: true }"
                         placeholder="URL imagen 1, URL imagen 2, ..."
                         class="color-image-input"
                       />
@@ -165,11 +168,14 @@
             } @else {
               <!-- Sin colores: campo genérico de imágenes -->
               <div class="no-colors-images">
-                <label>Imágenes del producto <span class="hint-inline">(URLs separadas por coma)</span></label>
+                <label
+                  >Imágenes del producto
+                  <span class="hint-inline">(URLs separadas por coma)</span></label
+                >
                 <input
                   [ngModel]="asString(form.images)"
                   (ngModelChange)="form.images = $event"
-                  [ngModelOptions]="{standalone: true}"
+                  [ngModelOptions]="{ standalone: true }"
                   placeholder="https://..., https://..."
                 />
               </div>
@@ -237,7 +243,7 @@
             <th>Precio</th>
             <th>Stock</th>
             <th>Oferta</th>
-            <th style="text-align:center">Acciones</th>
+            <th style="text-align: center">Acciones</th>
           </tr>
         </thead>
         <tbody>

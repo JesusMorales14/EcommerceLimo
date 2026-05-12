@@ -115,7 +115,11 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart() {
     const p = this.producto();
-    if (p && p.stock > 0) this.cartService.addToCart(p, this.quantity());
+    if (!p || p.stock === 0) return;
+    const colorName = p.colors?.[this.selectedColor()] ?? undefined;
+    const imgs = this.activeImages();
+    const imageUrl = imgs.length ? imgs[0] : undefined;
+    this.cartService.addToCart(p, this.quantity(), colorName, imageUrl);
   }
 
   toggleFav() {

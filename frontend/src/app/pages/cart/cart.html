@@ -7,14 +7,20 @@
     <div class="cart-content">
       <div class="left-column">
         <div class="items-list">
-          @for (item of items; track item.product.id) {
+          @for (item of items; track (item.product.id + '_' + (item.selectedColor ?? ''))) {
             <div class="cart-item-card">
               <div class="item-img">
-                <img [src]="item.product.images[0]" [alt]="item.product.name">
+                <img [src]="item.selectedImageUrl || item.product.images[0]" [alt]="item.product.name">
               </div>
               <div class="item-details">
                 <span class="category-tag">{{ item.product.brand }}</span>
                 <h3>{{ item.product.name }}</h3>
+                @if (item.selectedColor) {
+                  <span class="color-badge">
+                    <span class="color-dot" [style.background]="item.selectedColor"></span>
+                    {{ item.selectedColor }}
+                  </span>
+                }
                 @if (item.product.discount) {
                   <div class="price-row">
                     <span class="price-final">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</span>
@@ -25,7 +31,7 @@
                   <span class="price-final">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
                 }
                 <div class="item-actions">
-                  <button class="action-btn delete" (click)="cartService.removeFromCart(item.product.id)">
+                  <button class="action-btn delete" (click)="cartService.removeFromCart(item.product.id, item.selectedColor)">
                     <span class="material-symbols-outlined">delete</span> Eliminar
                   </button>
                 </div>
@@ -33,9 +39,9 @@
               <div class="item-price-qty">
                 <span class="subtotal">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
                 <div class="qty-selector">
-                  <button (click)="cartService.updateQty(item.product.id, item.quantity - 1)">−</button>
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity - 1, item.selectedColor)">−</button>
                   <span>{{ item.quantity }}</span>
-                  <button (click)="cartService.updateQty(item.product.id, item.quantity + 1)">+</button>
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity + 1, item.selectedColor)">+</button>
                 </div>
               </div>
             </div>

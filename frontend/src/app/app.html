@@ -27,20 +27,26 @@
     @if (cartService.count() > 0) {
       @for (item of cartService.getItems()(); track item.product.id) {
         <div class="drawer-item">
-          <img [src]="item.product.images[0]" [alt]="item.product.name" class="drawer-item-img">
+          <img [src]="item.selectedImageUrl || item.product.images[0]" [alt]="item.product.name" class="drawer-item-img">
           <div class="drawer-item-info">
             <p class="drawer-item-brand">{{ item.product.brand }}</p>
             <p class="drawer-item-name">{{ item.product.name }}</p>
+            @if (item.selectedColor) {
+              <p class="drawer-item-color">
+                <span class="drawer-color-dot" [style.background]="item.selectedColor"></span>
+                {{ item.selectedColor }}
+              </p>
+            }
             <p class="drawer-item-price">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</p>
             <div class="drawer-qty">
-              <button (click)="cartService.updateQty(item.product.id, item.quantity - 1)" aria-label="Quitar">−</button>
+              <button (click)="cartService.updateQty(item.product.id, item.quantity - 1, item.selectedColor)" aria-label="Quitar">−</button>
               <span>{{ item.quantity }}</span>
-              <button (click)="cartService.updateQty(item.product.id, item.quantity + 1)" aria-label="Agregar">+</button>
+              <button (click)="cartService.updateQty(item.product.id, item.quantity + 1, item.selectedColor)" aria-label="Agregar">+</button>
             </div>
           </div>
           <button
             class="drawer-remove-btn"
-            (click)="cartService.removeFromCart(item.product.id)"
+            (click)="cartService.removeFromCart(item.product.id, item.selectedColor)"
             aria-label="Eliminar producto">
             <span class="material-symbols-outlined">delete</span>
           </button>
