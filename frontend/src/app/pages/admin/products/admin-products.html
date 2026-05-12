@@ -111,50 +111,70 @@
               placeholder="ej: smartphones"
             />
           </div>
-          <div class="field full">
-            <label>Imágenes (URLs separadas por coma)</label>
-            <input
-              [ngModel]="asString(form.images)"
-              (ngModelChange)="form.images = $event"
-              name="images"
-              placeholder="https://..., https://..."
-            />
-          </div>
-          <div class="field">
-            <label>Colores (separados por coma)</label>
-            <input
-              [ngModel]="asString(form.colors)"
-              (ngModelChange)="onColorsChange($event)"
-              name="colors"
-              placeholder="Rojo, Azul, Verde"
-            />
-          </div>
-
-          @if (parsedColors().length) {
-            <div class="field full color-images-section">
-              <label class="color-images-label">
-                <span class="material-symbols-outlined">photo_library</span>
-                Imágenes por color
-                <span class="hint">URLs de imágenes por cada color (separadas por coma). Al seleccionar un color, la galería cambiará.</span>
-              </label>
-              @for (color of parsedColors(); track color) {
-                <div class="color-image-row">
-                  <div class="color-dot-wrap">
-                    <span class="color-dot-preview" [style.background]="color"></span>
-                    <span class="color-name-label">{{ color }}</span>
-                  </div>
-                  <input
-                    type="text"
-                    [ngModel]="getColorImage(color)"
-                    (ngModelChange)="setColorImage(color, $event)"
-                    [ngModelOptions]="{standalone: true}"
-                    placeholder="https://..., https://..."
-                    class="color-image-input"
-                  />
-                </div>
-              }
+          <!-- ── Colores e imágenes por color ─────────────────────────────── -->
+          <div class="field full color-images-section">
+            <div class="color-images-label">
+              <span class="material-symbols-outlined">palette</span>
+              <div>
+                <strong>Colores e imágenes</strong>
+                <span class="hint">
+                  Ingresa los colores del producto. Por cada color agrega las URLs de sus imágenes separadas por coma.
+                  Las imágenes del <strong>primer color</strong> serán las que se muestren por defecto.
+                </span>
+              </div>
             </div>
-          }
+
+            <div class="colors-input-row">
+              <label>Colores <span class="hint-inline">(separados por coma)</span></label>
+              <input
+                [ngModel]="colorsInput()"
+                (ngModelChange)="onColorsChange($event)"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="ej: Negro, Blanco, Azul"
+                class="colors-main-input"
+              />
+            </div>
+
+            @if (parsedColors().length) {
+              <div class="color-rows-list">
+                @for (color of parsedColors(); track color; let i = $index) {
+                  <div class="color-image-row" [class.first-color]="i === 0">
+                    <div class="color-dot-wrap">
+                      <span class="color-dot-preview" [style.background]="color"></span>
+                      <span class="color-name-label">
+                        {{ color }}
+                        @if (i === 0) { <span class="default-tag">Principal</span> }
+                      </span>
+                    </div>
+                    <div class="color-image-input-wrap">
+                      <input
+                        type="text"
+                        [ngModel]="getColorImage(color)"
+                        (ngModelChange)="setColorImage(color, $event)"
+                        [ngModelOptions]="{standalone: true}"
+                        placeholder="URL imagen 1, URL imagen 2, ..."
+                        class="color-image-input"
+                      />
+                      @if (i === 0) {
+                        <span class="input-note">Estas imágenes se mostrarán por defecto</span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <!-- Sin colores: campo genérico de imágenes -->
+              <div class="no-colors-images">
+                <label>Imágenes del producto <span class="hint-inline">(URLs separadas por coma)</span></label>
+                <input
+                  [ngModel]="asString(form.images)"
+                  (ngModelChange)="form.images = $event"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="https://..., https://..."
+                />
+              </div>
+            }
+          </div>
 
           <div class="field">
             <label>Tallas (separadas por coma)</label>

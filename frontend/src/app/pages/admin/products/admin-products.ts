@@ -26,16 +26,15 @@ export class AdminProductsPage implements OnInit {
 
   form: Partial<Product> = this.emptyForm();
 
-  // Signal para las URLs raw por color (objeto clave→string csv)
-  colorImagesRaw = signal<Record<string, string>>({});
+  // Signal para el string de colores del input (reactivo)
+  colorsInput     = signal('');
+  // Signal para las URLs de imagen por color
+  colorImagesRaw  = signal<Record<string, string>>({});
 
-  // Colores actuales parseados desde el input de colores
-  parsedColors = computed(() => {
-    const raw = this.form.colors;
-    if (Array.isArray(raw)) return raw.filter(Boolean);
-    if (typeof raw === 'string') return (raw as string).split(',').map(s => s.trim()).filter(Boolean);
-    return [];
-  });
+  // Colores parseados desde el signal — se actualiza automáticamente al escribir
+  parsedColors = computed(() =>
+    this.colorsInput().split(',').map(s => s.trim()).filter(Boolean)
+  );
 
   categories = computed(() =>
     [...new Set(this.products().map(p => p.category))].sort()
@@ -46,7 +45,7 @@ export class AdminProductsPage implements OnInit {
     const cat = this.selectedCategory();
     return this.products().filter(p => {
       const matchCat    = !cat || p.category === cat;
-      const matchSearch = !q  || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q);
+      const matchSearch = !q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q);
       return matchCat && matchSearch;
     });
   });
@@ -62,6 +61,7 @@ export class AdminProductsPage implements OnInit {
 
   openCreate() {
     this.form = this.emptyForm();
+    this.colorsInput.set('');
     this.colorImagesRaw.set({});
     this.editId.set(null);
     this.showForm.set(true);
@@ -70,6 +70,11 @@ export class AdminProductsPage implements OnInit {
   openEdit(p: Product) {
     this.form = { ...p };
     this.editId.set(p.id);
+
+    // Cargar colores como string para el input
+    this.colorsInput.set(Array.isArray(p.colors) ? p.colors.join(', ') : '');
+
+    // Cargar imágenes por color
     const raw: Record<string, string> = {};
     if (p.colorImages) {
       for (const [color, urls] of Object.entries(p.colorImages)) {
@@ -82,20 +87,17 @@ export class AdminProductsPage implements OnInit {
 
   closeForm() { this.showForm.set(false); this.error.set(''); }
 
-  // Llamado cuando el usuario cambia el input de colores
+  // Al cambiar el input de colores: actualiza el signal y agrega entradas vacías para colores nuevos
   onColorsChange(value: string) {
-    this.form.colors = value as unknown as string[];
-    // Mantener las entradas existentes y agregar nuevas vacías
-    const newColors = value.split(',').map(s => s.trim()).filter(Boolean);
+    this.colorsInput.set(value);
+    const colors = value.split(',').map(s => s.trim()).filter(Boolean);
     const current = { ...this.colorImagesRaw() };
-    // No eliminar datos existentes aunque el color ya no esté listado
-    for (const c of newColors) {
+    for (const c of colors) {
       if (!(c in current)) current[c] = '';
     }
     this.colorImagesRaw.set(current);
   }
 
-  // Llamado cuando el usuario escribe en el input de imagen de un color
   setColorImage(color: string, value: string) {
     this.colorImagesRaw.update(r => ({ ...r, [color]: value }));
   }
@@ -107,18 +109,31 @@ export class AdminProductsPage implements OnInit {
   submit() {
     this.saving.set(true);
     this.error.set('');
+
+    const colors = this.parsedColors();
+
+    // Construir colorImages solo para colores que tienen URLs
     const colorImages: Record<string, string[]> = {};
-    for (const [color, raw] of Object.entries(this.colorImagesRaw())) {
-      const urls = raw.split(',').map(s => s.trim()).filter(Boolean);
+    for (const color of colors) {
+      const urls = (this.colorImagesRaw()[color] ?? '')
+        .split(',').map(s => s.trim()).filter(Boolean);
       if (urls.length) colorImages[color] = urls;
     }
+
+    // Las imágenes principales del producto = imágenes del primer color
+    // Si no hay colores, usar el campo genérico de imágenes
+    const firstColorImages = colors.length > 0
+      ? (colorImages[colors[0]] ?? [])
+      : this.asArray(this.form.images);
+
     const formData: Partial<Product> = {
       ...this.form,
-      images:      this.asArray(this.form.images),
-      colors:      this.asArray(this.form.colors),
+      images:      firstColorImages,
+      colors,
       sizes:       this.asArray(this.form.sizes),
       colorImages: Object.keys(colorImages).length ? colorImages : {},
     };
+
     const obs = this.editId()
       ? this.productService.update(this.editId()!, formData)
       : this.productService.create(formData);
