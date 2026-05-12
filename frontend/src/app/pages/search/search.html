@@ -1,0 +1,92 @@
+<div class="search-page">
+
+  <div class="search-header">
+    <h1>
+      @if (query()) {
+        Resultados para <em>"{{ query() }}"</em>
+      } @else {
+        Búsqueda
+      }
+    </h1>
+    @if (!loading() && total() > 0) {
+      <span class="result-count">{{ total() }} productos encontrados</span>
+    }
+    <select class="sort-select" [(ngModel)]="sortBy" (ngModelChange)="sortBy.set($event)">
+      <option value="relevance">Más relevantes</option>
+      <option value="price-asc">Menor precio</option>
+      <option value="price-desc">Mayor precio</option>
+    </select>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      Buscando productos...
+    </div>
+  } @else if (!query()) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">search</span>
+      <p>Escribe algo en la barra de búsqueda para comenzar.</p>
+    </div>
+  } @else if (filteredProducts().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">search_off</span>
+      <p>No se encontraron productos para <strong>"{{ query() }}"</strong>.</p>
+      <a routerLink="/" class="btn-home">Ir al inicio</a>
+    </div>
+  } @else {
+    <div class="product-grid">
+      @for (p of filteredProducts(); track p.id) {
+        <div class="product-card">
+          <div class="card-img" [routerLink]="['/product', p.id]">
+            <img [src]="p.images[0]" [alt]="p.name" loading="lazy">
+            @if (p.discount) {
+              <span class="badge-off">-{{ p.discount }}%</span>
+            }
+            <button class="btn-wish" [class.active]="favService.isFavorite(p.id)"
+              (click)="toggleFav(p, $event)" aria-label="Favorito">
+              <span class="material-symbols-outlined">{{ favService.isFavorite(p.id) ? 'favorite' : 'favorite_border' }}</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-brand">{{ p.brand }}</p>
+            <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
+            <div class="card-prices">
+              <span class="price-now">{{ discountedPrice(p) | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              @if (p.discount) {
+                <span class="price-old">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              }
+            </div>
+            @if (p.stock > 0) {
+              <button class="btn-add" (click)="addToCart(p)">
+                <span class="material-symbols-outlined">shopping_cart</span> Agregar
+              </button>
+            } @else {
+              <p class="out-of-stock">Sin stock</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (pages() > 1) {
+      <div class="pagination">
+        <button [disabled]="page() === 1" (click)="goToPage(page() - 1)" class="page-btn">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (p of [].constructor(pages()); track $index) {
+          <button
+            class="page-btn"
+            [class.active]="page() === $index + 1"
+            (click)="goToPage($index + 1)">
+            {{ $index + 1 }}
+          </button>
+        }
+        <button [disabled]="page() === pages()" (click)="goToPage(page() + 1)" class="page-btn">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    }
+  }
+
+</div>

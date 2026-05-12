@@ -1,0 +1,102 @@
+<div class="cart-page-wrapper">
+  <div class="cart-header">
+    <h1>Tu Carrito <span>({{ items.length }} {{ items.length === 1 ? 'producto' : 'productos' }})</span></h1>
+  </div>
+
+  @if (items.length > 0) {
+    <div class="cart-content">
+      <div class="left-column">
+        <div class="items-list">
+          @for (item of items; track item.product.id) {
+            <div class="cart-item-card">
+              <div class="item-img">
+                <img [src]="item.product.images[0]" [alt]="item.product.name">
+              </div>
+              <div class="item-details">
+                <span class="category-tag">{{ item.product.brand }}</span>
+                <h3>{{ item.product.name }}</h3>
+                @if (item.product.discount) {
+                  <div class="price-row">
+                    <span class="price-final">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                    <span class="price-original">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                    <span class="badge-discount">-{{ item.product.discount }}%</span>
+                  </div>
+                } @else {
+                  <span class="price-final">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                }
+                <div class="item-actions">
+                  <button class="action-btn delete" (click)="cartService.removeFromCart(item.product.id)">
+                    <span class="material-symbols-outlined">delete</span> Eliminar
+                  </button>
+                </div>
+              </div>
+              <div class="item-price-qty">
+                <span class="subtotal">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <div class="qty-selector">
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity - 1)">−</button>
+                  <span>{{ item.quantity }}</span>
+                  <button (click)="cartService.updateQty(item.product.id, item.quantity + 1)">+</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="right-column">
+        <div class="summary-card">
+          <h3>Resumen del Pedido</h3>
+
+          @for (item of items; track item.product.id) {
+            <div class="summary-product-line">
+              <span class="sp-name">{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
+              <span>{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            </div>
+          }
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          </div>
+          <div class="summary-line">
+            <span>Envío</span>
+            <span class="free">Gratis</span>
+          </div>
+
+          <div class="total-line">
+            <div class="total-label">
+              <strong>Total</strong>
+              <small>IVA INCLUIDO</small>
+            </div>
+            <span class="total-amount">{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          </div>
+
+          <button class="btn-checkout" (click)="checkout()">
+            <span class="material-symbols-outlined">lock</span>
+            {{ authService.isLoggedIn() ? 'Proceder al pago' : 'Iniciar sesión y pagar' }}
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+
+          <div class="trust-badges">
+            <div class="badge-item">
+              <span class="material-symbols-outlined">verified_user</span>
+              <p><strong>Compra Segura:</strong> Encriptación de grado bancario.</p>
+            </div>
+            <div class="badge-item">
+              <span class="material-symbols-outlined">local_shipping</span>
+              <p><strong>Envío Priority:</strong> 24 a 48 horas hábiles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">shopping_cart_off</span>
+      <p>Tu carrito está vacío</p>
+      <a routerLink="/" class="btn-back">Volver a la tienda</a>
+    </div>
+  }
+</div>

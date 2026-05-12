@@ -1,0 +1,107 @@
+<div class="admin-page">
+  <div class="admin-hero">
+    <span class="material-symbols-outlined">admin_panel_settings</span>
+    <div>
+      <h1>Panel de Administración</h1>
+      <p>Gestiona productos, pedidos, usuarios y el estado de las entregas</p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="stats-loading">
+      <span class="material-symbols-outlined spin">progress_activity</span> Cargando métricas...
+    </div>
+  } @else if (stats()) {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="material-symbols-outlined stat-icon products">inventory_2</span>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()!.totalProducts }}</span>
+          <span class="stat-label">Productos</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="material-symbols-outlined stat-icon revenue">attach_money</span>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()!.totalRevenue | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          <span class="stat-label">Ingresos totales</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="material-symbols-outlined stat-icon orders">receipt_long</span>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()!.totalOrders }}</span>
+          <span class="stat-label">Pedidos</span>
+        </div>
+      </div>
+      <div class="stat-card" [class.warning]="stats()!.lowStock > 0">
+        <span class="material-symbols-outlined stat-icon low-stock">warning</span>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()!.lowStock }}</span>
+          <span class="stat-label">Stock bajo (&lt;5)</span>
+        </div>
+      </div>
+    </div>
+
+    @if (stats()!.recentOrders.length > 0) {
+      <div class="recent-orders">
+        <h3>Pedidos recientes</h3>
+        <table class="orders-mini-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (o of stats()!.recentOrders; track o.id) {
+              <tr>
+                <td>#{{ o.id }}</td>
+                <td>{{ o.user?.name }}</td>
+                <td>{{ o.total | currency:'PEN':'S/ ':'1.0-0' }}</td>
+                <td><span class="status-chip">{{ o.status }}</span></td>
+                <td>{{ o.createdAt | date:'dd/MM/yy' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <div class="admin-cards">
+    <a routerLink="/admin/products" class="admin-card">
+      <span class="material-symbols-outlined">inventory_2</span>
+      <h2>Productos</h2>
+      <p>Agregar, editar y eliminar productos del catálogo</p>
+      <span class="card-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+    <a routerLink="/admin/orders" class="admin-card">
+      <span class="material-symbols-outlined">receipt_long</span>
+      <h2>Pedidos</h2>
+      <p>Ver todos los pedidos y actualizar su estado</p>
+      <span class="card-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+    <a routerLink="/admin/users" class="admin-card">
+      <span class="material-symbols-outlined">group</span>
+      <h2>Usuarios</h2>
+      <p>Ver todos los usuarios registrados en la plataforma</p>
+      <span class="card-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+    <a routerLink="/admin/coupons" class="admin-card">
+      <span class="material-symbols-outlined">local_offer</span>
+      <h2>Cupones</h2>
+      <p>Crear y gestionar cupones de descuento</p>
+      <span class="card-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+    <a routerLink="/admin/deals" class="admin-card">
+      <span class="material-symbols-outlined">local_fire_department</span>
+      <h2>Ofertas del Día</h2>
+      <p>Configurar el timer y productos del banner de ofertas</p>
+      <span class="card-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+  </div>
+</div>

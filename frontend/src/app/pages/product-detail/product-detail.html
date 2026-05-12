@@ -1,0 +1,320 @@
+@if (loading()) {
+  <div class="pdp-loading">
+    <span class="material-symbols-outlined spin">progress_activity</span>
+    Cargando producto...
+  </div>
+} @else if (producto()) {
+<div class="pdp">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    Inicio / {{ producto()!.category | titlecase }} / <strong>{{ producto()!.name }}</strong>
+  </nav>
+
+  <!-- ── Main layout: Gallery + Info ──────────────────────────────────────── -->
+  <div class="pdp-main">
+
+    <!-- Gallery -->
+    <div class="gallery">
+      <div class="gallery-main">
+        <img [src]="producto()!.images[selectedImage()]" [alt]="producto()!.name">
+        @if (producto()!.discount) {
+          <span class="badge-sustainable">-{{ producto()!.discount }}% OFF</span>
+        }
+      </div>
+      <div class="gallery-thumbs">
+        @for (img of producto()!.images; track $index) {
+          <button
+            class="thumb"
+            [class.active]="selectedImage() === $index"
+            (click)="selectedImage.set($index)">
+            <img [src]="img" [alt]="producto()!.name + ' ' + ($index + 1)">
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Info column -->
+    <div class="info-col">
+
+      <p class="info-brand">{{ producto()!.brand }}</p>
+      <h1 class="info-title">{{ producto()!.name }}</h1>
+
+      <div class="info-reviews">
+        <span class="stars">
+          {{ starsStr(reviewStats()?.average ?? 0) }}{{ emptyStarsStr(reviewStats()?.average ?? 0) }}
+        </span>
+        @if (reviewStats()?.total) {
+          <span class="review-count">
+            {{ reviewStats()!.average | number:'1.1-1' }} ({{ reviewStats()!.total }} opiniones)
+          </span>
+        } @else {
+          <span class="review-count">Sin opiniones aún</span>
+        }
+        <span class="sku">SKU: #{{ producto()!.id }}</span>
+      </div>
+
+      <!-- Price block -->
+      <div class="price-block">
+        <div class="price-row">
+          <span class="price-now">{{ discountedPrice | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          @if (producto()!.discount) {
+            <span class="badge-off">-{{ producto()!.discount }}% OFF</span>
+          }
+        </div>
+        @if (producto()!.discount) {
+          <p class="price-before">Precio normal: <s>{{ producto()!.price | currency:'PEN':'S/ ':'1.0-0' }}</s></p>
+        }
+        <div class="greencard-box">
+          <span class="material-symbols-outlined">credit_card</span>
+          Hasta 12 cuotas sin interés de {{ installment | currency:'PEN':'S/ ':'1.2-2' }} con GreenCard
+        </div>
+      </div>
+
+      <!-- Color selector -->
+      @if (producto()!.colors.length) {
+        <div class="option-group">
+          <p class="option-label">COLOR</p>
+          <div class="color-dots">
+            @for (c of producto()!.colors; track $index) {
+              <button
+                class="dot"
+                [class.active]="selectedColor() === $index"
+                [style.background]="c"
+                (click)="selectedColor.set($index)"
+                [attr.aria-label]="'Color ' + c">
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Size selector -->
+      @if (producto()!.sizes.length) {
+        <div class="option-group">
+          <p class="option-label">TALLA: <strong>{{ selectedSize() }}</strong></p>
+          <div class="size-chips">
+            @for (s of producto()!.sizes; track s) {
+              <button
+                class="chip"
+                [class.active]="selectedSize() === s"
+                (click)="selectedSize.set(s)">
+                {{ s }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Stock indicator -->
+      @if (producto()!.stock === 0) {
+        <div class="stock-warning">
+          <span class="material-symbols-outlined">error</span>
+          Sin stock disponible
+        </div>
+      } @else if (producto()!.stock <= 5) {
+        <div class="stock-low">
+          <span class="material-symbols-outlined">warning</span>
+          ¡Solo quedan {{ producto()!.stock }} unidades!
+        </div>
+      }
+
+      <!-- Qty + actions -->
+      <div class="qty-actions">
+        <div class="qty-selector">
+          <button (click)="decQty()" [disabled]="quantity() === 1">−</button>
+          <span>{{ quantity() }}</span>
+          <button (click)="incQty()" [disabled]="quantity() >= (producto()!.stock || 0)">+</button>
+        </div>
+        <button class="btn-buy" (click)="addToCart()" [disabled]="producto()!.stock === 0">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          {{ producto()!.stock === 0 ? 'Sin stock' : 'Comprar ahora' }}
+        </button>
+        <button
+          class="btn-fav"
+          [class.active]="favService.isFavorite(producto()!.id)"
+          (click)="toggleFav()"
+          title="Favoritos">
+          <span class="material-symbols-outlined">{{ favService.isFavorite(producto()!.id) ? 'favorite' : 'favorite_border' }}</span>
+        </button>
+      </div>
+
+      <!-- Delivery & pickup -->
+      <div class="delivery-block">
+        <div class="delivery-row">
+          <span class="material-symbols-outlined delivery-icon">local_shipping</span>
+          <div class="delivery-info">
+            <strong>Despacho a domicilio</strong>
+            <span>Llega en 24 a 48 horas hábiles</span>
+          </div>
+          <span class="delivery-badge free">Gratis</span>
+        </div>
+        <div class="delivery-row">
+          <span class="material-symbols-outlined delivery-icon">store</span>
+          <div class="delivery-info">
+            <strong>Retiro en tienda</strong>
+            <span>Disponible en 2 horas · Greenhouse Central</span>
+          </div>
+          <span class="delivery-badge free">Gratis</span>
+        </div>
+      </div>
+
+      <!-- Trust strip -->
+      <div class="trust-strip">
+        <div class="trust-item">
+          <span class="material-symbols-outlined">verified_user</span>
+          <span>Compra segura</span>
+        </div>
+        <div class="trust-item">
+          <span class="material-symbols-outlined">replay</span>
+          <span>Devolución gratis</span>
+        </div>
+        <div class="trust-item">
+          <span class="material-symbols-outlined">workspace_premium</span>
+          <span>Garantía 1 año</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Tabs ──────────────────────────────────────────────────────────────── -->
+  <section class="pdp-tabs">
+    <div class="tabs-nav">
+      @for (tab of tabs(); track $index) {
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === $index"
+          (click)="activeTab.set($index)">
+          {{ tab }}
+        </button>
+      }
+    </div>
+
+    <div class="tab-body">
+
+      @if (activeTab() === 0) {
+        <div class="tab-description">
+          <h3>Sobre este producto</h3>
+          <p>{{ producto()!.description }}</p>
+          <ul class="feature-list">
+            <li><span class="material-symbols-outlined">check_circle</span> Materiales de calidad garantizada</li>
+            <li><span class="material-symbols-outlined">check_circle</span> Diseño exclusivo</li>
+            <li><span class="material-symbols-outlined">check_circle</span> Envío rápido y seguro</li>
+            <li><span class="material-symbols-outlined">check_circle</span> Garantía de 12 meses</li>
+          </ul>
+        </div>
+      }
+
+      @if (activeTab() === 1) {
+        <div class="tab-specs">
+          <table class="specs-table">
+            <tr><td>Marca</td><td>{{ producto()!.brand }}</td></tr>
+            <tr><td>Categoría</td><td>{{ producto()!.category | titlecase }}</td></tr>
+            <tr><td>Stock disponible</td><td>{{ producto()!.stock }} unidades</td></tr>
+            @if (producto()!.subCategory) {
+              <tr><td>Subcategoría</td><td>{{ producto()!.subCategory }}</td></tr>
+            }
+            <tr><td>Código producto</td><td>#{{ producto()!.id }}</td></tr>
+          </table>
+        </div>
+      }
+
+      @if (activeTab() === 2) {
+        <div class="tab-reviews">
+
+          @if (loadingReviews()) {
+            <div class="reviews-loading">
+              <span class="material-symbols-outlined spin">progress_activity</span> Cargando reseñas...
+            </div>
+          } @else {
+
+            <!-- Summary + distribution -->
+            <div class="reviews-summary">
+              <div class="rating-big">
+                <span class="rating-num">{{ (reviewStats()?.average ?? 0) | number:'1.1-1' }}</span>
+                <div>
+                  <div class="rating-stars">
+                    {{ starsStr(reviewStats()?.average ?? 0) }}{{ emptyStarsStr(reviewStats()?.average ?? 0) }}
+                  </div>
+                  <span class="rating-total">{{ reviewStats()?.total ?? 0 }} opiniones</span>
+                </div>
+              </div>
+              <div class="rating-bars">
+                @for (star of [5,4,3,2,1]; track star) {
+                  <div class="bar-row">
+                    <span class="bar-label">{{ star }}★</span>
+                    <div class="bar-track">
+                      <div class="bar-fill" [style.width.%]="distPct(star)"></div>
+                    </div>
+                    <span class="bar-pct">{{ distPct(star) }}%</span>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Submit form -->
+            @if (authService.isLoggedIn()) {
+              <div class="review-form">
+                <h4>Deja tu opinión</h4>
+                <div class="star-picker">
+                  @for (s of [1,2,3,4,5]; track s) {
+                    <button
+                      class="star-btn"
+                      [class.lit]="s <= newRating()"
+                      (click)="newRating.set(s)">★</button>
+                  }
+                </div>
+                <textarea
+                  [(ngModel)]="newComment"
+                  placeholder="Escribe tu experiencia con este producto..."
+                  rows="3"></textarea>
+                @if (reviewError()) {
+                  <p class="review-err">{{ reviewError() }}</p>
+                }
+                <button class="btn-submit-review" (click)="submitReview()" [disabled]="submitting()">
+                  @if (submitting()) {
+                    <span class="material-symbols-outlined spin">progress_activity</span>
+                  } @else {
+                    <span class="material-symbols-outlined">send</span>
+                  }
+                  Publicar reseña
+                </button>
+              </div>
+            } @else {
+              <div class="review-login-hint">
+                <span class="material-symbols-outlined">login</span>
+                <a routerLink="/login">Inicia sesión</a> para dejar una reseña
+              </div>
+            }
+
+            <!-- Reviews list -->
+            @if (reviews().length > 0) {
+              @for (r of reviews(); track r.id) {
+                <div class="review-item">
+                  <div class="review-header">
+                    <strong>{{ r.user.name }}</strong>
+                    <span class="stars-sm">{{ starsStr(r.rating) }}{{ emptyStarsStr(r.rating) }}</span>
+                    <span class="review-date">{{ r.createdAt | date:'dd/MM/yyyy' }}</span>
+                  </div>
+                  <p>{{ r.comment }}</p>
+                </div>
+              }
+            } @else {
+              <p class="no-reviews">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+            }
+
+          }
+        </div>
+      }
+
+    </div>
+  </section>
+
+</div>
+} @else {
+  <div class="not-found">
+    <span class="material-symbols-outlined">search_off</span>
+    <p>Producto no encontrado.</p>
+  </div>
+}

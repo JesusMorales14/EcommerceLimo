@@ -56,3 +56,23 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# uploads
+uploads/
+
+# Nest build
+dist/
+
+# cache
+.cache/
+
+# Claude
+.claude/
+
+# env variants
+.env.*
+!.env.example

@@ -1,0 +1,2023 @@
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+// �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+// PRODUCTOS
+// Las imágenes usan picsum.photos con seed para que sean consistentes.
+// �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+const img = (seed: string, w = 400, h = 500) => [
+  `https://picsum.photos/seed/${seed}/${w}/${h}`,
+  `https://picsum.photos/seed/${seed}-b/${w}/${h}`,
+];
+
+// Convierte precios a soles peruanos (redondeado a decenas)
+const pen = (usd: number) => Math.round((usd * 3.8) / 10) * 10;
+
+const PRODUCTS: {
+  name: string;
+  brand: string;
+  category: string;
+  subCategory: string;
+  price: number;
+  stock: number;
+  description: string;
+  images: string[];
+  colors: string[];
+  sizes: string[];
+  isOffer?: boolean;
+  discount?: number;
+}[] = [
+  // �"?�"? ELECTRODOM�?STICOS �"? Refrigeradores �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Samsung Refrigerador French Door 520L',
+    brand: 'Samsung',
+    category: 'electrodomesticos',
+    subCategory: 'refrigeradores',
+    price: pen(899),
+    stock: 8,
+    description:
+      'Refrigerador French Door con dispensador de agua y hielo, tecnología Twin Cooling Plus y 520 litros de capacidad.',
+    images: img('samsung-fridge'),
+    colors: ['#c0c0c0'],
+    sizes: [],
+  },
+  {
+    name: 'LG Refrigerador Side by Side 600L',
+    brand: 'LG',
+    category: 'electrodomesticos',
+    subCategory: 'refrigeradores',
+    price: pen(1199),
+    stock: 5,
+    description:
+      'Refrigerador Side by Side con 600L, InstaView Door-in-Door, tecnología LinearCooling y conectividad ThinQ.',
+    images: img('lg-fridge'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Mabe Refrigerador No Frost 360L',
+    brand: 'Mabe',
+    category: 'electrodomesticos',
+    subCategory: 'refrigeradores',
+    price: pen(499),
+    stock: 12,
+    description:
+      'Refrigerador No Frost con 360L, dispensador de agua, tecnología EcoSmart y diseño moderno en acero.',
+    images: img('mabe-fridge'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Whirlpool Refrigerador 2 Puertas 270L',
+    brand: 'Whirlpool',
+    category: 'electrodomesticos',
+    subCategory: 'refrigeradores',
+    price: pen(379),
+    stock: 15,
+    description:
+      'Refrigerador de 2 puertas con 270L, tecnología 6th Sense y congelador inferior. Ideal para familias pequeñas.',
+    images: img('whirlpool-fridge'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Fensa Refrigerador Frío Húmedo 380L',
+    brand: 'Fensa',
+    category: 'electrodomesticos',
+    subCategory: 'refrigeradores',
+    price: pen(419),
+    stock: 10,
+    description:
+      'Refrigerador 380L con sistema Frío Húmedo que conserva mejor los alimentos, eficiencia energética A+.',
+    images: img('fensa-fridge'),
+    colors: ['#f0f0f0', '#c0c0c0'],
+    sizes: [],
+  },
+
+  // �"?�"? ELECTRODOM�?STICOS �"? Lavadoras �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Samsung Lavadora Carga Frontal 12kg',
+    brand: 'Samsung',
+    category: 'electrodomesticos',
+    subCategory: 'lavadoras',
+    price: pen(649),
+    stock: 7,
+    description:
+      'Lavadora carga frontal 12kg con tecnología EcoBubble, programa AI y clasificación energética A.',
+    images: img('samsung-washer'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'LG Lavadora Carga Frontal 14kg',
+    brand: 'LG',
+    category: 'electrodomesticos',
+    subCategory: 'lavadoras',
+    price: pen(799),
+    stock: 6,
+    description:
+      'Lavadora 14kg con motor Direct Drive, tecnología Steam+ y conectividad ThinQ para control desde tu celular.',
+    images: img('lg-washer'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Whirlpool Lavadora Carga Superior 18kg',
+    brand: 'Whirlpool',
+    category: 'electrodomesticos',
+    subCategory: 'lavadoras',
+    price: pen(449),
+    stock: 9,
+    description:
+      'Lavadora de carga superior 18kg con 12 programas de lavado, tecnología 6th Sense y capacidad extra.',
+    images: img('whirlpool-washer'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Mabe Lavadora Automática 20kg',
+    brand: 'Mabe',
+    category: 'electrodomesticos',
+    subCategory: 'lavadoras',
+    price: pen(399),
+    stock: 11,
+    description:
+      'Lavadora automática 20kg con 10 programas de lavado, tina de acero inoxidable y tecnología de ahorro de agua.',
+    images: img('mabe-washer'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+
+  // �"?�"? ELECTRODOM�?STICOS �"? Cocinas �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Mabe Cocina a Gas 6 Quemadores',
+    brand: 'Mabe',
+    category: 'electrodomesticos',
+    subCategory: 'cocinas',
+    price: pen(599),
+    stock: 6,
+    description:
+      'Cocina a gas con 6 quemadores, horno a gas de 66L, parrillas fundición y encendido electrónico.',
+    images: img('mabe-cocina'),
+    colors: ['#c0c0c0'],
+    sizes: [],
+  },
+  {
+    name: 'Fensa Cocina Eléctrica Vitrocerámica 4P',
+    brand: 'Fensa',
+    category: 'electrodomesticos',
+    subCategory: 'cocinas',
+    price: pen(449),
+    stock: 8,
+    description:
+      'Cocina vitrocerámica 4 platos con horno eléctrico multifunción de 60L, grill y temporizador digital.',
+    images: img('fensa-cocina'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Samsung Horno Empotrable Eléctrico 60L',
+    brand: 'Samsung',
+    category: 'electrodomesticos',
+    subCategory: 'cocinas',
+    price: pen(649),
+    stock: 4,
+    description:
+      'Horno empotrable eléctrico 60L con 10 funciones, limpieza por vapor, display digital y control deslizante.',
+    images: img('samsung-oven'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Oster Horno Eléctrico Sobremesa 46L',
+    brand: 'Oster',
+    category: 'electrodomesticos',
+    subCategory: 'cocinas',
+    price: pen(199),
+    stock: 14,
+    description:
+      'Horno eléctrico de sobremesa 46L con convección, tostador, 9 funciones y temperatura hasta 230°C.',
+    images: img('oster-oven'),
+    colors: ['#1a1a1a', '#c0c0c0'],
+    sizes: [],
+  },
+
+  // �"?�"? ELECTRODOM�?STICOS �"? Microondas �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'LG Microondas NeoChef 25L',
+    brand: 'LG',
+    category: 'electrodomesticos',
+    subCategory: 'microondas',
+    price: pen(149),
+    stock: 18,
+    description:
+      'Microondas NeoChef 25L con tecnología Smart Inverter, 10 niveles de potencia y limpieza EasyClean.',
+    images: img('lg-microwave'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Samsung Microondas con Grill 28L',
+    brand: 'Samsung',
+    category: 'electrodomesticos',
+    subCategory: 'microondas',
+    price: pen(179),
+    stock: 12,
+    description:
+      'Microondas con grill 28L, 900W de potencia, función combi grill+microondas y display LED.',
+    images: img('samsung-microwave'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Oster Microondas Digital 30L',
+    brand: 'Oster',
+    category: 'electrodomesticos',
+    subCategory: 'microondas',
+    price: pen(129),
+    stock: 20,
+    description:
+      'Microondas digital 30L con 1000W, panel táctil, 6 programas automáticos y función descongelar.',
+    images: img('oster-microwave'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? TECNOLOGÍA �"? Smartphones �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Samsung Galaxy S24 Ultra 256GB',
+    brand: 'Samsung',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(1299),
+    stock: 10,
+    description:
+      'Smartphone con pantalla Dynamic AMOLED 6.8", cámara 200MP con IA, S Pen integrado y batería 5000mAh.',
+    images: img('samsung-s24'),
+    colors: ['#1a1a1a', '#c0c0c0', '#8a6a4a'],
+    sizes: ['128GB', '256GB', '512GB'],
+    isOffer: true,
+    discount: 10,
+  },
+  {
+    name: 'Apple iPhone 15 Pro 128GB',
+    brand: 'Apple',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(1099),
+    stock: 8,
+    description:
+      'iPhone 15 Pro con chip A17 Pro, pantalla Super Retina XDR 6.1", cámara 48MP y carcasa titanio.',
+    images: img('apple-iphone15'),
+    colors: ['#1a1a1a', '#c0c0c0', '#f0e8d0'],
+    sizes: ['128GB', '256GB', '512GB'],
+  },
+  {
+    name: 'Xiaomi Redmi Note 13 Pro 256GB',
+    brand: 'Xiaomi',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(349),
+    stock: 20,
+    description:
+      'Smartphone con cámara 200MP Light Hunter, pantalla AMOLED 6.67" 120Hz y carga rápida 67W.',
+    images: img('xiaomi-redmi13'),
+    colors: ['#1a1a1a', '#2d5a8e', '#6a8e5a'],
+    sizes: ['128GB', '256GB'],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'Motorola Edge 40 Neo 5G 256GB',
+    brand: 'Motorola',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(399),
+    stock: 15,
+    description:
+      'Smartphone 5G con pantalla pOLED 6.55" 144Hz, cámara 50MP y batería 5000mAh con carga 68W.',
+    images: img('motorola-edge40'),
+    colors: ['#1a1a1a', '#2d5a4a'],
+    sizes: ['128GB', '256GB'],
+  },
+  {
+    name: 'Samsung Galaxy A35 5G 128GB',
+    brand: 'Samsung',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(379),
+    stock: 18,
+    description:
+      'Galaxy A35 con pantalla Super AMOLED 6.6" 120Hz, cámara triple 50MP y batería 5000mAh.',
+    images: img('samsung-a35'),
+    colors: ['#1a1a1a', '#2d5a8e', '#c0c0c0'],
+    sizes: ['128GB', '256GB'],
+  },
+  {
+    name: 'OPPO Reno 11 5G 256GB',
+    brand: 'OPPO',
+    category: 'tecnologia',
+    subCategory: 'smartphones',
+    price: pen(429),
+    stock: 12,
+    description:
+      'Reno 11 con pantalla AMOLED 6.7" 120Hz, triple cámara 50MP+32MP+64MP y batería 4800mAh.',
+    images: img('oppo-reno11'),
+    colors: ['#1a1a1a', '#c0b08a'],
+    sizes: ['128GB', '256GB'],
+  },
+
+  // �"?�"? TECNOLOGÍA �"? Laptops �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Lenovo IdeaPad 5 AMD Ryzen 7 16GB',
+    brand: 'Lenovo',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(799),
+    stock: 7,
+    description:
+      'Laptop AMD Ryzen 7 7730U, 16GB RAM DDR4, 512GB SSD, pantalla IPS 15.6" FHD y batería 15h.',
+    images: img('lenovo-ideapad5'),
+    colors: ['#5a6a7a', '#2c2c2c'],
+    sizes: [],
+  },
+  {
+    name: 'HP Pavilion 15 Core i7 512GB',
+    brand: 'HP',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(849),
+    stock: 9,
+    description:
+      'Laptop Intel Core i7-1255U, 16GB RAM, 512GB SSD, pantalla FHD IPS 15.6" antirreflejo y GPU Intel Iris Xe.',
+    images: img('hp-pavilion15'),
+    colors: ['#c0c0c0'],
+    sizes: [],
+  },
+  {
+    name: 'ASUS VivoBook 16 OLED Core i5',
+    brand: 'ASUS',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(749),
+    stock: 6,
+    description:
+      'Laptop con pantalla OLED 16" 2.8K, Intel Core i5-13500H, 16GB RAM y 512GB SSD NVMe.',
+    images: img('asus-vivobook16'),
+    colors: ['#2c2c2c'],
+    sizes: [],
+    isOffer: true,
+    discount: 12,
+  },
+  {
+    name: 'Acer Aspire 5 Core i5 8GB',
+    brand: 'Acer',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(599),
+    stock: 11,
+    description:
+      'Laptop Intel Core i5-1235U, 8GB RAM, 512GB SSD, pantalla IPS 15.6" FHD y lector de huella dactilar.',
+    images: img('acer-aspire5'),
+    colors: ['#5a6a7a'],
+    sizes: [],
+  },
+  {
+    name: 'Dell Inspiron 15 Core i7 16GB',
+    brand: 'Dell',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(899),
+    stock: 5,
+    description:
+      'Laptop Intel Core i7-1255U, 16GB RAM DDR4, 1TB SSD, pantalla FHD 15.6" y tarjeta gráfica NVIDIA MX570.',
+    images: img('dell-inspiron15'),
+    colors: ['#2c2c2c'],
+    sizes: [],
+  },
+  {
+    name: 'Apple MacBook Air M2 8GB 256GB',
+    brand: 'Apple',
+    category: 'tecnologia',
+    subCategory: 'laptops',
+    price: pen(1099),
+    stock: 4,
+    description:
+      'MacBook Air con chip M2, pantalla Liquid Retina 13.6" 2560x1664, 8GB RAM unificada y batería 18h.',
+    images: img('macbook-air-m2'),
+    colors: ['#c0c0c0', '#f5deb3', '#1a1a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? TECNOLOGÍA �"? Consolas �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Sony PlayStation 5 Slim Digital 1TB',
+    brand: 'Sony',
+    category: 'tecnologia',
+    subCategory: 'consolas',
+    price: pen(449),
+    stock: 6,
+    description:
+      'PS5 Slim Digital Edition, procesador AMD Zen 2 + GPU RDNA 2, 1TB SSD y resolución hasta 8K.',
+    images: img('ps5-slim'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Microsoft Xbox Series X 1TB',
+    brand: 'Microsoft',
+    category: 'tecnologia',
+    subCategory: 'consolas',
+    price: pen(499),
+    stock: 5,
+    description:
+      'Xbox Series X con 12 teraflops de rendimiento, 1TB SSD NVMe, retrocompatibilidad total y Game Pass.',
+    images: img('xbox-series-x'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Nintendo Switch OLED 64GB',
+    brand: 'Nintendo',
+    category: 'tecnologia',
+    subCategory: 'consolas',
+    price: pen(349),
+    stock: 12,
+    description:
+      'Switch OLED con pantalla OLED de 7", 64GB almacenamiento, soporte ajustable y conectividad LAN.',
+    images: img('nintendo-switch'),
+    colors: ['#f0f0f0', '#c81a1a'],
+    sizes: [],
+    isOffer: true,
+    discount: 10,
+  },
+  {
+    name: 'Sony PlayStation 5 Pro 2TB',
+    brand: 'Sony',
+    category: 'tecnologia',
+    subCategory: 'consolas',
+    price: pen(699),
+    stock: 3,
+    description:
+      'PS5 Pro con GPU mejorada, 2TB SSD, tecnología PlayStation Spectral Super Resolution y Wi-Fi 7.',
+    images: img('ps5-pro'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Microsoft Xbox Series S 512GB',
+    brand: 'Microsoft',
+    category: 'tecnologia',
+    subCategory: 'consolas',
+    price: pen(299),
+    stock: 14,
+    description:
+      'Xbox Series S compacta con 4 teraflops, 512GB SSD, resolución hasta 4K y acceso a Game Pass Ultimate.',
+    images: img('xbox-series-s'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+
+  // �"?�"? TECNOLOGÍA �"? Audio �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Sony WH-1000XM5 Auriculares Bluetooth',
+    brand: 'Sony',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(349),
+    stock: 9,
+    description:
+      'Auriculares over-ear con cancelación de ruido líder del sector, 30h batería y micrófono para llamadas claras.',
+    images: img('sony-wh1000xm5'),
+    colors: ['#1a1a1a', '#c8b89a'],
+    sizes: [],
+    isOffer: true,
+    discount: 20,
+  },
+  {
+    name: 'JBL Charge 5 Altavoz Bluetooth',
+    brand: 'JBL',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(179),
+    stock: 14,
+    description:
+      'Altavoz portátil resistente al agua y polvo IP67, sonido 360° potente y batería de 20h de reproducción.',
+    images: img('jbl-charge5'),
+    colors: ['#1a1a1a', '#c81a1a', '#1a4a8e'],
+    sizes: [],
+  },
+  {
+    name: 'Apple AirPods Pro 2da Generación',
+    brand: 'Apple',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(249),
+    stock: 11,
+    description:
+      'AirPods Pro con cancelación activa de ruido, Modo Ambiente, chip H2 y hasta 6h de reproducción.',
+    images: img('airpods-pro2'),
+    colors: ['#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'Bose QuietComfort 45 Bluetooth',
+    brand: 'Bose',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(279),
+    stock: 7,
+    description:
+      'Auriculares con cancelación de ruido world-class, 24h batería, modo Aware y diseño plegable.',
+    images: img('bose-qc45'),
+    colors: ['#1a1a1a', '#f0f0f0'],
+    sizes: [],
+  },
+  {
+    name: 'JBL Xtreme 3 Altavoz Portátil',
+    brand: 'JBL',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(249),
+    stock: 6,
+    description:
+      'Altavoz portátil IP67 con 15h batería, sonido estéreo con bajos profundos y correa de transporte.',
+    images: img('jbl-xtreme3'),
+    colors: ['#1a1a1a', '#1a8e1a'],
+    sizes: [],
+  },
+  {
+    name: 'Sennheiser HD 450BT Auriculares',
+    brand: 'Sennheiser',
+    category: 'tecnologia',
+    subCategory: 'audio',
+    price: pen(129),
+    stock: 10,
+    description:
+      'Auriculares inalámbricos con cancelación activa de ruido, batería 30h, Bluetooth 5.0 y control de voz.',
+    images: img('sennheiser-hd450'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? TECNOLOGÍA �"? Televisores �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Samsung Smart TV QLED 55" 4K',
+    brand: 'Samsung',
+    category: 'tecnologia',
+    subCategory: 'televisores',
+    price: pen(799),
+    stock: 5,
+    description:
+      'Smart TV QLED 55" con resolución 4K, Quantum HDR, sistema Tizen y control remoto solar.',
+    images: img('samsung-qled55'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'LG OLED evo C3 65" 4K',
+    brand: 'LG',
+    category: 'tecnologia',
+    subCategory: 'televisores',
+    price: pen(1599),
+    stock: 3,
+    description:
+      'TV OLED evo 65" con procesador α9 AI de 4a generación, Dolby Vision IQ y soporte G-Sync para gaming.',
+    images: img('lg-oled65'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Sony Bravia XR 75" 4K Google TV',
+    brand: 'Sony',
+    category: 'tecnologia',
+    subCategory: 'televisores',
+    price: pen(1999),
+    stock: 2,
+    description:
+      'Bravia XR 75" con procesador cognitivo XR, Acoustic Multi-Audio, Google TV y HDMI 2.1 para consolas.',
+    images: img('sony-bravia75'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'TCL 50" Google TV 4K',
+    brand: 'TCL',
+    category: 'tecnologia',
+    subCategory: 'televisores',
+    price: pen(399),
+    stock: 12,
+    description:
+      'Smart TV 50" 4K con Google TV, Dolby Atmos, HDR10+ y control de voz Google Assistant integrado.',
+    images: img('tcl-50-4k'),
+    colors: [],
+    sizes: [],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'Hisense 58" ULED Smart TV 4K',
+    brand: 'Hisense',
+    category: 'tecnologia',
+    subCategory: 'televisores',
+    price: pen(499),
+    stock: 8,
+    description:
+      'ULED 58" con tecnología Quantum Dot, ALLM para gaming, Dolby Vision y Dolby Atmos, VIDAA U7.',
+    images: img('hisense-58-uled'),
+    colors: [],
+    sizes: [],
+  },
+
+  // �"?�"? MODA MUJER �"? Vestidos �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Vestido Floral Midi de Verano',
+    brand: 'H&M',
+    category: 'moda-mujer',
+    subCategory: 'vestidos',
+    price: pen(49),
+    stock: 25,
+    description:
+      'Vestido midi con estampado floral, tela viscosa fluida, manga abullonada y largo a la rodilla.',
+    images: img('vestido-floral-midi'),
+    colors: ['#c87a5a', '#5a7ac8', '#f0e8d0'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Vestido Tipo Blazer Estructurado',
+    brand: 'Zara',
+    category: 'moda-mujer',
+    subCategory: 'vestidos',
+    price: pen(79),
+    stock: 18,
+    description:
+      'Vestido blazer de corte recto con botonadura dorada, bolsillos laterales y tela de crepé.',
+    images: img('vestido-blazer'),
+    colors: ['#1a1a1a', '#c8b89a', '#2d4a2d'],
+    sizes: ['XS', 'S', 'M', 'L'],
+  },
+  {
+    name: 'Vestido de Noche Satinado Espalda',
+    brand: 'Mango',
+    category: 'moda-mujer',
+    subCategory: 'vestidos',
+    price: pen(119),
+    stock: 10,
+    description:
+      'Vestido de noche en satén con espalda descubierta, abertura lateral y largo al suelo.',
+    images: img('vestido-noche-saten'),
+    colors: ['#1a1a1a', '#c0a0d0'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    isOffer: true,
+    discount: 20,
+  },
+  {
+    name: 'Vestido Casual Denim Manga Corta',
+    brand: 'Pull&Bear',
+    category: 'moda-mujer',
+    subCategory: 'vestidos',
+    price: pen(59),
+    stock: 20,
+    description:
+      'Vestido casual de denim con botonadura frontal, cinturón incluido y corte recto midi.',
+    images: img('vestido-denim'),
+    colors: ['#5a6a8a'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Vestido Wrap Floral Maxi',
+    brand: 'Bershka',
+    category: 'moda-mujer',
+    subCategory: 'vestidos',
+    price: pen(69),
+    stock: 14,
+    description:
+      'Vestido maxi estilo wrap con estampado tropical, escote en V y tiras para anudar a la cintura.',
+    images: img('vestido-wrap-maxi'),
+    colors: ['#4a8a4a', '#8a4a4a'],
+    sizes: ['XS', 'S', 'M', 'L'],
+  },
+
+  // �"?�"? MODA MUJER �"? Blusas y Tops �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Blusa Satinada Manga Larga Elegante',
+    brand: 'Zara',
+    category: 'moda-mujer',
+    subCategory: 'blusas',
+    price: pen(35),
+    stock: 30,
+    description:
+      'Blusa de satén con cuello lazada, manga larga y caída fluida. Perfecta para oficina o salidas.',
+    images: img('blusa-satin-manga'),
+    colors: ['#f0f0f0', '#c8b89a', '#1a1a1a'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Top Crop con Encaje y Tirantes',
+    brand: 'Bershka',
+    category: 'moda-mujer',
+    subCategory: 'blusas',
+    price: pen(29),
+    stock: 35,
+    description:
+      'Top crop con detalle de encaje en el busto, tirantes regulables y fit ceñido.',
+    images: img('top-crop-encaje'),
+    colors: ['#f0f0f0', '#c81a1a', '#1a1a1a'],
+    sizes: ['XS', 'S', 'M', 'L'],
+  },
+  {
+    name: 'Blusa Bohemia con Estampado Flores',
+    brand: 'Mango',
+    category: 'moda-mujer',
+    subCategory: 'blusas',
+    price: pen(39),
+    stock: 22,
+    description:
+      'Blusa estilo boho con estampado floral, manga abullonada y escote en V con lazada.',
+    images: img('blusa-bohemia'),
+    colors: ['#e8c8a0', '#a8c8e8'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Camisa de Lino Oversize Casual',
+    brand: 'H&M',
+    category: 'moda-mujer',
+    subCategory: 'blusas',
+    price: pen(45),
+    stock: 18,
+    description:
+      'Camisa de lino oversize de manga larga con bolsillos y botones nácar. Fresca y versátil.',
+    images: img('camisa-lino-mujer'),
+    colors: ['#f0f0e8', '#c8a88a', '#8aaBa8'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Blusa Asimétrica con Nudo Lateral',
+    brand: 'Zara',
+    category: 'moda-mujer',
+    subCategory: 'blusas',
+    price: pen(49),
+    stock: 16,
+    description:
+      'Blusa asimétrica de crepe con nudo lateral, manga corta y corte moderno. Lista para cualquier ocasión.',
+    images: img('blusa-asimetrica'),
+    colors: ['#f0f0f0', '#1a1a1a', '#c8a8c8'],
+    sizes: ['XS', 'S', 'M', 'L'],
+  },
+
+  // �"?�"? MODA MUJER �"? Jeans �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: "Levi's Jeans Skinny Tiro Alto 721",
+    brand: "Levi's",
+    category: 'moda-mujer',
+    subCategory: 'jeans',
+    price: pen(79),
+    stock: 20,
+    description:
+      'Jeans skinny 721 de tiro alto con denim stretch, 5 bolsillos y cierre de metal. Silueta favorecedora.',
+    images: img('levis-721-mujer'),
+    colors: ['#2d4a6a', '#1a1a1a'],
+    sizes: ['26', '27', '28', '29', '30', '31', '32'],
+  },
+  {
+    name: 'Zara Jeans Mom Fit Vintage',
+    brand: 'Zara',
+    category: 'moda-mujer',
+    subCategory: 'jeans',
+    price: pen(65),
+    stock: 18,
+    description:
+      'Jeans mom fit con lavado vintage, tiro alto, pierna ancha y deshilachados en el dobladillo.',
+    images: img('jeans-mom-zara'),
+    colors: ['#8a9aaa', '#c8d0d8'],
+    sizes: ['32', '34', '36', '38', '40', '42'],
+  },
+  {
+    name: 'Pull&Bear Jeans Wide Leg Palazzo',
+    brand: 'Pull&Bear',
+    category: 'moda-mujer',
+    subCategory: 'jeans',
+    price: pen(69),
+    stock: 14,
+    description:
+      'Jeans wide leg con corte palazzo, tiro alto, denim suave y vuelo amplio desde la cadera.',
+    images: img('jeans-wide-leg'),
+    colors: ['#2d4a6a', '#8a9aaa'],
+    sizes: ['32', '34', '36', '38', '40'],
+  },
+  {
+    name: 'H&M Jeans Boyfriend Relaxed Fit',
+    brand: 'H&M',
+    category: 'moda-mujer',
+    subCategory: 'jeans',
+    price: pen(59),
+    stock: 22,
+    description:
+      'Jeans boyfriend con corte relajado, tiro medio, denim orgánico y bolsillos frontales anchos.',
+    images: img('jeans-boyfriend-hm'),
+    colors: ['#5a6a7a', '#c8d0d8'],
+    sizes: ['32', '34', '36', '38', '40', '42'],
+  },
+
+  // �"?�"? MODA MUJER �"? Calzado �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Steve Madden Zapatillas Platform',
+    brand: 'Steve Madden',
+    category: 'moda-mujer',
+    subCategory: 'calzado',
+    price: pen(89),
+    stock: 12,
+    description:
+      'Zapatillas platform con suela gruesa de 5cm, cordones planos y puntera redondeada. Tendencia chunky.',
+    images: img('stevemadden-platform'),
+    colors: ['#f0f0f0', '#1a1a1a'],
+    sizes: ['35', '36', '37', '38', '39', '40'],
+  },
+  {
+    name: 'Zara Botas Chelsea de Cuero',
+    brand: 'Zara',
+    category: 'moda-mujer',
+    subCategory: 'calzado',
+    price: pen(129),
+    stock: 8,
+    description:
+      'Botas Chelsea en cuero genuino con elástico lateral, tacón bajo de 4cm y suela de goma.',
+    images: img('botas-chelsea-zara-mujer'),
+    colors: ['#1a1a1a', '#8a5a3a'],
+    sizes: ['35', '36', '37', '38', '39', '40', '41'],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'Mango Sandalias con Plataforma',
+    brand: 'Mango',
+    category: 'moda-mujer',
+    subCategory: 'calzado',
+    price: pen(69),
+    stock: 15,
+    description:
+      'Sandalias con plataforma de esparto 6cm, tiras entrelazadas y cierre con hebilla en el tobillo.',
+    images: img('sandalias-plataforma'),
+    colors: ['#c8a87a', '#1a1a1a'],
+    sizes: ['35', '36', '37', '38', '39', '40', '41'],
+  },
+  {
+    name: 'Aldo Zapatos Kitten Heel Elegantes',
+    brand: 'Aldo',
+    category: 'moda-mujer',
+    subCategory: 'calzado',
+    price: pen(99),
+    stock: 10,
+    description:
+      'Zapatos kitten heel con puntera en punta, tacón stiletto 5cm y correa al tobillo.',
+    images: img('aldo-kitten-heel'),
+    colors: ['#1a1a1a', '#c8c0b0'],
+    sizes: ['35', '36', '37', '38', '39', '40'],
+  },
+
+  // �"?�"? MODA HOMBRE �"? Camisas y Polos �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Tommy Hilfiger Camisa Oxford Slim Fit',
+    brand: 'Tommy Hilfiger',
+    category: 'moda-hombre',
+    subCategory: 'camisas',
+    price: pen(79),
+    stock: 20,
+    description:
+      'Camisa Oxford de algodón slim fit con logo bordado, botones nácar y manga larga. Clásico moderno.',
+    images: img('tommy-oxford'),
+    colors: ['#f0f0f0', '#5a7aaa', '#aa7a5a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Zara Man Camisa de Lino Casual',
+    brand: 'Zara Man',
+    category: 'moda-hombre',
+    subCategory: 'camisas',
+    price: pen(49),
+    stock: 25,
+    description:
+      'Camisa de lino lavado con cuello mao, manga larga enrollable y fit regular. Fresca y versátil.',
+    images: img('zara-man-lino'),
+    colors: ['#f0e8d0', '#c8d0d8', '#5a8a5a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Lacoste Polo Clásico Piqué',
+    brand: 'Lacoste',
+    category: 'moda-hombre',
+    subCategory: 'camisas',
+    price: pen(99),
+    stock: 18,
+    description:
+      'Polo clásico Lacoste en piqué de algodón con cocodrilo bordado, 3 botones y cuello de punto.',
+    images: img('lacoste-polo'),
+    colors: ['#f0f0f0', '#1a1a1a', '#2d5a2d', '#c81a1a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    isOffer: true,
+    discount: 10,
+  },
+  {
+    name: 'Calvin Klein Camisa Formal Blanca',
+    brand: 'Calvin Klein',
+    category: 'moda-hombre',
+    subCategory: 'camisas',
+    price: pen(69),
+    stock: 15,
+    description:
+      'Camisa formal de popelín blanco, slim fit, manga larga y botones de nácar. Perfecta para traje.',
+    images: img('ck-camisa-formal'),
+    colors: ['#f0f0f0', '#c8d0d8'],
+    sizes: ['S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Nike Polera Manga Corta Dri-FIT',
+    brand: 'Nike',
+    category: 'moda-hombre',
+    subCategory: 'camisas',
+    price: pen(39),
+    stock: 30,
+    description:
+      'Polera Dri-FIT de entrenamiento con tecnología de secado rápido, logo swoosh bordado y cuello redondo.',
+    images: img('nike-polera-hombre'),
+    colors: ['#1a1a1a', '#f0f0f0', '#2d5a8e'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+
+  // �"?�"? MODA HOMBRE �"? Pantalones �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'H&M Pantalón Chino Slim Stretch',
+    brand: 'H&M',
+    category: 'moda-hombre',
+    subCategory: 'pantalones',
+    price: pen(55),
+    stock: 20,
+    description:
+      'Pantalón chino slim con tela stretch, bolsillos laterales y traseros, y acabado liso.',
+    images: img('hm-chino-slim'),
+    colors: ['#c8b89a', '#5a6a7a', '#1a1a1a'],
+    sizes: ['28', '30', '32', '34', '36'],
+  },
+  {
+    name: "Levi's Jeans Slim Fit 511",
+    brand: "Levi's",
+    category: 'moda-hombre',
+    subCategory: 'pantalones',
+    price: pen(89),
+    stock: 18,
+    description:
+      'Jeans 511 slim fit en denim stretch, corte ceñido desde cadera hasta tobillo, 5 bolsillos clásicos.',
+    images: img('levis-511'),
+    colors: ['#2d4a6a', '#1a1a1a', '#5a6a7a'],
+    sizes: ['28', '30', '32', '34', '36', '38'],
+  },
+  {
+    name: 'Zara Man Pantalón de Vestir Moderno',
+    brand: 'Zara Man',
+    category: 'moda-hombre',
+    subCategory: 'pantalones',
+    price: pen(69),
+    stock: 14,
+    description:
+      'Pantalón de vestir de tela sin arrugas, slim fit, plisado frontal y cierre metálico.',
+    images: img('zara-vestir-hombre'),
+    colors: ['#1a1a1a', '#c8c0b0', '#5a4a3a'],
+    sizes: ['28', '30', '32', '34', '36'],
+  },
+  {
+    name: 'Adidas Jogger de Algodón Essentials',
+    brand: 'Adidas',
+    category: 'moda-hombre',
+    subCategory: 'pantalones',
+    price: pen(45),
+    stock: 25,
+    description:
+      'Jogger de algodón Essentials con elástico en cintura y tobillo, dos bolsillos y fit regular.',
+    images: img('adidas-jogger'),
+    colors: ['#1a1a1a', '#5a6a7a', '#2d5a2d'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+
+  // �"?�"? MODA HOMBRE �"? Calzado �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Nike Air Force 1 Low Blancas',
+    brand: 'Nike',
+    category: 'moda-hombre',
+    subCategory: 'calzado',
+    price: pen(99),
+    stock: 15,
+    description:
+      'Zapatillas Nike Air Force 1 Low con cuero genuino, unidad Air en talón y suela de goma perforada.',
+    images: img('nike-af1'),
+    colors: ['#f0f0f0'],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+  },
+  {
+    name: 'Adidas Stan Smith Cuero',
+    brand: 'Adidas',
+    category: 'moda-hombre',
+    subCategory: 'calzado',
+    price: pen(89),
+    stock: 18,
+    description:
+      'Zapatillas Stan Smith en cuero prensado con tres rayas perforadas y suela de goma. Ícono del tenis.',
+    images: img('adidas-stansmith'),
+    colors: ['#f0f0f0'],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'New Balance 574 Lifestyle',
+    brand: 'New Balance',
+    category: 'moda-hombre',
+    subCategory: 'calzado',
+    price: pen(99),
+    stock: 12,
+    description:
+      'Zapatillas 574 con encaje ENCAP en mediasuela, capellada de cuero y malla. Comodidad todo el día.',
+    images: img('nb-574'),
+    colors: ['#2d4a6a', '#5a6a5a', '#c81a1a'],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+  },
+  {
+    name: 'Clarks Mocasín de Cuero Clásico',
+    brand: 'Clarks',
+    category: 'moda-hombre',
+    subCategory: 'calzado',
+    price: pen(129),
+    stock: 8,
+    description:
+      'Mocasín de cuero genuino con plantilla OrthoLite, suela de cuero y acabado pulido. Elegante y cómodo.',
+    images: img('clarks-mocasin'),
+    colors: ['#8a5a3a', '#1a1a1a'],
+    sizes: ['40', '41', '42', '43', '44'],
+  },
+
+  // �"?�"? MODA HOMBRE �"? Accesorios �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Casio Reloj Edifice Acero Inoxidable',
+    brand: 'Casio',
+    category: 'moda-hombre',
+    subCategory: 'accesorios',
+    price: pen(129),
+    stock: 10,
+    description:
+      'Reloj Edifice de cuarzo con correa de acero, cronógrafo 1/20s, 10 ATM sumergible y fecha.',
+    images: img('casio-edifice'),
+    colors: ['#c0c0c0'],
+    sizes: [],
+  },
+  {
+    name: 'Tommy Hilfiger Cinturón de Cuero',
+    brand: 'Tommy Hilfiger',
+    category: 'moda-hombre',
+    subCategory: 'accesorios',
+    price: pen(49),
+    stock: 20,
+    description:
+      'Cinturón de cuero genuino con hebilla de metal dorada y logo grabado. Corte clásico reversible.',
+    images: img('tommy-belt'),
+    colors: ['#1a1a1a', '#8a5a3a'],
+    sizes: ['S', 'M', 'L', 'XL'],
+  },
+  {
+    name: 'Fossil Billetera Slim de Cuero RFID',
+    brand: 'Fossil',
+    category: 'moda-hombre',
+    subCategory: 'accesorios',
+    price: pen(59),
+    stock: 15,
+    description:
+      'Billetera slim con protección RFID, 6 ranuras para tarjetas, compartimento para billetes y cuero Derrick.',
+    images: img('fossil-billetera'),
+    colors: ['#1a1a1a', '#8a5a3a'],
+    sizes: [],
+  },
+  {
+    name: 'New Era Gorra 59FIFTY NFL Negra',
+    brand: 'New Era',
+    category: 'moda-hombre',
+    subCategory: 'accesorios',
+    price: pen(39),
+    stock: 25,
+    description:
+      'Gorra estructurada 59FIFTY con visera curva, bordado 3D del equipo y cierre trasero metálico.',
+    images: img('newera-gorra'),
+    colors: ['#1a1a1a', '#2d4a6a', '#c81a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? HOGAR �"? Muebles �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Sofá 3 Cuerpos Nórdico Tela Gris',
+    brand: 'Mueblesa',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(799),
+    stock: 4,
+    description:
+      'Sofá de 3 cuerpos tapizado en tela de alta resistencia, patas de madera maciza y relleno de espuma HD.',
+    images: img('sofa-3c-gris'),
+    colors: ['#a0a0a0', '#c8b89a', '#3a3a3a'],
+    sizes: [],
+  },
+  {
+    name: 'Mesa de Comedor Roble 6 Personas',
+    brand: 'Falabella Home',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(599),
+    stock: 3,
+    description:
+      'Mesa de comedor en madera de roble 160x90cm, patas metálicas en negro y superficie lacada mate.',
+    images: img('mesa-comedor-roble'),
+    colors: ['#8a6a4a', '#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Cama Doble con Cajones 140x190',
+    brand: 'IKEA',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(449),
+    stock: 5,
+    description:
+      'Cama doble con 4 cajones de almacenamiento, cabecero acolchado y somier incluido. Medida 140x190cm.',
+    images: img('cama-doble-cajones'),
+    colors: ['#f0f0f0', '#8a6a4a', '#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Silla de Escritorio Ergonómica',
+    brand: 'HM Casa',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(249),
+    stock: 8,
+    description:
+      'Silla ergonómica con soporte lumbar ajustable, apoyabrazos 3D, altura regulable y base giratoria.',
+    images: img('silla-escritorio-ergo'),
+    colors: ['#1a1a1a', '#c8c0b0'],
+    sizes: [],
+  },
+  {
+    name: 'Escritorio Nórdico Minimalista 120cm',
+    brand: 'Sodimac',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(299),
+    stock: 6,
+    description:
+      'Escritorio de 120x60cm en tablero MDP con estructura metálica, cajón lateral y superficie resistente.',
+    images: img('escritorio-nordico'),
+    colors: ['#f0ead0', '#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Velador de Madera con Cajón',
+    brand: 'IKEA',
+    category: 'hogar',
+    subCategory: 'muebles',
+    price: pen(129),
+    stock: 12,
+    description:
+      'Velador de madera con un cajón, estante inferior y patas de madera maciza. Diseño escandinavo.',
+    images: img('velador-madera'),
+    colors: ['#f0ead0', '#8a6a4a'],
+    sizes: [],
+  },
+
+  // �"?�"? HOGAR �"? Iluminación �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Lámpara de Pie Arco Metal Negro 180cm',
+    brand: 'Philips',
+    category: 'hogar',
+    subCategory: 'iluminacion',
+    price: pen(189),
+    stock: 7,
+    description:
+      'Lámpara de pie arco con pantalla de tela, base circular de mármol y brazo metálico negro 180cm.',
+    images: img('lampara-pie-arco'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Lámpara Colgante Industrial Edison',
+    brand: 'Brilliant',
+    category: 'hogar',
+    subCategory: 'iluminacion',
+    price: pen(89),
+    stock: 14,
+    description:
+      'Lámpara colgante industrial con estructura metálica, socket E27 y cable textil trenzado 1.5m.',
+    images: img('lampara-colgante-industrial'),
+    colors: ['#1a1a1a', '#c8a87a'],
+    sizes: [],
+  },
+  {
+    name: 'Velador LED Táctil 3 Intensidades',
+    brand: 'Brilliant',
+    category: 'hogar',
+    subCategory: 'iluminacion',
+    price: pen(49),
+    stock: 20,
+    description:
+      'Velador táctil LED con 3 niveles de intensidad, función timer, luz cálida 3000K y batería recargable.',
+    images: img('velador-led-tactil'),
+    colors: ['#f0f0f0', '#c8a87a'],
+    sizes: [],
+  },
+  {
+    name: 'Tira LED RGB 5m Control Remoto',
+    brand: 'Govee',
+    category: 'hogar',
+    subCategory: 'iluminacion',
+    price: pen(39),
+    stock: 30,
+    description:
+      'Tira LED RGB 5m con control remoto y app, 16 millones de colores, IP65 y corte cada 10cm.',
+    images: img('tira-led-rgb'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Aplique de Pared LED Nórdico',
+    brand: 'Philips',
+    category: 'hogar',
+    subCategory: 'iluminacion',
+    price: pen(69),
+    stock: 15,
+    description:
+      'Aplique de pared LED nórdico, 12W, luz cálida 3000K, cuerpo de aluminio y ángulo ajustable.',
+    images: img('aplique-pared-led'),
+    colors: ['#f0f0f0', '#1a1a1a', '#c8a87a'],
+    sizes: [],
+  },
+
+  // �"?�"? HOGAR �"? Decoración �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Cuadro Canvas Abstracto 80x100cm',
+    brand: 'Art Studio',
+    category: 'hogar',
+    subCategory: 'decoracion',
+    price: pen(89),
+    stock: 10,
+    description:
+      'Cuadro canvas con impresión de arte abstracto, marco de madera y listo para colgar. 80x100cm.',
+    images: img('cuadro-canvas-abstracto'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Espejo Redondo Dorado 80cm',
+    brand: 'HM Casa',
+    category: 'hogar',
+    subCategory: 'decoracion',
+    price: pen(119),
+    stock: 7,
+    description:
+      'Espejo redondo con marco metálico dorado 80cm de diámetro. Ideal para entradas y living.',
+    images: img('espejo-redondo-dorado'),
+    colors: ['#c8a83a'],
+    sizes: [],
+  },
+  {
+    name: 'Maceta Cerámica con Soporte Bambú',
+    brand: 'IKEA',
+    category: 'hogar',
+    subCategory: 'decoracion',
+    price: pen(39),
+    stock: 25,
+    description:
+      'Set maceta de cerámica esmaltada con soporte de bambú, disponible en 3 tamaños.',
+    images: img('maceta-ceramica-bambú'),
+    colors: ['#f0f0f0', '#c87a5a', '#5a8a5a'],
+    sizes: [],
+  },
+  {
+    name: 'Jarrón Decorativo Estilo Mármol',
+    brand: 'Zara Home',
+    category: 'hogar',
+    subCategory: 'decoracion',
+    price: pen(59),
+    stock: 18,
+    description:
+      'Jarrón decorativo en cerámica con efecto mármol negro y dorado, 30cm de altura.',
+    images: img('jarron-marmol'),
+    colors: ['#f0f0f0', '#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Set de Velas Aromáticas x3 Premium',
+    brand: 'Yankee Candle',
+    category: 'hogar',
+    subCategory: 'decoracion',
+    price: pen(29),
+    stock: 35,
+    description:
+      'Set 3 velas aromáticas de parafina en vasija de vidrio con aromas vainilla, lavanda y cedro.',
+    images: img('velas-aromaticas'),
+    colors: [],
+    sizes: [],
+  },
+
+  // �"?�"? HOGAR �"? Textiles �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Juego de Sábanas Percal 300 Hilos',
+    brand: 'Sheraton',
+    category: 'hogar',
+    subCategory: 'textiles',
+    price: pen(79),
+    stock: 15,
+    description:
+      'Juego de sábanas (bajera, encimera y 2 fundas) en algodón percal 300 hilos. Suave y fresco.',
+    images: img('sabanas-percal-300'),
+    colors: ['#f0f0f0', '#c8d0d8', '#c8b89a'],
+    sizes: ['1.5 plazas', '2 plazas', '2.5 plazas'],
+  },
+  {
+    name: 'Plumón de Plumas Doble 220x240cm',
+    brand: 'Sheraton',
+    category: 'hogar',
+    subCategory: 'textiles',
+    price: pen(149),
+    stock: 8,
+    description:
+      'Plumón de plumas de ganso 90/10, funda 100% algodón, temperatura media y funda protectora incluida.',
+    images: img('plumón-plumas'),
+    colors: ['#f0f0f0'],
+    sizes: ['1.5 plazas', '2 plazas'],
+  },
+  {
+    name: 'Alfombra Boho Tejida a Mano 200x290',
+    brand: 'HM Casa',
+    category: 'hogar',
+    subCategory: 'textiles',
+    price: pen(199),
+    stock: 5,
+    description:
+      'Alfombra tejida a mano con lana y algodón reciclado, diseño boho multicolor, 200x290cm.',
+    images: img('alfombra-boho'),
+    colors: ['#c8b89a', '#8a6a4a'],
+    sizes: [],
+  },
+  {
+    name: 'Set Cojines Decorativos x4 Terciopelo',
+    brand: 'Zara Home',
+    category: 'hogar',
+    subCategory: 'textiles',
+    price: pen(59),
+    stock: 20,
+    description:
+      'Set de 4 cojines de terciopelo 45x45cm con cierre oculto. Mix de texturas y colores neutros.',
+    images: img('cojines-terciopelo'),
+    colors: ['#c8b89a', '#5a6a7a', '#3a3a3a'],
+    sizes: [],
+  },
+  {
+    name: 'Cortinas Blackout Lino 140x220cm',
+    brand: 'HM Casa',
+    category: 'hogar',
+    subCategory: 'textiles',
+    price: pen(99),
+    stock: 12,
+    description:
+      'Cortinas blackout de lino sintético, 140x220cm, anillas incluidas, bloqueo de luz 99% y colores neutros.',
+    images: img('cortinas-blackout'),
+    colors: ['#f0f0e8', '#c8c0b0', '#1a1a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? DEPORTE �"? Ropa Deportiva �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Nike Camiseta Running Dri-FIT',
+    brand: 'Nike',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(49),
+    stock: 30,
+    description:
+      'Camiseta de running Dri-FIT con tecnología de gestión de humedad, corte ergonómico y serigrafía reflectante.',
+    images: img('nike-camiseta-running'),
+    colors: ['#1a1a1a', '#f0f0f0', '#2d5a8e', '#c81a1a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Adidas Leggings Techfit 7/8',
+    brand: 'Adidas',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(59),
+    stock: 25,
+    description:
+      'Leggings Techfit de compresión 7/8 con cintura alta, tejido AEROREADY y bolsillo lateral.',
+    images: img('adidas-leggings-techfit'),
+    colors: ['#1a1a1a', '#2d5a8e', '#c81a1a'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    isOffer: true,
+    discount: 20,
+  },
+  {
+    name: 'Under Armour Polera Compresión',
+    brand: 'Under Armour',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(55),
+    stock: 20,
+    description:
+      'Polera de compresión HeatGear manga corta, 4 vías de stretch, secado rápido y protección UPF 30+.',
+    images: img('ua-compresion'),
+    colors: ['#1a1a1a', '#2d5a8e'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Puma Short Training Woven 5"',
+    brand: 'Puma',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(39),
+    stock: 30,
+    description:
+      'Short de training tejido, largo 5 pulgadas, cintura elástica con cordón y bolsillos laterales con cierre.',
+    images: img('puma-short-training'),
+    colors: ['#1a1a1a', '#5a6a7a', '#c81a1a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Nike Buzo Completo Tech Fleece',
+    brand: 'Nike',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(149),
+    stock: 12,
+    description:
+      'Buzo completo Nike Tech Fleece con material térmico, bolsillos con cierre y fit slim moderno.',
+    images: img('nike-tech-fleece'),
+    colors: ['#1a1a1a', '#5a6a7a'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    name: 'Lululemon Sports Bra Align',
+    brand: 'Lululemon',
+    category: 'deporte',
+    subCategory: 'ropa-deportiva',
+    price: pen(69),
+    stock: 15,
+    description:
+      'Sports bra Align de tela Nulu ultrasuave, soporte ligero, corte sin costuras y detalle cruzado.',
+    images: img('lululemon-align-bra'),
+    colors: ['#1a1a1a', '#c8b8d8', '#5a8a5a'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+  },
+
+  // �"?�"? DEPORTE �"? Gimnasio �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Bowflex Mancuernas Ajustables 52kg',
+    brand: 'Bowflex',
+    category: 'deporte',
+    subCategory: 'gimnasio',
+    price: pen(349),
+    stock: 5,
+    description:
+      'Mancuernas ajustables con sistema de perilla de 2kg a 52kg, 15 configuraciones y soporte incluido.',
+    images: img('bowflex-mancuernas'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Atletika Banco de Pesas Multifunción',
+    brand: 'Atletika',
+    category: 'deporte',
+    subCategory: 'gimnasio',
+    price: pen(299),
+    stock: 4,
+    description:
+      'Banco regulable con 7 posiciones, soporte para barra, acolchado antideslizante y capacidad 300kg.',
+    images: img('atletika-banco'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Mat de Yoga Antideslizante 10mm',
+    brand: 'Gaiam',
+    category: 'deporte',
+    subCategory: 'gimnasio',
+    price: pen(35),
+    stock: 25,
+    description:
+      'Colchoneta de yoga 10mm con superficie antideslizante, material TPE ecológico y bolsa de transporte.',
+    images: img('gaiam-mat-yoga'),
+    colors: ['#5a8a5a', '#5a6a8a', '#c81a1a'],
+    sizes: [],
+  },
+  {
+    name: 'TRX Set Bandas Elásticas Resistencia',
+    brand: 'TRX',
+    category: 'deporte',
+    subCategory: 'gimnasio',
+    price: pen(29),
+    stock: 30,
+    description:
+      'Set de 5 bandas de resistencia de látex (10-40kg), con asas, tobilleras y guía de ejercicios.',
+    images: img('trx-bandas'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Speed Rope Cuerda de Saltar Pro',
+    brand: 'Speed Rope',
+    category: 'deporte',
+    subCategory: 'gimnasio',
+    price: pen(25),
+    stock: 35,
+    description:
+      'Cuerda de saltar profesional con rodamientos de acero, cable de acero y mangos ergonómicos.',
+    images: img('cuerda-saltar-pro'),
+    colors: ['#1a1a1a', '#c81a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? DEPORTE �"? Outdoor �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Deuter Mochila Trekking 45L',
+    brand: 'Deuter',
+    category: 'deporte',
+    subCategory: 'outdoor',
+    price: pen(149),
+    stock: 8,
+    description:
+      'Mochila de trekking 45L con sistema Aircontact, hip belt anatómico, tapa con bolsillo y cobertor de lluvia.',
+    images: img('deuter-mochila-45l'),
+    colors: ['#5a8a5a', '#c81a1a', '#5a6a7a'],
+    sizes: [],
+  },
+  {
+    name: 'Columbia Carpa Camping 3 Personas',
+    brand: 'Columbia',
+    category: 'deporte',
+    subCategory: 'outdoor',
+    price: pen(199),
+    stock: 5,
+    description:
+      'Carpa 3 personas con doble capa, varillas de fibra de vidrio, sistema Omni-Shield y montaje fácil.',
+    images: img('columbia-carpa-3p'),
+    colors: ['#5a8a5a'],
+    sizes: [],
+  },
+  {
+    name: 'Black Diamond Bastones Trekking',
+    brand: 'Black Diamond',
+    category: 'deporte',
+    subCategory: 'outdoor',
+    price: pen(79),
+    stock: 12,
+    description:
+      'Bastones de trekking de aluminio, ajustables 68-125cm, punta de widia y empuñadura de corcho.',
+    images: img('blackdiamond-bastones'),
+    colors: ['#1a1a1a', '#c81a1a'],
+    sizes: [],
+  },
+  {
+    name: 'The North Face Sleeping Bag -5°C',
+    brand: 'The North Face',
+    category: 'deporte',
+    subCategory: 'outdoor',
+    price: pen(99),
+    stock: 7,
+    description:
+      'Saco de dormir para temperatura de hasta -5°C, relleno sintético ProDown, forma momia y peso 900g.',
+    images: img('tnf-sleeping-bag'),
+    colors: ['#5a6a7a', '#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Camelbak Bolsa Hidratación 2L',
+    brand: 'Camelbak',
+    category: 'deporte',
+    subCategory: 'outdoor',
+    price: pen(35),
+    stock: 20,
+    description:
+      'Sistema de hidratación 2L con válvula antifugas BigBite, manguera flexible y compartimento acolchado.',
+    images: img('camelbak-hidratacion'),
+    colors: ['#5a8a5a', '#5a6a7a'],
+    sizes: [],
+  },
+
+  // �"?�"? DEPORTE �"? Bicicletas �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Trek Bicicleta MTB 29" Shimano Deore',
+    brand: 'Trek',
+    category: 'deporte',
+    subCategory: 'bicicletas',
+    price: pen(649),
+    stock: 4,
+    description:
+      'Mountain bike 29" con cuadro Alpha Platinum Aluminium, horquilla Rockshox, cambio Shimano Deore 12v.',
+    images: img('trek-mtb-29'),
+    colors: ['#1a1a1a', '#2d5a2d'],
+    sizes: ['S', 'M', 'L'],
+  },
+  {
+    name: 'Giant Bicicleta Urbana Aluminio 7v',
+    brand: 'Giant',
+    category: 'deporte',
+    subCategory: 'bicicletas',
+    price: pen(449),
+    stock: 6,
+    description:
+      'Bicicleta urbana con cuadro de aluminio, manubrio recto, frenos V-brake y cambio Shimano 7 velocidades.',
+    images: img('giant-urbana-7v'),
+    colors: ['#5a6a7a', '#1a1a1a'],
+    sizes: ['S', 'M', 'L'],
+  },
+  {
+    name: 'Xiaomi Electric Scooter Bicicleta 36V',
+    brand: 'Xiaomi',
+    category: 'deporte',
+    subCategory: 'bicicletas',
+    price: pen(899),
+    stock: 3,
+    description:
+      'Bicicleta eléctrica 36V 250W con pantalla LED, 3 modos de asistencia, freno disco y batería 50km.',
+    images: img('xiaomi-ebike'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Fox Casco MTB Speedframe MIPS',
+    brand: 'Fox',
+    category: 'deporte',
+    subCategory: 'bicicletas',
+    price: pen(89),
+    stock: 10,
+    description:
+      'Casco MTB con sistema MIPS, 15 ventilaciones, visera ajustable y almohadillas lavables. CE EN 1078.',
+    images: img('fox-casco-mtb'),
+    colors: ['#1a1a1a', '#c81a1a', '#f0f0f0'],
+    sizes: ['S', 'M', 'L'],
+  },
+  {
+    name: 'Garmin Edge 130 Plus GPS',
+    brand: 'Garmin',
+    category: 'deporte',
+    subCategory: 'bicicletas',
+    price: pen(149),
+    stock: 8,
+    description:
+      'Computador GPS para bicicleta con display de 1.8", rutas Strava, frecuencia cardíaca y batería 12h.',
+    images: img('garmin-edge130'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+
+  // �"?�"? BELLEZA �"? Maquillaje �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Maybelline Fit Me! Base Líquida 30ml',
+    brand: 'Maybelline',
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(25),
+    stock: 40,
+    description:
+      'Base de maquillaje líquida con cobertura media-total, control de brillo y acabado mate natural. 30 tonos.',
+    images: img('maybelline-fitme'),
+    colors: [],
+    sizes: ['30ml'],
+  },
+  {
+    name: 'Urban Decay Paleta Naked 3',
+    brand: 'Urban Decay',
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(59),
+    stock: 15,
+    description:
+      'Paleta de 12 sombras rosas y cobrizos de alta pigmentación, acabados mate y shimmer con espejo.',
+    images: img('urban-decay-naked3'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: "L'Oréal Máscara de Pestañas Drama",
+    brand: "L'Oréal",
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(22),
+    stock: 35,
+    description:
+      'Máscara de pestañas con fórmula de fibras, cepillo voluminizador, efecto 10x más volumen.',
+    images: img('loreal-mascara'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+  {
+    name: 'Charlotte Tilbury Labial Matte',
+    brand: 'Charlotte Tilbury',
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(45),
+    stock: 20,
+    description:
+      'Labial matte de larga duración con fórmula hidratante, acabado aterciopelado y 40 tonos disponibles.',
+    images: img('ct-labial-matte'),
+    colors: [],
+    sizes: [],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'Too Faced Iluminador Liquid Fairy',
+    brand: 'Too Faced',
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(49),
+    stock: 18,
+    description:
+      'Iluminador líquido buildable con pigmentos de cuarzo rosa, acabado cristalino y fórmula antienvejecimiento.',
+    images: img('toofaced-iluminador'),
+    colors: [],
+    sizes: [],
+  },
+  {
+    name: 'Maybelline Corrector Instant Age',
+    brand: 'Maybelline',
+    category: 'belleza',
+    subCategory: 'maquillaje',
+    price: pen(28),
+    stock: 30,
+    description:
+      'Corrector de cobertura total con vitamina E, aplicador de microcepillo y fórmula antiojeras.',
+    images: img('maybelline-corrector'),
+    colors: [],
+    sizes: [],
+  },
+
+  // �"?�"? BELLEZA �"? Skincare �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'The Ordinary Sérum Vitamina C 10%',
+    brand: 'The Ordinary',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(19),
+    stock: 50,
+    description:
+      'Sérum con ácido ascórbico al 10%, niacinamida y ácido hialurónico para piel luminosa y uniforme.',
+    images: img('ordinary-vitamina-c'),
+    colors: [],
+    sizes: ['30ml'],
+  },
+  {
+    name: 'Neutrogena Crema Hydro Boost',
+    brand: 'Neutrogena',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(29),
+    stock: 40,
+    description:
+      'Crema gel ultra hidratante con ácido hialurónico, absorción rápida y piel hidratada 72h.',
+    images: img('neutrogena-hydroboost'),
+    colors: [],
+    sizes: ['50ml'],
+  },
+  {
+    name: 'La Roche-Posay Protector Solar SPF 50',
+    brand: 'La Roche-Posay',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(32),
+    stock: 35,
+    description:
+      'Protector solar SPF 50+ ultra ligero no comedogénico, apto piel sensible, sin perfume y fórmula fluida.',
+    images: img('larocheposay-spf50'),
+    colors: [],
+    sizes: ['50ml'],
+    isOffer: true,
+    discount: 10,
+  },
+  {
+    name: 'The Ordinary Ácido Hialurónico 2%+B5',
+    brand: 'The Ordinary',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(16),
+    stock: 60,
+    description:
+      'Suero de ácido hialurónico de 3 pesos moleculares + vitamina B5 para hidratación profunda y superficial.',
+    images: img('ordinary-hyaluronic'),
+    colors: [],
+    sizes: ['30ml'],
+  },
+  {
+    name: 'CeraVe Crema Retinol 0.5% 50ml',
+    brand: 'CeraVe',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(35),
+    stock: 25,
+    description:
+      'Crema de retinol 0.5% con 3 ceramidas esenciales, niacinamida y ácido hialurónico. Piel renovada.',
+    images: img('cerave-retinol'),
+    colors: [],
+    sizes: ['50ml'],
+  },
+  {
+    name: 'Bioderma Sérum Sensibio H2O 200ml',
+    brand: 'Bioderma',
+    category: 'belleza',
+    subCategory: 'skincare',
+    price: pen(29),
+    stock: 30,
+    description:
+      'Agua micelar para piel sensible, limpieza desmaquillante suave, fórmula hipoalergénica y calmante.',
+    images: img('bioderma-sensibio'),
+    colors: [],
+    sizes: ['200ml'],
+  },
+
+  // �"?�"? BELLEZA �"? Perfumes �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Carolina Herrera 212 NYC EDP 100ml',
+    brand: 'Carolina Herrera',
+    category: 'belleza',
+    subCategory: 'perfumes',
+    price: pen(89),
+    stock: 12,
+    description:
+      'Fragancia unisex NYC con notas de magnolia, flor de calabaza y cedro. Icónico y cosmopolita.',
+    images: img('ch-212-nyc'),
+    colors: [],
+    sizes: ['50ml', '100ml'],
+  },
+  {
+    name: 'Carolina Herrera Good Girl EDP 80ml',
+    brand: 'Carolina Herrera',
+    category: 'belleza',
+    subCategory: 'perfumes',
+    price: pen(119),
+    stock: 8,
+    description:
+      'Fragancia femenina con notas de jazmín, cacao y vainilla. El frasco icónico con forma de stiletto.',
+    images: img('ch-good-girl'),
+    colors: [],
+    sizes: ['50ml', '80ml'],
+  },
+  {
+    name: 'Giorgio Armani Acqua di Giò 100ml',
+    brand: 'Giorgio Armani',
+    category: 'belleza',
+    subCategory: 'perfumes',
+    price: pen(99),
+    stock: 10,
+    description:
+      'Fragancia masculina fresca con notas de mar, bergamota, jazmín marino y patchouli. Referente acuático.',
+    images: img('armani-acqua-di-gio'),
+    colors: [],
+    sizes: ['50ml', '100ml'],
+    isOffer: true,
+    discount: 20,
+  },
+  {
+    name: 'Lancôme La Vie est Belle EDP 75ml',
+    brand: 'Lancôme',
+    category: 'belleza',
+    subCategory: 'perfumes',
+    price: pen(109),
+    stock: 9,
+    description:
+      'Fragancia femenina con notas de iris, praline y vainilla. La felicidad hecha perfume.',
+    images: img('lancome-la-vie'),
+    colors: [],
+    sizes: ['50ml', '75ml', '100ml'],
+  },
+  {
+    name: 'Chanel Bleu de Chanel EDT 100ml',
+    brand: 'Chanel',
+    category: 'belleza',
+    subCategory: 'perfumes',
+    price: pen(149),
+    stock: 6,
+    description:
+      'Eau de Toilette masculina con notas de limón, menta, incienso y labdano. Elegancia intemporal.',
+    images: img('chanel-bleu'),
+    colors: [],
+    sizes: ['50ml', '100ml'],
+  },
+
+  // �"?�"? BELLEZA �"? Cabello �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+  {
+    name: 'Kérastase Shampoo Nutritive 250ml',
+    brand: 'Kérastase',
+    category: 'belleza',
+    subCategory: 'cabello',
+    price: pen(39),
+    stock: 20,
+    description:
+      'Shampoo nutritivo para cabello seco con Irisome, lípidos nutritivos y proteínas reforzadoras.',
+    images: img('kerastase-nutritive'),
+    colors: [],
+    sizes: ['250ml', '500ml'],
+  },
+  {
+    name: "L'Oréal Mascarilla Elvive Extraordinary",
+    brand: "L'Oréal",
+    category: 'belleza',
+    subCategory: 'cabello',
+    price: pen(18),
+    stock: 35,
+    description:
+      'Mascarilla hidratante con aceite extraordinario de 6 aceites florales preciosos. Cabello brillante.',
+    images: img('loreal-elvive-mascarilla'),
+    colors: [],
+    sizes: ['300ml'],
+  },
+  {
+    name: 'Moroccanoil Aceite de Argán 100ml',
+    brand: 'Moroccanoil',
+    category: 'belleza',
+    subCategory: 'cabello',
+    price: pen(45),
+    stock: 15,
+    description:
+      'Aceite de tratamiento con aceite de argán puro, argan y antioxidantes. Cabello suave y brillante.',
+    images: img('moroccanoil-argan'),
+    colors: [],
+    sizes: ['100ml'],
+    isOffer: true,
+    discount: 15,
+  },
+  {
+    name: 'GHD Plancha Cabello Platinum+ 230°C',
+    brand: 'GHD',
+    category: 'belleza',
+    subCategory: 'cabello',
+    price: pen(249),
+    stock: 7,
+    description:
+      'Plancha de cabello inteligente con tecnología tri-zone, 230°C, placas flotantes y apagado automático.',
+    images: img('ghd-platinum'),
+    colors: ['#1a1a1a', '#c8a87a'],
+    sizes: [],
+  },
+  {
+    name: 'Remington Secadora Iónica 2200W',
+    brand: 'Remington',
+    category: 'belleza',
+    subCategory: 'cabello',
+    price: pen(79),
+    stock: 12,
+    description:
+      'Secadora iónica profesional 2200W con tecnología de cerámica, 3 velocidades, 2 temperaturas y difusor.',
+    images: img('remington-secadora'),
+    colors: ['#1a1a1a'],
+    sizes: [],
+  },
+];
+
+// �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
+async function main() {
+  console.log('�YO� Iniciando seed...');
+
+  await prisma.user.upsert({
+    where: { email: 'admin@tienda.com' },
+    update: { password: await bcrypt.hash('ASDF123456asdf123456', 10) },
+    create: {
+      name: 'Administrador',
+      email: 'admin@tienda.com',
+      password: await bcrypt.hash('ASDF123456asdf123456', 10),
+      role: 'ADMIN',
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'usuario@tienda.com' },
+    update: {},
+    create: {
+      name: 'Usuario Demo',
+      email: 'usuario@tienda.com',
+      password: await bcrypt.hash('user123', 10),
+      role: 'USER',
+      phone: '+56912345678',
+    },
+  });
+
+  console.log('�o. Usuarios creados');
+
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.product.createMany({ data: PRODUCTS });
+  console.log(`�o. ${PRODUCTS.length} productos creados`);
+
+  console.log('�YZ? Seed completado');
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());

@@ -1,0 +1,33 @@
+# dependencies
+**/node_modules
+
+# builds
+**/dist
+**/build
+
+# env
+**/.env
+**/.env.*
+
+# logs
+*.log
+
+# angular
+**/.angular
+
+# coverage
+**/coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# cache
+.cache/
+
+# claude
+.claude/

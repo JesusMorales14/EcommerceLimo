@@ -1,0 +1,115 @@
+<div class="admin-deals-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div>
+        <h1>Ofertas del Día</h1>
+        <p>Configura el tiempo y los productos en oferta para el banner de inicio</p>
+      </div>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span> Cargando...
+    </div>
+  } @else {
+    <!-- Estado actual -->
+    <div class="status-card" [class.active]="session()" [class.inactive]="!session()">
+      <div class="status-icon">
+        <span class="material-symbols-outlined">{{
+          session() ? 'local_fire_department' : 'timer_off'
+        }}</span>
+      </div>
+      <div class="status-info">
+        @if (session()) {
+          <h3>Oferta activa</h3>
+          <p>
+            Tiempo restante: <strong class="countdown">{{ remainingLabel() }}</strong>
+          </p>
+          <p class="ends-at">Termina el {{ session()!.endsAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        } @else {
+          <h3>Sin oferta activa</h3>
+          <p>La sección "Ofertas del Día" está oculta en el inicio.</p>
+        }
+      </div>
+      @if (session()) {
+        <button class="btn-cancel" (click)="cancel()">
+          <span class="material-symbols-outlined">cancel</span> Cancelar oferta
+        </button>
+      }
+    </div>
+
+    <!-- Formulario nueva sesión -->
+    <div class="form-card">
+      <h2>
+        <span class="material-symbols-outlined">add_alarm</span>
+        {{ session() ? 'Reemplazar oferta activa' : 'Activar nueva oferta' }}
+      </h2>
+      <p class="form-hint">
+        Elige hasta cuándo estarán visibles las "Ofertas del Día". Los productos que se muestran son
+        los marcados con <strong style="color: green">verde</strong> en el catálogo de productos.
+      </p>
+
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+      @if (success()) {
+        <div class="alert-success">{{ success() }}</div>
+      }
+
+      <div class="field-row">
+        <div class="field">
+          <label>Fecha y hora de fin *</label>
+          <input type="datetime-local" [(ngModel)]="endsAtInput" [min]="minDatetime()" />
+        </div>
+        <button class="btn-activate" [disabled]="saving()" (click)="activate()">
+          @if (saving()) {
+            <span class="material-symbols-outlined spin">progress_activity</span>
+          } @else {
+            <span class="material-symbols-outlined">local_fire_department</span>
+          }
+          {{ saving() ? 'Guardando...' : 'Activar oferta' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Productos en oferta -->
+    <div class="offers-card">
+      <h2>
+        <span class="material-symbols-outlined">sell</span>
+        Productos marcados como oferta ({{ offers().length }})
+      </h2>
+      <p class="form-hint">
+        Para agregar o quitar productos de las ofertas, ve a
+        <a routerLink="/admin/products">Gestión de Productos</a> y activa/desactiva el campo
+        <em>Marcar como oferta</em>.
+      </p>
+
+      @if (offers().length === 0) {
+        <div class="no-offers">
+          <span class="material-symbols-outlined">search_off</span>
+          <p>No hay productos marcados como oferta.</p>
+          <a routerLink="/admin/products" class="btn-go">Ir a Productos →</a>
+        </div>
+      } @else {
+        <div class="offers-grid">
+          @for (p of offers(); track p.id) {
+            <div class="offer-chip">
+              <img [src]="p.images[0]" [alt]="p.name" />
+              <div class="chip-info">
+                <span class="chip-name">{{ p.name }}</span>
+                <span class="chip-price">S/ {{ p.price | number: '1.0-0' }}</span>
+              </div>
+              @if (p.discount) {
+                <span class="chip-badge">-{{ p.discount }}%</span>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

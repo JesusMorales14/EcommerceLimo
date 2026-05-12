@@ -1,0 +1,57 @@
+<div class="admin-users-page">
+  <div class="page-header">
+    <a routerLink="/admin" class="back-link">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Panel Admin
+    </a>
+    <h1>Usuarios</h1>
+    <p>Lista de todos los usuarios registrados</p>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      Cargando usuarios...
+    </div>
+  } @else if (users().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">group</span>
+      <p>No hay usuarios registrados</p>
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Teléfono</th>
+            <th>Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of users(); track u.id) {
+            <tr>
+              <td class="col-id">{{ u.id }}</td>
+              <td class="col-name">
+                <div class="user-cell">
+                  <div class="user-avatar">{{ u.name.charAt(0).toUpperCase() }}</div>
+                  {{ u.name }}
+                </div>
+              </td>
+              <td class="col-email">{{ u.email }}</td>
+              <td class="col-role">
+                <span class="role-badge" [class.admin]="u.role === 'ADMIN'">{{ u.role }}</span>
+              </td>
+              <td class="col-phone">{{ u.phone ?? '—' }}</td>
+              <td class="col-date">{{ u.createdAt | date:'dd MMM yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="total-count">{{ users().length }} usuarios en total</p>
+  }
+</div>

@@ -1,0 +1,142 @@
+<div class="account-page">
+  <div class="account-hero">
+    <div class="hero-avatar">
+      <span class="material-symbols-outlined">person</span>
+    </div>
+    <div class="hero-info">
+      <h1>{{ authService.user()?.name }}</h1>
+      <p>{{ authService.user()?.email }}</p>
+      @if (authService.user()?.phone) {
+        <p>{{ authService.user()?.phone }}</p>
+      }
+      @if (authService.user()?.address) {
+        <p class="address-line">
+          <span class="material-symbols-outlined">location_on</span>
+          {{ authService.user()?.address }}
+        </p>
+      }
+    </div>
+    <div class="hero-actions">
+      <button class="btn-edit" (click)="openEdit()">
+        <span class="material-symbols-outlined">edit</span>
+        Editar perfil
+      </button>
+      @if (authService.isAdmin()) {
+        <a routerLink="/admin" class="btn-admin">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          Panel Admin
+        </a>
+      }
+      <button class="btn-logout" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  @if (editMode()) {
+    <div class="edit-card">
+      <h3>Editar perfil</h3>
+      <div class="edit-fields">
+        <label>
+          Nombre
+          <input type="text" [(ngModel)]="editName" placeholder="Tu nombre" />
+        </label>
+        <label>
+          Teléfono
+          <input type="tel" [(ngModel)]="editPhone" placeholder="+52 000 000 0000" />
+        </label>
+        <label class="full-width">
+          Dirección
+          <input type="text" [(ngModel)]="editAddress" placeholder="Calle, número, colonia, ciudad" />
+        </label>
+      </div>
+      <div class="edit-actions">
+        <button class="btn-cancel" (click)="cancelEdit()">Cancelar</button>
+        <button class="btn-save" (click)="saveProfile()" [disabled]="saving()">
+          @if (saving()) {
+            <span class="material-symbols-outlined spin">progress_activity</span>
+          } @else {
+            Guardar cambios
+          }
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="account-body">
+    @if (orderSuccess()) {
+      <div class="order-success-banner">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div>
+          <strong>¡Pedido confirmado!</strong>
+          <p>Tu pedido fue procesado exitosamente. Recibirás un email con los detalles de seguimiento.</p>
+        </div>
+      </div>
+    }
+    <h2>Mis Pedidos</h2>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <span class="material-symbols-outlined spin">progress_activity</span>
+        Cargando pedidos...
+      </div>
+    } @else if (orders().length === 0) {
+      <div class="empty-orders">
+        <span class="material-symbols-outlined">receipt_long</span>
+        <p>Aún no tienes pedidos</p>
+        <a routerLink="/" class="btn-shop">Ir a la tienda</a>
+      </div>
+    } @else {
+      <div class="orders-list">
+        @for (order of orders(); track order.id) {
+          <div class="order-card">
+            <div class="order-card-header">
+              <div>
+                <span class="order-id">Pedido #{{ order.id }}</span>
+                <span class="order-date">{{ order.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+              </div>
+              <span class="status-badge" [style.background]="STATUS_COLORS[order.status] + '20'" [style.color]="STATUS_COLORS[order.status]">
+                {{ STATUS_LABELS[order.status] }}
+              </span>
+            </div>
+
+            <!-- Order tracking timeline -->
+            @if (order.status !== 'CANCELLED') {
+              <div class="order-timeline">
+                @for (step of TIMELINE_STEPS; track step.status) {
+                  <div class="tl-step" [class.done]="isStepDone(order.status, step.status)" [class.active]="order.status === step.status">
+                    <div class="tl-dot">
+                      <span class="material-symbols-outlined">{{ step.icon }}</span>
+                    </div>
+                    <span class="tl-label">{{ step.label }}</span>
+                  </div>
+                  @if (!$last) {
+                    <div class="tl-line" [class.done]="isStepDone(order.status, step.status)"></div>
+                  }
+                }
+              </div>
+            } @else {
+              <div class="order-cancelled-bar">
+                <span class="material-symbols-outlined">cancel</span> Pedido cancelado
+              </div>
+            }
+
+            <div class="order-items">
+              @for (item of order.items; track item.id) {
+                <div class="order-item-row">
+                  <span class="oi-name">{{ item.product.name }}</span>
+                  <span class="oi-qty">x{{ item.quantity }}</span>
+                  <span class="oi-price">{{ item.price * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                </div>
+              }
+            </div>
+            <div class="order-card-footer">
+              <span class="order-total">Total: <strong>{{ order.total | currency:'PEN':'S/ ':'1.0-0' }}</strong></span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f4f7f4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #171d17;
+  -webkit-font-smoothing: antialiased;
+}
+
+*:focus { outline: none; }
+*:focus-visible { outline: 2px solid #006b2d; outline-offset: 2px; }
+
+a { color: inherit; }
+
+img { display: block; max-width: 100%; }
+
+button { font-family: inherit; }
+
+// ── App shell ─────────────────────────────────────────────────────────────────
+.app-layout {
+  display: block;
+  width: 100%;
+}
+
+app-footer {
+  display: block;
+}

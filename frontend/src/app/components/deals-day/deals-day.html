@@ -1,0 +1,24 @@
+<div class="deal-card">
+  <div class="image-box">
+    <span class="discount-badge">-30%</span>
+    <button class="wish-btn">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <img [src]="image" alt="{{name}}" class="product-image">
+  </div>
+
+  <div class="deal-content">
+    <p class="category">{{category}}</p>
+    <h3 class="product-name">{{name}}</h3>
+
+    <div class="price-row">
+      <span class="price-now">{{price | currency:'CLP':'$':'1.0-0'}}</span>
+      <span class="price-before">{{oldPrice | currency:'CLP':'$':'1.0-0'}}</span>
+    </div>
+
+    <button class="add-btn">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      Agregar al carro
+    </button>
+  </div>
+</div>
