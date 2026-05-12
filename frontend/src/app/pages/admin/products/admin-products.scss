@@ -401,72 +401,120 @@
 }
 
 .td-actions {
+  text-align: left;
+}
+
+.actions-container {
   display: flex;
-  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
 
-  .btn-edit,
-  .btn-del {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    .material-symbols-outlined {
-      font-size: 18px;
-    }
-  }
+.btn-edit,
+.btn-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
 
-  .btn-edit {
-    color: #64748b;
-    &:hover {
-      background: #f0f4f0;
-      color: #006b2d;
-    }
-  }
-  .btn-del {
-    color: #cbd5e1;
-    &:hover {
-      background: #fef2f2;
-      color: #dc2626;
-    }
+  .material-symbols-outlined {
+    font-size: 18px;
   }
 }
 
-.no-offer { color: #cbd5e1; font-size: 13px; }
+.btn-edit {
+  color: #64748b;
+
+  &:hover {
+    background: #f0f4f0;
+    color: #006b2d;
+  }
+}
+
+.btn-del {
+  color: #cbd5e1;
+
+  &:hover {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.no-offer {
+  color: #cbd5e1;
+  font-size: 13px;
+}
 
 // ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .admin-section { padding: 16px 12px; }
-  .section-header h1 { font-size: 20px; }
-  .header-actions { flex-direction: column; align-items: stretch; gap: 10px; }
-  .search-wrap { max-width: none; }
-  .btn-primary { width: 100%; justify-content: center; }
-  .product-form-panel { width: 100%; max-width: 100%; padding: 20px 16px; }
-  .form-grid { grid-template-columns: 1fr; .field.full { grid-column: 1; } }
-  .category-chips { gap: 6px; }
+  .admin-section {
+    padding: 16px 12px;
+  }
+  .section-header h1 {
+    font-size: 20px;
+  }
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .search-wrap {
+    max-width: none;
+  }
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+  .product-form-panel {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    .field.full {
+      grid-column: 1;
+    }
+  }
+  .category-chips {
+    gap: 6px;
+  }
 
   // ── Tabla → Tarjetas ──────────────────────────────────────────────────────
-  .products-table-wrapper { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
+  .products-table-wrapper {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+  }
 
   .products-table {
     display: block;
 
-    thead { display: none; }
+    thead {
+      display: none;
+    }
 
-    tbody { display: block; }
+    tbody {
+      display: block;
+    }
 
     tbody tr {
       display: block;
       background: #fff;
       border-radius: 14px;
-      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.07);
       margin-bottom: 12px;
       overflow: hidden;
       border: 1px solid #f1f5f9;
 
-      &:hover td { background: inherit; }
+      &:hover td {
+        background: inherit;
+      }
     }
 
     tbody td {
@@ -478,9 +526,15 @@
       font-size: 13px;
       color: #1e293b;
 
-      &:last-child { border-bottom: none; }
-      &:nth-child(odd)  { background: #f8fafc; }
-      &:nth-child(even) { background: #fff; }
+      &:last-child {
+        border-bottom: none;
+      }
+      &:nth-child(odd) {
+        background: #f8fafc;
+      }
+      &:nth-child(even) {
+        background: #fff;
+      }
 
       &::before {
         content: attr(data-label);
@@ -494,13 +548,35 @@
       }
     }
 
-    .td-img { display: none; }
-    .td-id  { display: none; }
-    .td-name { font-weight: 700; font-size: 14px; color: #1e293b; background: #fff !important; border-bottom: 2px solid #f1f5f9 !important; }
-    .td-name::before { display: none; }
-    .td-name { justify-content: flex-start; }
-    .td-price { color: #006b2d; font-weight: 700; }
-    .td-actions { justify-content: flex-end; gap: 8px; }
-    .td-actions::before { margin-right: auto; }
+    .td-img {
+      display: none;
+    }
+    .td-id {
+      display: none;
+    }
+    .td-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #1e293b;
+      background: #fff !important;
+      border-bottom: 2px solid #f1f5f9 !important;
+    }
+    .td-name::before {
+      display: none;
+    }
+    .td-name {
+      justify-content: flex-start;
+    }
+    .td-price {
+      color: #006b2d;
+      font-weight: 700;
+    }
+    .td-actions {
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .td-actions::before {
+      margin-right: auto;
+    }
   }
 }

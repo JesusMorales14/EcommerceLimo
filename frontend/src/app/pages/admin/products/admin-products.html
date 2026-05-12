@@ -197,12 +197,16 @@
           @for (product of filteredProducts(); track product.id) {
             <tr>
               <td class="td-id" data-label="ID">#{{ product.id }}</td>
-              <td class="td-img" data-label="Imagen"><img [src]="product.images[0]" [alt]="product.name" class="product-thumb" /></td>
+              <td class="td-img" data-label="Imagen">
+                <img [src]="product.images[0]" [alt]="product.name" class="product-thumb" />
+              </td>
               <td class="td-name" data-label="Nombre">{{ product.name }}</td>
               <td data-label="Categoría">
                 <span class="cat-badge">{{ product.category }}</span>
               </td>
-              <td class="td-price" data-label="Precio">{{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</td>
+              <td class="td-price" data-label="Precio">
+                {{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}
+              </td>
               <td [class.low-stock]="product.stock < 5" data-label="Stock">{{ product.stock }}</td>
               <td data-label="Oferta">
                 @if (product.isOffer) {
@@ -212,12 +216,15 @@
                 }
               </td>
               <td class="td-actions" data-label="Acciones">
-                <button class="btn-edit" (click)="openEdit(product)">
-                  <span class="material-symbols-outlined">edit</span>
-                </button>
-                <button class="btn-del" (click)="delete(product.id)">
-                  <span class="material-symbols-outlined">delete</span>
-                </button>
+                <div class="actions-container">
+                  <button class="btn-edit" (click)="openEdit(product)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+
+                  <button class="btn-del" (click)="delete(product.id)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
           } @empty {
