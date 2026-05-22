@@ -9,6 +9,27 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+// ── Material Symbols (icon font) ──────────────────────────────────────────────
+// Defined locally so icons render correctly even before Google Fonts CSS loads.
+// font-feature-settings 'liga' enables the ligatures that map names → glyphs.
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 *:focus { outline: none; }
 *:focus-visible { outline: 2px solid #006b2d; outline-offset: 2px; }
 

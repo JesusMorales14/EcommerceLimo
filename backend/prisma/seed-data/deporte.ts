@@ -1,0 +1,65 @@
+import { mk, BLK, WHT } from './helpers';
+
+const rdepo = mk('deporte', 'ropa-deportiva');
+const gym   = mk('deporte', 'gimnasio');
+const outd  = mk('deporte', 'outdoor');
+const bici  = mk('deporte', 'bicicletas');
+
+export const deporte = [
+  rdepo('Nike Camiseta Running Dri-FIT', 'Nike', 49, 30,
+    'Camiseta de running Dri-FIT con tecnología de gestión de humedad, corte ergonómico y serigrafía reflectante.',
+    [BLK, WHT, '#2d5a8e', '#c81a1a'], ['S', 'M', 'L', 'XL', 'XXL']),
+  rdepo('Adidas Leggings Techfit 7/8', 'Adidas', 59, 25,
+    'Leggings Techfit de compresión 7/8 con cintura alta, tejido AEROREADY y bolsillo lateral.',
+    [BLK, '#2d5a8e', '#c81a1a'], ['XS', 'S', 'M', 'L', 'XL'], 20),
+  rdepo('Under Armour Polera Compresión', 'Under Armour', 55, 20,
+    'Polera de compresión HeatGear manga corta, 4 vías de stretch, secado rápido y protección UPF 30+.',
+    [BLK, '#2d5a8e'], ['S', 'M', 'L', 'XL', 'XXL']),
+  rdepo('Puma Short Training Woven 5"', 'Puma', 39, 30,
+    'Short de training tejido, largo 5 pulgadas, cintura elástica con cordón y bolsillos laterales con cierre.',
+    [BLK, '#5a6a7a', '#c81a1a'], ['S', 'M', 'L', 'XL', 'XXL']),
+  rdepo('Nike Buzo Completo Tech Fleece', 'Nike', 149, 12,
+    'Buzo completo Nike Tech Fleece con material térmico, bolsillos con cierre y fit slim moderno.',
+    [BLK, '#5a6a7a'], ['S', 'M', 'L', 'XL', 'XXL']),
+  rdepo('Lululemon Sports Bra Align', 'Lululemon', 69, 15,
+    'Sports bra Align de tela Nulu ultrasuave, soporte ligero, corte sin costuras y detalle cruzado.',
+    [BLK, '#c8b8d8', '#5a8a5a'], ['XS', 'S', 'M', 'L', 'XL']),
+
+  gym('Bowflex Mancuernas Ajustables 52kg', 'Bowflex', 349, 5,
+    'Mancuernas ajustables con sistema de perilla de 2kg a 52kg, 15 configuraciones y soporte incluido.'),
+  gym('Atletika Banco de Pesas Multifunción', 'Atletika', 299, 4,
+    'Banco regulable con 7 posiciones, soporte para barra, acolchado antideslizante y capacidad 300kg.', [BLK]),
+  gym('Mat de Yoga Antideslizante 10mm', 'Gaiam', 35, 25,
+    'Colchoneta de yoga 10mm con superficie antideslizante, material TPE ecológico y bolsa de transporte.',
+    ['#5a8a5a', '#5a6a8a', '#c81a1a']),
+  gym('TRX Set Bandas Elásticas Resistencia', 'TRX', 29, 30,
+    'Set de 5 bandas de resistencia de látex (10-40kg), con asas, tobilleras y guía de ejercicios.'),
+  gym('Speed Rope Cuerda de Saltar Pro', 'Speed Rope', 25, 35,
+    'Cuerda de saltar profesional con rodamientos de acero, cable de acero y mangos ergonómicos.', [BLK, '#c81a1a']),
+
+  outd('Deuter Mochila Trekking 45L', 'Deuter', 149, 8,
+    'Mochila de trekking 45L con sistema Aircontact, hip belt anatómico, tapa con bolsillo y cobertor de lluvia.',
+    ['#5a8a5a', '#c81a1a', '#5a6a7a']),
+  outd('Columbia Carpa Camping 3 Personas', 'Columbia', 199, 5,
+    'Carpa 3 personas con doble capa, varillas de fibra de vidrio, sistema Omni-Shield y montaje fácil.', ['#5a8a5a']),
+  outd('Black Diamond Bastones Trekking', 'Black Diamond', 79, 12,
+    'Bastones de trekking de aluminio, ajustables 68-125cm, punta de widia y empuñadura de corcho.', [BLK, '#c81a1a']),
+  outd('The North Face Sleeping Bag -5°C', 'The North Face', 99, 7,
+    'Saco de dormir para temperatura de hasta -5°C, relleno sintético ProDown, forma momia y peso 900g.', ['#5a6a7a', BLK]),
+  outd('Camelbak Bolsa Hidratación 2L', 'Camelbak', 35, 20,
+    'Sistema de hidratación 2L con válvula antifugas BigBite, manguera flexible y compartimento acolchado.', ['#5a8a5a', '#5a6a7a']),
+
+  bici('Trek Bicicleta MTB 29" Shimano Deore', 'Trek', 649, 4,
+    'Mountain bike 29" con cuadro Alpha Platinum Aluminium, horquilla Rockshox, cambio Shimano Deore 12v.',
+    [BLK, '#2d5a2d'], ['S', 'M', 'L']),
+  bici('Giant Bicicleta Urbana Aluminio 7v', 'Giant', 449, 6,
+    'Bicicleta urbana con cuadro de aluminio, manubrio recto, frenos V-brake y cambio Shimano 7 velocidades.',
+    ['#5a6a7a', BLK], ['S', 'M', 'L']),
+  bici('Xiaomi Electric Scooter Bicicleta 36V', 'Xiaomi', 899, 3,
+    'Bicicleta eléctrica 36V 250W con pantalla LED, 3 modos de asistencia, freno disco y batería 50km.', [BLK]),
+  bici('Fox Casco MTB Speedframe MIPS', 'Fox', 89, 10,
+    'Casco MTB con sistema MIPS, 15 ventilaciones, visera ajustable y almohadillas lavables. CE EN 1078.',
+    [BLK, '#c81a1a', WHT], ['S', 'M', 'L']),
+  bici('Garmin Edge 130 Plus GPS', 'Garmin', 149, 8,
+    'Computador GPS para bicicleta con display de 1.8", rutas Strava, frecuencia cardíaca y batería 12h.', [BLK]),
+];

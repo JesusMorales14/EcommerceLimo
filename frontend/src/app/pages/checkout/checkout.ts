@@ -304,9 +304,7 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
 
   get cardBrandDisplay(): string {
     const b = this.stripeCardBrand();
-    if (b === 'visa')       return 'VISA';
-    if (b === 'mastercard') return 'MASTERCARD';
-    if (b === 'amex')       return 'AMEX';
-    return b ? b.toUpperCase() : 'CARD';
+    const labels: Record<string, string> = { visa: 'VISA', mastercard: 'MASTERCARD', amex: 'AMEX' };
+    return labels[b] ?? (b ? b.toUpperCase() : 'CARD');
   }
 }

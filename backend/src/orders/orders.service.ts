@@ -23,26 +23,21 @@ export class OrdersService {
   ) {}
 
   async createOrder(userId: number, dto: CreateOrderDto) {
-    let total = 0;
-    const itemsData: { productId: number; quantity: number; price: number }[] =
-      [];
+    const products = await Promise.all(
+      dto.items.map(item => this.prisma.product.findUnique({ where: { id: item.productId } }))
+    );
 
-    for (const item of dto.items) {
-      const product = await this.prisma.product.findUnique({
-        where: { id: item.productId },
-      });
-      if (!product)
-        throw new BadRequestException(
-          `Producto ${item.productId} no encontrado`,
-        );
-      if (product.stock < item.quantity)
-        throw new BadRequestException(
-          `Stock insuficiente para "${product.name}"`,
-        );
-
-      total += product.price * item.quantity;
-      itemsData.push({ productId: product.id, quantity: item.quantity, price: product.price });
+    for (let i = 0; i < dto.items.length; i++) {
+      const product = products[i];
+      const item    = dto.items[i];
+      if (!product) throw new BadRequestException(`Producto ${item.productId} no encontrado`);
+      if (product.stock < item.quantity) throw new BadRequestException(`Stock insuficiente para "${product.name}"`);
     }
+
+    let total = dto.items.reduce((sum, item, i) => sum + products[i]!.price * item.quantity, 0);
+    const itemsData = dto.items.map((item, i) => ({
+      productId: products[i]!.id, quantity: item.quantity, price: products[i]!.price,
+    }));
 
     if (dto.couponCode) {
       const result = await this.coupons.validate(dto.couponCode, total);
@@ -52,8 +47,7 @@ export class OrdersService {
 
     const order = await this.prisma.order.create({
       data: {
-        userId,
-        total,
+        userId, total,
         paymentMethod:   dto.paymentMethod,
         deliveryName:    dto.delivery?.name,
         deliveryPhone:   dto.delivery?.phone,
@@ -66,13 +60,12 @@ export class OrdersService {
       include: includeAll,
     });
 
-    // Descontar stock
-    for (const item of dto.items) {
-      await this.prisma.product.update({
+    await Promise.all(
+      dto.items.map(item => this.prisma.product.update({
         where: { id: item.productId },
-        data: { stock: { decrement: item.quantity } },
-      });
-    }
+        data:  { stock: { decrement: item.quantity } },
+      }))
+    );
 
     await this.mail.sendOrderConfirmation(order.user.email, order);
     return order;

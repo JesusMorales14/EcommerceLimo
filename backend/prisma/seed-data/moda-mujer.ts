@@ -1,0 +1,66 @@
+import { mk, BLK, WHT } from './helpers';
+
+const vest  = mk('moda-mujer', 'vestidos');
+const blusa = mk('moda-mujer', 'blusas');
+const jeanW = mk('moda-mujer', 'jeans');
+const calzW = mk('moda-mujer', 'calzado');
+
+export const modaMujer = [
+  vest('Vestido Floral Midi de Verano', 'H&M', 49, 25,
+    'Vestido midi con estampado floral, tela viscosa fluida, manga abullonada y largo a la rodilla.',
+    ['#c87a5a', '#5a7ac8', '#f0e8d0'], ['XS', 'S', 'M', 'L', 'XL']),
+  vest('Vestido Tipo Blazer Estructurado', 'Zara', 79, 18,
+    'Vestido blazer de corte recto con botonadura dorada, bolsillos laterales y tela de crepé.',
+    [BLK, '#c8b89a', '#2d4a2d'], ['XS', 'S', 'M', 'L']),
+  vest('Vestido de Noche Satinado Espalda', 'Mango', 119, 10,
+    'Vestido de noche en satén con espalda descubierta, abertura lateral y largo al suelo.',
+    [BLK, '#c0a0d0'], ['XS', 'S', 'M', 'L'], 20),
+  vest('Vestido Casual Denim Manga Corta', 'Pull&Bear', 59, 20,
+    'Vestido casual de denim con botonadura frontal, cinturón incluido y corte recto midi.',
+    ['#5a6a8a'], ['XS', 'S', 'M', 'L', 'XL']),
+  vest('Vestido Wrap Floral Maxi', 'Bershka', 69, 14,
+    'Vestido maxi estilo wrap con estampado tropical, escote en V y tiras para anudar a la cintura.',
+    ['#4a8a4a', '#8a4a4a'], ['XS', 'S', 'M', 'L']),
+
+  blusa('Blusa Satinada Manga Larga Elegante', 'Zara', 35, 30,
+    'Blusa de satén con cuello lazada, manga larga y caída fluida. Perfecta para oficina o salidas.',
+    [WHT, '#c8b89a', BLK], ['XS', 'S', 'M', 'L', 'XL']),
+  blusa('Top Crop con Encaje y Tirantes', 'Bershka', 29, 35,
+    'Top crop con detalle de encaje en el busto, tirantes regulables y fit ceñido.',
+    [WHT, '#c81a1a', BLK], ['XS', 'S', 'M', 'L']),
+  blusa('Blusa Bohemia con Estampado Flores', 'Mango', 39, 22,
+    'Blusa estilo boho con estampado floral, manga abullonada y escote en V con lazada.',
+    ['#e8c8a0', '#a8c8e8'], ['XS', 'S', 'M', 'L', 'XL']),
+  blusa('Camisa de Lino Oversize Casual', 'H&M', 45, 18,
+    'Camisa de lino oversize de manga larga con bolsillos y botones nácar. Fresca y versátil.',
+    ['#f0f0e8', '#c8a88a', '#8aaBa8'], ['XS', 'S', 'M', 'L', 'XL']),
+  blusa('Blusa Asimétrica con Nudo Lateral', 'Zara', 49, 16,
+    'Blusa asimétrica de crepe con nudo lateral, manga corta y corte moderno. Lista para cualquier ocasión.',
+    [WHT, BLK, '#c8a8c8'], ['XS', 'S', 'M', 'L']),
+
+  jeanW("Levi's Jeans Skinny Tiro Alto 721", "Levi's", 79, 20,
+    'Jeans skinny 721 de tiro alto con denim stretch, 5 bolsillos y cierre de metal. Silueta favorecedora.',
+    ['#2d4a6a', BLK], ['26', '27', '28', '29', '30', '31', '32']),
+  jeanW('Zara Jeans Mom Fit Vintage', 'Zara', 65, 18,
+    'Jeans mom fit con lavado vintage, tiro alto, pierna ancha y deshilachados en el dobladillo.',
+    ['#8a9aaa', '#c8d0d8'], ['32', '34', '36', '38', '40', '42']),
+  jeanW('Pull&Bear Jeans Wide Leg Palazzo', 'Pull&Bear', 69, 14,
+    'Jeans wide leg con corte palazzo, tiro alto, denim suave y vuelo amplio desde la cadera.',
+    ['#2d4a6a', '#8a9aaa'], ['32', '34', '36', '38', '40']),
+  jeanW('H&M Jeans Boyfriend Relaxed Fit', 'H&M', 59, 22,
+    'Jeans boyfriend con corte relajado, tiro medio, denim orgánico y bolsillos frontales anchos.',
+    ['#5a6a7a', '#c8d0d8'], ['32', '34', '36', '38', '40', '42']),
+
+  calzW('Steve Madden Zapatillas Platform', 'Steve Madden', 89, 12,
+    'Zapatillas platform con suela gruesa de 5cm, cordones planos y puntera redondeada. Tendencia chunky.',
+    [WHT, BLK], ['35', '36', '37', '38', '39', '40']),
+  calzW('Zara Botas Chelsea de Cuero', 'Zara', 129, 8,
+    'Botas Chelsea en cuero genuino con elástico lateral, tacón bajo de 4cm y suela de goma.',
+    [BLK, '#8a5a3a'], ['35', '36', '37', '38', '39', '40', '41'], 15),
+  calzW('Mango Sandalias con Plataforma', 'Mango', 69, 15,
+    'Sandalias con plataforma de esparto 6cm, tiras entrelazadas y cierre con hebilla en el tobillo.',
+    ['#c8a87a', BLK], ['35', '36', '37', '38', '39', '40', '41']),
+  calzW('Aldo Zapatos Kitten Heel Elegantes', 'Aldo', 99, 10,
+    'Zapatos kitten heel con puntera en punta, tacón stiletto 5cm y correa al tobillo.',
+    [BLK, '#c8c0b0'], ['35', '36', '37', '38', '39', '40']),
+];

@@ -1,0 +1,76 @@
+import { mk, BLK, WHT, SLV } from './helpers';
+
+const phone = mk('tecnologia', 'smartphones');
+const lapto = mk('tecnologia', 'laptops');
+const conso = mk('tecnologia', 'consolas');
+const audio = mk('tecnologia', 'audio');
+const tv    = mk('tecnologia', 'televisores');
+
+export const tecnologia = [
+  phone('Samsung Galaxy S24 Ultra 256GB', 'Samsung', 1299, 10,
+    'Smartphone con pantalla Dynamic AMOLED 6.8", cámara 200MP con IA, S Pen integrado y batería 5000mAh.',
+    [BLK, SLV, '#8a6a4a'], ['128GB', '256GB', '512GB'], 10),
+  phone('Apple iPhone 15 Pro 128GB', 'Apple', 1099, 8,
+    'iPhone 15 Pro con chip A17 Pro, pantalla Super Retina XDR 6.1", cámara 48MP y carcasa titanio.',
+    [BLK, SLV, '#f0e8d0'], ['128GB', '256GB', '512GB']),
+  phone('Xiaomi Redmi Note 13 Pro 256GB', 'Xiaomi', 349, 20,
+    'Smartphone con cámara 200MP Light Hunter, pantalla AMOLED 6.67" 120Hz y carga rápida 67W.',
+    [BLK, '#2d5a8e', '#6a8e5a'], ['128GB', '256GB'], 15),
+  phone('Motorola Edge 40 Neo 5G 256GB', 'Motorola', 399, 15,
+    'Smartphone 5G con pantalla pOLED 6.55" 144Hz, cámara 50MP y batería 5000mAh con carga 68W.',
+    [BLK, '#2d5a4a'], ['128GB', '256GB']),
+  phone('Samsung Galaxy A35 5G 128GB', 'Samsung', 379, 18,
+    'Galaxy A35 con pantalla Super AMOLED 6.6" 120Hz, cámara triple 50MP y batería 5000mAh.',
+    [BLK, '#2d5a8e', SLV], ['128GB', '256GB']),
+  phone('OPPO Reno 11 5G 256GB', 'OPPO', 429, 12,
+    'Reno 11 con pantalla AMOLED 6.7" 120Hz, triple cámara 50MP+32MP+64MP y batería 4800mAh.',
+    [BLK, '#c0b08a'], ['128GB', '256GB']),
+
+  lapto('Lenovo IdeaPad 5 AMD Ryzen 7 16GB', 'Lenovo', 799, 7,
+    'Laptop AMD Ryzen 7 7730U, 16GB RAM DDR4, 512GB SSD, pantalla IPS 15.6" FHD y batería 15h.', ['#5a6a7a', '#2c2c2c']),
+  lapto('HP Pavilion 15 Core i7 512GB', 'HP', 849, 9,
+    'Laptop Intel Core i7-1255U, 16GB RAM, 512GB SSD, pantalla FHD IPS 15.6" antirreflejo y GPU Intel Iris Xe.', [SLV]),
+  lapto('ASUS VivoBook 16 OLED Core i5', 'ASUS', 749, 6,
+    'Laptop con pantalla OLED 16" 2.8K, Intel Core i5-13500H, 16GB RAM y 512GB SSD NVMe.', ['#2c2c2c'], [], 12),
+  lapto('Acer Aspire 5 Core i5 8GB', 'Acer', 599, 11,
+    'Laptop Intel Core i5-1235U, 8GB RAM, 512GB SSD, pantalla IPS 15.6" FHD y lector de huella dactilar.', ['#5a6a7a']),
+  lapto('Dell Inspiron 15 Core i7 16GB', 'Dell', 899, 5,
+    'Laptop Intel Core i7-1255U, 16GB RAM DDR4, 1TB SSD, pantalla FHD 15.6" y tarjeta gráfica NVIDIA MX570.', ['#2c2c2c']),
+  lapto('Apple MacBook Air M2 8GB 256GB', 'Apple', 1099, 4,
+    'MacBook Air con chip M2, pantalla Liquid Retina 13.6" 2560x1664, 8GB RAM unificada y batería 18h.', [SLV, '#f5deb3', BLK]),
+
+  conso('Sony PlayStation 5 Slim Digital 1TB', 'Sony', 449, 6,
+    'PS5 Slim Digital Edition, procesador AMD Zen 2 + GPU RDNA 2, 1TB SSD y resolución hasta 8K.', [WHT]),
+  conso('Microsoft Xbox Series X 1TB', 'Microsoft', 499, 5,
+    'Xbox Series X con 12 teraflops de rendimiento, 1TB SSD NVMe, retrocompatibilidad total y Game Pass.', [BLK]),
+  conso('Nintendo Switch OLED 64GB', 'Nintendo', 349, 12,
+    'Switch OLED con pantalla OLED de 7", 64GB almacenamiento, soporte ajustable y conectividad LAN.', [WHT, '#c81a1a'], [], 10),
+  conso('Sony PlayStation 5 Pro 2TB', 'Sony', 699, 3,
+    'PS5 Pro con GPU mejorada, 2TB SSD, tecnología PlayStation Spectral Super Resolution y Wi-Fi 7.', [WHT]),
+  conso('Microsoft Xbox Series S 512GB', 'Microsoft', 299, 14,
+    'Xbox Series S compacta con 4 teraflops, 512GB SSD, resolución hasta 4K y acceso a Game Pass Ultimate.', [WHT]),
+
+  audio('Sony WH-1000XM5 Auriculares Bluetooth', 'Sony', 349, 9,
+    'Auriculares over-ear con cancelación de ruido líder del sector, 30h batería y micrófono para llamadas claras.', [BLK, '#c8b89a'], [], 20),
+  audio('JBL Charge 5 Altavoz Bluetooth', 'JBL', 179, 14,
+    'Altavoz portátil resistente al agua y polvo IP67, sonido 360° potente y batería de 20h de reproducción.', [BLK, '#c81a1a', '#1a4a8e']),
+  audio('Apple AirPods Pro 2da Generación', 'Apple', 249, 11,
+    'AirPods Pro con cancelación activa de ruido, Modo Ambiente, chip H2 y hasta 6h de reproducción.', [WHT]),
+  audio('Bose QuietComfort 45 Bluetooth', 'Bose', 279, 7,
+    'Auriculares con cancelación de ruido world-class, 24h batería, modo Aware y diseño plegable.', [BLK, WHT]),
+  audio('JBL Xtreme 3 Altavoz Portátil', 'JBL', 249, 6,
+    'Altavoz portátil IP67 con 15h batería, sonido estéreo con bajos profundos y correa de transporte.', [BLK, '#1a8e1a']),
+  audio('Sennheiser HD 450BT Auriculares', 'Sennheiser', 129, 10,
+    'Auriculares inalámbricos con cancelación activa de ruido, batería 30h, Bluetooth 5.0 y control de voz.', [BLK]),
+
+  tv('Samsung Smart TV QLED 55" 4K', 'Samsung', 799, 5,
+    'Smart TV QLED 55" con resolución 4K, Quantum HDR, sistema Tizen y control remoto solar.'),
+  tv('LG OLED evo C3 65" 4K', 'LG', 1599, 3,
+    'TV OLED evo 65" con procesador α9 AI de 4a generación, Dolby Vision IQ y soporte G-Sync para gaming.'),
+  tv('Sony Bravia XR 75" 4K Google TV', 'Sony', 1999, 2,
+    'Bravia XR 75" con procesador cognitivo XR, Acoustic Multi-Audio, Google TV y HDMI 2.1 para consolas.'),
+  tv('TCL 50" Google TV 4K', 'TCL', 399, 12,
+    'Smart TV 50" 4K con Google TV, Dolby Atmos, HDR10+ y control de voz Google Assistant integrado.', [], [], 15),
+  tv('Hisense 58" ULED Smart TV 4K', 'Hisense', 499, 8,
+    'ULED 58" con tecnología Quantum Dot, ALLM para gaming, Dolby Vision y Dolby Atmos, VIDAA U7.'),
+];
