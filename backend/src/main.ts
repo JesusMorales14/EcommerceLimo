@@ -11,7 +11,8 @@ async function bootstrap() {
     origin: (origin, callback) => {
       const allowed = !origin
         || origin === 'http://localhost:4200'
-        || /\.netlify\.app$/.test(origin);
+        || /\.netlify\.app$/.test(origin)
+        || /\.vercel\.app$/.test(origin);
       callback(null, allowed ? origin : false);
     },
     credentials: true,
