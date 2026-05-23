@@ -1,11 +1,13 @@
 <div class="home">
-
   <!-- ── Hero Banner ────────────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-content">
       <span class="badge-new">NUEVA COLECCIÓN 2025</span>
       <h1>Revive tu espacio con esencia natural.</h1>
-      <p>Descubre nuestra curaduría exclusiva de piezas que conectan tu hogar con la vitalidad del exterior.</p>
+      <p>
+        Descubre nuestra curaduría exclusiva de piezas que conectan tu hogar con la vitalidad del
+        exterior.
+      </p>
       <div class="hero-actions">
         <button class="btn-fill" [routerLink]="['/category', 'hogar']">Ver Colección</button>
         <button class="btn-outline" [routerLink]="['/category', 'ofertas']">Ver Ofertas</button>
@@ -13,105 +15,96 @@
     </div>
   </section>
 
-  <!-- ── Category Strip ────────────────────────────────────────────────────── -->
-  <section class="category-strip-section">
-    <div class="category-strip">
-      @for (cat of categoryService.categories(); track cat.id) {
-        <a class="cat-chip" [routerLink]="['/category', cat.id]">
-          <span class="cat-chip-icon material-symbols-outlined">{{ cat.icon }}</span>
-          <span class="cat-chip-label">{{ cat.label }}</span>
-        </a>
-      }
-    </div>
-  </section>
-
   <!-- ── Teaser: Próximas Ofertas ─────────────────────────────────────────── -->
   @if (!dealActive() && scheduledSession()) {
-  <section class="deal-teaser">
-    <div class="teaser-glow"></div>
-    <div class="teaser-content">
-      <div class="teaser-left">
-        <span class="teaser-eyebrow">
-          <span class="teaser-dot"></span>
-          PRÓXIMAMENTE
-        </span>
-        <h2 class="teaser-title">¡Ofertas del Día se activan pronto!</h2>
-        <p class="teaser-sub">
-          Prepárate para descuentos increíbles. Las ofertas comenzarán el
-          <strong>{{ scheduledSession()!.startsAt | date:'dd/MM/yyyy' }}</strong>
-          a las <strong>{{ scheduledSession()!.startsAt | date:'HH:mm' }}</strong>.
-        </p>
-      </div>
-      <div class="teaser-right">
-        <p class="teaser-label">Las ofertas comienzan en</p>
-        <div class="teaser-clock">
-          <div class="clock-unit">
-            <span class="clock-num">{{ teaserCountdown().split(':')[0] }}</span>
-            <span class="clock-label">HRS</span>
-          </div>
-          <span class="clock-sep">:</span>
-          <div class="clock-unit">
-            <span class="clock-num">{{ teaserCountdown().split(':')[1] }}</span>
-            <span class="clock-label">MIN</span>
-          </div>
-          <span class="clock-sep">:</span>
-          <div class="clock-unit">
-            <span class="clock-num">{{ teaserCountdown().split(':')[2] }}</span>
-            <span class="clock-label">SEG</span>
-          </div>
+    <section class="deal-teaser">
+      <div class="teaser-glow"></div>
+      <div class="teaser-content">
+        <div class="teaser-left">
+          <span class="teaser-eyebrow">
+            <span class="teaser-dot"></span>
+            PRÓXIMAMENTE
+          </span>
+          <h2 class="teaser-title">¡Ofertas del Día se activan pronto!</h2>
+          <p class="teaser-sub">
+            Prepárate para descuentos increíbles. Las ofertas comenzarán el
+            <strong>{{ scheduledSession()!.startsAt | date: 'dd/MM/yyyy' }}</strong>
+            a las <strong>{{ scheduledSession()!.startsAt | date: 'HH:mm' }}</strong
+            >.
+          </p>
         </div>
-        <p class="teaser-end-note">
-          <span class="material-symbols-outlined">timer</span>
-          Finaliza el {{ scheduledSession()!.endsAt | date:'dd/MM/yyyy HH:mm' }}
-        </p>
+        <div class="teaser-right">
+          <p class="teaser-label">Las ofertas comienzan en</p>
+          <div class="teaser-clock">
+            <div class="clock-unit">
+              <span class="clock-num">{{ teaserCountdown().split(':')[0] }}</span>
+              <span class="clock-label">HRS</span>
+            </div>
+            <span class="clock-sep">:</span>
+            <div class="clock-unit">
+              <span class="clock-num">{{ teaserCountdown().split(':')[1] }}</span>
+              <span class="clock-label">MIN</span>
+            </div>
+            <span class="clock-sep">:</span>
+            <div class="clock-unit">
+              <span class="clock-num">{{ teaserCountdown().split(':')[2] }}</span>
+              <span class="clock-label">SEG</span>
+            </div>
+          </div>
+          <p class="teaser-end-note">
+            <span class="material-symbols-outlined">timer</span>
+            Finaliza el {{ scheduledSession()!.endsAt | date: 'dd/MM/yyyy HH:mm' }}
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   }
 
   <!-- ── Ofertas del Día ────────────────────────────────────────────────────── -->
   @if (dealActive()) {
-  <section class="section-block">
-    <div class="section-head">
-      <div class="section-title-group">
-        <h2>Ofertas del Día</h2>
-        <div class="timer">
-          <span class="material-symbols-outlined">timer</span>
-          Termina en {{ countdown() }}
+    <section class="section-block">
+      <div class="section-head">
+        <div class="section-title-group">
+          <h2>Ofertas del Día</h2>
+          <div class="timer">
+            <span class="material-symbols-outlined">timer</span>
+            Termina en {{ countdown() }}
+          </div>
         </div>
+        <a [routerLink]="['/category', 'ofertas']" class="link-ver-mas">Ver todas las ofertas →</a>
       </div>
-      <a [routerLink]="['/category', 'ofertas']" class="link-ver-mas">Ver todas las ofertas →</a>
-    </div>
 
-    <div class="products-row">
-      @for (p of offerProducts(); track p.id) {
-        <div class="product-card">
-          <div class="card-img-wrap" [routerLink]="['/product', p.id]">
-            <img [src]="p.images[0]" [alt]="p.name">
-            <span class="badge-off">-20%</span>
-            <button class="btn-wish" aria-label="Agregar a favoritos">
-              <span class="material-symbols-outlined">favorite</span>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-brand">{{ p.brand }}</p>
-            <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
-            <div class="card-stars">★★★★☆ <span>(38)</span></div>
-            <div class="card-prices">
-              <span class="price-now">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
-              <span class="price-old">{{ p.price * 1.25 | currency:'PEN':'S/ ':'1.0-0' }}</span>
+      <div class="products-row">
+        @for (p of offerProducts(); track p.id) {
+          <div class="product-card">
+            <div class="card-img-wrap" [routerLink]="['/product', p.id]">
+              <img [src]="p.images[0]" [alt]="p.name" />
+              <span class="badge-off">-20%</span>
+              <button class="btn-wish" aria-label="Agregar a favoritos">
+                <span class="material-symbols-outlined">favorite</span>
+              </button>
             </div>
-            <p class="card-shipping">
-              <span class="material-symbols-outlined">local_shipping</span> Despacho gratis
-            </p>
-            <button class="btn-add-card" (click)="addToCart(p)">
-              <span class="material-symbols-outlined">shopping_cart</span> Agregar
-            </button>
+            <div class="card-body">
+              <p class="card-brand">{{ p.brand }}</p>
+              <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
+              <div class="card-stars">★★★★☆ <span>(38)</span></div>
+              <div class="card-prices">
+                <span class="price-now">{{ p.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</span>
+                <span class="price-old">{{
+                  p.price * 1.25 | currency: 'PEN' : 'S/ ' : '1.0-0'
+                }}</span>
+              </div>
+              <p class="card-shipping">
+                <span class="material-symbols-outlined">local_shipping</span> Despacho gratis
+              </p>
+              <button class="btn-add-card" (click)="addToCart(p)">
+                <span class="material-symbols-outlined">shopping_cart</span> Agregar
+              </button>
+            </div>
           </div>
-        </div>
-      }
-    </div>
-  </section>
+        }
+      </div>
+    </section>
   }
 
   <!-- ── Promotional Banners ────────────────────────────────────────────────── -->
@@ -146,7 +139,7 @@
       @for (p of featuredProducts(); track p.id) {
         <div class="product-card">
           <div class="card-img-wrap" [routerLink]="['/product', p.id]">
-            <img [src]="p.images[0]" [alt]="p.name">
+            <img [src]="p.images[0]" [alt]="p.name" />
             <button class="btn-wish" aria-label="Agregar a favoritos">
               <span class="material-symbols-outlined">favorite</span>
             </button>
@@ -156,7 +149,7 @@
             <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
             <div class="card-stars">★★★★★ <span>(112)</span></div>
             <div class="card-prices">
-              <span class="price-now">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              <span class="price-now">{{ p.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</span>
             </div>
             <p class="card-shipping">
               <span class="material-symbols-outlined">local_shipping</span> Despacho gratis
@@ -169,5 +162,4 @@
       }
     </div>
   </section>
-
 </div>
