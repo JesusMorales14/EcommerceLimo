@@ -1,14 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Inicio } from './inicio';
 
-describe('Inicio', () => {
+describe('Inicio (home)', () => {
   let component: Inicio;
   let fixture: ComponentFixture<Inicio>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Inicio],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Inicio);
@@ -16,7 +19,7 @@ describe('Inicio', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('debería crearse correctamente', () => {
     expect(component).toBeTruthy();
   });
 });

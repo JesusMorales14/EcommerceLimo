@@ -17,7 +17,7 @@
     <!-- Gallery -->
     <div class="gallery">
       <div class="gallery-main">
-        <img [src]="activeImages()[selectedImage()]" [alt]="producto()!.name">
+        <img [src]="activeImages()[selectedImage()]" [alt]="producto()!.name" (error)="$any($event.target).src='/logoIcon.png'">
         @if (producto()!.discount) {
           <span class="badge-sustainable">-{{ producto()!.discount }}% OFF</span>
         }
@@ -28,7 +28,7 @@
             class="thumb"
             [class.active]="selectedImage() === $index"
             (click)="selectedImage.set($index)">
-            <img [src]="img" [alt]="producto()!.name + ' ' + ($index + 1)">
+            <img [src]="img" [alt]="producto()!.name + ' ' + ($index + 1)" (error)="$any($event.target).src='/logoIcon.png'">
           </button>
         }
       </div>

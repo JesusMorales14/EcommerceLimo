@@ -1,22 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+import { ProductDetailComponent } from './product-detail';
 
-import { ProductDetail } from './product-detail';
-
-describe('ProductDetail', () => {
-  let component: ProductDetail;
-  let fixture: ComponentFixture<ProductDetail>;
+describe('ProductDetailComponent', () => {
+  let component: ProductDetailComponent;
+  let fixture: ComponentFixture<ProductDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductDetail],
+      imports: [ProductDetailComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: { get: () => '1' } } },
+        },
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProductDetail);
+    fixture = TestBed.createComponent(ProductDetailComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('debería crearse correctamente', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('inicia con loading en true', () => {
+    expect(component.loading()).toBe(true);
+  });
+
+  it('inicia sin producto cargado', () => {
+    expect(component.producto()).toBeNull();
+  });
+
+  it('la cantidad inicial es 1', () => {
+    expect(component.quantity()).toBe(1);
   });
 });

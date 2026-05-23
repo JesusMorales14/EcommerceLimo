@@ -1,22 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ProductListComponent } from './product-list';
 
-import { ProductList } from './product-list';
-
-describe('ProductList', () => {
-  let component: ProductList;
-  let fixture: ComponentFixture<ProductList>;
+describe('ProductListComponent', () => {
+  let component: ProductListComponent;
+  let fixture: ComponentFixture<ProductListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductList],
+      imports: [ProductListComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProductList);
+    fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('debería crearse correctamente', () => {
     expect(component).toBeTruthy();
   });
 });

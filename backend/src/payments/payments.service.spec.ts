@@ -5,6 +5,8 @@ describe('PaymentsService', () => {
   let service: PaymentsService;
 
   beforeEach(async () => {
+    process.env.STRIPE_SECRET_KEY = 'sk_test_dummy_key_for_testing';
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [PaymentsService],
     }).compile();
@@ -12,7 +14,11 @@ describe('PaymentsService', () => {
     service = module.get<PaymentsService>(PaymentsService);
   });
 
-  it('should be defined', () => {
+  afterEach(() => {
+    delete process.env.STRIPE_SECRET_KEY;
+  });
+
+  it('debería estar definido', () => {
     expect(service).toBeDefined();
   });
 });
