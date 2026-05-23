@@ -17,6 +17,7 @@ export class UpdateProductDto {
   @IsOptional() @IsString() category?: string;
   @IsOptional() @IsString() subCategory?: string;
   @IsOptional() @IsBoolean() isOffer?: boolean;
+  @IsOptional() @IsBoolean() isFeatured?: boolean;
   @IsOptional() @IsArray() images?: string[];
   @IsOptional() @IsArray() colors?: string[];
   @IsOptional() @IsArray() sizes?: string[];

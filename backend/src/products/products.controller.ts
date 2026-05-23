@@ -17,14 +17,16 @@ export class ProductsController {
     @Query('search') search?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('isFeatured') isFeatured?: string,
   ) {
     return this.products.findAll(
       category,
       subCategory,
-      isOffer !== undefined ? isOffer === 'true' : undefined,
+      isOffer    !== undefined ? isOffer    === 'true' : undefined,
       search,
       page ? +page : 1,
       limit ? +limit : 40,
+      isFeatured !== undefined ? isFeatured === 'true' : undefined,
     );
   }
 

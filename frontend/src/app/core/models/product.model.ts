@@ -9,6 +9,7 @@ export interface Product {
   category: string;
   subCategory?: string;
   isOffer: boolean;
+  isFeatured?: boolean;
   images: string[];
   colors: string[];
   sizes: string[];

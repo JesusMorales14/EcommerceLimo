@@ -32,7 +32,7 @@ export class Inicio implements OnInit, OnDestroy {
   private teaserTimerId: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit() {
-    this.productService.getAll('tecnologia', undefined, 1, 8)
+    this.productService.getFeatured(8)
       .subscribe(res => this.featuredProducts.set(res.items));
 
     this.checkDeal();

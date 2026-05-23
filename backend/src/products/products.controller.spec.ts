@@ -30,7 +30,7 @@ describe('ProductsController', () => {
   it('getAll llama a findAll con los parámetros correctos', async () => {
     mockProductsService.findAll.mockResolvedValue({ items: [], total: 0, page: 1, pages: 1 });
     await controller.getAll('tecnologia', undefined, undefined, undefined, '1', '10');
-    expect(mockProductsService.findAll).toHaveBeenCalledWith('tecnologia', undefined, undefined, undefined, 1, 10);
+    expect(mockProductsService.findAll).toHaveBeenCalledWith('tecnologia', undefined, undefined, undefined, 1, 10, undefined);
   });
 
   it('getById convierte el id a número antes de llamar a findOne', async () => {

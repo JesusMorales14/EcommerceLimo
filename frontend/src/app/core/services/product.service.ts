@@ -33,6 +33,10 @@ export class ProductService {
     return this.api.get<ProductPage>('/products', { isOffer: 'true', limit: '100' });
   }
 
+  getFeatured(limit = 8) {
+    return this.api.get<ProductPage>('/products', { isFeatured: 'true', limit: String(limit) });
+  }
+
   getById(id: number) {
     return this.api.get<Product>(`/products/${id}`);
   }

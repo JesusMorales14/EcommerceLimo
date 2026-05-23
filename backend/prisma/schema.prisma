@@ -51,6 +51,7 @@ model Product {
   category    String
   subCategory String?
   isOffer     Boolean     @default(false)
+  isFeatured  Boolean     @default(false)
   images      String[]
   colors      String[]    @default([])
   sizes       String[]    @default([])

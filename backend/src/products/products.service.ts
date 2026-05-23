@@ -14,6 +14,7 @@ export class ProductsService {
     search?: string,
     page = 1,
     limit = 40,
+    isFeatured?: boolean,
   ) {
     const searchFilter = search
       ? {
@@ -28,7 +29,8 @@ export class ProductsService {
     const where: any = {
       ...(category !== undefined ? { category } : {}),
       ...(subCategory !== undefined ? { subCategory } : {}),
-      ...(isOffer !== undefined ? { isOffer } : {}),
+      ...(isOffer     !== undefined ? { isOffer }     : {}),
+      ...(isFeatured  !== undefined ? { isFeatured }  : {}),
       ...searchFilter,
     };
 

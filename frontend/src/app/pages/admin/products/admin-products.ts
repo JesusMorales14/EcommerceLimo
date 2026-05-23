@@ -150,7 +150,7 @@ export class AdminProductsPage implements OnInit {
   }
 
   private emptyForm(): Partial<Product> {
-    return { name: '', description: '', price: 0, stock: 0, brand: '', category: '', isOffer: false, images: [], colors: [], sizes: [], colorImages: {} };
+    return { name: '', description: '', price: 0, stock: 0, brand: '', category: '', isOffer: false, isFeatured: false, images: [], colors: [], sizes: [], colorImages: {} };
   }
 
   private asArray(val: unknown): string[] {
