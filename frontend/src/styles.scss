@@ -102,59 +102,119 @@ app-footer { display: block; }
 // ── Dark Mode Global Overrides ────────────────────────────────────────────────
 // Uses html[data-theme="dark"] for specificity (0,2,1) > Angular's (0,2,0)
 html[data-theme="dark"] {
-  // ── Inicio: home background & strips
+
+  // ══ HEADER ════════════════════════════════════════════════════════════════════
+
+  // Promo bar — always white text on green gradient
+  .promo-bar { color: rgba(255, 255, 255, 0.92); strong { color: #fff; } }
+
+  // Category nav — CRITICAL: cat-link usaba var(--text-2) = verde medio, ilegible sobre fondo oscuro
+  .category-nav { background: var(--cat-bg); border-color: var(--border-2); }
+  .cat-link     { color: var(--text); }
+  .offers-link  { color: #f87171; &:hover, &.active { color: #f87171; } }
+
+  // Header icon buttons and labels
+  .icon-btn    { color: var(--text); }
+  .icon-label  { color: var(--text-2); }
+
+  // Mobile header buttons
+  .mobile-icon-btn { color: var(--text); }
+
+  // ══ INICIO (HOME) ════════════════════════════════════════════════════════════
+
   .home               { background: var(--bg); }
   .category-strip-section { background: var(--surface); border-color: var(--border); }
-  .cat-chip { color: var(--text); &:hover { background: var(--primary-hover); color: var(--primary); } }
-
-  // ── Inicio: section headers
+  .cat-chip           { color: var(--text); &:hover { background: var(--primary-hover); color: var(--primary); } }
+  .cat-chip-icon      { color: var(--primary); }
+  .cat-chip-label     { color: var(--text); }
   .section-head h2    { color: var(--text); }
   .link-ver-mas       { color: var(--primary); }
   .timer              { background: #2a1a00; color: #f59e0b; border-color: #5a3f00; }
 
-  // ── Product cards (inicio, search, product-list, favorites)
+  // ══ PRODUCT CARDS (inicio, search, plp, favorites) ════════════════════════════
+
   .product-card {
     background: var(--card-bg);
     border-color: var(--border);
     &:hover { box-shadow: 0 8px 24px var(--shadow); }
   }
-  .card-img-wrap  { background: var(--card-img-bg); }
-  .card-body      { background: var(--card-bg); }
-  .card-name      { color: var(--text); &:hover { color: var(--primary); } }
-  .card-brand     { color: var(--text-subtle); }
-  .card-stars     { span { color: var(--text-subtle); } }
-  .price-now      { color: var(--text); }
-  .price-old      { color: var(--text-muted); }
-  .card-shipping  { color: var(--primary); }
-  .btn-wish       { background: var(--surface); color: var(--text-muted); }
-  .btn-add-card   { background: var(--primary); &:hover { background: var(--primary-dark); } }
+  .card-img-wrap, .card-img { background: var(--card-img-bg); }
+  .card-body          { background: var(--card-bg); }
+  .card-name          { color: var(--text); &:hover { color: var(--primary); } }
+  .card-brand         { color: var(--text-subtle); }
+  .card-stars         { color: #f59e0b; span { color: var(--text-subtle); } }
+  .price-now          { color: var(--text); }
+  .price-old          { color: var(--text-muted); }
+  .card-shipping, .card-free-ship { color: var(--primary); .material-symbols-outlined { color: var(--primary); } }
+  .btn-wish           { background: var(--surface); color: var(--text-muted); }
+  .btn-add-card, .btn-add { background: var(--primary); color: #fff; &:hover { background: var(--primary-dark); } }
+  .badge-off          { background: #991b1b; color: #fff; }
 
-  // ── Cart drawer (app.scss)
-  .cart-drawer            { background: var(--surface); }
-  .drawer-header          { border-color: var(--border); h2 { color: var(--text); } }
-  .drawer-item            { border-color: var(--border-2); }
-  .drawer-item-img        { background: var(--card-img-bg); }
-  .drawer-item-brand      { color: var(--text-subtle); }
-  .drawer-item-name       { color: var(--text); }
-  .drawer-item-color      { color: var(--text-muted); }
-  .drawer-item-price      { color: var(--primary); }
+  // ══ PLP (PRODUCT LIST PAGE) ═══════════════════════════════════════════════════
+
+  .plp-page           { background: var(--bg); }
+  .breadcrumb         { color: var(--text-muted); a { color: var(--text-muted); &:hover { color: var(--primary); } } }
+  .filter-sidebar     { background: var(--surface); border-color: var(--border); }
+  .filter-header      { h3 { color: var(--text); } }
+  .filter-group       { border-color: var(--border); }
+  .filter-title       { color: var(--text-2); }
+  .btn-clear          { color: var(--primary); }
+  .check-item         { color: var(--text); &:hover { color: var(--primary); } }
+  .price-dash         { color: var(--text-muted); }
+  .price-input-wrap   { border-color: var(--border); background: var(--surface-2); span { color: var(--text-muted); } input { color: var(--text); background: transparent; } }
+  .sort-select        { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+  .area-title         { color: var(--text); }
+  .result-count       { color: var(--text-muted); }
+  .filter-toggle-btn  { background: var(--surface); border-color: var(--border); color: var(--text); .material-symbols-outlined { color: var(--text); } }
+  .loading-state, .empty-state { color: var(--text-muted); .material-symbols-outlined { color: var(--text-muted); } }
+  .plp-pagination .page-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    &.active           { background: var(--primary); color: #fff; border-color: var(--primary); }
+    &:hover:not(:disabled):not(.active) { border-color: var(--primary); color: var(--primary); }
+  }
+  .out-of-stock       { color: #f87171; }
+
+  // ══ SEARCH PAGE ══════════════════════════════════════════════════════════════
+
+  .search-page        { background: var(--bg); }
+  .search-header {
+    h1                { color: var(--text); em { color: var(--primary); } }
+    .result-count     { color: var(--text-muted); }
+    .sort-select      { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+  }
+  .filters-sidebar, .filter-group  { background: var(--surface); border-color: var(--border); }
+  .filter-group h3, .filter-title  { color: var(--text); }
+
+  // ══ CART DRAWER ══════════════════════════════════════════════════════════════
+
+  .cart-drawer        { background: var(--surface); }
+  .drawer-header      { border-color: var(--border); h2 { color: var(--text); } }
+  .drawer-item        { border-color: var(--border-2); }
+  .drawer-item-img    { background: var(--card-img-bg); }
+  .drawer-item-brand  { color: var(--text-subtle); }
+  .drawer-item-name   { color: var(--text); }
+  .drawer-item-color  { color: var(--text-muted); }
+  .drawer-item-price  { color: var(--primary); }
   .drawer-qty {
     button { background: var(--surface-2); color: var(--text); &:hover { background: var(--surface-3); } }
     span   { color: var(--text); }
   }
-  .drawer-remove-btn      { color: var(--border); }
-  .drawer-empty           { color: var(--text-muted); }
-  .drawer-footer          { border-color: var(--border); }
-  .drawer-subtotal        {
-    span   { color: var(--text-muted); }
-    strong { color: var(--text); }
-  }
-  .close-btn {
-    color: var(--text-muted);
-    &:hover { background: var(--surface-2); color: var(--text); }
-  }
+  .drawer-remove-btn  { color: var(--border); }
+  .drawer-empty       { color: var(--text-muted); }
+  .drawer-footer      { border-color: var(--border); }
+  .drawer-subtotal    { span { color: var(--text-muted); } strong { color: var(--text); } }
+  .close-btn          { color: var(--text-muted); &:hover { background: var(--surface-2); color: var(--text); } }
 
-  // ── Forms & inputs (login, register, checkout)
+  // ══ CATEGORY DRAWER (hamburger menu) ═════════════════════════════════════════
+
+  .drawer-link        { color: var(--text); }
+  .drawer-link-icon   { color: var(--text-muted); }
+  .drawer-nav         { background: var(--surface); }
+
+  // ══ FORMS & INPUTS ═══════════════════════════════════════════════════════════
+
   input:not([type="checkbox"]):not([type="radio"]),
   select,
   textarea {
@@ -163,33 +223,24 @@ html[data-theme="dark"] {
     border-color: var(--border);
     &::placeholder { color: var(--text-muted); }
   }
+  .page-card, .card, [class*="form-"] { background: var(--surface); border-color: var(--border); }
 
-  // ── General surfaces
-  .page-card, .card, [class*="form-"] {
-    background: var(--surface);
-    border-color: var(--border);
-  }
+  // ══ FOOTER ═══════════════════════════════════════════════════════════════════
 
-  // ── Search page
-  .filters-sidebar, .filter-group  { background: var(--surface); border-color: var(--border); }
-  .filter-group h3, .filter-title  { color: var(--text); }
+  .main-footer        { background: var(--surface-2); color: var(--text-2); }
+  .brand-title        { color: var(--text); }
+  .brand-desc         { color: var(--text-muted); }
+  .col-title          { color: var(--text-2); }
+  .footer-links a     { color: var(--text-muted); &:hover { color: var(--primary); } }
+  .social-btn         { background: var(--surface); border-color: var(--border); color: var(--text-muted); &:hover { color: var(--primary); border-color: var(--primary); background: var(--primary-hover); } }
+  .copyright          { color: var(--text-muted); }
+  .payment-methods    { color: var(--text-subtle); }
+  .footer-bottom      { border-color: var(--border); }
+  app-footer footer   { background: var(--surface-3); color: var(--text-2); }
 
-  // ── Footer
-  app-footer footer { background: var(--surface-3); color: var(--text-2); }
+  // ══ BOTTOM NAV ═══════════════════════════════════════════════════════════════
 
-  // ── Category drawer
-  .drawer-link         { color: var(--text); }
-  .drawer-link-icon    { color: var(--text-muted); }
-  .drawer-nav          { background: var(--surface); }
-
-  // ── Bottom nav
-  .bottom-nav          { background: var(--nav-bg); border-color: var(--nav-border); }
-  .nav-tab             { color: var(--nav-inactive); }
-  .nav-label           { color: var(--nav-inactive); }
-
-  // ── Mobile header buttons
-  .mobile-icon-btn { color: var(--text); }
-
-  // ── Promo bar (keep white text always)
-  .promo-bar { color: rgba(255, 255, 255, 0.9); strong { color: #fff; } }
+  .bottom-nav { background: var(--nav-bg); border-color: var(--nav-border); }
+  .nav-tab    { color: var(--nav-inactive); }
+  .nav-label  { color: var(--nav-inactive); }
 }

@@ -1,11 +1,11 @@
 // ── Layout ────────────────────────────────────────────────────────────────────
 .main-content-wrapper {
   min-height: 100vh;
-  padding-top: 148px; // promo(34) + header(68) + category-nav(44) + 2px border
+  padding-top: 152px; // promo(28) + header(68) + category-nav(44) + 12px buffer
 
   @media (max-width: 768px) {
-    padding-top: 90px; // promo(32) + header(58)
-    padding-bottom: 72px;
+    padding-top: 88px; // promo(28) + header(56) + 4px buffer
+    padding-bottom: 76px; // bottom-nav(64px) + 12px buffer
   }
 }
 
