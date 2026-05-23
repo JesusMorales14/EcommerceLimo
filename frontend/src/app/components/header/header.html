@@ -29,6 +29,41 @@
     </div>
   }
 
+  <!-- Mobile category drawer -->
+  @if (mobileMenuOpen()) {
+    <div class="drawer-overlay" (click)="closeMobileMenu()"></div>
+    <aside class="category-drawer" role="dialog" aria-label="Categorías">
+      <div class="drawer-header">
+        <span class="drawer-title">Categorías</span>
+        <button class="drawer-close-btn" (click)="closeMobileMenu()" aria-label="Cerrar menú">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        @for (cat of categoryService.categories(); track cat.id) {
+          <a
+            [routerLink]="['/category', cat.id]"
+            routerLinkActive="active"
+            class="drawer-link"
+            (click)="closeMobileMenu()"
+          >
+            <span class="material-symbols-outlined drawer-link-icon">{{ cat.icon }}</span>
+            <span>{{ cat.label }}</span>
+          </a>
+        }
+        <a
+          [routerLink]="['/category', 'ofertas']"
+          routerLinkActive="active"
+          class="drawer-link drawer-link-offers"
+          (click)="closeMobileMenu()"
+        >
+          <span class="material-symbols-outlined drawer-link-icon">local_offer</span>
+          <span>Ofertas</span>
+        </a>
+      </nav>
+    </aside>
+  }
+
   <!-- Row 1: Logo · Search · User actions -->
   <div class="header-top">
     <div class="header-container">
@@ -49,15 +84,18 @@
         <button class="search-btn" (click)="search()">Buscar</button>
       </div>
 
-      <!-- Mobile: icon-only search trigger -->
-      <button class="mobile-search-btn" (click)="openMobileSearch()" aria-label="Buscar">
-        <span class="material-symbols-outlined">search</span>
-      </button>
-
-      <!-- Mobile: theme toggle -->
-      <button class="mobile-theme-btn" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'" aria-label="Cambiar tema">
-        <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
-      </button>
+      <!-- Mobile: icon group (search, theme, hamburger) -->
+      <div class="mobile-actions">
+        <button class="mobile-icon-btn" (click)="openMobileSearch()" aria-label="Buscar">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <button class="mobile-icon-btn" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'" aria-label="Cambiar tema">
+          <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
+        </button>
+        <button class="mobile-icon-btn mobile-menu-btn" (click)="openMobileMenu()" aria-label="Abrir menú">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
 
       <nav class="user-menu" aria-label="Acciones de usuario">
         <div class="account-wrap">
@@ -117,6 +155,7 @@
 
         <button class="icon-btn theme-toggle" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'">
           <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
+          <span class="icon-label">Tema</span>
         </button>
 
         <button class="icon-btn cart-btn" (click)="openCart()" title="Mi Carro">

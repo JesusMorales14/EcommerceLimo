@@ -5,7 +5,7 @@
       @if (query()) {
         Resultados para <em>"{{ query() }}"</em>
       } @else {
-        Búsqueda
+        Explorar productos
       }
     </h1>
     @if (!loading() && total() > 0) {
@@ -21,17 +21,16 @@
   @if (loading()) {
     <div class="loading-state">
       <span class="material-symbols-outlined spin">progress_activity</span>
-      Buscando productos...
-    </div>
-  } @else if (!query()) {
-    <div class="empty-state">
-      <span class="material-symbols-outlined">search</span>
-      <p>Escribe algo en la barra de búsqueda para comenzar.</p>
+      Cargando productos...
     </div>
   } @else if (filteredProducts().length === 0) {
     <div class="empty-state">
       <span class="material-symbols-outlined">search_off</span>
-      <p>No se encontraron productos para <strong>"{{ query() }}"</strong>.</p>
+      @if (query()) {
+        <p>No se encontraron productos para <strong>"{{ query() }}"</strong>.</p>
+      } @else {
+        <p>No hay productos disponibles en este momento.</p>
+      }
       <a routerLink="/" class="btn-home">Ir al inicio</a>
     </div>
   } @else {

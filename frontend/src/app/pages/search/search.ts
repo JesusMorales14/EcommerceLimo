@@ -42,13 +42,16 @@ export class SearchPage implements OnInit {
       const q = params['q'] ?? '';
       this.query.set(q);
       this.page.set(1);
-      if (q) this.load();
+      this.load();
     });
   }
 
   load() {
     this.loading.set(true);
-    this.productService.search(this.query(), this.page()).subscribe({
+    const req = this.query()
+      ? this.productService.search(this.query(), this.page())
+      : this.productService.getAll(undefined, undefined, this.page());
+    req.subscribe({
       next: (res) => {
         this.products.set(res.items);
         this.total.set(res.total);

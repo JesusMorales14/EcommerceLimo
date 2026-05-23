@@ -6,6 +6,7 @@ import { CartService } from '../../core/services/cart';
 import { AuthService } from '../../core/services/auth.service';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { CategoryService } from '../../core/services/category.service';
 
 @Component({
   selector: 'app-header',
@@ -15,14 +16,16 @@ import { ThemeService } from '../../core/services/theme.service';
   styleUrl: './header.scss',
 })
 export class Header {
-  cartService     = inject(CartService);
-  authService     = inject(AuthService);
-  favService      = inject(FavoritesService);
-  themeService    = inject(ThemeService);
-  private router  = inject(Router);
+  cartService      = inject(CartService);
+  authService      = inject(AuthService);
+  favService       = inject(FavoritesService);
+  themeService     = inject(ThemeService);
+  categoryService  = inject(CategoryService);
+  private router   = inject(Router);
 
   showAccountMenu  = signal(false);
   mobileSearchOpen = signal(false);
+  mobileMenuOpen   = signal(false);
   searchQuery      = '';
 
   openCart()           { this.cartService.openCart(); }
@@ -30,6 +33,8 @@ export class Header {
   closeAccountMenu()   { this.showAccountMenu.set(false); }
   openMobileSearch()   { this.mobileSearchOpen.set(true); }
   closeMobileSearch()  { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
+  openMobileMenu()     { this.mobileMenuOpen.set(true); }
+  closeMobileMenu()    { this.mobileMenuOpen.set(false); }
   toggleTheme()        { this.themeService.toggle(); }
 
   search() {
