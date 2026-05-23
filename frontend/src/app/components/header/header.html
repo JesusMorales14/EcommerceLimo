@@ -11,7 +11,11 @@
   @if (mobileSearchOpen()) {
     <div class="mobile-search-overlay" (click)="closeMobileSearch()"></div>
     <div class="mobile-search-bar">
-      <button class="mobile-search-close" (click)="closeMobileSearch()" aria-label="Cerrar buscador">
+      <button
+        class="mobile-search-close"
+        (click)="closeMobileSearch()"
+        aria-label="Cerrar buscador"
+      >
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       <input
@@ -89,15 +93,47 @@
         <button class="mobile-icon-btn" (click)="openMobileSearch()" aria-label="Buscar">
           <span class="material-symbols-outlined">search</span>
         </button>
-        <button class="mobile-icon-btn" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'" aria-label="Cambiar tema">
-          <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
+        <button
+          class="mobile-icon-btn"
+          (click)="toggleTheme()"
+          [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'"
+          aria-label="Cambiar tema"
+        >
+          <span class="material-symbols-outlined">{{
+            themeService.isDark() ? 'light_mode' : 'dark_mode'
+          }}</span>
         </button>
-        <button class="mobile-icon-btn mobile-menu-btn" (click)="openMobileMenu()" aria-label="Abrir menú">
+        <button
+          class="mobile-icon-btn mobile-menu-btn"
+          (click)="openMobileMenu()"
+          aria-label="Abrir menú"
+        >
           <span class="material-symbols-outlined">menu</span>
         </button>
       </div>
 
       <nav class="user-menu" aria-label="Acciones de usuario">
+        <button
+          class="icon-btn theme-toggle"
+          (click)="toggleTheme()"
+          [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'"
+        >
+          <span class="material-symbols-outlined">{{
+            themeService.isDark() ? 'light_mode' : 'dark_mode'
+          }}</span>
+          <span class="icon-label">Tema</span>
+        </button>
+
+        <a routerLink="/favorites" class="icon-btn" title="Favoritos">
+          <span class="icon-wrap">
+            <span class="material-symbols-outlined">favorite</span>
+            @if (favService.count() > 0) {
+              <span class="badge badge-fav">{{ favService.count() }}</span>
+            }
+          </span>
+          <span class="icon-label">Favoritos</span>
+        </a>
+
         <div class="account-wrap">
           @if (showAccountMenu()) {
             <div class="account-backdrop" (click)="closeAccountMenu()"></div>
@@ -124,7 +160,11 @@
                   <span class="material-symbols-outlined">person</span> Mi Perfil y Pedidos
                 </a>
                 @if (authService.isAdmin()) {
-                  <a routerLink="/admin" class="dropdown-item admin-item" (click)="closeAccountMenu()">
+                  <a
+                    routerLink="/admin"
+                    class="dropdown-item admin-item"
+                    (click)="closeAccountMenu()"
+                  >
                     <span class="material-symbols-outlined">admin_panel_settings</span> Panel Admin
                   </a>
                 }
@@ -143,21 +183,6 @@
           }
         </div>
 
-        <a routerLink="/favorites" class="icon-btn" title="Favoritos">
-          <span class="icon-wrap">
-            <span class="material-symbols-outlined">favorite</span>
-            @if (favService.count() > 0) {
-              <span class="badge badge-fav">{{ favService.count() }}</span>
-            }
-          </span>
-          <span class="icon-label">Favoritos</span>
-        </a>
-
-        <button class="icon-btn theme-toggle" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'">
-          <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
-          <span class="icon-label">Tema</span>
-        </button>
-
         <button class="icon-btn cart-btn" (click)="openCart()" title="Mi Carro">
           <span class="icon-wrap">
             <span class="material-symbols-outlined">shopping_cart</span>
@@ -174,14 +199,35 @@
   <!-- Row 2: Category navigation -->
   <nav class="category-nav" aria-label="Categorías">
     <div class="header-container cat-scroll">
-      <a [routerLink]="['/category', 'electrodomesticos']" routerLinkActive="active" class="cat-link">Electrodomésticos</a>
-      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link">Tecnología</a>
-      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link">Moda Mujer</a>
-      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link">Moda Hombre</a>
-      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link">Hogar & Deco</a>
-      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link">Deporte</a>
-      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link">Belleza</a>
-      <a [routerLink]="['/category', 'ofertas']" routerLinkActive="active" class="cat-link offers-link">
+      <a
+        [routerLink]="['/category', 'electrodomesticos']"
+        routerLinkActive="active"
+        class="cat-link"
+        >Electrodomésticos</a
+      >
+      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link"
+        >Tecnología</a
+      >
+      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link"
+        >Moda Mujer</a
+      >
+      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link"
+        >Moda Hombre</a
+      >
+      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link"
+        >Hogar & Deco</a
+      >
+      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link"
+        >Deporte</a
+      >
+      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link"
+        >Belleza</a
+      >
+      <a
+        [routerLink]="['/category', 'ofertas']"
+        routerLinkActive="active"
+        class="cat-link offers-link"
+      >
         <span class="material-symbols-outlined">local_offer</span> Ofertas
       </a>
     </div>

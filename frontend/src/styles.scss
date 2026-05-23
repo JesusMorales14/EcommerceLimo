@@ -35,10 +35,10 @@
   --surface-3:      #243a28;
   --border:         #2a402a;
   --border-2:       #223222;
-  --text:           #dff0df;
-  --text-2:         #8aac8a;
-  --text-muted:     #6a8a6a;
-  --text-subtle:    #4a6a4a;
+  --text:           #f0faf0;
+  --text-2:         #a8c8a8;
+  --text-muted:     #7a9a7a;
+  --text-subtle:    #5a7a5a;
   --primary:        #00c853;
   --primary-dark:   #00a843;
   --primary-hover:  rgba(0, 200, 83, 0.12);
@@ -176,4 +176,20 @@ html[data-theme="dark"] {
 
   // ── Footer
   app-footer footer { background: var(--surface-3); color: var(--text-2); }
+
+  // ── Category drawer
+  .drawer-link         { color: var(--text); }
+  .drawer-link-icon    { color: var(--text-muted); }
+  .drawer-nav          { background: var(--surface); }
+
+  // ── Bottom nav
+  .bottom-nav          { background: var(--nav-bg); border-color: var(--nav-border); }
+  .nav-tab             { color: var(--nav-inactive); }
+  .nav-label           { color: var(--nav-inactive); }
+
+  // ── Mobile header buttons
+  .mobile-icon-btn { color: var(--text); }
+
+  // ── Promo bar (keep white text always)
+  .promo-bar { color: rgba(255, 255, 255, 0.9); strong { color: #fff; } }
 }
