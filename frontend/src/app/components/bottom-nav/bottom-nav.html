@@ -11,9 +11,9 @@
     <span class="nav-label">Buscar</span>
   </a>
 
-  <button class="nav-tab nav-cart-tab" (click)="openCart()">
-    <span class="nav-icon-wrap">
-      <span class="material-symbols-outlined">shopping_cart</span>
+  <button class="nav-tab nav-cart-fab" (click)="openCart()">
+    <span class="nav-fab-circle">
+      <span class="material-symbols-outlined">shopping_bag</span>
       @if (cartService.count() > 0) {
         <span class="nav-badge">{{ cartService.count() }}</span>
       }

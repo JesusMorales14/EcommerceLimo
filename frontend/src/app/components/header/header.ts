@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart';
 import { AuthService } from '../../core/services/auth.service';
 import { FavoritesService } from '../../core/services/favorites.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -17,17 +18,19 @@ export class Header {
   cartService     = inject(CartService);
   authService     = inject(AuthService);
   favService      = inject(FavoritesService);
+  themeService    = inject(ThemeService);
   private router  = inject(Router);
 
-  showAccountMenu = signal(false);
+  showAccountMenu  = signal(false);
   mobileSearchOpen = signal(false);
-  searchQuery     = '';
+  searchQuery      = '';
 
-  openCart() { this.cartService.openCart(); }
-  toggleAccountMenu() { this.showAccountMenu.update(v => !v); }
-  closeAccountMenu()  { this.showAccountMenu.set(false); }
-  openMobileSearch()  { this.mobileSearchOpen.set(true); }
-  closeMobileSearch() { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
+  openCart()           { this.cartService.openCart(); }
+  toggleAccountMenu()  { this.showAccountMenu.update(v => !v); }
+  closeAccountMenu()   { this.showAccountMenu.set(false); }
+  openMobileSearch()   { this.mobileSearchOpen.set(true); }
+  closeMobileSearch()  { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
+  toggleTheme()        { this.themeService.toggle(); }
 
   search() {
     const q = this.searchQuery.trim();

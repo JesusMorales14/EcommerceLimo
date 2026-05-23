@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RecentlyViewed } from '../../components/recently-viewed/recently-viewed';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
@@ -10,7 +11,7 @@ import { DealSessionService } from '../../core/services/deal-session.service';
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RecentlyViewed],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
 })

@@ -1,0 +1,87 @@
+<!-- Floating toggle button -->
+<button class="chat-fab" (click)="toggle()" [class.open]="isOpen()" aria-label="Soporte">
+  <span class="material-symbols-outlined chat-fab-icon">
+    {{ isOpen() ? 'close' : 'chat_bubble' }}
+  </span>
+  @if (!isOpen()) {
+    <span class="chat-fab-label">Ayuda</span>
+  }
+</button>
+
+<!-- Chat panel -->
+@if (isOpen()) {
+  <div class="chat-panel" role="dialog" aria-label="Chat de soporte">
+
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar">
+          <span class="material-symbols-outlined">support_agent</span>
+        </div>
+        <div>
+          <p class="chat-title">Soporte EcommerceLimo</p>
+          <span class="chat-status">
+            <span class="status-dot"></span> Respuesta instantánea
+          </span>
+        </div>
+      </div>
+      <button class="chat-close" (click)="close()" aria-label="Cerrar chat">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="chat-body">
+      @if (!activeFaq()) {
+        <!-- Welcome state -->
+        <div class="chat-welcome">
+          <div class="bubble-bot">
+            ¡Hola! 👋 Soy el asistente de <strong>EcommerceLimo</strong>. ¿En qué puedo ayudarte hoy?
+          </div>
+        </div>
+        <p class="chat-categories-label">Elige un tema:</p>
+        <div class="chat-topics">
+          @for (faq of faqs; track faq.id) {
+            <button class="topic-btn" (click)="select(faq)">
+              <span class="material-symbols-outlined topic-icon">{{ faq.icon }}</span>
+              <span class="topic-label">{{ faq.label }}</span>
+              <span class="material-symbols-outlined topic-arrow">chevron_right</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- Answer state -->
+        <button class="chat-back" (click)="back()">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Volver a temas
+        </button>
+
+        <div class="chat-question-header">
+          <span class="material-symbols-outlined q-icon">{{ activeFaq()!.icon }}</span>
+          <strong>{{ activeFaq()!.label }}</strong>
+        </div>
+
+        <div class="bubble-bot answer-bubble">
+          @for (line of answerLines(activeFaq()!.answer); track $index) {
+            @if (line.trim()) {
+              <p>{{ line }}</p>
+            } @else {
+              <br>
+            }
+          }
+        </div>
+
+        <p class="chat-more-help">¿Necesitas más ayuda?</p>
+        <div class="chat-more-actions">
+          <a href="mailto:soporte@ecommercelimo.com" class="more-btn">
+            <span class="material-symbols-outlined">mail</span> Email
+          </a>
+          <a href="https://wa.me/573000000000" target="_blank" rel="noopener" class="more-btn more-btn-green">
+            <span class="material-symbols-outlined">chat</span> WhatsApp
+          </a>
+        </div>
+      }
+    </div>
+
+  </div>
+}

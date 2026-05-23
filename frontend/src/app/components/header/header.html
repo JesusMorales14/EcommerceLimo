@@ -1,4 +1,12 @@
 <header class="main-header">
+  <!-- Promo announcement bar -->
+  <div class="promo-bar">
+    <span class="material-symbols-outlined promo-icon">local_shipping</span>
+    <span>Envío gratis en compras mayores a $50,000</span>
+    <span class="promo-sep">·</span>
+    <span>Hasta <strong>12 cuotas sin interés</strong></span>
+  </div>
+
   <!-- Mobile search overlay -->
   @if (mobileSearchOpen()) {
     <div class="mobile-search-overlay" (click)="closeMobileSearch()"></div>
@@ -24,7 +32,10 @@
   <!-- Row 1: Logo · Search · User actions -->
   <div class="header-top">
     <div class="header-container">
-      <a class="logo" routerLink="/">EcommerceLimo</a>
+      <a class="logo" routerLink="/">
+        <span class="material-symbols-outlined logo-icon">storefront</span>
+        <span class="logo-text">EcommerceLimo</span>
+      </a>
 
       <div class="search-bar">
         <span class="material-symbols-outlined search-icon">search</span>
@@ -41,6 +52,11 @@
       <!-- Mobile: icon-only search trigger -->
       <button class="mobile-search-btn" (click)="openMobileSearch()" aria-label="Buscar">
         <span class="material-symbols-outlined">search</span>
+      </button>
+
+      <!-- Mobile: theme toggle -->
+      <button class="mobile-theme-btn" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'" aria-label="Cambiar tema">
+        <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
       </button>
 
       <nav class="user-menu" aria-label="Acciones de usuario">
@@ -98,6 +114,10 @@
           </span>
           <span class="icon-label">Favoritos</span>
         </a>
+
+        <button class="icon-btn theme-toggle" (click)="toggleTheme()" [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'">
+          <span class="material-symbols-outlined">{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</span>
+        </button>
 
         <button class="icon-btn cart-btn" (click)="openCart()" title="Mi Carro">
           <span class="icon-wrap">

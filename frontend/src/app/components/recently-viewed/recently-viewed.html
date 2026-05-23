@@ -1,0 +1,35 @@
+@if (rvService.items().length > 0) {
+  <section class="rv-section">
+    <div class="rv-head">
+      <div class="rv-title-row">
+        <span class="material-symbols-outlined rv-icon">history</span>
+        <h2>Vistos recientemente</h2>
+      </div>
+      <button class="rv-clear" (click)="rvService.clear()">Limpiar historial</button>
+    </div>
+
+    <div class="rv-scroll-wrapper">
+      <div class="rv-track">
+        @for (p of rvService.items(); track p.id) {
+          <a class="rv-card" [routerLink]="['/product', p.id]">
+            <div class="rv-img-wrap">
+              <img [src]="p.images[0]" [alt]="p.name" loading="lazy">
+              @if (p.discount) {
+                <span class="rv-badge">-{{ p.discount }}%</span>
+              }
+            </div>
+            <div class="rv-info">
+              <p class="rv-brand">{{ p.brand }}</p>
+              <p class="rv-name">{{ p.name }}</p>
+              <p class="rv-price">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</p>
+              <button class="rv-add-btn" (click)="addToCart(p, $event)">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Agregar
+              </button>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+}

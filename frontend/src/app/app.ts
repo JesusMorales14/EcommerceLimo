@@ -8,11 +8,12 @@ import { AuthService } from './core/services/auth.service';
 import { CartService } from './core/services/cart';
 import { CategoryService } from './core/services/category.service';
 import { FavoritesService } from './core/services/favorites.service';
+import { ChatSupport } from './components/chat-support/chat-support';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, Header, Footer, BottomNav, CommonModule],
+  imports: [RouterOutlet, RouterLink, Header, Footer, BottomNav, CommonModule, ChatSupport],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

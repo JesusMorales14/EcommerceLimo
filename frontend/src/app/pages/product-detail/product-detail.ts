@@ -8,6 +8,7 @@ import { CartService } from '../../core/services/cart';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { ReviewService, Review, ReviewStats } from '../../core/services/review.service';
 import { AuthService } from '../../core/services/auth.service';
+import { RecentlyViewedService } from '../../core/services/recently-viewed.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -17,11 +18,12 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './product-detail.scss',
 })
 export class ProductDetailComponent implements OnInit {
-  private productService = inject(ProductService);
-  private cartService    = inject(CartService);
-  private reviewService  = inject(ReviewService);
-  authService            = inject(AuthService);
-  favService             = inject(FavoritesService);
+  private productService      = inject(ProductService);
+  private cartService         = inject(CartService);
+  private reviewService       = inject(ReviewService);
+  private recentlyViewedService = inject(RecentlyViewedService);
+  authService                 = inject(AuthService);
+  favService                  = inject(FavoritesService);
 
   producto      = signal<Product | null>(null);
   loading       = signal(true);
@@ -64,6 +66,7 @@ export class ProductDetailComponent implements OnInit {
         if (p.sizes?.length) this.selectedSize.set(p.sizes[0]);
         this.loading.set(false);
         this.loadReviews(id);
+        this.recentlyViewedService.add(p);
       },
       error: () => this.loading.set(false)
     });
