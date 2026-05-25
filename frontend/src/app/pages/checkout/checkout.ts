@@ -53,11 +53,12 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
 
   finalTotal = computed(() => this.couponResult()?.finalAmount ?? this.cartService.total());
 
+  orderSuccess = signal(false);
+
   readonly PAYMENT_METHODS = [
     { id: 'card',        label: 'Tarjeta crédito/débito', icon: 'credit_card',            desc: 'Visa, Mastercard, American Express' },
     { id: 'paypal',      label: 'PayPal',                 icon: 'account_balance_wallet', desc: 'Paga con tu cuenta PayPal de forma segura' },
     { id: 'mercadopago', label: 'Mercado Pago',           icon: 'payments',               desc: 'Todas las tarjetas, cuotas sin interés' },
-    { id: 'transfer',    label: 'Transferencia bancaria', icon: 'account_balance',        desc: 'Paga directamente desde tu banco online' },
     { id: 'cash',        label: 'Efectivo al recibir',    icon: 'local_shipping',         desc: 'Paga en efectivo cuando llegue tu pedido' },
   ];
 
@@ -267,13 +268,18 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     this.orderSvc.createOrder(items, payLabel, this.delivery, couponCode).subscribe({
       next: () => {
         this.cartService.clear();
-        this.router.navigate(['/account'], { state: { orderSuccess: true } });
+        this.placing.set(false);
+        this.orderSuccess.set(true);
       },
       error: (err) => {
         this.error.set(err.error?.message ?? 'Error al procesar el pedido. Intenta nuevamente.');
         this.placing.set(false);
       },
     });
+  }
+
+  goToAccount() {
+    this.router.navigate(['/account']);
   }
 
   // ── Cupón ─────────────────────────────────────────────────────────────────

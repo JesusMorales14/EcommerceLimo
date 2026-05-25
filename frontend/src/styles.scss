@@ -511,6 +511,102 @@ html[data-theme="dark"] {
     .admin-users-page .col-name { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text); }
   }
 
+  // ══ CHECKOUT ══════════════════════════════════════════════════════════════════
+
+  .checkout-page          { background: var(--bg); color: var(--text); }
+
+  // Step bar
+  .step-num               { background: var(--surface-3) !important; color: var(--text-muted) !important; }
+  .step-item.active .step-num { background: #006b2d !important; color: #fff !important; }
+  .step-item.done .step-num   { background: #16a34a !important; color: #fff !important; }
+  .step-label             { color: var(--text-muted) !important; }
+  .step-item.active .step-label { color: var(--primary) !important; }
+  .step-line              { background: var(--border) !important; }
+  .step-line.active       { background: var(--primary) !important; }
+  .step-footer            { border-color: var(--border); }
+
+  // Checkout headings
+  .checkout-step h2       { color: var(--text); }
+
+  // Payment method cards
+  .method-card {
+    background: var(--surface);
+    border-color: var(--border);
+    &:hover                   { border-color: var(--primary-light); }
+    &.selected                { border-color: var(--primary); background: var(--primary-hover); }
+    .method-text strong       { color: var(--text); }
+    .method-text span         { color: var(--text-muted); }
+    .method-icon              { color: var(--text-muted); }
+    &.selected .method-icon   { color: var(--primary); }
+  }
+
+  // Card logos
+  .card-logo              { border-color: var(--border); color: var(--text-muted); }
+  .stripe-element-wrap    { background: var(--surface-2); border-color: var(--border); }
+
+  // External payment boxes
+  .external-method.paypal { background: var(--surface-2); border: 1px solid var(--border); .ext-logo { color: #7ea8d4; } .ext-icons { color: #7ea8d4; } p { color: var(--text-muted); } }
+  .external-method.mp     { background: var(--surface-2); border: 1px solid var(--border); .ext-logo { color: #009ee3; } .ext-icons { color: #009ee3; } p { color: var(--text-muted); } }
+
+  // Cash box
+  .cash-box               { background: var(--primary-hover); border-color: var(--primary-light);
+    h4                    { color: var(--primary); }
+    p                     { color: var(--text-2); }
+    .cash-amount strong   { color: var(--primary); }
+  }
+
+  // Map & coords
+  #delivery-map           { border-color: var(--border); }
+  .map-tip                { color: var(--text-muted); }
+  .coords-badge           { background: var(--primary-hover); border-color: var(--primary-light); color: var(--primary); }
+  .search-row input       { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+
+  // Confirm step blocks
+  .confirm-block          { background: var(--surface); box-shadow: 0 2px 12px var(--shadow); }
+  .confirm-block-title    { color: var(--text); border-color: var(--border); }
+  .confirm-detail         { color: var(--text-2);
+    .material-symbols-outlined { color: var(--text-muted); }
+  }
+  .confirm-item           { border-color: var(--border-2);
+    .ci-name              { color: var(--text); }
+    .ci-brand             { color: var(--text-subtle); }
+    .ci-color             { color: var(--text-muted); }
+    .ci-qty               { color: var(--text-muted); }
+    .ci-price             { color: var(--text); }
+  }
+  .edit-btn               { border-color: var(--border); color: var(--text-muted);
+    &:hover               { border-color: var(--primary); color: var(--primary); }
+  }
+  .card-masked            { color: var(--text-muted); }
+
+  // Order total card
+  .order-total-card       { background: var(--surface-2);
+    h3                    { color: var(--text); }
+  }
+  .total-line-item        { color: var(--text); }
+  .total-divider          { border-color: var(--border); }
+  .total-row              { color: var(--text); .free-tag { color: var(--primary); } }
+  .grand-total            { border-color: var(--border);
+    strong                { color: var(--text); }
+    .grand-amount         { color: var(--primary); }
+  }
+  .coupon-input           { background: var(--surface); border-color: var(--border); color: var(--text); }
+  .coupon-applied         { background: var(--primary-hover); border-color: var(--primary-light); color: var(--primary);
+    strong                { color: var(--primary); }
+  }
+  .coupon-error           { color: #f87171; }
+  .discount-row           { color: #4ade80; }
+  .security-row > span    { color: var(--text-muted); }
+
+  // Buttons
+  .btn-secondary          { border-color: var(--border); color: var(--text-muted);
+    &:hover               { border-color: var(--primary); color: var(--primary); }
+  }
+
+  // Checkout error
+  .checkout-error         { background: #3f0000; color: #f87171; border-color: #7f1d1d; }
+  .confirm-error          { background: #3f0000; color: #f87171; border-color: #7f1d1d; }
+
   // ══ ADMIN DEALS ══════════════════════════════════════════════════════════════
 
   .admin-deals-page     { background: var(--bg); }

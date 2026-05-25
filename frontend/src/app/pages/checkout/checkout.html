@@ -1,3 +1,26 @@
+<!-- ── Overlay de compra exitosa ── -->
+@if (orderSuccess()) {
+  <div class="success-overlay">
+    <div class="success-card">
+      <div class="success-icon-wrap">
+        <span class="material-symbols-outlined success-icon">check_circle</span>
+      </div>
+      <h2>¡Compra realizada<br>con éxito!</h2>
+      <p>Tu pedido fue confirmado correctamente. Recibirás los detalles en tu correo electrónico.</p>
+      <div class="success-actions">
+        <button class="btn-confirm" (click)="goToAccount()">
+          <span class="material-symbols-outlined">receipt_long</span>
+          Ver mis pedidos
+        </button>
+        <a routerLink="/" class="btn-secondary-success">
+          <span class="material-symbols-outlined">home</span>
+          Seguir comprando
+        </a>
+      </div>
+    </div>
+  </div>
+}
+
 <div class="checkout-page">
 
   <!-- Step bar -->
@@ -198,22 +221,6 @@
           <div class="ext-icons">
             <span class="material-symbols-outlined">payments</span> Hasta 12 cuotas sin interés
           </div>
-        </div>
-      }
-
-      @if (paymentMethod() === 'transfer') {
-        <div class="transfer-box">
-          <h4>Datos para transferencia bancaria</h4>
-          <div class="transfer-row"><span>Banco</span><strong>Banco de Chile</strong></div>
-          <div class="transfer-row"><span>Tipo de cuenta</span><strong>Cuenta corriente</strong></div>
-          <div class="transfer-row"><span>N° de cuenta</span><strong>12345678-9</strong></div>
-          <div class="transfer-row"><span>RUT</span><strong>76.543.210-K</strong></div>
-          <div class="transfer-row"><span>Razón social</span><strong>GreenHouse SpA</strong></div>
-          <div class="transfer-row"><span>Email</span><strong>pagos&#64;greenhouse.com</strong></div>
-          <p class="transfer-note">
-            <span class="material-symbols-outlined">info</span>
-            Tu pedido se procesará tras confirmar la recepción del pago (máx. 24 hrs hábiles).
-          </p>
         </div>
       }
 
