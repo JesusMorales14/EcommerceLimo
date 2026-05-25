@@ -8,6 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { OrderService, DeliveryInfo } from '../../core/services/order.service';
 import { PaymentService } from '../../core/services/payment.service';
 import { CouponService, CouponResult } from '../../core/services/coupon.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 declare const L: any;
 
@@ -25,6 +26,7 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
   private paymentSvc = inject(PaymentService);
   private couponSvc  = inject(CouponService);
   private router     = inject(Router);
+  private themeService = inject(ThemeService);
 
   step = signal(1);
 
@@ -63,10 +65,12 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   constructor() {
-    // Monta el Stripe Card Element cuando se llega al paso 2 con tarjeta seleccionada
+    // Re-monta el Stripe element cuando cambia el paso, el método de pago o el tema
     effect(() => {
       const shouldMount = this.step() === 2 && this.paymentMethod() === 'card';
+      void this.themeService.isDark(); // señal reactiva: re-ejecuta al cambiar tema
       if (shouldMount) {
+        this.destroyCardElement();
         setTimeout(() => this.mountCardElement(), 100);
       } else {
         this.destroyCardElement();
@@ -105,18 +109,22 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     const stripe = this.paymentSvc.getStripe();
     if (!stripe) return;
 
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    // Lee los colores directamente desde las CSS variables — no hardcodeado
+    const cssVars = getComputedStyle(document.documentElement);
+    const textColor  = cssVars.getPropertyValue('--text').trim();
+    const mutedColor = cssVars.getPropertyValue('--text-muted').trim();
+
     const elements = stripe.elements();
     this.cardElement = elements.create('card', {
       style: {
         base: {
           fontFamily: 'inherit',
           fontSize: '15px',
-          color: isDark ? '#ffffff' : '#1e293b',
-          '::placeholder': { color: isDark ? '#80a080' : '#94a3b8' },
-          iconColor: isDark ? '#b0ccb0' : '#64748b',
+          color: textColor,
+          '::placeholder': { color: mutedColor },
+          iconColor: mutedColor,
         },
-        invalid: { color: isDark ? '#f87171' : '#dc2626' },
+        invalid: { color: '#f87171' },
       },
       hidePostalCode: true,
     });
