@@ -105,16 +105,18 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     const stripe = this.paymentSvc.getStripe();
     if (!stripe) return;
 
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const elements = stripe.elements();
     this.cardElement = elements.create('card', {
       style: {
         base: {
           fontFamily: 'inherit',
           fontSize: '15px',
-          color: '#1e293b',
-          '::placeholder': { color: '#94a3b8' },
+          color: isDark ? '#ffffff' : '#1e293b',
+          '::placeholder': { color: isDark ? '#80a080' : '#94a3b8' },
+          iconColor: isDark ? '#b0ccb0' : '#64748b',
         },
-        invalid: { color: '#dc2626' },
+        invalid: { color: isDark ? '#f87171' : '#dc2626' },
       },
       hidePostalCode: true,
     });
