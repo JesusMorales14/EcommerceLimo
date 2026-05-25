@@ -35,10 +35,10 @@
   --surface-3:      #243a28;
   --border:         #2a402a;
   --border-2:       #223222;
-  --text:           #f0faf0;
-  --text-2:         #a8c8a8;
-  --text-muted:     #7a9a7a;
-  --text-subtle:    #5a7a5a;
+  --text:           #ffffff;
+  --text-2:         #e0f0e0;
+  --text-muted:     #b0ccb0;
+  --text-subtle:    #80a080;
   --primary:        #00c853;
   --primary-dark:   #00a843;
   --primary-hover:  rgba(0, 200, 83, 0.12);
@@ -51,7 +51,7 @@
   --search-border:  #2a402a;
   --nav-bg:         rgba(22, 39, 22, 0.97);
   --nav-border:     #2a402a;
-  --nav-inactive:   #4a6a4a;
+  --nav-inactive:   #80a080;
   --card-bg:        #162716;
   --card-img-bg:    #1c3020;
 }
@@ -511,9 +511,12 @@ html[data-theme="dark"] {
     .admin-users-page .col-name { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text); }
   }
 
+  // ══ GLOBAL: iconos heredan color del padre en dark mode ══════════════════════
+  .material-symbols-outlined { color: inherit; }
+
   // ══ CHECKOUT ══════════════════════════════════════════════════════════════════
 
-  .checkout-page          { background: var(--bg); color: var(--text); }
+  .checkout-page          { background: var(--bg) !important; color: var(--text) !important; }
 
   // Step bar
   .step-num               { background: var(--surface-3) !important; color: var(--text-muted) !important; }
@@ -523,89 +526,106 @@ html[data-theme="dark"] {
   .step-item.active .step-label { color: var(--primary) !important; }
   .step-line              { background: var(--border) !important; }
   .step-line.active       { background: var(--primary) !important; }
-  .step-footer            { border-color: var(--border); }
+  .step-footer            { border-color: var(--border) !important; }
 
-  // Checkout headings
-  .checkout-step h2       { color: var(--text); }
+  // Checkout headings & labels
+  .checkout-step h2               { color: var(--text) !important; }
+  .checkout-step h2 .material-symbols-outlined { color: var(--primary) !important; }
+  .field label                    { color: var(--text-2) !important; }
 
   // Payment method cards
   .method-card {
-    background: var(--surface);
-    border-color: var(--border);
-    &:hover                   { border-color: var(--primary-light); }
-    &.selected                { border-color: var(--primary); background: var(--primary-hover); }
-    .method-text strong       { color: var(--text); }
-    .method-text span         { color: var(--text-muted); }
-    .method-icon              { color: var(--text-muted); }
-    &.selected .method-icon   { color: var(--primary); }
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    &.selected              { border-color: var(--primary) !important; background: var(--primary-hover) !important; }
+    .method-text strong     { color: var(--text) !important; }
+    .method-text span       { color: var(--text-muted) !important; }
+    .method-icon            { color: var(--text-2) !important; }
+    &.selected .method-icon { color: var(--primary) !important; }
+    .check                  { color: var(--primary) !important; }
   }
 
-  // Card logos
-  .card-logo              { border-color: var(--border); color: var(--text-muted); }
-  .stripe-element-wrap    { background: var(--surface-2); border-color: var(--border); }
+  // Card logos & stripe
+  .card-logo              { border-color: var(--border) !important; color: var(--text-muted) !important; }
+  .stripe-element-wrap    { background: var(--surface-2) !important; border-color: var(--border) !important; }
+  .ssl-badge              { color: var(--primary) !important; }
 
   // External payment boxes
-  .external-method.paypal { background: var(--surface-2); border: 1px solid var(--border); .ext-logo { color: #7ea8d4; } .ext-icons { color: #7ea8d4; } p { color: var(--text-muted); } }
-  .external-method.mp     { background: var(--surface-2); border: 1px solid var(--border); .ext-logo { color: #009ee3; } .ext-icons { color: #009ee3; } p { color: var(--text-muted); } }
+  .external-method {
+    &.paypal { background: var(--surface-2) !important; border-color: var(--border) !important;
+      .ext-logo { color: #7ea8d4 !important; } .ext-icons { color: #7ea8d4 !important; } p { color: var(--text-muted) !important; }
+    }
+    &.mp     { background: var(--surface-2) !important; border-color: var(--border) !important;
+      .ext-logo { color: #009ee3 !important; } .ext-icons { color: #009ee3 !important; } p { color: var(--text-muted) !important; }
+    }
+  }
 
   // Cash box
-  .cash-box               { background: var(--primary-hover); border-color: var(--primary-light);
-    h4                    { color: var(--primary); }
-    p                     { color: var(--text-2); }
-    .cash-amount strong   { color: var(--primary); }
+  .cash-box {
+    background: var(--primary-hover) !important; border-color: var(--primary-light) !important;
+    h4          { color: var(--primary) !important; }
+    p           { color: var(--text-2) !important; }
+    .cash-amount strong { color: var(--primary) !important; }
+    > .material-symbols-outlined { color: var(--primary) !important; }
   }
 
   // Map & coords
-  #delivery-map           { border-color: var(--border); }
-  .map-tip                { color: var(--text-muted); }
-  .coords-badge           { background: var(--primary-hover); border-color: var(--primary-light); color: var(--primary); }
-  .search-row input       { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+  #delivery-map           { border-color: var(--border) !important; }
+  .map-tip                { color: var(--text-muted) !important; .material-symbols-outlined { color: var(--text-muted) !important; } }
+  .coords-badge           { background: var(--primary-hover) !important; border-color: var(--primary-light) !important; color: var(--primary) !important; }
 
   // Confirm step blocks
-  .confirm-block          { background: var(--surface); box-shadow: 0 2px 12px var(--shadow); }
-  .confirm-block-title    { color: var(--text); border-color: var(--border); }
-  .confirm-detail         { color: var(--text-2);
-    .material-symbols-outlined { color: var(--text-muted); }
+  .confirm-block          { background: var(--surface) !important; box-shadow: 0 2px 12px var(--shadow) !important; }
+  .confirm-block-title    { color: var(--text) !important;
+    .material-symbols-outlined { color: var(--primary) !important; }
   }
-  .confirm-item           { border-color: var(--border-2);
-    .ci-name              { color: var(--text); }
-    .ci-brand             { color: var(--text-subtle); }
-    .ci-color             { color: var(--text-muted); }
-    .ci-qty               { color: var(--text-muted); }
-    .ci-price             { color: var(--text); }
+  .confirm-detail         { color: var(--text-2) !important;
+    .material-symbols-outlined { color: var(--text-muted) !important; }
   }
-  .edit-btn               { border-color: var(--border); color: var(--text-muted);
-    &:hover               { border-color: var(--primary); color: var(--primary); }
+  .confirm-item           { border-color: var(--border-2) !important;
+    .ci-name  { color: var(--text) !important; }
+    .ci-brand { color: var(--text-muted) !important; }
+    .ci-color { color: var(--text-muted) !important; }
+    .ci-qty   { color: var(--text-muted) !important; }
+    .ci-price { color: var(--text) !important; }
   }
-  .card-masked            { color: var(--text-muted); }
+  .edit-btn {
+    border-color: var(--border) !important; color: var(--text-muted) !important;
+    .material-symbols-outlined { color: var(--text-muted) !important; }
+  }
+  .card-masked            { color: var(--text-muted) !important; }
 
   // Order total card
-  .order-total-card       { background: var(--surface-2);
-    h3                    { color: var(--text); }
+  .order-total-card       { background: var(--surface-2) !important;
+    h3 { color: var(--text) !important; }
   }
-  .total-line-item        { color: var(--text); }
-  .total-divider          { border-color: var(--border); }
-  .total-row              { color: var(--text); .free-tag { color: var(--primary); } }
-  .grand-total            { border-color: var(--border);
-    strong                { color: var(--text); }
-    .grand-amount         { color: var(--primary); }
+  .total-line-item        { color: var(--text) !important; em { color: var(--primary) !important; } }
+  .total-divider          { border-color: var(--border) !important; }
+  .total-row              { color: var(--text) !important; .free-tag { color: var(--primary) !important; } }
+  .grand-total            { border-color: var(--border) !important;
+    strong      { color: var(--text) !important; }
+    .grand-amount { color: var(--primary) !important; }
   }
-  .coupon-input           { background: var(--surface); border-color: var(--border); color: var(--text); }
-  .coupon-applied         { background: var(--primary-hover); border-color: var(--primary-light); color: var(--primary);
-    strong                { color: var(--primary); }
+  .coupon-input           { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text) !important; }
+  .coupon-applied         { background: var(--primary-hover) !important; border-color: var(--primary-light) !important; color: var(--primary) !important;
+    strong { color: var(--primary) !important; }
   }
-  .coupon-error           { color: #f87171; }
-  .discount-row           { color: #4ade80; }
-  .security-row > span    { color: var(--text-muted); }
-
-  // Buttons
-  .btn-secondary          { border-color: var(--border); color: var(--text-muted);
-    &:hover               { border-color: var(--primary); color: var(--primary); }
+  .btn-remove-coupon      { color: var(--text-muted) !important; }
+  .coupon-error           { color: #f87171 !important; }
+  .discount-row           { color: #4ade80 !important; }
+  .security-row > span    { color: var(--text-muted) !important;
+    .material-symbols-outlined { color: var(--primary) !important; }
   }
 
-  // Checkout error
-  .checkout-error         { background: #3f0000; color: #f87171; border-color: #7f1d1d; }
-  .confirm-error          { background: #3f0000; color: #f87171; border-color: #7f1d1d; }
+  // Step footer buttons
+  .btn-secondary          { border-color: var(--border) !important; color: var(--text-muted) !important;
+    .material-symbols-outlined { color: var(--text-muted) !important; }
+    &:hover               { border-color: var(--primary) !important; color: var(--primary) !important; }
+  }
+
+  // Checkout errors
+  .checkout-error         { background: #3f0000 !important; color: #f87171 !important; border-color: #7f1d1d !important; }
+  .confirm-error          { background: #3f0000 !important; color: #f87171 !important; border-color: #7f1d1d !important; }
 
   // ══ ADMIN DEALS ══════════════════════════════════════════════════════════════
 
