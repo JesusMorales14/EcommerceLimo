@@ -1034,6 +1034,7 @@
 @media (max-width: 768px) {
   .checkout-page {
     padding: 14px 12px 40px;
+    overflow-x: hidden;
   }
 
   .step-bar {
@@ -1070,22 +1071,46 @@
   }
 
   .card-section {
-    flex-direction: column;
-    gap: 24px;
-    align-items: center;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 20px !important;
+    align-items: stretch !important;
+
+    > * {
+      flex: none !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
   }
+
   .card-3d {
-    width: min(100%, 340px);
-    max-width: 340px;
-    height: 200px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 190px !important;
+    margin: 0 auto !important;
+    display: block !important;
   }
-  .card-form {
-    width: 100%;
+
+  .card-face {
+    padding: 16px !important;
   }
+
+  .card-header-row .card-brand-chip {
+    font-size: 11px !important;
+  }
+
   .card-number-display {
-    font-size: 15px;
-    letter-spacing: 2px;
+    font-size: 14px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  .card-footer-row .card-field-value {
+    font-size: 11px !important;
+  }
+
+  .card-form {
+    width: 100% !important;
   }
 
   .step-footer {
