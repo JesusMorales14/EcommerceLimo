@@ -22,39 +22,28 @@ export class ProductListComponent implements OnInit {
   favService              = inject(FavoritesService);
 
   titulo      = '';
-  descripcion = '';
   breadcrumb  = '';
   loading     = signal(true);
 
-  baseProducts:    Product[] = [];
-  availableBrands: string[]  = [];
+  baseProducts: Product[] = [];
 
-  page  = signal(1);
-  pages = signal(1);
-  total = signal(0);
-
-  priceMin       = signal<number | null>(null);
-  priceMax       = signal<number | null>(null);
-  selectedBrands = signal<string[]>([]);
-  sortBy         = signal('relevance');
-  showFilters    = signal(false);
+  page   = signal(1);
+  pages  = signal(1);
+  total  = signal(0);
+  sortBy = signal('relevance');
 
   private currentId    = '';
   private currentSubId = '';
 
+  get catDesc(): string {
+    return this.categoryService.findById(this.currentId)?.desc ?? '';
+  }
+
   filteredProducts = computed(() => {
-    let list = [...this.baseProducts];
-    const min    = this.priceMin();
-    const max    = this.priceMax();
-    const brands = this.selectedBrands();
-
-    if (min !== null) list = list.filter(p => p.price >= min);
-    if (max !== null) list = list.filter(p => p.price <= max);
-    if (brands.length) list = list.filter(p => brands.includes(p.brand));
-
+    const list = [...this.baseProducts];
     switch (this.sortBy()) {
-      case 'price-asc':  return [...list].sort((a, b) => a.price - b.price);
-      case 'price-desc': return [...list].sort((a, b) => b.price - a.price);
+      case 'price-asc':  return list.sort((a, b) => a.price - b.price);
+      case 'price-desc': return list.sort((a, b) => b.price - a.price);
       default:           return list;
     }
   });
@@ -70,29 +59,9 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  addToCart(p: Product) { this.cartService.addToCart(p); }
-  toggleFav(p: Product, e: Event) { e.stopPropagation(); this.favService.toggle(p); }
-
-  discountedPrice(p: Product) {
-    return p.discount ? p.price * (1 - p.discount / 100) : p.price;
-  }
-
-  toggleBrand(brand: string) {
-    this.selectedBrands.update(list =>
-      list.includes(brand) ? list.filter(b => b !== brand) : [...list, brand]
-    );
-  }
-
-  clearFilters() {
-    this.priceMin.set(null);
-    this.priceMax.set(null);
-    this.selectedBrands.set([]);
-    this.sortBy.set('relevance');
-  }
-
-  hasFilters() {
-    return this.priceMin() !== null || this.priceMax() !== null || this.selectedBrands().length > 0;
-  }
+  addToCart(p: Product)              { this.cartService.addToCart(p); }
+  toggleFav(p: Product, e: Event)    { e.stopPropagation(); this.favService.toggle(p); }
+  discountedPrice(p: Product)        { return p.discount ? p.price * (1 - p.discount / 100) : p.price; }
 
   goToPage(p: number) {
     this.page.set(p);
@@ -106,7 +75,7 @@ export class ProductListComponent implements OnInit {
 
     if (cat) {
       if (subId) {
-        const sub = cat.subCategories.find(s => s.id === subId);
+        const sub       = cat.subCategories.find(s => s.id === subId);
         this.titulo     = sub?.label ?? cat.label;
         this.breadcrumb = sub ? `Inicio / ${cat.label} / ${sub.label}` : `Inicio / ${cat.label}`;
       } else {
@@ -119,28 +88,23 @@ export class ProductListComponent implements OnInit {
     }
 
     const isOffers = id === 'ofertas';
-    const category = isOffers ? undefined : id;
 
     if (isOffers) {
       this.productService.getOffers().subscribe({
         next: (res) => {
-          this.baseProducts    = res.items.filter(p => p.isOffer);
-          this.availableBrands = [...new Set(this.baseProducts.map(p => p.brand))];
+          this.baseProducts = res.items.filter(p => p.isOffer);
           this.total.set(res.total);
           this.pages.set(1);
-          this.clearFilters();
           this.loading.set(false);
         },
         error: () => this.loading.set(false),
       });
     } else {
-      this.productService.getAll(category, subId, this.page()).subscribe({
+      this.productService.getAll(id, subId, this.page()).subscribe({
         next: (res) => {
-          this.baseProducts    = res.items;
-          this.availableBrands = [...new Set(this.baseProducts.map(p => p.brand))];
+          this.baseProducts = res.items;
           this.total.set(res.total);
           this.pages.set(res.pages);
-          this.clearFilters();
           this.loading.set(false);
         },
         error: () => this.loading.set(false),

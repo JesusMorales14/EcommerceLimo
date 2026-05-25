@@ -19,15 +19,14 @@ $radius:     12px;
 
 // ── Main 2-col layout ─────────────────────────────────────────────────────────
 .pdp-main {
-  display: grid;
-  grid-template-columns: 480px 1fr;
+  display: flex;
   gap: 40px;
   align-items: start;
   margin-bottom: 48px;
 }
 
 // ── Gallery ───────────────────────────────────────────────────────────────────
-.gallery { display: flex; flex-direction: column; gap: 12px; }
+.gallery { width: 480px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
 
 .gallery-main {
   position: relative;
@@ -87,6 +86,8 @@ $radius:     12px;
 
 // ── Info column ───────────────────────────────────────────────────────────────
 .info-col {
+  flex: 1;
+  min-width: 0;
   background: white;
   border-radius: $radius;
   padding: 28px;
@@ -219,10 +220,11 @@ $radius:     12px;
 
 // Qty + action buttons
 .qty-actions {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  display: flex;
   gap: 10px;
   align-items: center;
+
+  .btn-buy, .btn-fav { flex: 1; }
 }
 
 .qty-selector {
@@ -706,20 +708,22 @@ $radius:     12px;
 
 // ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 1024px) {
-  .pdp-main { grid-template-columns: 1fr; }
+  .pdp-main { flex-direction: column; }
+  .gallery { width: 100%; }
   .gallery-main { height: 360px; }
 }
 
 @media (max-width: 768px) {
   .pdp { padding: 0 12px 40px; }
-  .pdp-main { grid-template-columns: 1fr; gap: 16px; }
+  .pdp-main { flex-direction: column; gap: 16px; }
+  .gallery { width: 100%; }
   .gallery-main { height: 280px; }
   .info-col { padding: 16px; gap: 14px; }
   .info-title { font-size: 18px; }
   .price-now { font-size: 26px; }
   .greencard-box { font-size: 12px; }
 
-  .qty-actions { grid-template-columns: auto 1fr auto; gap: 8px; }
+  .qty-actions { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
 
   .trust-strip { gap: 4px; }
   .trust-item { font-size: 10px; .material-symbols-outlined { font-size: 18px; } }

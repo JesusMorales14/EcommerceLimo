@@ -1,6 +1,6 @@
 .main-footer {
-  background-color: #ecf3e8;
-  color: #006e2e;
+  background-color: var(--surface-2);
+  color: var(--primary);
   padding: 60px 40px 30px;
   font-family: sans-serif;
 }
@@ -8,12 +8,12 @@
 .footer-grid {
   max-width: 1200px;
   margin: 0 auto;
-  margin-left: auto;
-  margin-right: auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 40px;
   padding-bottom: 60px;
+
+  > * { flex: 1; min-width: 180px; }
 }
 
 /* Títulos y textos */
@@ -26,7 +26,7 @@
 .brand-desc {
   font-size: 11px;
   line-height: 1.6;
-  color: #64748b;
+  color: var(--text-muted);
   letter-spacing: 0.5px;
   max-width: 200px;
 }
@@ -47,14 +47,14 @@
 
 .footer-links a {
   text-decoration: none;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .footer-links a:hover {
-  color: #006b2d;
+  color: var(--primary);
 }
 
 /* Redes sociales */
@@ -74,14 +74,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 12px;
   font-weight: 600;
   padding: 7px 12px;
   border-radius: 8px;
-  border: 1px solid #e2e8e2;
-  background: white;
+  border: 1px solid var(--border);
+  background: var(--surface);
   transition: all 0.2s;
 
   svg {
@@ -89,9 +89,9 @@
   }
 
   &:hover {
-    color: #006b2d;
-    border-color: #006b2d;
-    background: #f0f8f4;
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--primary-hover);
   }
 }
 
@@ -99,7 +99,7 @@
 .footer-bottom {
   max-width: 1400px;
   margin: 0 auto;
-  border-top: 1px solid rgba(0, 107, 45, 0.1);
+  border-top: 1px solid var(--border);
   padding-top: 30px;
   display: flex;
   justify-content: space-between;
@@ -108,14 +108,14 @@
 
 .copyright {
   font-size: 10px;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
 .payment-methods {
   display: flex;
   gap: 15px;
-  color: #94a3b8;
+  color: var(--text-subtle);
 }
 
 .payment-methods .material-symbols-outlined {
@@ -130,8 +130,5 @@
 }
 
 @media (max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-  }
+  .footer-grid { gap: 28px; }
 }

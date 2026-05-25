@@ -19,9 +19,8 @@ export class ProductsService {
     const searchFilter = search
       ? {
           OR: [
-            { name: { contains: search, mode: 'insensitive' as const } },
             { brand: { contains: search, mode: 'insensitive' as const } },
-            { description: { contains: search, mode: 'insensitive' as const } },
+            { name: { contains: search, mode: 'insensitive' as const } },
           ],
         }
       : {};

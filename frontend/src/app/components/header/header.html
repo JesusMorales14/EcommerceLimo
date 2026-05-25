@@ -33,6 +33,133 @@
     </div>
   }
 
+  <!-- Search results modal -->
+  @if (searchModalOpen()) {
+    <div class="srm-overlay" (click)="closeSearchModal()">
+      <div
+        class="srm-modal"
+        role="dialog"
+        aria-label="Resultados de búsqueda"
+        (click)="$event.stopPropagation()"
+      >
+        <!-- Modal header -->
+        <div class="srm-header">
+          <div class="srm-title-row">
+            <span class="material-symbols-outlined srm-icon">search</span>
+            <h2 class="srm-title">
+              Resultados para <em>"{{ searchModalQuery() }}"</em>
+            </h2>
+          </div>
+          <button class="srm-close" (click)="closeSearchModal()" aria-label="Cerrar">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <!-- Search again bar -->
+        <div class="srm-search-row">
+          <span class="material-symbols-outlined srm-search-icon">search</span>
+          <input
+            type="text"
+            [(ngModel)]="modalSearchInput"
+            (keyup.enter)="doModalSearch()"
+            placeholder="Buscar de nuevo..."
+            aria-label="Buscar de nuevo"
+            class="srm-input"
+          />
+          <button class="srm-search-btn" (click)="doModalSearch()">Buscar</button>
+        </div>
+
+        <!-- Results body -->
+        <div class="srm-body">
+          @if (searchLoading()) {
+            <div class="srm-loading">
+              <span class="material-symbols-outlined srm-spin">progress_activity</span>
+              <span>Buscando...</span>
+            </div>
+
+          } @else if (!hasResults()) {
+            <div class="srm-empty">
+              <span class="material-symbols-outlined">production_quantity_limits</span>
+              <p class="srm-empty-main">
+                No tenemos <strong>"{{ searchModalQuery() }}"</strong> por el momento.
+              </p>
+              <p class="srm-empty-hint">¡Haremos todo lo posible por tenerlo pronto!</p>
+              <p class="srm-empty-sub">Intentá con otro término o explorá nuestras categorías.</p>
+            </div>
+
+          } @else {
+
+            <!-- ── Sección 1: Marcas ────────────────────────────────────────── -->
+            @if (searchBrands().length > 0) {
+              <div class="srm-section-label">
+                <span class="material-symbols-outlined">storefront</span>
+                Marcas encontradas
+                <span class="srm-section-count">{{ searchBrands().length }}</span>
+              </div>
+
+              @for (brand of searchBrands(); track brand.name) {
+                <section class="srm-brand-section">
+                  <div class="srm-brand-header">
+                    <span class="srm-brand-letter">{{ brand.name[0] }}</span>
+                    <h3 class="srm-brand-name">{{ brand.name }}</h3>
+                    <span class="srm-brand-count">
+                      {{ brand.products.length }}
+                      {{ brand.products.length === 1 ? 'producto' : 'productos' }}
+                    </span>
+                  </div>
+                  <div class="srm-products-grid">
+                    @for (product of brand.products; track product.id) {
+                      <button class="srm-product-card" (click)="navigateToProduct(product.id)">
+                        <div class="srm-product-img-wrap">
+                          <img [src]="product.images[0]" [alt]="product.name" loading="lazy" class="srm-product-img" />
+                          @if (product.isOffer) {
+                            <span class="srm-offer-badge">Oferta</span>
+                          }
+                        </div>
+                        <div class="srm-product-info">
+                          <p class="srm-product-name">{{ product.name }}</p>
+                          <p class="srm-product-price">{{ formatPrice(product.price) }}</p>
+                        </div>
+                      </button>
+                    }
+                  </div>
+                </section>
+              }
+            }
+
+            <!-- ── Sección 2: Productos por nombre ────────────────────────── -->
+            @if (searchProducts().length > 0) {
+              <div class="srm-section-label" [class.srm-section-label--mt]="searchBrands().length > 0">
+                <span class="material-symbols-outlined">inventory_2</span>
+                Productos encontrados
+                <span class="srm-section-count">{{ searchProducts().length }}</span>
+              </div>
+
+              <div class="srm-products-grid">
+                @for (product of searchProducts(); track product.id) {
+                  <button class="srm-product-card" (click)="navigateToProduct(product.id)">
+                    <div class="srm-product-img-wrap">
+                      <img [src]="product.images[0]" [alt]="product.name" loading="lazy" class="srm-product-img" />
+                      @if (product.isOffer) {
+                        <span class="srm-offer-badge">Oferta</span>
+                      }
+                    </div>
+                    <div class="srm-product-info">
+                      <p class="srm-product-brand-tag">{{ product.brand }}</p>
+                      <p class="srm-product-name">{{ product.name }}</p>
+                      <p class="srm-product-price">{{ formatPrice(product.price) }}</p>
+                    </div>
+                  </button>
+                }
+              </div>
+            }
+
+          }
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- Mobile category drawer -->
   @if (mobileMenuOpen()) {
     <div class="drawer-overlay" (click)="closeMobileMenu()"></div>
@@ -88,11 +215,8 @@
         <button class="search-btn" (click)="search()">Buscar</button>
       </div>
 
-      <!-- Mobile: icon group (search, theme, hamburger) -->
+      <!-- Mobile: icon group (theme, hamburger) -->
       <div class="mobile-actions">
-        <button class="mobile-icon-btn" (click)="openMobileSearch()" aria-label="Buscar">
-          <span class="material-symbols-outlined">search</span>
-        </button>
         <button
           class="mobile-icon-btn"
           (click)="toggleTheme()"
@@ -196,40 +320,39 @@
     </div>
   </div>
 
+  <!-- Mobile search row: always visible on small screens -->
+  <div class="main-search">
+    <div class="mobile-search-row">
+      <span class="material-symbols-outlined ms-icon">search</span>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="search()"
+        placeholder="Buscar en EcommerceLimo"
+        aria-label="Buscar productos"
+      />
+      <button class="ms-btn" (click)="search()" aria-label="Buscar">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Row 2: Category navigation -->
   <nav class="category-nav" aria-label="Categorías">
     <div class="header-container cat-scroll">
-      <a
-        [routerLink]="['/category', 'electrodomesticos']"
-        routerLinkActive="active"
-        class="cat-link"
-        >Electrodomésticos</a
-      >
-      <a [routerLink]="['/category', 'tecnologia']" routerLinkActive="active" class="cat-link"
-        >Tecnología</a
-      >
-      <a [routerLink]="['/category', 'moda-mujer']" routerLinkActive="active" class="cat-link"
-        >Moda Mujer</a
-      >
-      <a [routerLink]="['/category', 'moda-hombre']" routerLinkActive="active" class="cat-link"
-        >Moda Hombre</a
-      >
-      <a [routerLink]="['/category', 'hogar']" routerLinkActive="active" class="cat-link"
-        >Hogar & Deco</a
-      >
-      <a [routerLink]="['/category', 'deporte']" routerLinkActive="active" class="cat-link"
-        >Deporte</a
-      >
-      <a [routerLink]="['/category', 'belleza']" routerLinkActive="active" class="cat-link"
-        >Belleza</a
-      >
-      <a
-        [routerLink]="['/category', 'ofertas']"
-        routerLinkActive="active"
-        class="cat-link offers-link"
-      >
-        <span class="material-symbols-outlined">local_offer</span> Ofertas
-      </a>
+      @for (cat of categoryService.categories(); track cat.id) {
+        <a
+          [routerLink]="['/category', cat.id]"
+          routerLinkActive="active"
+          class="cat-link"
+          [class.offers-link]="cat.id === 'ofertas'"
+        >
+          @if (cat.id === 'ofertas') {
+            <span class="material-symbols-outlined">{{ cat.icon }}</span>
+          }
+          {{ cat.label }}
+        </a>
+      }
     </div>
   </nav>
 </header>

@@ -12,13 +12,14 @@
 <div
   class="cart-overlay"
   [class.visible]="cartService.isOpen()"
-  (click)="cartService.closeCart()">
-</div>
+  (click)="cartService.closeCart()"
+></div>
 
 <aside class="cart-drawer" [class.open]="cartService.isOpen()">
-
   <div class="drawer-header">
-    <h2>Mi Carro <span>({{ cartService.count() }})</span></h2>
+    <h2>
+      Mi Carro <span>({{ cartService.count() }})</span>
+    </h2>
     <button class="close-btn" (click)="cartService.closeCart()" aria-label="Cerrar carro">
       <span class="material-symbols-outlined">close</span>
     </button>
@@ -28,7 +29,11 @@
     @if (cartService.count() > 0) {
       @for (item of cartService.getItems()(); track item.product.id) {
         <div class="drawer-item">
-          <img [src]="item.selectedImageUrl || item.product.images[0]" [alt]="item.product.name" class="drawer-item-img">
+          <img
+            [src]="item.selectedImageUrl || item.product.images[0]"
+            [alt]="item.product.name"
+            class="drawer-item-img"
+          />
           <div class="drawer-item-info">
             <p class="drawer-item-brand">{{ item.product.brand }}</p>
             <p class="drawer-item-name">{{ item.product.name }}</p>
@@ -38,17 +43,34 @@
                 {{ item.selectedColor }}
               </p>
             }
-            <p class="drawer-item-price">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</p>
+            <p class="drawer-item-price">
+              {{ cartService.itemPrice(item) | currency: 'PEN' : 'S/ ' : '1.0-0' }}
+            </p>
             <div class="drawer-qty">
-              <button (click)="cartService.updateQty(item.product.id, item.quantity - 1, item.selectedColor)" aria-label="Quitar">−</button>
+              <button
+                (click)="
+                  cartService.updateQty(item.product.id, item.quantity - 1, item.selectedColor)
+                "
+                aria-label="Quitar"
+              >
+                −
+              </button>
               <span>{{ item.quantity }}</span>
-              <button (click)="cartService.updateQty(item.product.id, item.quantity + 1, item.selectedColor)" aria-label="Agregar">+</button>
+              <button
+                (click)="
+                  cartService.updateQty(item.product.id, item.quantity + 1, item.selectedColor)
+                "
+                aria-label="Agregar"
+              >
+                +
+              </button>
             </div>
           </div>
           <button
             class="drawer-remove-btn"
             (click)="cartService.removeFromCart(item.product.id, item.selectedColor)"
-            aria-label="Eliminar producto">
+            aria-label="Eliminar producto"
+          >
             <span class="material-symbols-outlined">delete</span>
           </button>
         </div>
@@ -65,13 +87,24 @@
     <div class="drawer-footer">
       <div class="drawer-subtotal">
         <span>Subtotal</span>
-        <strong>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</strong>
+        <strong>{{ cartService.total() | currency: 'PEN' : 'S/ ' : '1.0-0' }}</strong>
       </div>
-      <a routerLink="/cart" class="btn-drawer-checkout" (click)="cartService.closeCart()">
-        Ver carro y comprar
+      @if (!authService.isLoggedIn()) {
+        <div class="drawer-auth-notice">
+          <span class="material-symbols-outlined">lock</span>
+          <span>Iniciá sesión para continuar con tu compra</span>
+        </div>
+      }
+      <button class="btn-drawer-checkout" (click)="drawerCheckout()">
+        <span class="material-symbols-outlined">
+          {{ authService.isLoggedIn() ? 'shopping_bag' : 'login' }}
+        </span>
+        {{ authService.isLoggedIn() ? 'Proceder al pago' : 'Iniciar sesión y pagar' }}
         <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+      <a routerLink="/cart" class="btn-drawer-view-cart" (click)="cartService.closeCart()">
+        Ver carrito completo
       </a>
     </div>
   }
-
 </aside>

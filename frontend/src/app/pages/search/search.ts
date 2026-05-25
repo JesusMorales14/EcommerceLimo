@@ -1,77 +1,74 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
-import { CartService } from '../../core/services/cart';
-import { FavoritesService } from '../../core/services/favorites.service';
+
+interface BrandCard {
+  name: string;
+  image: string;
+  altImage: string;
+  description: string;
+  count: number;
+}
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './search.html',
   styleUrl: './search.scss',
 })
 export class SearchPage implements OnInit {
   private productService = inject(ProductService);
-  private cartService    = inject(CartService);
-  favService             = inject(FavoritesService);
   private route          = inject(ActivatedRoute);
 
-  query    = signal('');
-  products = signal<Product[]>([]);
-  total    = signal(0);
-  page     = signal(1);
-  pages    = signal(1);
-  loading  = signal(false);
-  sortBy   = signal('relevance');
+  query   = signal('');
+  loading = signal(false);
 
-  filteredProducts = computed(() => {
-    const list = [...this.products()];
-    switch (this.sortBy()) {
-      case 'price-asc':  return list.sort((a, b) => a.price - b.price);
-      case 'price-desc': return list.sort((a, b) => b.price - a.price);
-      default: return list;
+  private all = signal<Product[]>([]);
+
+  brandCards = computed<BrandCard[]>(() => {
+    const q   = this.query().toLowerCase().trim();
+    const map = new Map<string, BrandCard>();
+
+    for (const p of this.all()) {
+      if (q) {
+        const hit =
+          p.brand.toLowerCase().includes(q) ||
+          p.name.toLowerCase().includes(q)  ||
+          p.description.toLowerCase().includes(q);
+        if (!hit) continue;
+      }
+
+      if (!map.has(p.brand)) {
+        map.set(p.brand, {
+          name:        p.brand,
+          image:       p.images[0] ?? '',
+          altImage:    p.images[1] ?? '',
+          description: p.description,
+          count:       1,
+        });
+      } else {
+        map.get(p.brand)!.count++;
+      }
     }
+
+    return Array.from(map.values());
   });
 
+  total = computed(() => this.brandCards().length);
+
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const q = params['q'] ?? '';
-      this.query.set(q);
-      this.page.set(1);
-      this.load();
-    });
-  }
-
-  load() {
-    this.loading.set(true);
-    const req = this.query()
-      ? this.productService.search(this.query(), this.page())
-      : this.productService.getAll(undefined, undefined, this.page());
-    req.subscribe({
-      next: (res) => {
-        this.products.set(res.items);
-        this.total.set(res.total);
-        this.pages.set(res.pages);
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false),
-    });
-  }
-
-  goToPage(p: number) {
-    this.page.set(p);
     this.load();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.route.queryParams.subscribe(params => this.query.set(params['q'] ?? ''));
   }
 
-  discountedPrice(p: Product) {
-    return p.discount ? p.price * (1 - p.discount / 100) : p.price;
+  private load() {
+    this.loading.set(true);
+    this.productService.getFeatured(100).subscribe({
+      next: (res) => { this.all.set(res.items); this.loading.set(false); },
+      error: ()    => this.loading.set(false),
+    });
   }
-
-  addToCart(p: Product) { this.cartService.addToCart(p); }
-  toggleFav(p: Product, e: Event) { e.stopPropagation(); this.favService.toggle(p); }
 }

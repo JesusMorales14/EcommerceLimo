@@ -1,34 +1,32 @@
-// ── Variables ────────────────────��────────────────────────���────────────────────
-$green:      #006b2d;
-$green-dark: #004d20;
-$text:       #171d17;
-$radius:     14px;
-$gap:        56px;
+// ── Variables ────────────────────────────────────────────────────────────────
+$radius: 14px;
 
-// ── Layout ────────────────────────────────���──────────────────────────��─────────
+// ── Layout ───────────────────────────────────────────────────────────────────
 .home {
-  background: #f4f7f4;
+  background: var(--bg);
 }
 
-// ── Hero ──────────────────────────────────────────────────────────────────��────
+// ── Hero ─────────────────────────────────────────────────────────────────────
 .hero {
   background:
-    linear-gradient(135deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.18) 65%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.2) 65%),
     url('https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1200&auto=format&fit=crop')
-    center/cover no-repeat;
-  min-height: 480px;
+      center/cover no-repeat;
+  min-height: 500px;
   display: flex;
   align-items: center;
-  padding: 60px max(32px, 5vw);
+  padding: 72px max(40px, 6vw);
   color: white;
 }
 
-.hero-content { max-width: 560px; }
+.hero-content {
+  max-width: 580px;
+}
 
 .badge-new {
   display: inline-block;
-  background: $green;
-  color: white;
+  background: var(--primary);
+  color: #ffffff;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -38,42 +36,68 @@ $gap:        56px;
 }
 
 .hero h1 {
-  font-size: clamp(32px, 4vw, 54px);
+  font-size: clamp(30px, 4vw, 54px);
   font-weight: 800;
   line-height: 1.1;
   margin: 0 0 16px;
+  color: #ffffff;
 }
 
 .hero p {
   font-size: 16px;
-  line-height: 1.65;
-  opacity: 0.9;
-  margin: 0 0 32px;
-  max-width: 440px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 36px;
+  max-width: 460px;
 }
 
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
 
 .btn-fill {
-  background: $green; color: white; border: none;
-  padding: 13px 28px; border-radius: 9px; font-weight: 700; font-size: 14px;
-  cursor: pointer; transition: background 0.2s, transform 0.15s;
-  &:hover { background: $green-dark; transform: translateY(-2px); }
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.15s;
+  &:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
 }
 
 .btn-outline {
-  background: rgba(255,255,255,0.15); color: white;
-  border: 1.5px solid rgba(255,255,255,0.7);
-  padding: 13px 28px; border-radius: 9px; font-weight: 700; font-size: 14px;
-  cursor: pointer; backdrop-filter: blur(6px);
-  transition: background 0.2s, transform 0.15s;
-  &:hover { background: rgba(255,255,255,0.28); transform: translateY(-2px); }
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.2s,
+    transform 0.15s;
+  &:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+  }
 }
 
-// ── Category Strip ─────────────────────────────��──────────────────────��────────
+// ── Category Strip ────────────────────────────────────────────────────────────
 .category-strip-section {
-  background: white;
-  border-bottom: 1px solid #e8ede8;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   padding: 20px max(32px, 5vw);
 }
 
@@ -82,7 +106,9 @@ $gap:        56px;
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .cat-chip {
@@ -93,41 +119,48 @@ $gap:        56px;
   padding: 12px 20px;
   border-radius: 12px;
   text-decoration: none;
-  color: $text;
+  color: var(--text);
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background 0.2s, color 0.2s;
-
-  &:hover { background: #e8f5ee; color: $green; }
+  transition:
+    background 0.2s,
+    color 0.2s;
+  &:hover {
+    background: var(--primary-hover);
+    color: var(--primary);
+  }
 }
 
 .cat-chip-icon {
   font-size: 28px;
-  color: $green;
+  color: var(--primary);
 }
 
 .cat-chip-label {
   font-size: 12px;
   font-weight: 700;
+  color: var(--text);
 }
 
 // ── Deal Teaser ───────────────────────────────────────────────────────────────
 .deal-teaser {
   position: relative;
-  margin: 0 max(32px, 5vw) 8px;
+  margin: 32px max(32px, 5vw) 0;
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #0a1628 0%, #0f2d1a 50%, #0a1628 100%);
-  padding: 36px 40px;
+  padding: 48px max(32px, 5vw);
   display: flex;
   align-items: center;
 
   .teaser-glow {
     position: absolute;
-    top: -60px; left: 50%;
+    top: -60px;
+    left: 50%;
     transform: translateX(-50%);
-    width: 400px; height: 200px;
-    background: radial-gradient(ellipse, rgba(251,191,36,0.18) 0%, transparent 70%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(251, 191, 36, 0.18) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -156,7 +189,8 @@ $gap:        56px;
       margin-bottom: 10px;
 
       .teaser-dot {
-        width: 8px; height: 8px;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
         background: #fbbf24;
         animation: teaser-pulse 1.4s ease-in-out infinite;
@@ -166,17 +200,19 @@ $gap:        56px;
     .teaser-title {
       font-size: 24px;
       font-weight: 800;
-      color: #fff;
+      color: #ffffff;
       margin: 0 0 10px;
       line-height: 1.2;
     }
 
     .teaser-sub {
       font-size: 13px;
-      color: rgba(255,255,255,0.65);
+      color: rgba(255, 255, 255, 0.65);
       margin: 0;
       line-height: 1.5;
-      strong { color: rgba(255,255,255,0.9); }
+      strong {
+        color: rgba(255, 255, 255, 0.9);
+      }
     }
   }
 
@@ -190,7 +226,7 @@ $gap:        56px;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
       margin: 0;
     }
@@ -205,8 +241,8 @@ $gap:        56px;
         flex-direction: column;
         align-items: center;
         gap: 4px;
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 12px 18px;
         min-width: 64px;
@@ -223,7 +259,7 @@ $gap:        56px;
           font-size: 9px;
           font-weight: 700;
           letter-spacing: 1.5px;
-          color: rgba(255,255,255,0.4);
+          color: rgba(255, 255, 255, 0.4);
         }
       }
 
@@ -242,40 +278,54 @@ $gap:        56px;
       align-items: center;
       gap: 5px;
       font-size: 11px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255, 255, 255, 0.35);
       margin: 0;
-      .material-symbols-outlined { font-size: 13px; }
+      .material-symbols-outlined {
+        font-size: 13px;
+      }
     }
   }
 }
 
 @keyframes teaser-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.75); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 0.6; }
-  50%       { opacity: 0.15; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.15;
+  }
 }
 
 // ── Section block ─────────────────────────────────────────────────────────────
 .section-block {
-  padding: 40px max(32px, 5vw);
+  padding: 48px max(32px, 5vw);
 }
 
 .section-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
   gap: 12px;
 
   h2 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
-    color: $text;
+    color: var(--text);
     margin: 0;
   }
 }
@@ -299,19 +349,24 @@ $gap:        56px;
   border-radius: 100px;
   border: 1px solid #f5c842;
 
-  .material-symbols-outlined { font-size: 16px; }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
 .link-ver-mas {
   font-size: 13px;
   font-weight: 700;
-  color: $green;
+  color: var(--primary);
   text-decoration: none;
   white-space: nowrap;
-  &:hover { opacity: 0.7; }
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
-// ── Product cards ──────────────────────────���────────────────────────────────��──
+// ── Product cards ─────────────────────────────────────────────────────────────
 .products-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -325,23 +380,25 @@ $gap:        56px;
 }
 
 .product-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: $radius;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
 
   &:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+    box-shadow: 0 8px 28px var(--shadow-lg);
     transform: translateY(-3px);
   }
 }
 
 .card-img-wrap {
   position: relative;
-  background: #f4f7f4;
+  background: var(--card-img-bg);
   height: 200px;
   overflow: hidden;
   cursor: pointer;
@@ -353,7 +410,9 @@ $gap:        56px;
     transition: transform 0.4s ease;
   }
 
-  &:hover img { transform: scale(1.05); }
+  &:hover img {
+    transform: scale(1.05);
+  }
 }
 
 .badge-off {
@@ -361,7 +420,7 @@ $gap:        56px;
   top: 10px;
   left: 10px;
   background: #ba1a1a;
-  color: white;
+  color: #ffffff;
   font-size: 10px;
   font-weight: 800;
   padding: 3px 8px;
@@ -372,7 +431,7 @@ $gap:        56px;
   position: absolute;
   top: 10px;
   right: 10px;
-  background: white;
+  background: var(--surface);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -381,12 +440,16 @@ $gap:        56px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  color: #94a3b8;
+  box-shadow: 0 2px 8px var(--shadow);
+  color: var(--text-muted);
   transition: color 0.2s;
 
-  &:hover { color: #e53935; }
-  .material-symbols-outlined { font-size: 17px; }
+  &:hover {
+    color: #e53935;
+  }
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
 }
 
 .card-body {
@@ -394,11 +457,12 @@ $gap:        56px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  background: var(--card-bg);
 }
 
 .card-brand {
   font-size: 10px;
-  color: #94a3b8;
+  color: var(--text-subtle);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -408,22 +472,28 @@ $gap:        56px;
 .card-name {
   font-size: 13px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text);
   margin: 0 0 6px;
   line-height: 1.4;
   cursor: pointer;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  &:hover { color: $green; }
+  &:hover {
+    color: var(--primary);
+  }
 }
 
 .card-stars {
   font-size: 12px;
   color: #f59e0b;
   margin-bottom: 8px;
-  span { color: #94a3b8; font-size: 11px; }
+  span {
+    color: var(--text-subtle);
+    font-size: 11px;
+  }
 }
 
 .card-prices {
@@ -436,12 +506,12 @@ $gap:        56px;
 .price-now {
   font-size: 17px;
   font-weight: 800;
-  color: $text;
+  color: var(--text);
 }
 
 .price-old {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-decoration: line-through;
 }
 
@@ -451,17 +521,19 @@ $gap:        56px;
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  color: $green;
+  color: var(--primary);
   margin: 0 0 12px;
   flex: 1;
 
-  .material-symbols-outlined { font-size: 14px; }
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
 }
 
 .btn-add-card {
   width: 100%;
-  background: $green;
-  color: white;
+  background: var(--primary);
+  color: #ffffff;
   border: none;
   padding: 10px;
   border-radius: 8px;
@@ -474,104 +546,259 @@ $gap:        56px;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover { background: $green-dark; }
-  .material-symbols-outlined { font-size: 16px; }
+  &:hover {
+    background: var(--primary-dark);
+  }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
-// ── Promo Banners ────────────────────────────────────────────────────────────���─
+// ── Promo Banners ─────────────────────────────────────────────────────────────
 .promo-banners {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 0 max(32px, 5vw) 40px;
+  display: flex;
+  gap: 20px;
+  padding: 48px max(32px, 5vw);
+  justify-content: center;
 }
 
 .promo-card {
+  flex: 1;
   border-radius: $radius;
-  padding: 40px 36px;
+  padding: 48px 40px;
   cursor: pointer;
-  transition: filter 0.2s;
-  &:hover { filter: brightness(1.05); }
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+  &:hover {
+    filter: brightness(1.07);
+    transform: translateY(-2px);
+  }
 }
 
-.promo-green { background: linear-gradient(135deg, #006b2d, #009140); }
-.promo-dark  { background: linear-gradient(135deg, #1a2e1a, #2d4a2d); }
+.promo-green {
+  background: linear-gradient(135deg, #006b2d 0%, #009140 100%);
+}
+.promo-dark {
+  background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2d 100%);
+}
 
 .promo-text {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  color: white;
+  gap: 12px;
 }
 
 .promo-tag {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 2px;
-  opacity: 0.8;
+  letter-spacing: 2.5px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .promo-card h3 {
-  font-size: clamp(18px, 2vw, 26px);
+  font-size: clamp(20px, 2.2vw, 28px);
   font-weight: 800;
   margin: 0;
   line-height: 1.2;
+  color: #ffffff;
 }
 
 .promo-cta {
   font-size: 14px;
   font-weight: 700;
-  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-// ── Responsive ───────────────────────────────���─────────────────────────────────
+// ── Responsive: Tablet ────────────────────────────────────────────────────────
 @media (max-width: 1024px) {
-  .products-row, .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-row,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
+// ── Responsive: Mobile ────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .hero { min-height: 260px; padding: 36px 16px; }
-  .hero h1 { font-size: clamp(22px, 6vw, 32px); }
-  .hero p { font-size: 13px; margin-bottom: 20px; }
-  .btn-fill, .btn-outline { padding: 11px 20px; font-size: 13px; }
+  .hero {
+    min-height: 300px;
+    padding: 44px 20px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 6.5vw, 34px);
+  }
+  .hero p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .btn-fill,
+  .btn-outline {
+    padding: 12px 22px;
+    font-size: 13px;
+  }
 
-  .category-strip-section { padding: 12px 12px; }
-  .cat-chip { padding: 8px 12px; gap: 4px; }
-  .cat-chip-icon { font-size: 20px; }
-  .cat-chip-label { font-size: 11px; }
+  .category-strip-section {
+    padding: 12px 16px;
+  }
+  .cat-chip {
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  .cat-chip-icon {
+    font-size: 20px;
+  }
+  .cat-chip-label {
+    font-size: 11px;
+  }
 
   .deal-teaser {
-    margin: 0 12px 8px;
-    padding: 24px 20px;
+    margin: 20px 16px 0;
+    padding: 32px 20px;
     border-radius: 16px;
 
-    .teaser-content { gap: 24px; }
-    .teaser-left .teaser-title { font-size: 18px; }
+    .teaser-content {
+      gap: 24px;
+    }
+    .teaser-left .teaser-title {
+      font-size: 18px;
+    }
     .teaser-right {
       width: 100%;
-      .clock-unit { min-width: 52px; padding: 10px 12px; .clock-num { font-size: 24px; } }
+      .clock-unit {
+        min-width: 52px;
+        padding: 10px 12px;
+        .clock-num {
+          font-size: 24px;
+        }
+      }
     }
   }
 
-  .section-block { padding: 20px 12px; }
-  .section-head h2 { font-size: 18px; }
+  .section-block {
+    padding: 28px 16px;
+  }
+  .section-head {
+    margin-bottom: 20px;
+    h2 {
+      font-size: 20px;
+    }
+  }
 
-  .products-row, .products-grid {
+  .products-row,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card-img-wrap {
+    height: 160px;
+  }
+  .card-body {
+    padding: 10px;
+  }
+  .card-name {
+    font-size: 12px;
+  }
+  .price-now {
+    font-size: 15px;
+  }
+  .btn-add-card {
+    font-size: 12px;
+    padding: 9px;
+    gap: 4px;
+  }
+
+  .promo-banners {
+    flex-direction: column;
+    padding: 32px 16px;
+    justify-content: center;
+    gap: 12px;
+  }
+  .promo-card {
+    padding: 30px 24px;
+  }
+  .promo-card h3 {
+    font-size: 20px;
+  }
+}
+
+// ── Responsive: Mobile small ──────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .hero {
+    min-height: 260px;
+    padding: 36px 16px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 28px);
+  }
+  .hero p {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+    .btn-fill,
+    .btn-outline {
+      width: 100%;
+      justify-content: center;
+      padding: 13px 20px;
+    }
+  }
+
+  .section-block {
+    padding: 24px 12px;
+  }
+  .section-head h2 {
+    font-size: 18px;
+  }
+
+  .products-row,
+  .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
-  .card-img-wrap { height: 160px; }
-  .card-body { padding: 10px; }
-  .card-name { font-size: 12px; }
-  .price-now { font-size: 15px; }
-  .btn-add-card { font-size: 12px; padding: 8px; gap: 4px; }
+  .card-img-wrap {
+    height: 140px;
+  }
+  .card-body {
+    padding: 8px;
+  }
+  .card-brand {
+    font-size: 9px;
+  }
+  .card-name {
+    font-size: 11px;
+  }
+  .card-stars {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .price-now {
+    font-size: 14px;
+  }
+  .card-shipping {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+  .btn-add-card {
+    font-size: 11px;
+    padding: 8px 6px;
+    gap: 3px;
+  }
 
   .promo-banners {
-    grid-template-columns: 1fr;
-    padding: 0 12px 24px;
+    padding: 24px 12px;
     gap: 10px;
   }
-  .promo-card { padding: 24px 20px; }
-  .promo-card h3 { font-size: 18px; }
+  .promo-card {
+    padding: 26px 20px;
+  }
+  .promo-card h3 {
+    font-size: 18px;
+  }
+  .promo-cta {
+    font-size: 13px;
+  }
 }

@@ -9,6 +9,7 @@ import { FavoritesService } from '../../core/services/favorites.service';
 import { ReviewService, Review, ReviewStats } from '../../core/services/review.service';
 import { AuthService } from '../../core/services/auth.service';
 import { RecentlyViewedService } from '../../core/services/recently-viewed.service';
+import { SITE_CONFIG } from '../../core/config/site.config';
 
 @Component({
   selector: 'app-product-detail',
@@ -24,6 +25,8 @@ export class ProductDetailComponent implements OnInit {
   private recentlyViewedService = inject(RecentlyViewedService);
   authService                 = inject(AuthService);
   favService                  = inject(FavoritesService);
+
+  readonly siteConfig = SITE_CONFIG;
 
   producto      = signal<Product | null>(null);
   loading       = signal(true);

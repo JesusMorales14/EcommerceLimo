@@ -67,7 +67,7 @@
         }
         <div class="greencard-box">
           <span class="material-symbols-outlined">credit_card</span>
-          Hasta 12 cuotas sin interés de {{ installment | currency:'PEN':'S/ ':'1.2-2' }} con GreenCard
+          Hasta {{ siteConfig.installments.count }} cuotas sin interés de {{ installment | currency:'PEN':'S/ ':'1.2-2' }} con {{ siteConfig.installments.cardName }}
         </div>
       </div>
 
@@ -141,38 +141,26 @@
 
       <!-- Delivery & pickup -->
       <div class="delivery-block">
-        <div class="delivery-row">
-          <span class="material-symbols-outlined delivery-icon">local_shipping</span>
-          <div class="delivery-info">
-            <strong>Despacho a domicilio</strong>
-            <span>Llega en 24 a 48 horas hábiles</span>
+        @for (option of siteConfig.delivery; track option.title) {
+          <div class="delivery-row">
+            <span class="material-symbols-outlined delivery-icon">{{ option.icon }}</span>
+            <div class="delivery-info">
+              <strong>{{ option.title }}</strong>
+              <span>{{ option.subtitle }}</span>
+            </div>
+            <span class="delivery-badge free">{{ option.badge }}</span>
           </div>
-          <span class="delivery-badge free">Gratis</span>
-        </div>
-        <div class="delivery-row">
-          <span class="material-symbols-outlined delivery-icon">store</span>
-          <div class="delivery-info">
-            <strong>Retiro en tienda</strong>
-            <span>Disponible en 2 horas · Greenhouse Central</span>
-          </div>
-          <span class="delivery-badge free">Gratis</span>
-        </div>
+        }
       </div>
 
       <!-- Trust strip -->
       <div class="trust-strip">
-        <div class="trust-item">
-          <span class="material-symbols-outlined">verified_user</span>
-          <span>Compra segura</span>
-        </div>
-        <div class="trust-item">
-          <span class="material-symbols-outlined">replay</span>
-          <span>Devolución gratis</span>
-        </div>
-        <div class="trust-item">
-          <span class="material-symbols-outlined">workspace_premium</span>
-          <span>Garantía 1 año</span>
-        </div>
+        @for (item of siteConfig.trust; track item.icon) {
+          <div class="trust-item">
+            <span class="material-symbols-outlined">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </div>
+        }
       </div>
 
     </div>
@@ -197,12 +185,6 @@
         <div class="tab-description">
           <h3>Sobre este producto</h3>
           <p>{{ producto()!.description }}</p>
-          <ul class="feature-list">
-            <li><span class="material-symbols-outlined">check_circle</span> Materiales de calidad garantizada</li>
-            <li><span class="material-symbols-outlined">check_circle</span> Diseño exclusivo</li>
-            <li><span class="material-symbols-outlined">check_circle</span> Envío rápido y seguro</li>
-            <li><span class="material-symbols-outlined">check_circle</span> Garantía de 12 meses</li>
-          </ul>
         </div>
       }
 
@@ -211,10 +193,16 @@
           <table class="specs-table">
             <tr><td>Marca</td><td>{{ producto()!.brand }}</td></tr>
             <tr><td>Categoría</td><td>{{ producto()!.category | titlecase }}</td></tr>
-            <tr><td>Stock disponible</td><td>{{ producto()!.stock }} unidades</td></tr>
             @if (producto()!.subCategory) {
               <tr><td>Subcategoría</td><td>{{ producto()!.subCategory }}</td></tr>
             }
+            @if (producto()!.sizes.length) {
+              <tr><td>Tallas disponibles</td><td>{{ producto()!.sizes.join(', ') }}</td></tr>
+            }
+            @if (producto()!.colors.length) {
+              <tr><td>Colores disponibles</td><td>{{ producto()!.colors.length }}</td></tr>
+            }
+            <tr><td>Stock disponible</td><td>{{ producto()!.stock }} unidades</td></tr>
             <tr><td>Código producto</td><td>#{{ producto()!.id }}</td></tr>
           </table>
         </div>

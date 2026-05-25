@@ -77,14 +77,13 @@
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 20px;
 
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
-
-  .full { grid-column: 1 / -1; }
+  > *:not(.full) { flex: 1; min-width: 200px; }
+  .full { flex: 0 0 100%; }
 }
 
 .field {

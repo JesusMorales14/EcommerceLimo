@@ -127,11 +127,13 @@
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
 
   .field {
+    flex: 1;
+    min-width: 200px;
     label {
       display: block;
       font-size: 12px;
@@ -156,10 +158,10 @@
       resize: vertical;
     }
     &.full {
-      grid-column: 1 / -1;
+      flex: 0 0 100%;
     }
     &.check {
-      grid-column: 1 / -1;
+      flex: 0 0 100%;
       label {
         display: flex;
         align-items: center;

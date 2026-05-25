@@ -1,167 +1,509 @@
+// ── Page ─────────────────────────────────────────────────────────────────────
 .search-page {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 24px 16px 60px;
+  background: var(--bg);
+  min-height: 100vh;
+  padding-bottom: 80px;
 }
 
+// ── Search header (query activo) ─────────────────────────────────────────────
 .search-header {
   display: flex;
   align-items: center;
+  padding: 32px max(40px, 6vw) 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.search-meta {
+  display: flex;
+  align-items: baseline;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 28px;
+  flex: 1;
 
   h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 800;
+    color: var(--text);
     margin: 0;
-    flex: 1;
-    em { font-style: normal; color: #006b2d; }
-  }
-
-  .result-count { color: #64748b; font-size: 0.9rem; }
-
-  .sort-select {
-    padding: 8px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    background: white;
-    cursor: pointer;
+    em { font-style: normal; color: var(--primary); }
   }
 }
 
-.loading-state, .empty-state {
+.result-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+// ── Explore hero ──────────────────────────────────────────────────────────────
+.explore-hero {
+  background: linear-gradient(135deg, #0a1f0d 0%, #006b2d 55%, #003d1a 100%);
+  padding: 80px max(40px, 6vw) 68px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 560px; height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 200, 83, 0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 25%;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.explore-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+.explore-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.explore-title {
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 18px;
+  line-height: 1.04;
+  letter-spacing: -1.5px;
+}
+
+.explore-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.62);
+  margin: 0 0 28px;
+  line-height: 1.7;
+  max-width: 460px;
+}
+
+.explore-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  padding: 7px 18px;
+  border-radius: 100px;
+  letter-spacing: 0.4px;
+}
+
+// ── Eyebrow dot (shared) ──────────────────────────────────────────────────────
+.eyebrow-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.35; transform: scale(0.55); }
+}
+
+// ── Animations ────────────────────────────────────────────────────────────────
+@keyframes slide-from-left {
+  from { opacity: 0; transform: translateX(-64px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-from-right {
+  from { opacity: 0; transform: translateX(64px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes text-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes grow-line {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+// ── Brand Showcase ────────────────────────────────────────────────────────────
+.brand-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 40px max(40px, 6vw) 0;
+}
+
+// ── Brand Row ─────────────────────────────────────────────────────────────────
+.brand-row {
+  --delay: 0ms;
+  display: flex;
+  align-items: stretch;
+  min-height: 440px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+
+  &:hover {
+    box-shadow: 0 20px 60px var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .brand-visual {
+    animation: slide-from-left 0.75s ease calc(var(--delay) + 0ms) both;
+  }
+
+  .brand-info {
+    animation: slide-from-right 0.75s ease calc(var(--delay) + 130ms) both;
+  }
+
+  &.row-reverse {
+    flex-direction: row-reverse;
+
+    .brand-visual {
+      animation: slide-from-right 0.75s ease calc(var(--delay) + 0ms) both;
+    }
+
+    .brand-info {
+      animation: slide-from-left 0.75s ease calc(var(--delay) + 130ms) both;
+      border-left: none;
+      border-right: 1px solid var(--border);
+    }
+  }
+}
+
+// ── Brand Visual (image side) ─────────────────────────────────────────────────
+.brand-visual {
+  flex: 1.4;
+  position: relative;
+  overflow: hidden;
+  background: var(--card-img-bg);
+  min-height: 100%;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease, opacity 0.5s ease;
+  }
+
+  .visual-hover { opacity: 0; }
+}
+
+.brand-row:hover .brand-visual {
+  img:first-child {
+    transform: scale(1.07);
+    opacity: 0;
+  }
+
+  .visual-hover {
+    opacity: 1;
+    transform: scale(1.07);
+  }
+}
+
+.brand-row:not(:has(.visual-hover)):hover .brand-visual img {
+  transform: scale(1.06);
+  opacity: 1;
+}
+
+.brand-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.22) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.brand-count-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(0,0,0,0.52);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  z-index: 2;
+  letter-spacing: 0.4px;
+
+  .material-symbols-outlined { font-size: 14px; }
+}
+
+// ── Brand Info (text side) ────────────────────────────────────────────────────
+.brand-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  min-width: 0;
+}
+
+.brand-info-inner {
+  position: relative;
+  z-index: 1;
+  padding: 52px 60px;
+  width: 100%;
+}
+
+// Large translucent letter for visual texture
+.brand-bg-letter {
+  position: absolute;
+  bottom: -30px;
+  right: -15px;
+  font-size: 240px;
+  font-weight: 900;
+  color: var(--primary);
+  opacity: 0.04;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  transition: opacity 0.4s ease;
+}
+
+.brand-row:hover .brand-bg-letter { opacity: 0.08; }
+
+// Brand eyebrow
+.brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin: 0 0 18px;
+  animation: text-up 0.5s ease calc(var(--delay) + 240ms) both;
+}
+
+// Brand name
+.brand-name {
+  font-size: clamp(32px, 3.5vw, 56px);
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 22px;
+  line-height: 1.04;
+  letter-spacing: -1.5px;
+  animation: text-up 0.5s ease calc(var(--delay) + 300ms) both;
+}
+
+// Animated divider line
+.brand-divider {
+  width: 64px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary), transparent);
+  border-radius: 2px;
+  margin-bottom: 22px;
+  transform-origin: left center;
+  animation: grow-line 0.65s ease calc(var(--delay) + 400ms) both;
+}
+
+// Description
+.brand-description {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: 0 0 36px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 420px;
+  animation: text-up 0.5s ease calc(var(--delay) + 460ms) both;
+}
+
+// Footer: count badge + dots
+.brand-footer {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  animation: text-up 0.5s ease calc(var(--delay) + 520ms) both;
+}
+
+.brand-products-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--primary-hover);
+  border: 1px solid var(--primary-light);
+  padding: 7px 16px;
+  border-radius: 100px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.brand-row:hover .brand-products-count {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.brand-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.2s, transform 0.2s;
+
+    &:first-child { background: var(--primary); }
+  }
+}
+
+.brand-row:hover .brand-dots .dot:first-child {
+  transform: scale(1.35);
+}
+
+// ── States ────────────────────────────────────────────────────────────────────
+.loading-state,
+.empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 80px 20px;
-  color: #64748b;
+  gap: 16px;
+  padding: 100px max(40px, 6vw);
+  color: var(--text-muted);
+  text-align: center;
 
-  .material-symbols-outlined { font-size: 3rem; }
-  p { font-size: 1rem; text-align: center; }
-  a.btn-home {
-    margin-top: 8px;
-    padding: 10px 24px;
-    background: #006b2d;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    &:hover { background: #005a25; }
-  }
+  .material-symbols-outlined { font-size: 60px; }
+  p { font-size: 15px; margin: 0; color: var(--text-muted); }
+  strong { color: var(--text); }
 }
 
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+.btn-home {
+  margin-top: 8px;
+  padding: 12px 30px;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background 0.2s;
+  &:hover { background: var(--primary-dark); }
 }
 
-.product-card {
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  background: white;
-  transition: box-shadow 0.2s, transform 0.2s;
-  &:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+// ── Responsive: Tablet ────────────────────────────────────────────────────────
+@media (max-width: 1024px) {
+  .brand-showcase { padding: 32px 24px 0; gap: 20px; }
+
+  .brand-row { min-height: 360px; }
+
+  .brand-info-inner { padding: 40px 40px; }
+
+  .brand-name        { font-size: clamp(26px, 3vw, 42px); }
+  .brand-description { font-size: 14px; max-width: 340px; }
 }
 
-.card-img {
-  position: relative;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  cursor: pointer;
-  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-  &:hover img { transform: scale(1.05); }
-
-  .badge-off {
-    position: absolute; top: 8px; left: 8px;
-    background: #dc2626; color: white;
-    font-size: 0.75rem; font-weight: 700;
-    padding: 2px 6px; border-radius: 4px;
-  }
-
-  .btn-wish {
-    position: absolute; top: 8px; right: 8px;
-    width: 32px; height: 32px;
-    border-radius: 50%; border: none;
-    background: white; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    .material-symbols-outlined { font-size: 18px; color: #94a3b8; }
-    &.active .material-symbols-outlined { color: #dc2626; }
-  }
-}
-
-.card-body {
-  padding: 12px;
-
-  .card-brand { font-size: 0.75rem; color: #64748b; margin: 0 0 2px; text-transform: uppercase; }
-  .card-name {
-    font-size: 0.875rem; font-weight: 600; color: #1e293b;
-    margin: 0 0 8px; cursor: pointer;
-    display: -webkit-box; -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; overflow: hidden;
-    &:hover { color: #006b2d; }
-  }
-
-  .card-prices {
-    display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;
-    .price-now { font-size: 1rem; font-weight: 700; color: #006b2d; }
-    .price-old { font-size: 0.8rem; color: #94a3b8; text-decoration: line-through; }
-  }
-
-  .btn-add {
-    width: 100%; padding: 8px; border: none;
-    background: #006b2d; color: white; border-radius: 8px;
-    font-size: 0.8rem; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    &:hover { background: #005a25; }
-    .material-symbols-outlined { font-size: 16px; }
-  }
-
-  .out-of-stock { font-size: 0.8rem; color: #dc2626; text-align: center; margin: 0; }
-}
-
-// ── Responsive ────────────────────────────────────────────────────────────────
+// ── Responsive: Mobile ────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .search-page { padding: 14px 12px 24px; }
-  .search-header {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+  .search-header { padding: 22px 20px 18px; }
+  .search-meta h1 { font-size: 20px; }
 
-    h1 { font-size: 1.1rem; }
-    .sort-select { font-size: 13px; }
+  .explore-hero { padding: 52px 20px 44px; }
+  .explore-title { font-size: clamp(28px, 8vw, 42px); letter-spacing: -0.8px; }
+  .explore-sub { font-size: 14px; }
+  .explore-count { font-size: 11px; padding: 5px 14px; }
+
+  .loading-state,
+  .empty-state { padding: 60px 20px; }
+  .loading-state .material-symbols-outlined,
+  .empty-state .material-symbols-outlined { font-size: 48px; }
+
+  .brand-showcase { padding: 24px 16px 0; gap: 16px; }
+
+  .brand-row,
+  .brand-row.row-reverse {
+    flex-direction: column;
+    min-height: unset;
+    border-radius: 16px;
+
+    // On mobile all slide upward
+    .brand-visual { animation: text-up 0.65s ease calc(var(--delay) + 0ms) both; }
+    .brand-info   { animation: text-up 0.65s ease calc(var(--delay) + 100ms) both; }
   }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .card-img { aspect-ratio: 3/3.5; }
+
+  .brand-visual { height: 280px; flex: none; min-height: 0; }
+
+  .brand-info {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    flex: none;
+    width: 100%;
+  }
+
+  .brand-info-inner { padding: 28px 24px 32px; }
+
+  .brand-name        { font-size: clamp(26px, 7vw, 36px); margin-bottom: 16px; letter-spacing: -0.8px; }
+  .brand-description { font-size: 13px; margin-bottom: 24px; max-width: 100%; -webkit-line-clamp: 3; line-clamp: 3; }
+
+  .brand-bg-letter { font-size: 160px; bottom: -10px; right: -5px; }
 }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 40px;
+// ── Responsive: Mobile small ──────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .brand-showcase { padding: 16px 10px 0; gap: 12px; }
 
-  .page-btn {
-    min-width: 40px; height: 40px;
-    border: 1px solid #e2e8f0; border-radius: 8px;
-    background: white; cursor: pointer;
-    font-size: 0.9rem; font-weight: 500;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    &:hover:not(:disabled) { border-color: #006b2d; color: #006b2d; }
-    &.active { background: #006b2d; color: white; border-color: #006b2d; }
-    &:disabled { opacity: 0.4; cursor: not-allowed; }
-  }
+  .brand-visual { height: 200px; }
+
+  .brand-info-inner { padding: 20px 18px 24px; }
+
+  .brand-name        { font-size: clamp(20px, 5.5vw, 28px); margin-bottom: 12px; }
+  .brand-description { font-size: 12px; margin-bottom: 18px; -webkit-line-clamp: 2; line-clamp: 2; }
+  .brand-divider     { margin-bottom: 14px; }
+
+  .brand-eyebrow { letter-spacing: 2px; font-size: 9px; margin-bottom: 12px; }
+
+  .brand-bg-letter { font-size: 110px; }
+
+  .explore-hero { padding: 40px 16px 36px; }
 }

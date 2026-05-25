@@ -112,14 +112,14 @@
 }
 
 .edit-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 20px;
 
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
-
   label {
+    flex: 1;
+    min-width: 220px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -139,7 +139,7 @@
     &:focus { border-color: #006b2d; }
   }
 
-  .full-width { grid-column: 1 / -1; }
+  .full-width { flex: 0 0 100%; }
 }
 
 .edit-actions {
