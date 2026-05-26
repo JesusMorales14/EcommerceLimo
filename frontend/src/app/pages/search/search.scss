@@ -643,77 +643,105 @@
   .results-meta { padding: 20px 24px 0; }
 }
 
-// ── Responsive: Mobile ────────────────────────────────────────────────────────
+// ── Responsive: Tablet ────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .explore-hero { padding: 52px 20px 44px; }
-  .explore-title { font-size: clamp(28px, 8vw, 42px); letter-spacing: -0.8px; }
-  .explore-sub { font-size: 14px; }
+  .explore-hero { padding: 44px 20px 36px; }
+  .explore-title { font-size: clamp(28px, 8vw, 40px); letter-spacing: -0.8px; }
+  .explore-sub   { font-size: 14px; margin-bottom: 24px; }
 
   .hero-stats { border-radius: 12px; }
-  .stat-item { padding: 10px 20px; }
-  .stat-number { font-size: 22px; }
+  .stat-item  { padding: 10px 18px; }
+  .stat-number { font-size: 20px; }
 
+  // Controls — apilados verticalmente
   .controls-top {
+    flex-direction: column;
+    align-items: stretch;
     padding: 12px 16px;
     gap: 10px;
   }
   .ctrl-search-wrap { max-width: 100%; }
+  .ctrl-sort {
+    align-self: flex-start;
+    .sort-btn { font-size: 12px; padding: 6px 12px; }
+    .sort-btn .material-symbols-outlined { display: none; }
+  }
+
   .letter-pills { padding: 8px 16px 10px; gap: 5px; }
-  .results-meta { padding: 16px 16px 0; }
+  .results-meta { padding: 14px 16px 0; }
 
   .loading-state, .empty-state { padding: 60px 20px; }
   .loading-state .material-symbols-outlined,
   .empty-state .material-symbols-outlined { font-size: 48px; }
 
-  .brand-showcase { padding: 20px 16px 0; gap: 16px; }
+  .brand-showcase { padding: 16px 16px 0; gap: 14px; }
 
   .brand-row,
   .brand-row.row-reverse {
     flex-direction: column;
     min-height: unset;
-    border-radius: 16px;
-
-    // On mobile: both sides animate upward
-    &.is-visible {
-      .brand-visual,
-      .brand-info {
-        animation: text-up 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--delay) both;
-      }
-    }
+    border-radius: 14px;
 
     .brand-info {
       border-left: none;
       border-right: none;
       border-top: 1px solid var(--border);
     }
+
+    // En móvil el contenedor sube y los elementos internos se hacen visibles
+    &.is-visible {
+      .brand-visual {
+        animation: text-up 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--delay) both;
+      }
+      .brand-info {
+        animation: text-up 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) calc(var(--delay) + 80ms) both;
+      }
+      // Hacer visibles los elementos internos que tienen opacity:0 por defecto
+      .brand-eyebrow,
+      .brand-name,
+      .brand-divider,
+      .brand-description,
+      .brand-footer {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
   }
 
-  .brand-visual { height: 280px; flex: none; min-height: 0; }
-  .brand-info { flex: none; width: 100%; }
-  .brand-info-inner { padding: 28px 24px 32px; }
+  .brand-visual { height: 240px; flex: none; min-height: 0; }
+  .brand-info   { flex: none; width: 100%; }
+  .brand-info-inner { padding: 24px 20px 28px; }
 
-  .brand-name { font-size: clamp(26px, 7vw, 36px); margin-bottom: 16px; letter-spacing: -0.8px; }
-  .brand-description { font-size: 13px; margin-bottom: 24px; max-width: 100%; -webkit-line-clamp: 3; line-clamp: 3; }
-  .brand-bg-letter { font-size: 160px; bottom: -10px; right: -5px; }
+  .brand-name        { font-size: clamp(24px, 6vw, 34px); margin-bottom: 14px; letter-spacing: -0.6px; }
+  .brand-description { font-size: 13px; margin-bottom: 20px; max-width: 100%; -webkit-line-clamp: 3; line-clamp: 3; }
+  .brand-divider     { margin-bottom: 16px; }
+  .brand-eyebrow     { margin-bottom: 12px; }
+  .brand-bg-letter   { font-size: 140px; bottom: -8px; right: -4px; }
 
-  .ctrl-sort { flex-wrap: wrap; }
-  .sort-btn span.material-symbols-outlined { display: none; }
+  .brand-footer      { gap: 10px; }
+  .brand-cta         { font-size: 12px; padding: 8px 16px; }
+  .brand-products-count { font-size: 10px; padding: 6px 12px; }
 }
 
-// ── Responsive: Mobile small ──────────────────────────────────────────────────
+// ── Responsive: Mobile pequeño ────────────────────────────────────────────────
 @media (max-width: 480px) {
-  .explore-hero { padding: 40px 16px 36px; }
+  .explore-hero  { padding: 36px 16px 30px; }
+  .explore-title { font-size: clamp(26px, 7vw, 34px); }
+  .explore-sub   { display: none; }
 
-  .controls-top { flex-direction: column; align-items: stretch; }
-  .ctrl-search-wrap { max-width: 100%; }
-  .ctrl-sort { align-self: flex-end; }
+  .stat-item   { padding: 8px 14px; }
+  .stat-number { font-size: 18px; }
 
-  .brand-showcase { padding: 16px 10px 0; gap: 12px; }
-  .brand-visual { height: 220px; }
-  .brand-info-inner { padding: 20px 18px 24px; }
-  .brand-name { font-size: clamp(20px, 5.5vw, 28px); margin-bottom: 12px; }
-  .brand-description { font-size: 12px; margin-bottom: 18px; -webkit-line-clamp: 2; line-clamp: 2; }
-  .brand-divider { margin-bottom: 14px; }
-  .brand-eyebrow { letter-spacing: 2px; font-size: 9px; margin-bottom: 12px; }
-  .brand-bg-letter { font-size: 110px; }
+  .brand-showcase    { padding: 12px 12px 0; gap: 12px; }
+  .brand-visual      { height: 200px; }
+  .brand-info-inner  { padding: 18px 16px 22px; }
+  .brand-name        { font-size: clamp(20px, 5.5vw, 28px); margin-bottom: 10px; }
+  .brand-description { font-size: 12px; margin-bottom: 16px; -webkit-line-clamp: 2; line-clamp: 2; }
+  .brand-divider     { margin-bottom: 12px; }
+  .brand-eyebrow     { font-size: 9px; letter-spacing: 2px; margin-bottom: 10px; }
+  .brand-bg-letter   { font-size: 100px; }
+
+  .brand-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .brand-cta    { width: 100%; justify-content: center; }
 }

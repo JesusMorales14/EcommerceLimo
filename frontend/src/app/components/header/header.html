@@ -198,6 +198,15 @@
           <span class="material-symbols-outlined drawer-link-icon">local_offer</span>
           <span>Ofertas</span>
         </a>
+        <a
+          routerLink="/marcas"
+          routerLinkActive="active"
+          class="drawer-link drawer-link-marcas"
+          (click)="closeMobileMenu()"
+        >
+          <span class="material-symbols-outlined drawer-link-icon">storefront</span>
+          <span>Marcas</span>
+        </a>
       </nav>
 
       <div class="drawer-footer">
@@ -393,6 +402,10 @@
           {{ cat.label }}
         </a>
       }
+      <a routerLink="/marcas" routerLinkActive="active" class="cat-link cat-link--marcas">
+        <span class="material-symbols-outlined">storefront</span>
+        Marcas
+      </a>
     </div>
   </nav>
 </header>

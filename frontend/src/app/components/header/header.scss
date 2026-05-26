@@ -462,6 +462,13 @@
   }
 }
 
+.cat-link--marcas {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  .material-symbols-outlined { font-size: 15px; }
+}
+
 // Mobile search (oculto en desktop, visible solo en ≤768px via media query)
 .main-search {
   display: none;
@@ -797,6 +804,17 @@
     .drawer-link-icon {
       color: #9b1212;
     }
+  }
+}
+
+.drawer-link-marcas {
+  color: var(--primary);
+  .drawer-link-icon { color: var(--primary); }
+  &:hover, &.active {
+    color: var(--primary-dark);
+    background: var(--primary-hover);
+    &::before { background: var(--primary); }
+    .drawer-link-icon { color: var(--primary-dark); }
   }
 }
 
