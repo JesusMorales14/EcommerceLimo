@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Product } from '../../core/models/product.model';
+import { type Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
 import { FavoritesService } from '../../core/services/favorites.service';
@@ -11,6 +12,7 @@ import { CategoryService } from '../../core/services/category.service';
 @Component({
   selector: 'app-product-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
@@ -19,6 +21,7 @@ export class ProductListComponent implements OnInit {
   private productService  = inject(ProductService);
   private cartService     = inject(CartService);
   private categoryService = inject(CategoryService);
+  private destroyRef      = inject(DestroyRef);
   favService              = inject(FavoritesService);
 
   titulo      = '';
@@ -51,12 +54,14 @@ export class ProductListComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.currentId    = params['id'];
-      this.currentSubId = params['subid'];
-      this.page.set(1);
-      this.load(this.currentId, this.currentSubId);
-    });
+    this.route.params
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        this.currentId    = params['id'];
+        this.currentSubId = params['subid'];
+        this.page.set(1);
+        this.load(this.currentId, this.currentSubId);
+      });
   }
 
   addToCart(p: Product)              { this.cartService.addToCart(p); }

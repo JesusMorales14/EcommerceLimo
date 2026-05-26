@@ -1,9 +1,10 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-deals-day',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './deals-day.html',
   styleUrl: './deals-day.scss',

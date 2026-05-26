@@ -32,8 +32,8 @@
   }
 
   <!-- Search results modal -->
-  @if (searchModalOpen()) {
-    <div class="srm-overlay" (click)="closeSearchModal()">
+  @if (searchService.isOpen()) {
+    <div class="srm-overlay" (click)="searchService.close()">
       <div
         class="srm-modal"
         role="dialog"
@@ -45,10 +45,10 @@
           <div class="srm-title-row">
             <span class="material-symbols-outlined srm-icon">search</span>
             <h2 class="srm-title">
-              Resultados para <em>"{{ searchModalQuery() }}"</em>
+              Resultados para <em>"{{ searchService.query() }}"</em>
             </h2>
           </div>
-          <button class="srm-close" (click)="closeSearchModal()" aria-label="Cerrar">
+          <button class="srm-close" (click)="searchService.close()" aria-label="Cerrar">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -69,30 +69,30 @@
 
         <!-- Results body -->
         <div class="srm-body">
-          @if (searchLoading()) {
+          @if (searchService.loading()) {
             <div class="srm-loading">
               <span class="material-symbols-outlined srm-spin">progress_activity</span>
               <span>Buscando...</span>
             </div>
-          } @else if (!hasResults()) {
+          } @else if (!searchService.hasResults()) {
             <div class="srm-empty">
               <span class="material-symbols-outlined">production_quantity_limits</span>
               <p class="srm-empty-main">
-                No tenemos <strong>"{{ searchModalQuery() }}"</strong> por el momento.
+                No tenemos <strong>"{{ searchService.query() }}"</strong> por el momento.
               </p>
               <p class="srm-empty-hint">¡Haremos todo lo posible por tenerlo pronto!</p>
               <p class="srm-empty-sub">Intentá con otro término o explorá nuestras categorías.</p>
             </div>
           } @else {
             <!-- ── Sección 1: Marcas ────────────────────────────────────────── -->
-            @if (searchBrands().length > 0) {
+            @if (searchService.brands().length > 0) {
               <div class="srm-section-label">
                 <span class="material-symbols-outlined">storefront</span>
                 Marcas encontradas
-                <span class="srm-section-count">{{ searchBrands().length }}</span>
+                <span class="srm-section-count">{{ searchService.brands().length }}</span>
               </div>
 
-              @for (brand of searchBrands(); track brand.name) {
+              @for (brand of searchService.brands(); track brand.name) {
                 <section class="srm-brand-section">
                   <div class="srm-brand-header">
                     <span class="srm-brand-letter">{{ brand.name[0] }}</span>
@@ -104,7 +104,7 @@
                   </div>
                   <div class="srm-products-grid">
                     @for (product of brand.products; track product.id) {
-                      <button class="srm-product-card" (click)="navigateToProduct(product.id)">
+                      <button class="srm-product-card" (click)="searchService.navigateTo(product.id)">
                         <div class="srm-product-img-wrap">
                           <img
                             [src]="product.images[0]"
@@ -118,7 +118,7 @@
                         </div>
                         <div class="srm-product-info">
                           <p class="srm-product-name">{{ product.name }}</p>
-                          <p class="srm-product-price">{{ formatPrice(product.price) }}</p>
+                          <p class="srm-product-price">{{ product.price | currencyPen }}</p>
                         </div>
                       </button>
                     }
@@ -128,19 +128,19 @@
             }
 
             <!-- ── Sección 2: Productos por nombre ────────────────────────── -->
-            @if (searchProducts().length > 0) {
+            @if (searchService.products().length > 0) {
               <div
                 class="srm-section-label"
-                [class.srm-section-label--mt]="searchBrands().length > 0"
+                [class.srm-section-label--mt]="searchService.brands().length > 0"
               >
                 <span class="material-symbols-outlined">inventory_2</span>
                 Productos encontrados
-                <span class="srm-section-count">{{ searchProducts().length }}</span>
+                <span class="srm-section-count">{{ searchService.products().length }}</span>
               </div>
 
               <div class="srm-products-grid">
-                @for (product of searchProducts(); track product.id) {
-                  <button class="srm-product-card" (click)="navigateToProduct(product.id)">
+                @for (product of searchService.products(); track product.id) {
+                  <button class="srm-product-card" (click)="searchService.navigateTo(product.id)">
                     <div class="srm-product-img-wrap">
                       <img
                         [src]="product.images[0]"
@@ -155,7 +155,7 @@
                     <div class="srm-product-info">
                       <p class="srm-product-brand-tag">{{ product.brand }}</p>
                       <p class="srm-product-name">{{ product.name }}</p>
-                      <p class="srm-product-price">{{ formatPrice(product.price) }}</p>
+                      <p class="srm-product-price">{{ product.price | currencyPen }}</p>
                     </div>
                   </button>
                 }
