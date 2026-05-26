@@ -572,6 +572,9 @@
   cursor: pointer;
   border-radius: 50%;
   color: var(--text);
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background 0.2s,
     transform 0.15s;
