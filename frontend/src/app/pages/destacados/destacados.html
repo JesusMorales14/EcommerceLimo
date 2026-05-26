@@ -1,0 +1,162 @@
+<div class="fp-page">
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="fp-hero">
+    <div class="fp-hero-inner">
+      <nav class="fp-breadcrumb">Inicio / Productos Destacados</nav>
+      <div class="fp-hero-title-row">
+        <span class="material-symbols-outlined fp-hero-icon">star</span>
+        <h1 class="fp-hero-title">Productos Destacados</h1>
+      </div>
+      <p class="fp-hero-desc">Nuestra selección especial de los mejores productos</p>
+      <span class="fp-hero-count">
+        {{ filteredProducts().length }}
+        {{ filteredProducts().length === 1 ? 'producto' : 'productos' }}
+      </span>
+    </div>
+  </section>
+
+  <!-- ── Filtros ───────────────────────────────────────────────────────────── -->
+  <div class="fp-filters">
+    <div class="fp-filters-inner">
+
+      <div class="fp-search-wrap">
+        <span class="material-symbols-outlined fp-search-icon">search</span>
+        <input
+          type="text"
+          placeholder="Buscar en destacados..."
+          [ngModel]="searchText()"
+          (ngModelChange)="searchText.set($event)"
+          class="fp-search-input"
+          aria-label="Buscar productos destacados"
+        />
+        @if (searchText()) {
+          <button class="fp-clear-input" (click)="searchText.set('')" aria-label="Limpiar búsqueda">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        }
+      </div>
+
+      <div class="fp-selects">
+        @if (brands().length > 1) {
+          <select
+            class="fp-select"
+            [ngModel]="selectedBrand()"
+            (ngModelChange)="selectedBrand.set($event)"
+            aria-label="Filtrar por marca"
+          >
+            <option value="">Todas las marcas</option>
+            @for (b of brands(); track b) {
+              <option [value]="b">{{ b }}</option>
+            }
+          </select>
+        }
+
+        @if (categories().length > 1) {
+          <select
+            class="fp-select"
+            [ngModel]="selectedCategory()"
+            (ngModelChange)="selectedCategory.set($event)"
+            aria-label="Filtrar por categoría"
+          >
+            <option value="">Todas las categorías</option>
+            @for (c of categories(); track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        }
+
+        <select
+          class="fp-select fp-select--sort"
+          [ngModel]="sortBy()"
+          (ngModelChange)="sortBy.set($event)"
+          aria-label="Ordenar productos"
+        >
+          <option value="relevance">Más relevantes</option>
+          <option value="price-asc">Menor precio</option>
+          <option value="price-desc">Mayor precio</option>
+          <option value="name-asc">A → Z</option>
+        </select>
+
+        @if (hasActiveFilters()) {
+          <button class="fp-clear-btn" (click)="clearFilters()">
+            <span class="material-symbols-outlined">filter_alt_off</span>
+            Limpiar
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Contenido ─────────────────────────────────────────────────────────── -->
+  @if (loading()) {
+    <div class="fp-loading">
+      <span class="material-symbols-outlined fp-spin">progress_activity</span>
+      Cargando destacados...
+    </div>
+  } @else if (filteredProducts().length > 0) {
+    <div class="fp-grid">
+      @for (p of filteredProducts(); track p.id; let i = $index) {
+        <div class="product-card" [style.animation-delay]="(i % 16 * 45) + 'ms'">
+
+          <div class="card-img" [routerLink]="['/product', p.id]">
+            <img class="img-main" [src]="p.images[0]" [alt]="p.name" loading="lazy" />
+            @if (p.images[1]) {
+              <img class="img-hover" [src]="p.images[1]" [alt]="p.name" loading="lazy" />
+            }
+            <span class="brand-badge">{{ p.brand }}</span>
+            @if (p.discount) {
+              <span class="badge-off">-{{ p.discount }}%</span>
+            }
+            <button
+              class="btn-wish"
+              [class.active]="favService.isFavorite(p.id)"
+              (click)="toggleFav(p, $event)"
+              aria-label="Favorito"
+            >
+              <span class="material-symbols-outlined">
+                {{ favService.isFavorite(p.id) ? 'favorite' : 'favorite_border' }}
+              </span>
+            </button>
+          </div>
+
+          <div class="card-body">
+            <h3 class="card-name" [routerLink]="['/product', p.id]">{{ p.name }}</h3>
+            @if (p.description) {
+              <p class="card-desc">{{ p.description }}</p>
+            }
+            <div class="card-prices">
+              <span class="price-now">{{ discountedPrice(p) | currencyPen }}</span>
+              @if (p.discount) {
+                <span class="price-old">{{ p.price | currencyPen }}</span>
+              }
+            </div>
+            @if (p.stock > 0) {
+              <p class="card-free-ship">
+                <span class="material-symbols-outlined">local_shipping</span>
+                Despacho gratis
+              </p>
+              <button class="btn-add" (click)="addToCart(p)">
+                <span class="material-symbols-outlined">shopping_cart</span> Agregar
+              </button>
+            } @else {
+              <p class="out-of-stock">Sin stock</p>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="fp-empty">
+      <span class="material-symbols-outlined">search_off</span>
+      <p class="fp-empty-title">Sin resultados</p>
+      <p class="fp-empty-sub">
+        Intenta con otros filtros o
+        <button class="fp-link" (click)="clearFilters()">limpia la búsqueda</button>
+      </p>
+    </div>
+  }
+
+</div>

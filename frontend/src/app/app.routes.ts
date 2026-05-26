@@ -87,6 +87,10 @@ export const routes: Routes = [
   },
   { path: 'info', loadComponent: () => import('./pages/search/search').then((m) => m.SearchPage) },
   {
+    path: 'destacados',
+    loadComponent: () => import('./pages/destacados/destacados').then((m) => m.DestacadosPage),
+  },
+  {
     path: 'centro-ayuda',
     loadComponent: () => import('./pages/centro-ayuda/centro-ayuda').then((m) => m.CentroAyudaPage),
   },

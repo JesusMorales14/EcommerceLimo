@@ -26,9 +26,10 @@ export class Header {
   categoryService = inject(CategoryService);
   searchService   = inject(SearchService);
 
-  showAccountMenu  = signal(false);
-  mobileSearchOpen = signal(false);
-  mobileMenuOpen   = signal(false);
+  showAccountMenu   = signal(false);
+  mobileSearchOpen  = signal(false);
+  mobileMenuOpen    = signal(false);
+  mobileMenuClosing = signal(false);
   searchQuery      = '';
   modalSearchInput = '';
 
@@ -37,8 +38,18 @@ export class Header {
   closeAccountMenu()   { this.showAccountMenu.set(false); }
   openMobileSearch()   { this.mobileSearchOpen.set(true); }
   closeMobileSearch()  { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
-  openMobileMenu()     { this.mobileMenuOpen.set(true); }
-  closeMobileMenu()    { this.mobileMenuOpen.set(false); }
+  openMobileMenu(): void {
+    this.mobileMenuClosing.set(false);
+    this.mobileMenuOpen.set(true);
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuClosing.set(true);
+    setTimeout(() => {
+      this.mobileMenuOpen.set(false);
+      this.mobileMenuClosing.set(false);
+    }, 300);
+  }
 
   toggleTheme(event?: MouseEvent): void {
     const x = event?.clientX ?? (window.innerWidth - 32);

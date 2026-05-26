@@ -132,7 +132,9 @@
   <section class="section-block">
     <div class="section-head">
       <h2>Productos Destacados</h2>
-      <a routerLink="/search" class="link-ver-mas">Ver todos →</a>
+      @if (featuredTotal() > 4) {
+        <a routerLink="/destacados" class="link-ver-mas">Ver todos →</a>
+      }
     </div>
 
     <div class="products-grid">

@@ -24,6 +24,7 @@ export class Inicio implements OnInit, OnDestroy {
 
   offerProducts      = signal<Product[]>([]);
   featuredProducts   = signal<Product[]>([]);
+  featuredTotal      = signal(0);
   dealActive         = signal(false);
   countdown          = signal('--:--:--');
   scheduledSession   = signal<{ startsAt: string; endsAt: string } | null>(null);
@@ -34,8 +35,11 @@ export class Inicio implements OnInit, OnDestroy {
   private teaserTimerId: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit() {
-    this.productService.getFeatured(8)
-      .subscribe(res => this.featuredProducts.set(res.items));
+    this.productService.getFeatured(4)
+      .subscribe(res => {
+        this.featuredProducts.set(res.items);
+        this.featuredTotal.set(res.total);
+      });
 
     this.checkDeal();
     this.pollerId = setInterval(() => this.checkDeal(), 30_000);
