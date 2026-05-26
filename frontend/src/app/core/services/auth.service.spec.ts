@@ -116,31 +116,35 @@ describe('AuthService', () => {
     });
   });
 
-  // ── restoreUser ──────────────────────────────────────────────────────────────
+});
 
-  describe('restauración de sesión', () => {
-    it('restaura el usuario desde localStorage al crear el servicio', () => {
-      localStorage.setItem('gh_token', mockToken);
-      localStorage.setItem('gh_user', JSON.stringify(mockUser));
+// Tests de restauración de sesión en su propio describe para evitar
+// interferencias con el TestBed compartido del bloque principal.
+describe('AuthService — restauración de sesión', () => {
+  afterEach(() => localStorage.clear());
 
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
-      });
-      const freshService = TestBed.inject(AuthService);
+  it('restaura el usuario desde localStorage al crear el servicio', () => {
+    const storedUser = { id: 1, name: 'Juan Pérez', email: 'juan@test.com', role: 'USER' as const };
+    localStorage.setItem('gh_token', 'test-token');
+    localStorage.setItem('gh_user', JSON.stringify(storedUser));
 
-      expect(freshService.isLoggedIn()).toBe(true);
-      expect(freshService.user()?.name).toBe('Juan Pérez');
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     });
+    const freshService = TestBed.inject(AuthService);
 
-    it('no falla si gh_user contiene JSON inválido', () => {
-      localStorage.setItem('gh_user', 'invalid-json');
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
-      });
-      const freshService = TestBed.inject(AuthService);
-      expect(freshService.isLoggedIn()).toBe(false);
+    expect(freshService.isLoggedIn()).toBe(true);
+    expect(freshService.user()?.name).toBe('Juan Pérez');
+  });
+
+  it('no falla si gh_user contiene JSON inválido', () => {
+    localStorage.setItem('gh_user', 'invalid-json');
+
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     });
+    const freshService = TestBed.inject(AuthService);
+
+    expect(freshService.isLoggedIn()).toBe(false);
   });
 });

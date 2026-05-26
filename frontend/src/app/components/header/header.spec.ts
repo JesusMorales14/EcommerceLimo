@@ -96,14 +96,14 @@ describe('Header', () => {
       component.searchQuery = '  LG  ';
       component.search();
       expect(openSpy).toHaveBeenCalledWith('LG');
+      // Flush the pending HTTP request so http.verify() passes in afterEach
+      http.expectOne(r => r.url.includes('/products')).flush({ items: [], total: 0, page: 1, limit: 100, pages: 1 });
     });
 
     it('limpia la query y cierra el overlay móvil tras buscar', () => {
       component.mobileSearchOpen.set(true);
       component.searchQuery = 'Samsung';
       component.search();
-
-      // flush the HTTP request triggered by SearchService.open()
       http.expectOne(r => r.url.includes('/products')).flush({ items: [], total: 0, page: 1, limit: 100, pages: 1 });
 
       expect(component.searchQuery).toBe('');
