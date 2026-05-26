@@ -1,14 +1,17 @@
 <nav class="bottom-nav">
-
-  <a routerLink="/" routerLinkActive="active"
-     [routerLinkActiveOptions]="{exact:true}" class="nav-tab">
+  <a
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="nav-tab"
+  >
     <span class="material-symbols-outlined">home</span>
     <span class="nav-label">Inicio</span>
   </a>
 
-  <a routerLink="/search" routerLinkActive="active" class="nav-tab">
-    <span class="material-symbols-outlined">search</span>
-    <span class="nav-label">Buscar</span>
+  <a routerLink="/info" routerLinkActive="active" class="nav-tab">
+    <span class="material-symbols-outlined">info</span>
+    <span class="nav-label">Info</span>
   </a>
 
   <button class="nav-tab nav-cart-fab" (click)="openCart()">
@@ -35,5 +38,4 @@
     <span class="material-symbols-outlined">person</span>
     <span class="nav-label">Cuenta</span>
   </a>
-
 </nav>
