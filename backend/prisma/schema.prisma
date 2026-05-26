@@ -23,6 +23,23 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum ReclamacionTipo {
+  RECLAMO
+  QUEJA
+}
+
+enum ReclamacionBien {
+  PRODUCTO
+  SERVICIO
+}
+
+enum ReclamacionEstado {
+  PENDIENTE
+  EN_REVISION
+  RESUELTO
+  CERRADO
+}
+
 // ── Models ────────────────────────────────────────────────────────────────────
 
 model User {
@@ -35,9 +52,10 @@ model User {
   address   String?
   createdAt DateTime  @default(now())
 
-  orders    Order[]
-  favorites Favorite[]
-  reviews   Review[]
+  orders         Order[]
+  favorites      Favorite[]
+  reviews        Review[]
+  reclamaciones  Reclamacion[]
 }
 
 model Product {
@@ -126,6 +144,27 @@ model DealSession {
   endsAt    DateTime
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+}
+
+model Reclamacion {
+  id        Int               @id @default(autoincrement())
+  nombre    String
+  apellidos String
+  dni       String
+  email     String
+  telefono  String
+  direccion String?
+  tipo      ReclamacionTipo
+  bien      ReclamacionBien
+  pedidoNum String?
+  detalle   String
+  accion    String?
+  estado    ReclamacionEstado @default(PENDIENTE)
+  respuesta String?
+  userId    Int?
+  user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model Coupon {

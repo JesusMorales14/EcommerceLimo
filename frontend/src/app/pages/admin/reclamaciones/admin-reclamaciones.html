@@ -1,0 +1,228 @@
+<div class="adminrec-page">
+
+  @if (toast()) {
+    <div class="toast-success">
+      <span class="material-symbols-outlined">check_circle</span>
+      {{ toast() }}
+    </div>
+  }
+
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div>
+        <h1>Libro de Reclamaciones</h1>
+        <p>Gestiona reclamos y quejas de los consumidores</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  @if (!loading()) {
+    <div class="stats-row">
+      <div class="stat-card total">
+        <span class="material-symbols-outlined">assignment</span>
+        <div>
+          <strong>{{ counts().TODOS }}</strong>
+          <span>Total</span>
+        </div>
+      </div>
+      <div class="stat-card pending">
+        <span class="material-symbols-outlined">schedule</span>
+        <div>
+          <strong>{{ counts().PENDIENTE }}</strong>
+          <span>Pendientes</span>
+        </div>
+      </div>
+      <div class="stat-card review">
+        <span class="material-symbols-outlined">manage_search</span>
+        <div>
+          <strong>{{ counts().EN_REVISION }}</strong>
+          <span>En revisión</span>
+        </div>
+      </div>
+      <div class="stat-card resolved">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div>
+          <strong>{{ counts().RESUELTO }}</strong>
+          <span>Resueltos</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Filters -->
+  <div class="filter-tabs">
+    @for (f of FILTERS; track f.value) {
+      <button
+        class="filter-tab"
+        [class.active]="filter() === f.value"
+        (click)="filter.set(f.value)">
+        {{ f.label }}
+        <span class="count-chip">{{ counts()[f.value] }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Content -->
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      Cargando reclamaciones...
+    </div>
+  } @else if (filtered().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">assignment_late</span>
+      <p>No hay reclamaciones en esta categoría</p>
+    </div>
+  } @else {
+    <div class="rec-list">
+      @for (rec of filtered(); track rec.id) {
+        <div class="rec-card" [class.expanded]="expanded() === rec.id">
+
+          <!-- Row header -->
+          <div class="rec-row" (click)="toggleExpand(rec.id, rec)">
+            <div class="row-left">
+              <span class="rec-id">#{{ rec.id }}</span>
+              <span class="tipo-badge"
+                [style.background]="TIPO_COLORS[rec.tipo] + '18'"
+                [style.color]="TIPO_COLORS[rec.tipo]">
+                {{ TIPO_LABELS[rec.tipo] }}
+              </span>
+              <div class="rec-name">
+                <strong>{{ rec.nombre }} {{ rec.apellidos }}</strong>
+                <span>{{ rec.email }}</span>
+              </div>
+            </div>
+            <div class="row-right">
+              @if (rec.pedidoNum) {
+                <span class="pedido-chip">
+                  <span class="material-symbols-outlined">receipt</span>
+                  {{ rec.pedidoNum }}
+                </span>
+              }
+              <span class="estado-badge"
+                [style.background]="ESTADO_COLORS[rec.estado] + '20'"
+                [style.color]="ESTADO_COLORS[rec.estado]">
+                {{ ESTADO_LABELS[rec.estado] }}
+              </span>
+              <span class="rec-date">{{ rec.createdAt | date:'dd/MM/yy' }}</span>
+              <span class="material-symbols-outlined toggle-icon">
+                {{ expanded() === rec.id ? 'expand_less' : 'expand_more' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Expanded panel -->
+          @if (expanded() === rec.id) {
+            <div class="rec-panel">
+              <div class="panel-grid">
+
+                <!-- Info columns -->
+                <div class="panel-info">
+                  <h4>Datos del consumidor</h4>
+                  <div class="info-list">
+                    <div class="info-row">
+                      <span class="material-symbols-outlined">person</span>
+                      <span>{{ rec.nombre }} {{ rec.apellidos }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="material-symbols-outlined">badge</span>
+                      <span>{{ rec.dni }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="material-symbols-outlined">email</span>
+                      <span>{{ rec.email }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="material-symbols-outlined">phone</span>
+                      <span>{{ rec.telefono }}</span>
+                    </div>
+                    @if (rec.direccion) {
+                      <div class="info-row">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <span>{{ rec.direccion }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="panel-detail">
+                  <h4>Detalle de la reclamación</h4>
+                  <div class="detail-chip-row">
+                    <span class="chip">{{ rec.tipo === 'RECLAMO' ? 'Reclamo' : 'Queja' }}</span>
+                    <span class="chip">{{ rec.bien === 'PRODUCTO' ? 'Producto' : 'Servicio' }}</span>
+                    @if (rec.pedidoNum) {
+                      <span class="chip">Pedido #{{ rec.pedidoNum }}</span>
+                    }
+                  </div>
+                  <p class="detalle-text">{{ rec.detalle }}</p>
+                  @if (rec.accion) {
+                    <p class="accion-label">Acción solicitada:</p>
+                    <p class="detalle-text">{{ rec.accion }}</p>
+                  }
+                </div>
+
+              </div>
+
+              <!-- Admin actions -->
+              <div class="panel-actions">
+
+                <!-- Feedback -->
+                @if (errorId() === rec.id) {
+                  <div class="save-feedback error">
+                    <span class="material-symbols-outlined">error</span>
+                    {{ errorMsg() }}
+                  </div>
+                }
+
+                <div class="action-row">
+                  <div class="field">
+                    <label>Estado</label>
+                    <select
+                      [(ngModel)]="selectedEstados[rec.id]"
+                      [disabled]="updating() === rec.id"
+                      name="estado-{{ rec.id }}">
+                      @for (opt of ESTADO_OPTIONS; track opt) {
+                        <option [value]="opt">{{ ESTADO_LABELS[opt] }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Respuesta al consumidor</label>
+                  <textarea
+                    rows="3"
+                    placeholder="Escribe una respuesta para el consumidor..."
+                    [(ngModel)]="respuestas[rec.id]"
+                    name="resp-{{ rec.id }}">
+                  </textarea>
+                </div>
+
+                <button
+                  class="btn-save-resp"
+                  (click)="save(rec)"
+                  [disabled]="updating() === rec.id">
+                  @if (updating() === rec.id) {
+                    <span class="material-symbols-outlined spin">progress_activity</span>
+                    Guardando...
+                  } @else {
+                    <span class="material-symbols-outlined">save</span>
+                    Guardar cambios
+                  }
+                </button>
+
+              </div>
+
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

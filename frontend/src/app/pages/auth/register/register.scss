@@ -70,7 +70,7 @@ h1 {
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     font-size: 14px;
-    color: #ffffff;
+    color: var(--text);
     outline: none;
     transition: border-color 0.2s;
     box-sizing: border-box;

@@ -20,5 +20,12 @@ export const routes: Routes = [
   { path: 'admin/deals',   canActivate: [authGuard, adminGuard], loadComponent: () => import('./pages/admin/deals/admin-deals').then(m => m.AdminDealsPage) },
   { path: 'favorites', canActivate: [authGuard], loadComponent: () => import('./pages/favorites/favorites').then(m => m.FavoritesPage) },
   { path: 'search', loadComponent: () => import('./pages/search/search').then(m => m.SearchPage) },
+  { path: 'centro-ayuda', loadComponent: () => import('./pages/centro-ayuda/centro-ayuda').then(m => m.CentroAyudaPage) },
+  { path: 'politica-envio', loadComponent: () => import('./pages/politica-envio/politica-envio').then(m => m.PoliticaEnvioPage) },
+  { path: 'terminos', loadComponent: () => import('./pages/terminos/terminos').then(m => m.TerminosPage) },
+  { path: 'privacidad', loadComponent: () => import('./pages/politica-privacidad/politica-privacidad').then(m => m.PoliticaPrivacidadPage) },
+  { path: 'reclamaciones', loadComponent: () => import('./pages/libro-reclamaciones/libro-reclamaciones').then(m => m.LibroReclamacionesPage) },
+  { path: 'mis-reclamaciones', canActivate: [authGuard], loadComponent: () => import('./pages/mis-reclamaciones/mis-reclamaciones').then(m => m.MisReclamacionesPage) },
+  { path: 'admin/reclamaciones', canActivate: [authGuard, adminGuard], loadComponent: () => import('./pages/admin/reclamaciones/admin-reclamaciones').then(m => m.AdminReclamacionesPage) },
   { path: '**', redirectTo: '' }
 ];

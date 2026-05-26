@@ -1,0 +1,189 @@
+<div class="legal-page">
+
+  <section class="legal-hero">
+    <span class="material-symbols-outlined hero-icon">shield</span>
+    <h1 class="hero-title">Política de Privacidad</h1>
+    <p class="hero-desc">Tu privacidad es importante para nosotros. Aquí te explicamos cómo tratamos tus datos.</p>
+    <span class="updated-badge">Última actualización: Mayo 2026</span>
+  </section>
+
+  <div class="legal-layout">
+
+    <!-- TOC -->
+    <aside class="toc">
+      <p class="toc-title">Contenido</p>
+      <nav>
+        <a (click)="scrollTo('responsable')" [class.active]="activeSection() === 'responsable'">1. Responsable del tratamiento</a>
+        <a (click)="scrollTo('datos')" [class.active]="activeSection() === 'datos'">2. Datos que recopilamos</a>
+        <a (click)="scrollTo('finalidad')" [class.active]="activeSection() === 'finalidad'">3. Finalidad del tratamiento</a>
+        <a (click)="scrollTo('base')" [class.active]="activeSection() === 'base'">4. Base legal</a>
+        <a (click)="scrollTo('conservacion')" [class.active]="activeSection() === 'conservacion'">5. Conservación de datos</a>
+        <a (click)="scrollTo('derechos')" [class.active]="activeSection() === 'derechos'">6. Derechos ARCO</a>
+        <a (click)="scrollTo('terceros')" [class.active]="activeSection() === 'terceros'">7. Compartir con terceros</a>
+        <a (click)="scrollTo('cookies')" [class.active]="activeSection() === 'cookies'">8. Cookies</a>
+        <a (click)="scrollTo('seguridad')" [class.active]="activeSection() === 'seguridad'">9. Seguridad</a>
+        <a (click)="scrollTo('contacto')" [class.active]="activeSection() === 'contacto'">10. Contacto</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <article class="legal-content">
+
+      <section class="legal-section" id="responsable">
+        <h2><span class="num">1.</span> Responsable del Tratamiento</h2>
+        <p>El responsable del tratamiento de sus datos personales es <strong>EcommerceLimo</strong>, con domicilio en Lima, Perú, y correo electrónico de contacto: <a href="mailto:privacidad@ecommercelimo.com" class="inline-link">privacidad&#64;ecommercelimo.com</a>.</p>
+        <p>Nuestra empresa está registrada ante la Autoridad Nacional de Protección de Datos Personales (ANPDP) del Perú, conforme a la Ley N° 29733 – Ley de Protección de Datos Personales.</p>
+      </section>
+
+      <section class="legal-section" id="datos">
+        <h2><span class="num">2.</span> Datos que Recopilamos</h2>
+        <p>Recopilamos distintos tipos de datos según la interacción que tengas con nuestra Plataforma:</p>
+
+        <div class="data-cards">
+          <div class="data-card">
+            <span class="material-symbols-outlined">person</span>
+            <div>
+              <strong>Datos de identidad</strong>
+              <span>Nombre, apellidos, DNI/CE (cuando se requiera factura)</span>
+            </div>
+          </div>
+          <div class="data-card">
+            <span class="material-symbols-outlined">contact_mail</span>
+            <div>
+              <strong>Datos de contacto</strong>
+              <span>Correo electrónico, número de teléfono, dirección de entrega</span>
+            </div>
+          </div>
+          <div class="data-card">
+            <span class="material-symbols-outlined">payments</span>
+            <div>
+              <strong>Datos de transacción</strong>
+              <span>Historial de pedidos, métodos de pago (no almacenamos datos de tarjeta)</span>
+            </div>
+          </div>
+          <div class="data-card">
+            <span class="material-symbols-outlined">analytics</span>
+            <div>
+              <strong>Datos de uso</strong>
+              <span>Páginas visitadas, tiempo en sitio, preferencias y búsquedas</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="legal-section" id="finalidad">
+        <h2><span class="num">3.</span> Finalidad del Tratamiento</h2>
+        <p>Utilizamos tus datos personales para las siguientes finalidades:</p>
+        <ul>
+          <li><strong>Gestión de pedidos:</strong> procesar, confirmar y entregar tus compras.</li>
+          <li><strong>Comunicaciones transaccionales:</strong> enviarte confirmaciones de pedido, actualizaciones de envío y notificaciones relevantes.</li>
+          <li><strong>Atención al cliente:</strong> gestionar consultas, reclamos y devoluciones.</li>
+          <li><strong>Marketing (con consentimiento):</strong> enviarte ofertas, promociones y novedades si optaste por recibirlas.</li>
+          <li><strong>Mejora del servicio:</strong> analizar el comportamiento de uso para mejorar la experiencia de compra.</li>
+          <li><strong>Cumplimiento legal:</strong> emisión de comprobantes fiscales y cumplimiento de obligaciones legales.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="base">
+        <h2><span class="num">4.</span> Base Legal del Tratamiento</h2>
+        <p>El tratamiento de tus datos se fundamenta en:</p>
+        <ul>
+          <li><strong>Ejecución contractual:</strong> necesario para procesar tus pedidos y prestarte el servicio.</li>
+          <li><strong>Consentimiento:</strong> para comunicaciones de marketing y uso de cookies no esenciales.</li>
+          <li><strong>Interés legítimo:</strong> para la seguridad de la plataforma y prevención del fraude.</li>
+          <li><strong>Obligación legal:</strong> para el cumplimiento de normativas tributarias y legales peruanas.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="conservacion">
+        <h2><span class="num">5.</span> Conservación de los Datos</h2>
+        <p>Conservamos tus datos personales durante el tiempo necesario para cumplir con las finalidades descritas:</p>
+        <ul>
+          <li><strong>Datos de cuenta:</strong> mientras tu cuenta esté activa, más 2 años tras su eliminación.</li>
+          <li><strong>Datos de transacciones:</strong> 7 años, conforme a la legislación tributaria peruana.</li>
+          <li><strong>Datos de marketing:</strong> hasta que retires tu consentimiento.</li>
+          <li><strong>Datos de navegación:</strong> máximo 13 meses desde su recopilación.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="derechos">
+        <h2><span class="num">6.</span> Derechos ARCO y Otros Derechos</h2>
+        <p>Conforme a la Ley N° 29733, tienes derecho a:</p>
+        <div class="rights-grid">
+          <div class="right-card">
+            <span class="material-symbols-outlined">visibility</span>
+            <strong>Acceso</strong>
+            <span>Conocer qué datos tuyos tratamos</span>
+          </div>
+          <div class="right-card">
+            <span class="material-symbols-outlined">edit</span>
+            <strong>Rectificación</strong>
+            <span>Corregir datos incorrectos o incompletos</span>
+          </div>
+          <div class="right-card">
+            <span class="material-symbols-outlined">delete</span>
+            <strong>Cancelación</strong>
+            <span>Solicitar la eliminación de tus datos</span>
+          </div>
+          <div class="right-card">
+            <span class="material-symbols-outlined">block</span>
+            <strong>Oposición</strong>
+            <span>Oponerte a ciertos tratamientos</span>
+          </div>
+        </div>
+        <p>Para ejercer tus derechos, envía un correo a <a href="mailto:privacidad@ecommercelimo.com" class="inline-link">privacidad&#64;ecommercelimo.com</a> indicando el derecho que deseas ejercer y adjuntando copia de tu documento de identidad.</p>
+      </section>
+
+      <section class="legal-section" id="terceros">
+        <h2><span class="num">7.</span> Compartir Datos con Terceros</h2>
+        <p>Compartimos tus datos únicamente cuando es necesario para prestarte el servicio o por obligación legal:</p>
+        <ul>
+          <li><strong>Operadores logísticos</strong> (Olva Courier, Shalom): para gestionar la entrega de tus pedidos.</li>
+          <li><strong>Procesadores de pago</strong> (Stripe): para procesar transacciones de forma segura.</li>
+          <li><strong>Autoridades competentes</strong>: cuando lo exija la ley peruana.</li>
+        </ul>
+        <p>No vendemos ni cedemos tus datos personales a terceros con fines comerciales.</p>
+      </section>
+
+      <section class="legal-section" id="cookies">
+        <h2><span class="num">8.</span> Cookies</h2>
+        <p>Utilizamos cookies para mejorar tu experiencia de navegación. Existen distintos tipos:</p>
+        <ul>
+          <li><strong>Cookies esenciales:</strong> necesarias para el funcionamiento básico (sesión, carrito). No requieren consentimiento.</li>
+          <li><strong>Cookies analíticas:</strong> nos ayudan a entender cómo se usa la Plataforma (Google Analytics). Requieren tu consentimiento.</li>
+          <li><strong>Cookies de preferencias:</strong> recuerdan tus configuraciones (modo oscuro, idioma).</li>
+        </ul>
+        <p>Puedes gestionar tus preferencias de cookies en la configuración de tu navegador.</p>
+      </section>
+
+      <section class="legal-section" id="seguridad">
+        <h2><span class="num">9.</span> Seguridad de los Datos</h2>
+        <p>Implementamos medidas técnicas y organizativas para proteger tus datos personales:</p>
+        <ul>
+          <li>Conexiones cifradas mediante protocolo HTTPS/TLS.</li>
+          <li>Acceso restringido a datos personales solo a personal autorizado.</li>
+          <li>No almacenamos datos completos de tarjetas bancarias en nuestros servidores.</li>
+          <li>Auditorías periódicas de seguridad.</li>
+        </ul>
+        <p>En caso de detectar una brecha de seguridad que afecte tus datos, te notificaremos en los plazos establecidos por la normativa peruana.</p>
+      </section>
+
+      <section class="legal-section" id="contacto">
+        <h2><span class="num">10.</span> Contacto y Reclamaciones</h2>
+        <p>Para cualquier consulta sobre esta Política de Privacidad o el tratamiento de tus datos, puedes contactarnos:</p>
+        <div class="contact-info">
+          <div class="contact-row">
+            <span class="material-symbols-outlined">email</span>
+            <span>privacidad&#64;ecommercelimo.com</span>
+          </div>
+          <div class="contact-row">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>Lima, Perú</span>
+          </div>
+        </div>
+        <p>Si consideras que tus derechos han sido vulnerados, tienes derecho a presentar una reclamación ante la Autoridad Nacional de Protección de Datos Personales (ANPDP) del Perú.</p>
+      </section>
+
+    </article>
+  </div>
+</div>

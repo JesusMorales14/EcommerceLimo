@@ -1,14 +1,11 @@
-import { Component, computed, effect, inject, OnDestroy, OnInit, AfterViewInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, AfterViewInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
 import { CartService } from '../../core/services/cart';
 import { AuthService } from '../../core/services/auth.service';
 import { OrderService, DeliveryInfo } from '../../core/services/order.service';
-import { PaymentService } from '../../core/services/payment.service';
 import { CouponService, CouponResult } from '../../core/services/coupon.service';
-import { ThemeService } from '../../core/services/theme.service';
 
 declare const L: any;
 
@@ -19,14 +16,12 @@ declare const L: any;
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss'
 })
-export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
-  cartService        = inject(CartService);
-  authService        = inject(AuthService);
-  private orderSvc   = inject(OrderService);
-  private paymentSvc = inject(PaymentService);
-  private couponSvc  = inject(CouponService);
-  private router     = inject(Router);
-  private themeService = inject(ThemeService);
+export class CheckoutPage implements OnInit, AfterViewInit {
+  cartService       = inject(CartService);
+  authService       = inject(AuthService);
+  private orderSvc  = inject(OrderService);
+  private couponSvc = inject(CouponService);
+  private router    = inject(Router);
 
   step = signal(1);
 
@@ -40,18 +35,19 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
   cardHolderName = '';
   cardFlipped    = signal(false);
 
-  stripeCardBrand    = signal('');
-  stripeCardComplete = signal(false);
-  stripeError        = signal('');
-  private cardElement: any = null;
+  // Simulated card fields
+  cardNumber = '';
+  cardExpiry = '';
+  cardCvv    = '';
+  cardBrand  = signal('');
 
   placing = signal(false);
   error   = signal('');
 
-  couponCode      = '';
-  couponResult    = signal<CouponResult | null>(null);
-  applyingCoupon  = signal(false);
-  couponError     = signal('');
+  couponCode     = '';
+  couponResult   = signal<CouponResult | null>(null);
+  applyingCoupon = signal(false);
+  couponError    = signal('');
 
   finalTotal = computed(() => this.couponResult()?.finalAmount ?? this.cartService.total());
 
@@ -64,20 +60,6 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     { id: 'cash',        label: 'Efectivo al recibir',    icon: 'local_shipping',         desc: 'Paga en efectivo cuando llegue tu pedido' },
   ];
 
-  constructor() {
-    // Re-monta el Stripe element cuando cambia el paso, el método de pago o el tema
-    effect(() => {
-      const shouldMount = this.step() === 2 && this.paymentMethod() === 'card';
-      void this.themeService.isDark(); // señal reactiva: re-ejecuta al cambiar tema
-      if (shouldMount) {
-        this.destroyCardElement();
-        setTimeout(() => this.mountCardElement(), 100);
-      } else {
-        this.destroyCardElement();
-      }
-    });
-  }
-
   ngOnInit() {
     if (this.cartService.getItems()().length === 0) {
       this.router.navigate(['/cart']);
@@ -85,9 +67,9 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     }
     const user = this.authService.user();
     if (user) {
-      this.delivery.name    = user.name  ?? '';
-      this.delivery.phone   = user.phone ?? '';
-      this.cardHolderName   = user.name  ?? '';
+      this.delivery.name  = user.name  ?? '';
+      this.delivery.phone = user.phone ?? '';
+      this.cardHolderName = user.name  ?? '';
     }
   }
 
@@ -95,56 +77,41 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => this.initMap(), 200);
   }
 
-  ngOnDestroy() {
-    this.destroyCardElement();
+  // ── Card display helpers ──────────────────────────────────────────────────
+
+  get cardNumberDisplay(): string {
+    const raw = this.cardNumber.replace(/\s/g, '');
+    const padded = raw.padEnd(16, '•');
+    return `${padded.slice(0,4)} ${padded.slice(4,8)} ${padded.slice(8,12)} ${padded.slice(12,16)}`;
   }
 
-  // ── Stripe Card Element ───────────────────────────────────────────────────
-
-  private mountCardElement() {
-    if (this.cardElement) return;
-    const container = document.getElementById('stripe-card-element');
-    if (!container) return;
-
-    const stripe = this.paymentSvc.getStripe();
-    if (!stripe) return;
-
-    // Lee los colores directamente desde las CSS variables — no hardcodeado
-    const cssVars = getComputedStyle(document.documentElement);
-    const textColor  = cssVars.getPropertyValue('--text').trim();
-    const mutedColor = cssVars.getPropertyValue('--text-muted').trim();
-
-    const elements = stripe.elements();
-    this.cardElement = elements.create('card', {
-      style: {
-        base: {
-          fontFamily: 'inherit',
-          fontSize: '15px',
-          color: textColor,
-          '::placeholder': { color: mutedColor },
-          iconColor: mutedColor,
-        },
-        invalid: { color: '#f87171' },
-      },
-      hidePostalCode: true,
-    });
-
-    this.cardElement.mount('#stripe-card-element');
-
-    this.cardElement.on('change', (event: any) => {
-      this.stripeCardBrand.set(event.brand ?? '');
-      this.stripeCardComplete.set(event.complete);
-      this.stripeError.set(event.error?.message ?? '');
-    });
+  get cardExpiryDisplay(): string {
+    return this.cardExpiry || '••/••';
   }
 
-  private destroyCardElement() {
-    if (this.cardElement) {
-      this.cardElement.destroy();
-      this.cardElement = null;
-      this.stripeCardComplete.set(false);
-      this.stripeError.set('');
-    }
+  get cardBrandDisplay(): string {
+    const b = this.cardBrand();
+    const labels: Record<string, string> = { visa: 'VISA', mastercard: 'MASTERCARD', amex: 'AMEX' };
+    return labels[b] ?? (b ? b.toUpperCase() : 'CARD');
+  }
+
+  onCardNumberInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const raw = input.value.replace(/\D/g, '').slice(0, 16);
+    this.cardNumber = raw.replace(/(.{4})/g, '$1 ').trim();
+    input.value = this.cardNumber;
+
+    if (raw.startsWith('4'))         this.cardBrand.set('visa');
+    else if (/^5[1-5]/.test(raw))   this.cardBrand.set('mastercard');
+    else if (/^3[47]/.test(raw))     this.cardBrand.set('amex');
+    else                             this.cardBrand.set('');
+  }
+
+  onExpiryInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const raw = input.value.replace(/\D/g, '').slice(0, 4);
+    this.cardExpiry = raw.length > 2 ? `${raw.slice(0,2)}/${raw.slice(2)}` : raw;
+    input.value = this.cardExpiry;
   }
 
   // ── Mapa ──────────────────────────────────────────────────────────────────
@@ -210,8 +177,21 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     if (this.step() === 2 && this.paymentMethod() === 'card') {
-      if (!this.stripeCardComplete()) {
-        this.error.set('Completa los datos de la tarjeta.');
+      const num = this.cardNumber.replace(/\s/g, '');
+      if (num.length !== 16) {
+        this.error.set('Ingresa un número de tarjeta válido (16 dígitos).');
+        return;
+      }
+      if (!this.cardExpiry.match(/^\d{2}\/\d{2}$/)) {
+        this.error.set('Ingresa la fecha de vencimiento (MM/AA).');
+        return;
+      }
+      if (this.cardCvv.length < 3) {
+        this.error.set('Ingresa el código CVV.');
+        return;
+      }
+      if (!this.cardHolderName.trim()) {
+        this.error.set('Ingresa el nombre del titular.');
         return;
       }
     }
@@ -219,8 +199,7 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     if (this.step() === 1) setTimeout(() => this.initMap(), 300);
   }
 
-  prevStep() { this.error.set(''); this.step.update(s => s - 1); }
-
+  prevStep()          { this.error.set(''); this.step.update(s => s - 1); }
   goToStep(n: number) { this.error.set(''); this.step.set(n); }
 
   // ── Confirmar pedido ──────────────────────────────────────────────────────
@@ -228,47 +207,11 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
   async confirmOrder() {
     this.placing.set(true);
     this.error.set('');
-
     if (this.paymentMethod() === 'card') {
-      await this.confirmWithStripe();
-    } else {
-      this.submitOrder();
+      // Simula el procesamiento del pago con un delay realista
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
-  }
-
-  private async confirmWithStripe() {
-    const stripe = this.paymentSvc.getStripe();
-    if (!stripe || !this.cardElement) {
-      this.error.set('Stripe no está disponible. Recarga la página.');
-      this.placing.set(false);
-      return;
-    }
-
-    try {
-      const { clientSecret } = await firstValueFrom(
-        this.paymentSvc.createIntent(this.finalTotal())
-      );
-
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: this.cardElement,
-          billing_details: { name: this.cardHolderName },
-        },
-      });
-
-      if (error) {
-        this.error.set(error.message ?? 'Error al procesar el pago.');
-        this.placing.set(false);
-        return;
-      }
-
-      if (paymentIntent?.status === 'succeeded') {
-        this.submitOrder();
-      }
-    } catch {
-      this.error.set('Error al conectar con la pasarela de pago.');
-      this.placing.set(false);
-    }
+    this.submitOrder();
   }
 
   private submitOrder() {
@@ -288,9 +231,7 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  goToAccount() {
-    this.router.navigate(['/account']);
-  }
+  goToAccount() { this.router.navigate(['/account']); }
 
   // ── Cupón ─────────────────────────────────────────────────────────────────
 
@@ -317,10 +258,4 @@ export class CheckoutPage implements OnInit, AfterViewInit, OnDestroy {
 
   getMethodLabel(id: string) { return this.PAYMENT_METHODS.find(m => m.id === id)?.label ?? id; }
   getMethodIcon(id: string)  { return this.PAYMENT_METHODS.find(m => m.id === id)?.icon ?? 'payments'; }
-
-  get cardBrandDisplay(): string {
-    const b = this.stripeCardBrand();
-    const labels: Record<string, string> = { visa: 'VISA', mastercard: 'MASTERCARD', amex: 'AMEX' };
-    return labels[b] ?? (b ? b.toUpperCase() : 'CARD');
-  }
 }

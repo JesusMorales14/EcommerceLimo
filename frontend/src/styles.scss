@@ -1,3 +1,13 @@
+// ── View Transition: animación de esquina al cambiar tema ────────────────────
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
 // ── CSS Variables: Light Mode ─────────────────────────────────────────────────
 :root {
   --bg: #f4f7f4;

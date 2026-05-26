@@ -98,7 +98,7 @@
     gap: 10px;
     font-size: 22px;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 28px;
     .material-symbols-outlined {
       color: #006b2d;
@@ -144,7 +144,7 @@
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     font-size: 14px;
-    color: #ffffff;
+    color: var(--text);
     outline: none;
     transition: border-color 0.2s;
     box-sizing: border-box;
@@ -295,7 +295,7 @@
     strong {
       display: block;
       font-size: 14px;
-      color: #ffffff;
+      color: var(--text);
       margin-bottom: 2px;
     }
     span {
@@ -425,7 +425,7 @@
 .card-cvv-box {
   flex: 1;
   background: #fff;
-  color: #ffffff;
+  color: #1a1a2e;
   border-radius: 6px;
   padding: 8px 12px;
   font-family: 'Courier New', monospace;
@@ -634,7 +634,7 @@
   gap: 8px;
   font-size: 15px;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text);
   margin-bottom: 16px;
 
   .material-symbols-outlined {
@@ -685,7 +685,7 @@
     .ci-name {
       font-size: 13px;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text);
       margin: 0 0 3px;
     }
     .ci-brand {
@@ -721,7 +721,7 @@
     .ci-price {
       font-size: 14px;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text);
     }
   }
 }
@@ -804,7 +804,7 @@
 }
 
 .btn-coupon {
-  background: #ffffff;
+  background: #006b2d;
   color: #fff;
   border: none;
   padding: 9px 16px;

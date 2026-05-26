@@ -1,0 +1,116 @@
+<div class="misrec-page">
+
+  <section class="misrec-hero">
+    <span class="material-symbols-outlined hero-icon">manage_search</span>
+    <div>
+      <h1>Mis Reclamaciones</h1>
+      <p>Consulta el estado de tus reclamos y quejas enviadas.</p>
+    </div>
+    <a routerLink="/reclamaciones" class="btn-new-rec">
+      <span class="material-symbols-outlined">add</span>
+      Nueva reclamación
+    </a>
+  </section>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      Cargando reclamaciones...
+    </div>
+  } @else if (reclamaciones().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">assignment_late</span>
+      <p>No tienes reclamaciones registradas</p>
+      <a routerLink="/reclamaciones" class="btn-submit-rec">
+        <span class="material-symbols-outlined">assignment</span>
+        Presentar una reclamación
+      </a>
+    </div>
+  } @else {
+    <div class="rec-list">
+      @for (rec of reclamaciones(); track rec.id) {
+        <div class="rec-card" [class.expanded]="expanded() === rec.id">
+
+          <!-- Card header -->
+          <div class="rec-header" (click)="toggleExpand(rec.id)">
+            <div class="rec-meta">
+              <span class="rec-id">#{{ rec.id }}</span>
+              <span class="tipo-badge"
+                [style.background]="TIPO_COLORS[rec.tipo] + '18'"
+                [style.color]="TIPO_COLORS[rec.tipo]">
+                {{ TIPO_LABELS[rec.tipo] }}
+              </span>
+              <span class="bien-chip">{{ rec.bien === 'PRODUCTO' ? 'Producto' : 'Servicio' }}</span>
+            </div>
+            <div class="rec-right">
+              <span class="estado-badge"
+                [style.background]="ESTADO_COLORS[rec.estado] + '20'"
+                [style.color]="ESTADO_COLORS[rec.estado]">
+                {{ ESTADO_LABELS[rec.estado] }}
+              </span>
+              <span class="rec-date">{{ rec.createdAt | date:'dd/MM/yyyy' }}</span>
+              <span class="material-symbols-outlined toggle-icon">
+                {{ expanded() === rec.id ? 'expand_less' : 'expand_more' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="rec-timeline">
+            @for (step of TIMELINE; track step.estado) {
+              <div class="tl-step"
+                [class.done]="isStepDone(rec.estado, step.estado)"
+                [class.active]="isStepActive(rec.estado, step.estado)">
+                <div class="tl-dot">
+                  <span class="material-symbols-outlined">{{ step.icon }}</span>
+                </div>
+                <span class="tl-label">{{ step.label }}</span>
+              </div>
+              @if (!$last) {
+                <div class="tl-line" [class.done]="isStepDone(rec.estado, step.estado)"></div>
+              }
+            }
+          </div>
+
+          <!-- Expanded detail -->
+          @if (expanded() === rec.id) {
+            <div class="rec-detail">
+              <div class="detail-section">
+                <h4>Descripción del problema</h4>
+                <p>{{ rec.detalle }}</p>
+              </div>
+              @if (rec.pedidoNum) {
+                <div class="detail-row">
+                  <span class="material-symbols-outlined">receipt</span>
+                  <span>Pedido relacionado: <strong>{{ rec.pedidoNum }}</strong></span>
+                </div>
+              }
+              @if (rec.accion) {
+                <div class="detail-section">
+                  <h4>Acción solicitada</h4>
+                  <p>{{ rec.accion }}</p>
+                </div>
+              }
+              @if (rec.respuesta) {
+                <div class="admin-response">
+                  <div class="response-header">
+                    <span class="material-symbols-outlined">support_agent</span>
+                    <strong>Respuesta de EcommerceLimo</strong>
+                  </div>
+                  <p>{{ rec.respuesta }}</p>
+                </div>
+              } @else {
+                <div class="pending-response">
+                  <span class="material-symbols-outlined">hourglass_empty</span>
+                  <span>En espera de respuesta — plazo máximo 30 días calendario</span>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

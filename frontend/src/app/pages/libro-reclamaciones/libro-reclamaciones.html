@@ -1,0 +1,224 @@
+<div class="reclamaciones-page">
+
+  <section class="reclamaciones-hero">
+    <span class="material-symbols-outlined hero-icon">assignment</span>
+    <h1 class="hero-title">Libro de Reclamaciones</h1>
+    <p class="hero-desc">Conforme a la Ley N° 29571 — Código de Protección y Defensa del Consumidor, ponemos a tu disposición este libro de reclamaciones virtual.</p>
+    <div class="legal-note">
+      <span class="material-symbols-outlined">info</span>
+      <span>Responderemos tu reclamo o queja en un plazo máximo de <strong>30 días calendario</strong>.</span>
+    </div>
+  </section>
+
+  @if (submitted()) {
+    <!-- Success state -->
+    <div class="success-card">
+      <span class="material-symbols-outlined success-icon">check_circle</span>
+      <h2>Reclamación registrada con éxito</h2>
+      @if (submitted_rec()) {
+        <div class="ref-badge">N° de referencia: <strong>#{{ submitted_rec()!.id }}</strong></div>
+      }
+      <p>Hemos recibido tu reclamación y notificado al equipo. Te responderemos al correo <strong>{{ form.email || submitted_rec()?.email }}</strong> en un plazo máximo de <strong>30 días calendario</strong>.</p>
+      <div class="success-actions">
+        <a routerLink="/mis-reclamaciones" class="btn-track">
+          <span class="material-symbols-outlined">manage_search</span>
+          Ver estado de mi reclamación
+        </a>
+        <button class="btn-new" (click)="reset()">
+          <span class="material-symbols-outlined">add</span>
+          Nueva reclamación
+        </button>
+      </div>
+    </div>
+  } @else {
+
+    <form class="reclamaciones-form" (ngSubmit)="submit()" #recForm="ngForm">
+
+      <!-- Tipo de reclamación -->
+      <div class="form-card">
+        <h3 class="card-title">
+          <span class="material-symbols-outlined">flag</span>
+          Tipo de Reclamación
+        </h3>
+        <div class="tipo-options">
+          <label class="tipo-option" [class.selected]="form.tipo === 'RECLAMO'">
+            <input type="radio" name="tipo" [(ngModel)]="form.tipo" value="RECLAMO" />
+            <span class="material-symbols-outlined">report</span>
+            <div>
+              <strong>Reclamo</strong>
+              <span>Disconformidad relacionada con los productos o servicios</span>
+            </div>
+          </label>
+          <label class="tipo-option" [class.selected]="form.tipo === 'QUEJA'">
+            <input type="radio" name="tipo" [(ngModel)]="form.tipo" value="QUEJA" />
+            <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+            <div>
+              <strong>Queja</strong>
+              <span>Disconformidad relacionada con la atención al cliente</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Datos del consumidor -->
+      <div class="form-card">
+        <h3 class="card-title">
+          <span class="material-symbols-outlined">person</span>
+          Datos del Consumidor
+        </h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Nombre *</label>
+            <input
+              type="text"
+              name="nombre"
+              [(ngModel)]="form.nombre"
+              placeholder="Ingresa tu nombre"
+              required
+            />
+          </div>
+          <div class="field">
+            <label>Apellidos *</label>
+            <input
+              type="text"
+              name="apellidos"
+              [(ngModel)]="form.apellidos"
+              placeholder="Ingresa tus apellidos"
+              required
+            />
+          </div>
+          <div class="field">
+            <label>DNI / CE *</label>
+            <input
+              type="text"
+              name="dni"
+              [(ngModel)]="form.dni"
+              placeholder="12345678"
+              maxlength="12"
+              required
+            />
+          </div>
+          <div class="field">
+            <label>Teléfono *</label>
+            <input
+              type="tel"
+              name="telefono"
+              [(ngModel)]="form.telefono"
+              placeholder="+51 999 999 999"
+              required
+            />
+          </div>
+          <div class="field full">
+            <label>Correo electrónico *</label>
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="form.email"
+              placeholder="tu&#64;correo.com"
+              required
+            />
+          </div>
+          <div class="field full">
+            <label>Dirección</label>
+            <input
+              type="text"
+              name="direccion"
+              [(ngModel)]="form.direccion"
+              placeholder="Dirección de domicilio (opcional)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Identificación del bien -->
+      <div class="form-card">
+        <h3 class="card-title">
+          <span class="material-symbols-outlined">inventory_2</span>
+          Identificación del Bien Contratado
+        </h3>
+        <div class="bien-options">
+          <label class="bien-option" [class.selected]="form.bien === 'PRODUCTO'">
+            <input type="radio" name="bien" [(ngModel)]="form.bien" value="PRODUCTO" />
+            <span class="material-symbols-outlined">category</span>
+            <span>Producto</span>
+          </label>
+          <label class="bien-option" [class.selected]="form.bien === 'SERVICIO'">
+            <input type="radio" name="bien" [(ngModel)]="form.bien" value="SERVICIO" />
+            <span class="material-symbols-outlined">support_agent</span>
+            <span>Servicio</span>
+          </label>
+        </div>
+        <div class="field" style="margin-top: 16px;">
+          <label>N° de Pedido (si aplica)</label>
+          <input
+            type="text"
+            name="pedidoNum"
+            [(ngModel)]="form.pedidoNum"
+            placeholder="Ej: ORD-2026-00123"
+          />
+        </div>
+      </div>
+
+      <!-- Detalle de la reclamación -->
+      <div class="form-card">
+        <h3 class="card-title">
+          <span class="material-symbols-outlined">description</span>
+          Detalle de la Reclamación
+        </h3>
+        <div class="field">
+          <label>Descripción del problema *</label>
+          <textarea
+            name="detalle"
+            [(ngModel)]="form.detalle"
+            placeholder="Describe detalladamente lo sucedido, incluyendo fechas y cualquier información relevante..."
+            rows="5"
+            required
+          ></textarea>
+        </div>
+        <div class="field">
+          <label>Pedido o acción solicitada</label>
+          <textarea
+            name="accion"
+            [(ngModel)]="form.accion"
+            placeholder="¿Qué solución esperas de nosotros? (reembolso, cambio de producto, etc.)"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Aceptación -->
+      <div class="form-card acepta-card">
+        <label class="acepta-label">
+          <input type="checkbox" name="acepta" [(ngModel)]="form.acepta" />
+          <span>
+            Declaro que la información proporcionada es verídica y acepto que EcommerceLimo trate mis datos personales para gestionar esta reclamación, conforme a la
+            <a routerLink="/privacidad" class="inline-link" target="_blank">Política de Privacidad</a>.
+          </span>
+        </label>
+      </div>
+
+      @if (error()) {
+        <div class="form-error">
+          <span class="material-symbols-outlined">error</span>
+          {{ error() }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="!isFormValid() || submitting()"
+      >
+        @if (submitting()) {
+          <span class="material-symbols-outlined spin">progress_activity</span>
+          Enviando...
+        } @else {
+          <span class="material-symbols-outlined">send</span>
+          Enviar Reclamación
+        }
+      </button>
+
+    </form>
+  }
+
+</div>

@@ -152,7 +152,7 @@
                 <span class="card-chip material-symbols-outlined">sim_card</span>
                 <span class="card-brand-chip">{{ cardBrandDisplay }}</span>
               </div>
-              <div class="card-number-display">•••• •••• •••• ••••</div>
+              <div class="card-number-display">{{ cardNumberDisplay }}</div>
               <div class="card-footer-row">
                 <div>
                   <div class="card-field-label">TITULAR</div>
@@ -160,7 +160,7 @@
                 </div>
                 <div>
                   <div class="card-field-label">VENCE</div>
-                  <div class="card-field-value">••/••</div>
+                  <div class="card-field-value">{{ cardExpiryDisplay }}</div>
                 </div>
               </div>
             </div>
@@ -168,12 +168,12 @@
               <div class="card-stripe"></div>
               <div class="card-cvv-zone">
                 <span>CVV</span>
-                <div class="card-cvv-box">•••</div>
+                <div class="card-cvv-box">{{ cardCvv || '•••' }}</div>
               </div>
             </div>
           </div>
 
-          <!-- Stripe Form -->
+          <!-- Card Form -->
           <div class="card-form">
             <div class="field">
               <label>Nombre del titular</label>
@@ -181,16 +181,25 @@
                 placeholder="COMO APARECE EN LA TARJETA" autocomplete="cc-name" style="text-transform:uppercase">
             </div>
             <div class="field">
-              <label>Datos de tarjeta</label>
-              <div id="stripe-card-element" class="stripe-element-wrap"></div>
-              @if (stripeError()) {
-                <span class="stripe-field-error">{{ stripeError() }}</span>
-              }
-              @if (stripeCardComplete()) {
-                <span class="stripe-field-ok">
-                  <span class="material-symbols-outlined">check_circle</span> Tarjeta válida
-                </span>
-              }
+              <label>Número de tarjeta</label>
+              <input type="text" [ngModel]="cardNumber" (input)="onCardNumberInput($event)"
+                name="cardnumber" placeholder="1234 5678 9012 3456"
+                autocomplete="cc-number" inputmode="numeric" maxlength="19">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Vencimiento (MM/AA)</label>
+                <input type="text" [ngModel]="cardExpiry" (input)="onExpiryInput($event)"
+                  name="expiry" placeholder="MM/AA" autocomplete="cc-exp"
+                  inputmode="numeric" maxlength="5">
+              </div>
+              <div class="field">
+                <label>CVV</label>
+                <input type="password" [(ngModel)]="cardCvv" name="cvv"
+                  placeholder="•••" autocomplete="cc-csc"
+                  inputmode="numeric" maxlength="4"
+                  (focus)="cardFlipped.set(true)" (blur)="cardFlipped.set(false)">
+              </div>
             </div>
             <div class="accepted-cards">
               <span class="card-logo visa">VISA</span>

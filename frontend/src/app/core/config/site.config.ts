@@ -1,5 +1,5 @@
 export const SITE_CONFIG = {
-  storeName: 'Greenhouse',
+  storeName: 'EcommerceLimo',
 
   installments: {
     count: 12,
@@ -16,14 +16,14 @@ export const SITE_CONFIG = {
     {
       icon: 'store',
       title: 'Retiro en tienda',
-      subtitle: 'Disponible en 2 horas · Greenhouse Central',
+      subtitle: 'Disponible en 2 horas · EcommerceLimo Central',
       badge: 'Gratis',
     },
   ],
 
   trust: [
-    { icon: 'verified_user',      label: 'Compra segura' },
-    { icon: 'replay',             label: 'Devolución gratis' },
-    { icon: 'workspace_premium',  label: 'Garantía 1 año' },
+    { icon: 'verified_user', label: 'Compra segura' },
+    { icon: 'replay', label: 'Devolución gratis' },
+    { icon: 'workspace_premium', label: 'Garantía 1 año' },
   ],
 } as const;

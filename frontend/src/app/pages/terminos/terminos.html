@@ -1,0 +1,131 @@
+<div class="legal-page">
+
+  <section class="legal-hero">
+    <span class="material-symbols-outlined hero-icon">gavel</span>
+    <h1 class="hero-title">Términos y Condiciones</h1>
+    <p class="hero-desc">Por favor, lee detenidamente estos términos antes de usar nuestra plataforma.</p>
+    <span class="updated-badge">Última actualización: Mayo 2026</span>
+  </section>
+
+  <div class="legal-layout">
+
+    <!-- TOC -->
+    <aside class="toc">
+      <p class="toc-title">Contenido</p>
+      <nav>
+        <a (click)="scrollTo('aceptacion')" [class.active]="activeSection() === 'aceptacion'">1. Aceptación</a>
+        <a (click)="scrollTo('uso')" [class.active]="activeSection() === 'uso'">2. Uso de la plataforma</a>
+        <a (click)="scrollTo('cuenta')" [class.active]="activeSection() === 'cuenta'">3. Cuenta de usuario</a>
+        <a (click)="scrollTo('compras')" [class.active]="activeSection() === 'compras'">4. Compras y pagos</a>
+        <a (click)="scrollTo('envios')" [class.active]="activeSection() === 'envios'">5. Envíos y entregas</a>
+        <a (click)="scrollTo('devoluciones')" [class.active]="activeSection() === 'devoluciones'">6. Devoluciones</a>
+        <a (click)="scrollTo('propiedad')" [class.active]="activeSection() === 'propiedad'">7. Propiedad intelectual</a>
+        <a (click)="scrollTo('responsabilidad')" [class.active]="activeSection() === 'responsabilidad'">8. Limitación de responsabilidad</a>
+        <a (click)="scrollTo('modificaciones')" [class.active]="activeSection() === 'modificaciones'">9. Modificaciones</a>
+        <a (click)="scrollTo('contacto')" [class.active]="activeSection() === 'contacto'">10. Contacto</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <article class="legal-content">
+
+      <section class="legal-section" id="aceptacion">
+        <h2><span class="num">1.</span> Aceptación de los Términos</h2>
+        <p>Al acceder y utilizar la plataforma de <strong>EcommerceLimo</strong> (en adelante, "la Plataforma"), usted acepta quedar vinculado por los presentes Términos y Condiciones, así como por nuestra Política de Privacidad y Política de Envíos. Si no está de acuerdo con alguno de estos términos, le pedimos que no utilice nuestra Plataforma.</p>
+        <p>Estos términos aplican a todos los visitantes, usuarios y cualquier persona que acceda a la Plataforma.</p>
+      </section>
+
+      <section class="legal-section" id="uso">
+        <h2><span class="num">2.</span> Uso de la Plataforma</h2>
+        <p>La Plataforma está diseñada para uso personal y no comercial. Al utilizarla, usted se compromete a:</p>
+        <ul>
+          <li>Proporcionar información veraz y actualizada durante el registro y las compras.</li>
+          <li>No utilizar la Plataforma para fines ilegales o no autorizados.</li>
+          <li>No intentar acceder a áreas restringidas sin autorización.</li>
+          <li>No publicar contenido ofensivo, falso o que infrinja derechos de terceros.</li>
+          <li>No interferir con el funcionamiento normal de la Plataforma.</li>
+        </ul>
+        <p>Nos reservamos el derecho de suspender o cancelar el acceso de cualquier usuario que incumpla estas condiciones.</p>
+      </section>
+
+      <section class="legal-section" id="cuenta">
+        <h2><span class="num">3.</span> Cuenta de Usuario</h2>
+        <p>Para realizar compras en la Plataforma, es necesario crear una cuenta. Usted es responsable de:</p>
+        <ul>
+          <li>Mantener la confidencialidad de sus credenciales de acceso.</li>
+          <li>Todas las actividades realizadas bajo su cuenta.</li>
+          <li>Notificarnos de inmediato ante cualquier uso no autorizado.</li>
+        </ul>
+        <p>Nos reservamos el derecho de rechazar el registro, cancelar cuentas o eliminar contenido a nuestra discreción.</p>
+      </section>
+
+      <section class="legal-section" id="compras">
+        <h2><span class="num">4.</span> Compras y Pagos</h2>
+        <p>Al realizar una compra en la Plataforma, usted declara tener la capacidad legal para realizar transacciones y que la información de pago proporcionada es correcta y le pertenece.</p>
+        <ul>
+          <li>Los precios se muestran en Soles peruanos (S/) e incluyen IGV.</li>
+          <li>Aceptamos tarjetas Visa, Mastercard, así como Yape y Plin.</li>
+          <li>Los pagos son procesados por Stripe con encriptación SSL de 256 bits.</li>
+          <li>Una vez confirmado el pago, recibirás un correo de confirmación.</li>
+          <li>Nos reservamos el derecho de cancelar pedidos en caso de error en el precio o disponibilidad.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="envios">
+        <h2><span class="num">5.</span> Envíos y Entregas</h2>
+        <p>Los plazos y costos de envío varían según la ubicación. Para más detalles, consulta nuestra
+          <a routerLink="/politica-envio" class="inline-link">Política de Envío</a>.
+        </p>
+        <ul>
+          <li>No somos responsables por demoras causadas por factores externos al operador logístico.</li>
+          <li>En caso de productos dañados durante el envío, deberá comunicarlo dentro de las 48 horas de recibido.</li>
+          <li>La dirección proporcionada durante la compra es responsabilidad del usuario.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="devoluciones">
+        <h2><span class="num">6.</span> Devoluciones y Reembolsos</h2>
+        <p>Aceptamos devoluciones dentro de los 30 días posteriores a la recepción del producto, siempre que este se encuentre en su estado original, sin uso, con sus empaques originales y etiquetas.</p>
+        <ul>
+          <li>No se aceptan devoluciones de productos personalizados o de higiene íntima.</li>
+          <li>Los gastos de envío de la devolución corren por cuenta del cliente, salvo defecto del producto.</li>
+          <li>Los reembolsos se procesan en un plazo de 5-10 días hábiles una vez recibido y verificado el producto.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section" id="propiedad">
+        <h2><span class="num">7.</span> Propiedad Intelectual</h2>
+        <p>Todo el contenido de la Plataforma —incluyendo textos, imágenes, logotipos, diseños y código fuente— es propiedad de <strong>EcommerceLimo</strong> o de sus respectivos propietarios, y está protegido por las leyes de propiedad intelectual peruanas e internacionales.</p>
+        <p>Queda prohibida la reproducción, distribución o modificación de cualquier contenido sin autorización expresa por escrito.</p>
+      </section>
+
+      <section class="legal-section" id="responsabilidad">
+        <h2><span class="num">8.</span> Limitación de Responsabilidad</h2>
+        <p>En la máxima medida permitida por la ley, <strong>EcommerceLimo</strong> no será responsable por daños indirectos, incidentales, especiales o consecuentes derivados del uso de la Plataforma.</p>
+        <p>No garantizamos que la Plataforma esté libre de errores o interrupciones, ni que el contenido sea siempre preciso o completo.</p>
+      </section>
+
+      <section class="legal-section" id="modificaciones">
+        <h2><span class="num">9.</span> Modificaciones</h2>
+        <p>Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigor al momento de su publicación en la Plataforma. El uso continuado de la Plataforma tras dichas modificaciones implica la aceptación de los nuevos términos.</p>
+        <p>Te recomendamos revisar periódicamente esta página para estar al tanto de cualquier cambio.</p>
+      </section>
+
+      <section class="legal-section" id="contacto">
+        <h2><span class="num">10.</span> Contacto</h2>
+        <p>Si tienes preguntas sobre estos Términos y Condiciones, puedes contactarnos a través de:</p>
+        <div class="contact-info">
+          <div class="contact-row">
+            <span class="material-symbols-outlined">email</span>
+            <span>legal&#64;ecommercelimo.com</span>
+          </div>
+          <div class="contact-row">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>Lima, Perú</span>
+          </div>
+        </div>
+      </section>
+
+    </article>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { CouponsModule } from './coupons/coupons.module';
 import { DealSessionsModule } from './deal-sessions/deal-sessions.module';
 import { UsersModule } from './users/users.module';
+import { ReclamacionesModule } from './reclamaciones/reclamaciones.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
     ReviewsModule,
     CouponsModule,
     DealSessionsModule,
+    ReclamacionesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

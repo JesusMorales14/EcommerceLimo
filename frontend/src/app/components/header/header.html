@@ -226,7 +226,7 @@
       <div class="mobile-actions">
         <button
           class="mobile-icon-btn"
-          (click)="toggleTheme()"
+          (click)="toggleTheme($event)"
           [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'"
           aria-label="Cambiar tema"
         >
@@ -246,7 +246,7 @@
       <nav class="user-menu" aria-label="Acciones de usuario">
         <button
           class="icon-btn theme-toggle"
-          (click)="toggleTheme()"
+          (click)="toggleTheme($event)"
           [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'"
         >
           <span class="material-symbols-outlined">{{

@@ -50,7 +50,30 @@ export class Header {
   closeMobileSearch()  { this.mobileSearchOpen.set(false); this.searchQuery = ''; }
   openMobileMenu()     { this.mobileMenuOpen.set(true); }
   closeMobileMenu()    { this.mobileMenuOpen.set(false); }
-  toggleTheme()        { this.themeService.toggle(); }
+  toggleTheme(event?: MouseEvent) {
+    const x = event?.clientX ?? (window.innerWidth - 32);
+    const y = event?.clientY ?? 32;
+    const maxR = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    if (!('startViewTransition' in document)) {
+      this.themeService.toggle();
+      return;
+    }
+
+    const transition = (document as any).startViewTransition(() => {
+      this.themeService.toggle();
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxR}px at ${x}px ${y}px)`] },
+        { duration: 450, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
+  }
 
   search() {
     const q = this.searchQuery.trim();
