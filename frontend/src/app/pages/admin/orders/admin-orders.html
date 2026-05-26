@@ -27,7 +27,7 @@
             </div>
             <div class="status-controls">
               <span class="status-badge" [style.background]="STATUS_COLORS[order.status] + '20'" [style.color]="STATUS_COLORS[order.status]">
-                {{ STATUS_LABELS[order.status] }}
+                {{ order.status | orderStatus }}
               </span>
             </div>
           </div>
@@ -37,13 +37,13 @@
               <div class="order-item-row">
                 <span class="oi-name">{{ item.product.name }}</span>
                 <span class="oi-qty">x{{ item.quantity }}</span>
-                <span class="oi-price">{{ item.price * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="oi-price">{{ item.price * item.quantity | currencyPen }}</span>
               </div>
             }
           </div>
 
           <div class="order-card-footer">
-            <span class="order-total">Total: <strong>{{ order.total | currency:'PEN':'S/ ':'1.0-0' }}</strong></span>
+            <span class="order-total">Total: <strong>{{ order.total | currencyPen }}</strong></span>
             <div class="status-selector">
               <label>Actualizar estado:</label>
               <select
@@ -51,7 +51,7 @@
                 (change)="updateStatus(order.id, $any($event.target).value)"
                 [disabled]="updating() === order.id">
                 @for (opt of STATUS_OPTIONS; track opt) {
-                  <option [value]="opt">{{ STATUS_LABELS[opt] }}</option>
+                  <option [value]="opt">{{ opt | orderStatus }}</option>
                 }
               </select>
               @if (updating() === order.id) {

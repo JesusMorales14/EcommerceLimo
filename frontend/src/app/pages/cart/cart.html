@@ -23,12 +23,12 @@
                 }
                 @if (item.product.discount) {
                   <div class="price-row">
-                    <span class="price-final">{{ cartService.itemPrice(item) | currency:'PEN':'S/ ':'1.0-0' }}</span>
-                    <span class="price-original">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                    <span class="price-final">{{ cartService.itemPrice(item) | currencyPen }}</span>
+                    <span class="price-original">{{ item.product.price | currencyPen }}</span>
                     <span class="badge-discount">-{{ item.product.discount }}%</span>
                   </div>
                 } @else {
-                  <span class="price-final">{{ item.product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                  <span class="price-final">{{ item.product.price | currencyPen }}</span>
                 }
                 <div class="item-actions">
                   <button class="action-btn delete" (click)="cartService.removeFromCart(item.product.id, item.selectedColor)">
@@ -37,7 +37,7 @@
                 </div>
               </div>
               <div class="item-price-qty">
-                <span class="subtotal">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="subtotal">{{ cartService.itemPrice(item) * item.quantity | currencyPen }}</span>
                 <div class="qty-selector">
                   <button (click)="cartService.updateQty(item.product.id, item.quantity - 1, item.selectedColor)">−</button>
                   <span>{{ item.quantity }}</span>
@@ -56,7 +56,7 @@
           @for (item of items; track item.product.id) {
             <div class="summary-product-line">
               <span class="sp-name">{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
-              <span>{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              <span>{{ cartService.itemPrice(item) * item.quantity | currencyPen }}</span>
             </div>
           }
 
@@ -64,7 +64,7 @@
 
           <div class="summary-line">
             <span>Subtotal</span>
-            <span>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            <span>{{ cartService.total() | currencyPen }}</span>
           </div>
           <div class="summary-line">
             <span>Envío</span>
@@ -76,7 +76,7 @@
               <strong>Total</strong>
               <small>IVA INCLUIDO</small>
             </div>
-            <span class="total-amount">{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+            <span class="total-amount">{{ cartService.total() | currencyPen }}</span>
           </div>
 
           <button class="btn-checkout" (click)="checkout()">

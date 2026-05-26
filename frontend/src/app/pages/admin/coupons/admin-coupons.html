@@ -97,7 +97,7 @@
                 @if (c.isPercent) { {{ c.discount }}% }
                 @else { S/ {{ c.discount }} }
               </td>
-              <td data-label="Mínimo">{{ c.minAmount | currency:'PEN':'S/ ':'1.0-0' }}</td>
+              <td data-label="Mínimo">{{ c.minAmount | currencyPen }}</td>
               <td data-label="Usos">{{ c.usedCount }} / {{ c.maxUses }}</td>
               <td data-label="Expira">{{ c.expiresAt ? (c.expiresAt | date:'dd/MM/yy HH:mm') : '—' }}</td>
               <td data-label="Estado">

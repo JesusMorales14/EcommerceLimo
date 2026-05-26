@@ -261,7 +261,7 @@
               </td>
               <td class="td-name">{{ product.name }}</td>
               <td><span class="cat-badge">{{ product.category }}</span></td>
-              <td class="td-price">{{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</td>
+              <td class="td-price">{{ product.price | currencyPen }}</td>
               <td [class.low-stock]="product.stock < 5">{{ product.stock }}</td>
               <td>
                 @if (product.isOffer) {

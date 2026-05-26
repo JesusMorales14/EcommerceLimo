@@ -4,12 +4,13 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { OrderService } from '../../core/services/order.service';
-import { Order, OrderStatus, ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../../core/models/order.model';
+import { Order, OrderStatus, ORDER_STATUS_COLORS } from '../../core/models/order.model';
+import { CurrencyPenPipe, OrderStatusPipe } from '../../shared/pipes';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, CurrencyPenPipe, OrderStatusPipe],
   templateUrl: './account.html',
   styleUrl: './account.scss'
 })
@@ -28,7 +29,6 @@ export class AccountPage implements OnInit {
   editPhone   = '';
   editAddress = '';
 
-  STATUS_LABELS = ORDER_STATUS_LABELS;
   STATUS_COLORS = ORDER_STATUS_COLORS;
 
   readonly TIMELINE_STEPS: { status: OrderStatus; label: string; icon: string }[] = [

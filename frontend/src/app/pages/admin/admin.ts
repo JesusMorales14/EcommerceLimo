@@ -2,13 +2,14 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../core/services/product.service';
+import { CurrencyPenPipe, OrderStatusPipe } from '../../shared/pipes';
 
 const PAGE_SIZE = 3;
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, CurrencyPenPipe, OrderStatusPipe],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })

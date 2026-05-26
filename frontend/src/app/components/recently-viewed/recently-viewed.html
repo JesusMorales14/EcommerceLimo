@@ -21,7 +21,7 @@
             <div class="rv-info">
               <p class="rv-brand">{{ p.brand }}</p>
               <p class="rv-name">{{ p.name }}</p>
-              <p class="rv-price">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</p>
+              <p class="rv-price">{{ p.price | currencyPen }}</p>
               <button class="rv-add-btn" (click)="addToCart(p, $event)">
                 <span class="material-symbols-outlined">shopping_cart</span>
                 Agregar

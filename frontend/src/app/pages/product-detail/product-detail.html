@@ -57,17 +57,17 @@
       <!-- Price block -->
       <div class="price-block">
         <div class="price-row">
-          <span class="price-now">{{ discountedPrice | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          <span class="price-now">{{ discountedPrice | currencyPen }}</span>
           @if (producto()!.discount) {
             <span class="badge-off">-{{ producto()!.discount }}% OFF</span>
           }
         </div>
         @if (producto()!.discount) {
-          <p class="price-before">Precio normal: <s>{{ producto()!.price | currency:'PEN':'S/ ':'1.0-0' }}</s></p>
+          <p class="price-before">Precio normal: <s>{{ producto()!.price | currencyPen }}</s></p>
         }
         <div class="greencard-box">
           <span class="material-symbols-outlined">credit_card</span>
-          Hasta {{ siteConfig.installments.count }} cuotas sin interés de {{ installment | currency:'PEN':'S/ ':'1.2-2' }} con {{ siteConfig.installments.cardName }}
+          Hasta {{ siteConfig.installments.count }} cuotas sin interés de {{ installment | currencyPen:2 }} con {{ siteConfig.installments.cardName }}
         </div>
       </div>
 

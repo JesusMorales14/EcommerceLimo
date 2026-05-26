@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CouponService } from '../../../core/services/coupon.service';
+import { CurrencyPenPipe } from '../../../shared/pipes';
 
 interface Coupon {
   id: number;
@@ -20,7 +21,7 @@ interface Coupon {
 @Component({
   selector: 'app-admin-coupons',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, CurrencyPenPipe],
   templateUrl: './admin-coupons.html',
   styleUrl: './admin-coupons.scss',
 })

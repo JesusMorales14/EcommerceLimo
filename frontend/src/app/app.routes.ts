@@ -41,34 +41,44 @@ export const routes: Routes = [
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
-    loadComponent: () => import('./pages/admin/admin').then((m) => m.AdminPage),
-  },
-  {
-    path: 'admin/products',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () =>
-      import('./pages/admin/products/admin-products').then((m) => m.AdminProductsPage),
-  },
-  {
-    path: 'admin/orders',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () => import('./pages/admin/orders/admin-orders').then((m) => m.AdminOrdersPage),
-  },
-  {
-    path: 'admin/users',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () => import('./pages/admin/users/admin-users').then((m) => m.AdminUsersPage),
-  },
-  {
-    path: 'admin/coupons',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () =>
-      import('./pages/admin/coupons/admin-coupons').then((m) => m.AdminCouponsPage),
-  },
-  {
-    path: 'admin/deals',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () => import('./pages/admin/deals/admin-deals').then((m) => m.AdminDealsPage),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/admin/admin').then((m) => m.AdminPage),
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./pages/admin/products/admin-products').then((m) => m.AdminProductsPage),
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./pages/admin/orders/admin-orders').then((m) => m.AdminOrdersPage),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./pages/admin/users/admin-users').then((m) => m.AdminUsersPage),
+      },
+      {
+        path: 'coupons',
+        loadComponent: () =>
+          import('./pages/admin/coupons/admin-coupons').then((m) => m.AdminCouponsPage),
+      },
+      {
+        path: 'deals',
+        loadComponent: () =>
+          import('./pages/admin/deals/admin-deals').then((m) => m.AdminDealsPage),
+      },
+      {
+        path: 'reclamaciones',
+        loadComponent: () =>
+          import('./pages/admin/reclamaciones/admin-reclamaciones').then(
+            (m) => m.AdminReclamacionesPage,
+          ),
+      },
+    ],
   },
   {
     path: 'favorites',
@@ -108,14 +118,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/mis-reclamaciones/mis-reclamaciones').then((m) => m.MisReclamacionesPage),
-  },
-  {
-    path: 'admin/reclamaciones',
-    canActivate: [authGuard, adminGuard],
-    loadComponent: () =>
-      import('./pages/admin/reclamaciones/admin-reclamaciones').then(
-        (m) => m.AdminReclamacionesPage,
-      ),
   },
   { path: '**', redirectTo: '' },
 ];

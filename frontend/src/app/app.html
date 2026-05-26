@@ -44,7 +44,7 @@
               </p>
             }
             <p class="drawer-item-price">
-              {{ cartService.itemPrice(item) | currency: 'PEN' : 'S/ ' : '1.0-0' }}
+              {{ cartService.itemPrice(item) | currencyPen }}
             </p>
             <div class="drawer-qty">
               <button
@@ -87,7 +87,7 @@
     <div class="drawer-footer">
       <div class="drawer-subtotal">
         <span>Subtotal</span>
-        <strong>{{ cartService.total() | currency: 'PEN' : 'S/ ' : '1.0-0' }}</strong>
+        <strong>{{ cartService.total() | currencyPen }}</strong>
       </div>
       @if (!authService.isLoggedIn()) {
         <div class="drawer-auth-notice">

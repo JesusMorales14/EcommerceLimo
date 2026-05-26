@@ -5,11 +5,12 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
 import { AdminProductCard } from '../../../components/admin-product-card/admin-product-card';
+import { CurrencyPenPipe } from '../../../shared/pipes';
 
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AdminProductCard],
+  imports: [CommonModule, FormsModule, RouterLink, AdminProductCard, CurrencyPenPipe],
   templateUrl: './admin-products.html',
   styleUrl: './admin-products.scss'
 })

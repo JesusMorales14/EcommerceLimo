@@ -240,7 +240,7 @@
             <h4>Pago en efectivo al recibir</h4>
             <p>El repartidor cobrará el monto exacto al entregar. Ten listo el efectivo.</p>
             <p class="cash-amount">
-              Monto a pagar: <strong>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</strong>
+              Monto a pagar: <strong>{{ cartService.total() | currencyPen }}</strong>
             </p>
           </div>
         </div>
@@ -287,7 +287,7 @@
                 </div>
                 <div class="ci-right">
                   <span class="ci-qty">x{{ item.quantity }}</span>
-                  <span class="ci-price">{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                  <span class="ci-price">{{ cartService.itemPrice(item) * item.quantity | currencyPen }}</span>
                 </div>
               </div>
             }
@@ -345,7 +345,7 @@
             @for (item of cartService.getItems()(); track item.product.id) {
               <div class="total-line-item">
                 <span>{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
-                <span>{{ cartService.itemPrice(item) * item.quantity | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span>{{ cartService.itemPrice(item) * item.quantity | currencyPen }}</span>
               </div>
             }
 
@@ -381,12 +381,12 @@
 
             <div class="total-row">
               <span>Subtotal</span>
-              <span>{{ cartService.total() | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              <span>{{ cartService.total() | currencyPen }}</span>
             </div>
             @if (couponResult()) {
               <div class="total-row discount-row">
                 <span>Descuento</span>
-                <span>−{{ couponResult()!.discountAmount | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span>−{{ couponResult()!.discountAmount | currencyPen }}</span>
               </div>
             }
             <div class="total-row">
@@ -396,7 +396,7 @@
 
             <div class="grand-total">
               <strong>Total a pagar</strong>
-              <strong class="grand-amount">{{ finalTotal() | currency:'PEN':'S/ ':'1.0-0' }}</strong>
+              <strong class="grand-amount">{{ finalTotal() | currencyPen }}</strong>
             </div>
 
             @if (error()) {

@@ -7,11 +7,12 @@ import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
 import { CategoryService } from '../../core/services/category.service';
 import { DealSessionService } from '../../core/services/deal-session.service';
+import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, RouterLink, RecentlyViewed],
+  imports: [CommonModule, RouterLink, RecentlyViewed, CurrencyPenPipe],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
 })

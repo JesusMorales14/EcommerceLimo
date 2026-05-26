@@ -32,9 +32,13 @@ describe('Header', () => {
     searchService = TestBed.inject(SearchService);
     http          = TestBed.inject(HttpTestingController);
     await fixture.whenStable();
+    vi.useFakeTimers();
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    vi.useRealTimers();
+    http.verify();
+  });
 
   it('debería crearse correctamente', () => {
     expect(component).toBeTruthy();
@@ -96,7 +100,7 @@ describe('Header', () => {
       component.searchQuery = '  LG  ';
       component.search();
       expect(openSpy).toHaveBeenCalledWith('LG');
-      // Flush the pending HTTP request so http.verify() passes in afterEach
+      vi.advanceTimersByTime(300);
       http.expectOne(r => r.url.includes('/products')).flush({ items: [], total: 0, page: 1, limit: 100, pages: 1 });
     });
 
@@ -104,6 +108,7 @@ describe('Header', () => {
       component.mobileSearchOpen.set(true);
       component.searchQuery = 'Samsung';
       component.search();
+      vi.advanceTimersByTime(300);
       http.expectOne(r => r.url.includes('/products')).flush({ items: [], total: 0, page: 1, limit: 100, pages: 1 });
 
       expect(component.searchQuery).toBe('');

@@ -8,12 +8,13 @@ import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { CategoryService } from '../../core/services/category.service';
+import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, CurrencyPenPipe],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit {
   private productService  = inject(ProductService);
   private cartService     = inject(CartService);
   private categoryService = inject(CategoryService);
+  private route           = inject(ActivatedRoute);
   private destroyRef      = inject(DestroyRef);
   favService              = inject(FavoritesService);
 
@@ -50,8 +52,6 @@ export class ProductListComponent implements OnInit {
       default:           return list;
     }
   });
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params

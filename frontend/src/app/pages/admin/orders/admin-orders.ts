@@ -2,12 +2,13 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { OrderService } from '../../../core/services/order.service';
-import { Order, OrderStatus, ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../../../core/models/order.model';
+import { Order, OrderStatus, ORDER_STATUS_COLORS } from '../../../core/models/order.model';
+import { CurrencyPenPipe, OrderStatusPipe } from '../../../shared/pipes';
 
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, CurrencyPenPipe, OrderStatusPipe],
   templateUrl: './admin-orders.html',
   styleUrl: './admin-orders.scss'
 })
@@ -18,7 +19,6 @@ export class AdminOrdersPage implements OnInit {
   loading  = signal(true);
   updating = signal<number | null>(null);
 
-  STATUS_LABELS = ORDER_STATUS_LABELS;
   STATUS_COLORS = ORDER_STATUS_COLORS;
 
   readonly STATUS_OPTIONS: OrderStatus[] = [

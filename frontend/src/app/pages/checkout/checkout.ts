@@ -1,18 +1,24 @@
-import { Component, computed, inject, OnInit, AfterViewInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, AfterViewInit, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart';
 import { AuthService } from '../../core/services/auth.service';
-import { OrderService, DeliveryInfo } from '../../core/services/order.service';
-import { CouponService, CouponResult } from '../../core/services/coupon.service';
+import { OrderService, type DeliveryInfo } from '../../core/services/order.service';
+import { CouponService, type CouponResult } from '../../core/services/coupon.service';
+import { CurrencyPenPipe } from '../../shared/pipes';
 
 declare const L: any;
+
+interface NominatimResult { lat: string; lon: string; display_name: string; }
+interface NominatimReverse { display_name: string; }
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, FormsModule, RouterLink, CurrencyPenPipe],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss'
 })
@@ -22,6 +28,7 @@ export class CheckoutPage implements OnInit, AfterViewInit {
   private orderSvc  = inject(OrderService);
   private couponSvc = inject(CouponService);
   private router    = inject(Router);
+  private http      = inject(HttpClient);
 
   step = signal(1);
 
@@ -138,10 +145,9 @@ export class CheckoutPage implements OnInit, AfterViewInit {
     this.placeMarker(lat, lng);
     this.delivery.lat = lat;
     this.delivery.lng = lng;
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
-      .then(r => r.json())
-      .then(d => { if (d.display_name) this.delivery.address = d.display_name; })
-      .catch(() => {});
+    this.http.get<NominatimReverse>(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+    ).subscribe({ next: d => { if (d.display_name) this.delivery.address = d.display_name; } });
   }
 
   private placeMarker(lat: number, lng: number) {
@@ -151,9 +157,9 @@ export class CheckoutPage implements OnInit, AfterViewInit {
 
   searchOnMap() {
     if (!this.searchAddress.trim() || !this.map) return;
-    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(this.searchAddress)}&format=json&limit=1`)
-      .then(r => r.json())
-      .then(data => {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(this.searchAddress)}&format=json&limit=1`;
+    this.http.get<NominatimResult[]>(url).subscribe({
+      next: data => {
         if (data[0]) {
           const lat = parseFloat(data[0].lat);
           const lng = parseFloat(data[0].lon);
@@ -163,7 +169,8 @@ export class CheckoutPage implements OnInit, AfterViewInit {
           this.delivery.lng = lng;
           this.delivery.address = data[0].display_name;
         }
-      }).catch(() => {});
+      },
+    });
   }
 
   // ── Pasos ─────────────────────────────────────────────────────────────────

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart';
 import { AuthService } from '../../core/services/auth.service';
+import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, CurrencyPenPipe],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })

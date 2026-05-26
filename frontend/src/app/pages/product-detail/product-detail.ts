@@ -10,22 +10,24 @@ import { ReviewService, Review, ReviewStats } from '../../core/services/review.s
 import { AuthService } from '../../core/services/auth.service';
 import { RecentlyViewedService } from '../../core/services/recently-viewed.service';
 import { SITE_CONFIG } from '../../core/config/site.config';
+import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, CurrencyPenPipe],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })
 export class ProductDetailComponent implements OnInit {
-  private productService      = inject(ProductService);
-  private cartService         = inject(CartService);
-  private reviewService       = inject(ReviewService);
+  private route                 = inject(ActivatedRoute);
+  private productService        = inject(ProductService);
+  private cartService           = inject(CartService);
+  private reviewService         = inject(ReviewService);
   private recentlyViewedService = inject(RecentlyViewedService);
-  authService                 = inject(AuthService);
-  favService                  = inject(FavoritesService);
+  authService                   = inject(AuthService);
+  favService                    = inject(FavoritesService);
 
   readonly siteConfig = SITE_CONFIG;
 
@@ -59,8 +61,6 @@ export class ProductDetailComponent implements OnInit {
     const total = this.reviewStats()?.total ?? 0;
     return ['Descripción', 'Especificaciones', `Opiniones (${total})`];
   });
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));

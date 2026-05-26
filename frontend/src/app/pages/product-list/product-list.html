@@ -64,9 +64,9 @@
               <p class="card-desc">{{ p.description }}</p>
             }
             <div class="card-prices">
-              <span class="price-now">{{ discountedPrice(p) | currency:'PEN':'S/ ':'1.0-0' }}</span>
+              <span class="price-now">{{ discountedPrice(p) | currencyPen }}</span>
               @if (p.discount) {
-                <span class="price-old">{{ p.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="price-old">{{ p.price | currencyPen }}</span>
               }
             </div>
             @if (p.stock > 0) {

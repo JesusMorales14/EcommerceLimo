@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
+import { vi } from 'vitest';
 import { SearchService } from './search.service';
 import { environment } from '../../../environments/environment';
 import { type Product } from '../models/product.model';
@@ -31,6 +32,7 @@ describe('SearchService', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
+    vi.useFakeTimers();
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
@@ -42,7 +44,10 @@ describe('SearchService', () => {
     http    = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    vi.useRealTimers();
+    http.verify();
+  });
 
   it('debería crearse correctamente', () => {
     expect(service).toBeTruthy();
@@ -68,11 +73,13 @@ describe('SearchService', () => {
       expect(service.isOpen()).toBe(true);
       expect(service.loading()).toBe(true);
       expect(service.query()).toBe('LG');
+      vi.advanceTimersByTime(300);
       flushSearch(http, []);
     });
 
     it('clasifica productos por marca cuando el brand coincide con la query', () => {
       service.open('LG');
+      vi.advanceTimersByTime(300);
       flushSearch(http, [
         mockProduct({ id: 1, brand: 'LG', name: 'Smart TV LG 55"' }),
         mockProduct({ id: 2, brand: 'LG', name: 'Monitor LG 27"' }),
@@ -86,6 +93,7 @@ describe('SearchService', () => {
 
     it('clasifica en productos por nombre cuando solo el nombre coincide', () => {
       service.open('Smart TV');
+      vi.advanceTimersByTime(300);
       flushSearch(http, [
         mockProduct({ id: 1, brand: 'Samsung', name: 'Smart TV Samsung 50"' }),
       ]);
@@ -96,6 +104,7 @@ describe('SearchService', () => {
 
     it('no duplica producto que ya aparece en una marca', () => {
       service.open('LG');
+      vi.advanceTimersByTime(300);
       flushSearch(http, [
         mockProduct({ id: 1, brand: 'LG', name: 'LG Smart TV' }),
       ]);
@@ -106,6 +115,7 @@ describe('SearchService', () => {
 
     it('desactiva loading y hasResults es true tras recibir resultados', () => {
       service.open('LG');
+      vi.advanceTimersByTime(300);
       flushSearch(http, [mockProduct()]);
 
       expect(service.loading()).toBe(false);
@@ -114,6 +124,7 @@ describe('SearchService', () => {
 
     it('maneja error desactivando loading', () => {
       service.open('LG');
+      vi.advanceTimersByTime(300);
       const req = http.expectOne(r => r.url === `${environment.apiUrl}/products`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
@@ -126,6 +137,7 @@ describe('SearchService', () => {
   describe('close', () => {
     it('cierra el modal y limpia los resultados', () => {
       service.open('LG');
+      vi.advanceTimersByTime(300);
       flushSearch(http, [mockProduct()]);
 
       service.close();

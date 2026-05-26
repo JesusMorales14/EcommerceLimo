@@ -23,7 +23,7 @@
       <div class="stat-card">
         <span class="material-symbols-outlined stat-icon revenue">attach_money</span>
         <div class="stat-info">
-          <span class="stat-value">{{ stats()!.totalRevenue | currency:'PEN':'S/ ':'1.0-0' }}</span>
+          <span class="stat-value">{{ stats()!.totalRevenue | currencyPen }}</span>
           <span class="stat-label">Ingresos totales</span>
         </div>
       </div>
@@ -61,8 +61,8 @@
               <tr>
                 <td class="col-id" data-label="#">#{{ o.id }}</td>
                 <td class="col-client" data-label="Cliente">{{ o.user?.name }}</td>
-                <td class="col-total" data-label="Total">{{ o.total | currency:'PEN':'S/ ':'1.0-0' }}</td>
-                <td class="col-status" data-label="Estado"><span class="status-chip">{{ o.status }}</span></td>
+                <td class="col-total" data-label="Total">{{ o.total | currencyPen }}</td>
+                <td class="col-status" data-label="Estado"><span class="status-chip">{{ o.status | orderStatus }}</span></td>
                 <td class="col-date" data-label="Fecha">{{ o.createdAt | date:'dd/MM/yy' }}</td>
               </tr>
             }

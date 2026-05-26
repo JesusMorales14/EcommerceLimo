@@ -26,10 +26,10 @@
             <a [routerLink]="['/product', product.id]" class="product-name">{{ product.name }}</a>
             <div class="price-row">
               @if (product.discount) {
-                <span class="price-discounted">{{ product.price * (1 - product.discount / 100) | currency:'PEN':'S/ ':'1.0-0' }}</span>
-                <span class="price-original">{{ product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="price-discounted">{{ product.price * (1 - product.discount / 100) | currencyPen }}</span>
+                <span class="price-original">{{ product.price | currencyPen }}</span>
               } @else {
-                <span class="price-normal">{{ product.price | currency:'PEN':'S/ ':'1.0-0' }}</span>
+                <span class="price-normal">{{ product.price | currencyPen }}</span>
               }
             </div>
           </div>
