@@ -78,11 +78,20 @@ describe('Header', () => {
   });
 
   describe('menú móvil', () => {
-    it('openMobileMenu / closeMobileMenu alterna el drawer', () => {
+    it('openMobileMenu abre el drawer', () => {
       component.openMobileMenu();
       expect(component.mobileMenuOpen()).toBe(true);
+      expect(component.mobileMenuClosing()).toBe(false);
+    });
+
+    it('closeMobileMenu inicia la animación y cierra tras 300ms', () => {
+      component.openMobileMenu();
       component.closeMobileMenu();
+      expect(component.mobileMenuClosing()).toBe(true);
+      expect(component.mobileMenuOpen()).toBe(true);
+      vi.advanceTimersByTime(300);
       expect(component.mobileMenuOpen()).toBe(false);
+      expect(component.mobileMenuClosing()).toBe(false);
     });
   });
 
