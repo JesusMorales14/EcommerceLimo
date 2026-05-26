@@ -85,7 +85,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/favorites/favorites').then((m) => m.FavoritesPage),
   },
-  { path: 'info', loadComponent: () => import('./pages/search/search').then((m) => m.SearchPage) },
+  { path: 'info', redirectTo: 'marcas', pathMatch: 'full' },
+  { path: 'marcas', loadComponent: () => import('./pages/search/search').then((m) => m.SearchPage) },
   {
     path: 'destacados',
     loadComponent: () => import('./pages/destacados/destacados').then((m) => m.DestacadosPage),
