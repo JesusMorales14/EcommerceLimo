@@ -6,41 +6,71 @@
 
 .page-header {
   margin-bottom: 32px;
+
   h1 {
     font-size: 28px;
     font-weight: 800;
-    color: #1e293b;
+    color: var(--text);
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 0;
 
-    .material-symbols-outlined { color: #e11d48; font-size: 30px; }
-    .count { font-size: 16px; color: #94a3b8; font-weight: 400; }
+    .material-symbols-outlined {
+      color: #e11d48;
+      font-size: 30px;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .count {
+      font-size: 16px;
+      color: var(--text-subtle);
+      font-weight: 400;
+    }
   }
 }
 
+// ── Estado vacío ──────────────────────────────────────────────────────────────
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  background: #fff;
-  border-radius: 20px;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px var(--shadow);
 
-  .material-symbols-outlined { font-size: 70px; color: #fecdd3; display: block; margin-bottom: 16px; }
-  p { font-size: 16px; color: #94a3b8; margin-bottom: 24px; }
+  .material-symbols-outlined {
+    font-size: 70px;
+    color: #e11d48;
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 16px;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
 
   .btn-shop {
-    background: #006b2d;
-    color: white;
+    background: var(--primary);
+    color: #fff;
     text-decoration: none;
     padding: 14px 36px;
     border-radius: 10px;
     font-weight: 700;
+    font-size: 14px;
     display: inline-block;
-    &:hover { background: #005124; }
+    transition: background 0.2s;
+    &:hover {
+      background: var(--primary-dark);
+    }
   }
 }
 
+// ── Grid de productos ─────────────────────────────────────────────────────────
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -48,22 +78,28 @@
 }
 
 .product-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
+  border: 1.5px solid var(--border);
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px var(--shadow);
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s;
 
-  &:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+  &:hover {
+    box-shadow: 0 6px 24px var(--primary-light);
+    border-color: var(--primary);
+  }
 }
 
+// ── Imagen ────────────────────────────────────────────────────────────────────
 .card-img-link {
   position: relative;
   display: block;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  background: var(--card-img-bg);
 
   img {
     width: 100%;
@@ -71,7 +107,10 @@
     object-fit: cover;
     transition: transform 0.3s;
   }
-  &:hover img { transform: scale(1.04); }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
 
   .badge-offer {
     position: absolute;
@@ -86,23 +125,61 @@
   }
 }
 
+// ── Cuerpo de la tarjeta ──────────────────────────────────────────────────────
 .card-body {
   padding: 14px 16px 6px;
   flex: 1;
 
-  .brand { font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4px; }
-  .product-name { font-size: 14px; font-weight: 600; color: #1e293b; text-decoration: none; display: block; margin-bottom: 10px; &:hover { color: #006b2d; } }
+  .brand {
+    font-size: 10px;
+    color: var(--text-subtle);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 4px;
+  }
+
+  .product-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+    &:hover {
+      color: var(--primary);
+    }
+  }
 }
 
 .price-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  .price-discounted { font-size: 16px; font-weight: 800; color: #006b2d; }
-  .price-original { font-size: 12px; color: #94a3b8; text-decoration: line-through; }
-  .price-normal { font-size: 16px; font-weight: 800; color: #1e293b; }
+
+  // Precio con descuento → dato importante → verde
+  .price-discounted {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .price-original {
+    font-size: 12px;
+    color: var(--text-subtle);
+    text-decoration: line-through;
+  }
+
+  // Precio normal → dato importante → verde
+  .price-normal {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+  }
 }
 
+// ── Footer de la tarjeta ──────────────────────────────────────────────────────
 .card-footer {
   display: flex;
   gap: 8px;
@@ -110,7 +187,7 @@
 
   .btn-add {
     flex: 1;
-    background: #006b2d;
+    background: var(--primary);
     color: #fff;
     border: none;
     padding: 10px;
@@ -123,21 +200,95 @@
     justify-content: center;
     gap: 6px;
     transition: background 0.2s;
-    &:hover { background: #005124; }
-    .material-symbols-outlined { font-size: 16px; }
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      background: var(--primary-dark);
+    }
+
+    .material-symbols-outlined {
+      font-size: 16px;
+    }
   }
 
   .btn-unfav {
-    background: #fef2f2;
-    border: none;
+    background: rgba(225, 29, 72, 0.1);
+    border: 1.5px solid rgba(225, 29, 72, 0.25);
     color: #e11d48;
     padding: 10px 12px;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: background 0.2s;
-    &:hover { background: #ffe4e6; }
-    .material-symbols-outlined { font-size: 18px; }
+    transition: background 0.2s, border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      background: rgba(225, 29, 72, 0.18);
+      border-color: rgba(225, 29, 72, 0.5);
+    }
+
+    .material-symbols-outlined {
+      font-size: 18px;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .favorites-page {
+    padding: 16px 12px;
+  }
+
+  .page-header {
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .card-body {
+    padding: 10px 12px 4px;
+
+    .product-name {
+      font-size: 13px;
+    }
+  }
+
+  .price-row {
+    .price-discounted,
+    .price-normal {
+      font-size: 14px;
+    }
+  }
+
+  .card-footer {
+    padding: 8px 12px 12px;
+
+    .btn-add {
+      font-size: 12px;
+      padding: 9px 8px;
+    }
+  }
+
+  .empty-state {
+    padding: 60px 20px;
+
+    .material-symbols-outlined {
+      font-size: 56px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .products-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }

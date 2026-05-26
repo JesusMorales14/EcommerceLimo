@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
+import { AdminProductCard } from '../../../components/admin-product-card/admin-product-card';
 
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, AdminProductCard],
   templateUrl: './admin-products.html',
   styleUrl: './admin-products.scss'
 })
@@ -26,12 +27,9 @@ export class AdminProductsPage implements OnInit {
 
   form: Partial<Product> = this.emptyForm();
 
-  // Signal para el string de colores del input (reactivo)
-  colorsInput     = signal('');
-  // Signal para las URLs de imagen por color
-  colorImagesRaw  = signal<Record<string, string>>({});
+  colorsInput    = signal('');
+  colorImagesRaw = signal<Record<string, string>>({});
 
-  // Colores parseados desde el signal — se actualiza automáticamente al escribir
   parsedColors = computed(() =>
     this.colorsInput().split(',').map(s => s.trim()).filter(Boolean)
   );
@@ -50,13 +48,45 @@ export class AdminProductsPage implements OnInit {
     });
   });
 
+  readonly PAGE_SIZE = 6;
+  currentPage = signal(1);
+
+  pagedProducts = computed(() => {
+    const start = (this.currentPage() - 1) * this.PAGE_SIZE;
+    return this.filteredProducts().slice(start, start + this.PAGE_SIZE);
+  });
+
+  totalPages = computed(() => Math.max(1, Math.ceil(this.filteredProducts().length / this.PAGE_SIZE)));
+
+  visiblePages = computed(() => {
+    const cur = this.currentPage();
+    const end = Math.min(cur + 2, this.totalPages());
+    return Array.from({ length: end - cur + 1 }, (_, i) => cur + i);
+  });
+
+  showEllipsis = computed(() => this.currentPage() + 2 < this.totalPages());
+
   ngOnInit() { this.loadProducts(); }
 
   loadProducts() {
     this.productService.getAll(undefined, undefined, 1, 500).subscribe({
-      next: (p) => { this.products.set(p.items); this.loading.set(false); },
+      next: (p) => { this.products.set(p.items); this.currentPage.set(1); this.loading.set(false); },
       error: () => this.loading.set(false)
     });
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
+  }
+
+  onSearchChange(val: string) {
+    this.search.set(val);
+    this.currentPage.set(1);
+  }
+
+  onCategoryChange(cat: string) {
+    this.selectedCategory.set(cat);
+    this.currentPage.set(1);
   }
 
   openCreate() {
@@ -70,11 +100,7 @@ export class AdminProductsPage implements OnInit {
   openEdit(p: Product) {
     this.form = { ...p };
     this.editId.set(p.id);
-
-    // Cargar colores como string para el input
     this.colorsInput.set(Array.isArray(p.colors) ? p.colors.join(', ') : '');
-
-    // Cargar imágenes por color
     const raw: Record<string, string> = {};
     if (p.colorImages) {
       for (const [color, urls] of Object.entries(p.colorImages)) {
@@ -87,7 +113,6 @@ export class AdminProductsPage implements OnInit {
 
   closeForm() { this.showForm.set(false); this.error.set(''); }
 
-  // Al cambiar el input de colores: actualiza el signal y agrega entradas vacías para colores nuevos
   onColorsChange(value: string) {
     this.colorsInput.set(value);
     const colors = value.split(',').map(s => s.trim()).filter(Boolean);
@@ -111,8 +136,6 @@ export class AdminProductsPage implements OnInit {
     this.error.set('');
 
     const colors = this.parsedColors();
-
-    // Construir colorImages solo para colores que tienen URLs
     const colorImages: Record<string, string[]> = {};
     for (const color of colors) {
       const urls = (this.colorImagesRaw()[color] ?? '')
@@ -120,8 +143,6 @@ export class AdminProductsPage implements OnInit {
       if (urls.length) colorImages[color] = urls;
     }
 
-    // Las imágenes principales del producto = imágenes del primer color
-    // Si no hay colores, usar el campo genérico de imágenes
     const firstColorImages = colors.length > 0
       ? (colorImages[colors[0]] ?? [])
       : this.asArray(this.form.images);

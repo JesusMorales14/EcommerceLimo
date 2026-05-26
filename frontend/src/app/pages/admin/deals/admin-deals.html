@@ -70,7 +70,7 @@
       </h2>
       <p class="form-hint">
         Elige hasta cuándo estarán visibles las "Ofertas del Día". Los productos que se muestran son
-        los marcados con <strong style="color: green">verde</strong> en el catálogo de productos.
+        los marcados con <strong>verde</strong> en el catálogo de productos.
       </p>
 
       @if (error()) {
@@ -120,7 +120,7 @@
         </div>
       } @else {
         <div class="offers-grid">
-          @for (p of offers(); track p.id) {
+          @for (p of pagedOffers(); track p.id) {
             <div class="offer-chip">
               <img [src]="p.images[0]" [alt]="p.name" />
               <div class="chip-info">
@@ -133,6 +133,39 @@
             </div>
           }
         </div>
+
+        @if (totalPages() > 1) {
+          <div class="admin-pagination">
+            <button
+              class="page-btn nav-btn"
+              [disabled]="currentPage() === 1"
+              (click)="goToPage(currentPage() - 1)"
+              aria-label="Página anterior"
+            >
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+
+            @for (p of visiblePages(); track p) {
+              <button
+                class="page-btn"
+                [class.active]="p === currentPage()"
+                (click)="goToPage(p)"
+              >{{ p }}</button>
+            }
+            @if (showEllipsis()) {
+              <span class="page-ellipsis">...</span>
+            }
+
+            <button
+              class="page-btn nav-btn"
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToPage(currentPage() + 1)"
+              aria-label="Página siguiente"
+            >
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        }
       }
     </div>
   }

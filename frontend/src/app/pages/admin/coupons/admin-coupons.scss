@@ -18,8 +18,17 @@
   align-items: center;
   gap: 16px;
 
-  h1 { font-size: 24px; font-weight: 800; color: #1e293b; margin: 0 0 4px; }
-  p  { font-size: 13px; color: #64748b; margin: 0; }
+  h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+  p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+  }
 }
 
 .back-link {
@@ -29,20 +38,27 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: #f1f5f9;
-  color: #374155;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
   text-decoration: none;
   flex-shrink: 0;
-  transition: background 0.2s;
-  &:hover { background: #e2e8f0; }
-  .material-symbols-outlined { font-size: 20px; }
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  &:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
 }
 
 .btn-new {
   display: flex;
   align-items: center;
   gap: 7px;
-  background: #006b2d;
+  background: var(--primary);
   color: #fff;
   border: none;
   padding: 12px 22px;
@@ -51,25 +67,35 @@
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
-  &:hover { background: #005124; }
-  .material-symbols-outlined { font-size: 18px; }
+  &:hover {
+    background: var(--primary-dark);
+  }
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
 }
 
 // Form
 .coupon-form-card {
-  background: #fff;
-  border-radius: 16px;
+  background: var(--surface);
+  border-radius: 14px;
   padding: 28px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px var(--shadow);
+  border: 1.5px solid var(--border);
   margin-bottom: 28px;
 
-  h3 { font-size: 17px; font-weight: 800; color: #1e293b; margin: 0 0 20px; }
+  h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 20px;
+  }
 }
 
 .form-error {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
+  background: rgba(220, 38, 38, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(220, 38, 38, 0.3);
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13px;
@@ -82,8 +108,13 @@
   gap: 16px;
   margin-bottom: 20px;
 
-  > *:not(.full) { flex: 1; min-width: 200px; }
-  .full { flex: 0 0 100%; }
+  > *:not(.full) {
+    flex: 1;
+    min-width: 200px;
+  }
+  .full {
+    flex: 0 0 100%;
+  }
 }
 
 .field {
@@ -94,21 +125,24 @@
   label {
     font-size: 12px;
     font-weight: 700;
-    color: #374151;
+    color: var(--text);
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
 
   input {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 14px;
-    color: #1e293b;
+    color: var(--text);
+    background: var(--surface-2);
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s;
-    &:focus { border-color: #006b2d; }
+    &:focus {
+      border-color: var(--primary);
+    }
   }
 }
 
@@ -125,12 +159,16 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
-  color: #374151;
+  color: var(--text);
   flex-direction: row !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
 
-  input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+  input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
 }
 
 .form-actions {
@@ -141,18 +179,22 @@
 
 .btn-cancel {
   background: none;
-  border: 1.5px solid #e2e8f0;
-  color: #64748b;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
   padding: 10px 22px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  &:hover { border-color: #94a3b8; }
+  transition: border-color 0.2s;
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
 }
 
 .btn-save {
-  background: #006b2d;
+  background: var(--primary);
   color: #fff;
   border: none;
   padding: 10px 26px;
@@ -163,32 +205,52 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  &:hover:not(:disabled) { background: #005124; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
-  .spin { animation: spin 1s linear infinite; font-size: 18px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  transition: background 0.2s;
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+    font-size: 18px;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 // Table
-.loading-state, .empty-state {
+.loading-state,
+.empty-state {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 10px;
   padding: 60px;
-  color: #94a3b8;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  .material-symbols-outlined { font-size: 48px; }
-  .spin { animation: spin 1s linear infinite; }
+  color: var(--text-muted);
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px var(--shadow);
+  .material-symbols-outlined {
+    font-size: 48px;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
 }
 
 .coupons-table-wrap {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border: 1.5px solid var(--border);
   overflow: hidden;
 }
 
@@ -200,30 +262,38 @@
   th {
     text-align: left;
     padding: 12px 16px;
-    background: #f8fafc;
-    color: #64748b;
+    background: var(--surface-2);
+    color: var(--text-subtle);
     font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--border);
   }
 
   td {
     padding: 13px 16px;
-    color: #1e293b;
-    border-bottom: 1px solid #f8fafc;
+    color: var(--text);
+    border-bottom: 1px solid var(--border-2);
     vertical-align: middle;
   }
 
-  tr:last-child td { border-bottom: none; }
+  tr:last-child td {
+    border-bottom: none;
+  }
 
-  tr.inactive td { opacity: 0.5; }
+  tr:hover td {
+    background: var(--primary-hover);
+  }
+
+  tr.inactive td {
+    opacity: 0.5;
+  }
 }
 
 .code-chip {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: var(--surface-3);
+  color: var(--text);
   font-weight: 800;
   font-family: monospace;
   font-size: 13px;
@@ -237,12 +307,12 @@
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 20px;
-  background: #f1f5f9;
-  color: #94a3b8;
+  background: var(--surface-3);
+  color: var(--text-muted);
 
   &.active {
-    background: #dcfce7;
-    color: #16a34a;
+    background: var(--primary-light);
+    color: var(--primary);
   }
 }
 
@@ -251,7 +321,8 @@
   gap: 6px;
 }
 
-.btn-toggle, .btn-delete {
+.btn-toggle,
+.btn-delete {
   background: none;
   border: none;
   cursor: pointer;
@@ -261,47 +332,85 @@
   align-items: center;
   transition: background 0.15s;
 
-  .material-symbols-outlined { font-size: 20px; }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
 }
 
 .btn-toggle {
-  color: #006b2d;
-  &:hover { background: #f0fdf4; }
+  color: var(--primary);
+  &:hover {
+    background: var(--primary-hover);
+  }
 }
 
 .btn-delete {
   color: #dc2626;
-  &:hover { background: #fef2f2; }
+  &:hover {
+    background: rgba(220, 38, 38, 0.08);
+  }
 }
 
 // ── Responsive: tabla → tarjetas ──────────────────────────────────────────────
 @media (max-width: 768px) {
-  .admin-coupons-page { padding: 16px 12px; }
+  .admin-coupons-page {
+    padding: 16px 12px;
+  }
 
-  .page-header { flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
-  .btn-new { width: 100%; justify-content: center; }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .btn-new {
+    width: 100%;
+    justify-content: center;
+  }
 
-  .coupon-form-card { padding: 18px 16px; }
-  .form-grid { grid-template-columns: 1fr; }
+  .coupon-form-card {
+    padding: 18px 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 
-  .coupons-table-wrap { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
+  .coupons-table-wrap {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
 
   .coupons-table {
     display: block;
 
-    thead { display: none; }
-    tbody { display: block; }
+    thead {
+      display: none;
+    }
+    tbody {
+      display: block;
+    }
 
     tbody tr {
       display: block;
-      background: #fff;
+      background: var(--surface);
       border-radius: 14px;
-      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 1px 8px var(--shadow);
       margin-bottom: 12px;
       overflow: hidden;
-      border: 1px solid #f1f5f9;
+      border: 1.5px solid var(--border);
 
-      &.inactive { opacity: 1; td { opacity: 0.5; } }
+      &:hover td {
+        background: transparent;
+      }
+
+      &.inactive {
+        opacity: 1;
+        td {
+          opacity: 0.5;
+        }
+      }
     }
 
     tbody td {
@@ -309,19 +418,25 @@
       justify-content: space-between;
       align-items: center;
       padding: 11px 16px;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border-2);
       font-size: 13px;
-      color: #1e293b;
+      color: var(--text);
 
-      &:last-child { border-bottom: none; }
-      &:nth-child(odd)  { background: #f8fafc; }
-      &:nth-child(even) { background: #fff; }
+      &:last-child {
+        border-bottom: none;
+      }
+      &:nth-child(odd) {
+        background: var(--surface-2);
+      }
+      &:nth-child(even) {
+        background: var(--surface);
+      }
 
       &::before {
         content: attr(data-label);
         font-size: 11px;
         font-weight: 700;
-        color: #94a3b8;
+        color: var(--text-subtle);
         text-transform: uppercase;
         letter-spacing: 0.5px;
         flex-shrink: 0;
@@ -330,14 +445,24 @@
     }
 
     // Primera fila (código) como encabezado de tarjeta
-    td[data-label="Código"] {
-      background: #fff !important;
-      border-bottom: 2px solid #f1f5f9 !important;
-      &::before { display: none; }
-      .code-chip { font-size: 14px; padding: 5px 12px; }
+    td[data-label='Código'] {
+      background: var(--surface-2) !important;
+      border-bottom: 2px solid var(--border) !important;
+      &::before {
+        display: none;
+      }
+      .code-chip {
+        font-size: 14px;
+        padding: 5px 12px;
+      }
     }
 
-    .actions { justify-content: flex-end; gap: 8px; }
-    .actions::before { margin-right: auto; }
+    .actions {
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .actions::before {
+      margin-right: auto;
+    }
   }
 }

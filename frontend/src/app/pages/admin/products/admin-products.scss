@@ -21,12 +21,10 @@
     align-items: center;
     gap: 4px;
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-muted);
     text-decoration: none;
     margin-bottom: 6px;
-    &:hover {
-      color: #006b2d;
-    }
+
     .material-symbols-outlined {
       font-size: 16px;
     }
@@ -35,7 +33,7 @@
   h1 {
     font-size: 26px;
     font-weight: 800;
-    color: #1e293b;
+    color: var(--text);
     margin: 0;
   }
 }
@@ -269,7 +267,7 @@
     align-items: center;
     padding: 2px;
     &:hover {
-      color: #1e293b;
+      color: var(--text);
     }
     .material-symbols-outlined {
       font-size: 16px;
@@ -323,10 +321,11 @@
 }
 
 .products-table-wrapper {
-  background: #fff;
+  background: var(--surface);
   border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 12px var(--shadow);
   overflow-x: auto;
+  border: 1.5px solid var(--border);
 }
 
 .products-table {
@@ -335,30 +334,30 @@
   font-size: 13px;
 
   th {
-    background: #f8fafc;
+    background: var(--surface-2);
     padding: 14px 16px;
     text-align: left;
     font-size: 11px;
     font-weight: 700;
-    color: #94a3b8;
+    color: var(--text-subtle);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--border);
   }
 
   td {
     padding: 12px 16px;
-    border-bottom: 1px solid #f8fafc;
-    color: #374151;
+    border-bottom: 1px solid var(--border-2);
+    color: var(--text);
     vertical-align: middle;
   }
 
   tr:hover td {
-    background: #fafafa;
+    background: var(--primary-hover);
   }
 
   .td-id {
-    color: #94a3b8;
+    color: var(--text-subtle);
     font-weight: 700;
   }
   .td-name {
@@ -367,7 +366,7 @@
   }
   .td-price {
     font-weight: 700;
-    color: #006b2d;
+    color: var(--primary);
   }
   .low-stock {
     color: #dc2626;
@@ -384,8 +383,8 @@
 }
 
 .cat-badge {
-  background: #f0f4f0;
-  color: #374151;
+  background: var(--surface-3);
+  color: var(--text);
   font-size: 11px;
   font-weight: 700;
   padding: 3px 9px;
@@ -394,8 +393,8 @@
 }
 
 .offer-badge {
-  background: #dcfce7;
-  color: #166534;
+  background: var(--primary-light);
+  color: var(--primary);
   font-size: 11px;
   font-weight: 700;
   padding: 3px 9px;
@@ -423,9 +422,20 @@
   gap: 10px;
   margin-bottom: 0;
 
-  .material-symbols-outlined { font-size: 20px; color: #006b2d; flex-shrink: 0; margin-top: 2px; }
+  .material-symbols-outlined {
+    font-size: 20px;
+    color: #006b2d;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
 
-  strong { display: block; font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 3px; }
+  strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 3px;
+  }
 
   .hint {
     font-size: 11px;
@@ -462,7 +472,9 @@
   outline: none;
   box-sizing: border-box;
   background: #fff;
-  &:focus { border-color: #006b2d; }
+  &:focus {
+    border-color: #006b2d;
+  }
 }
 
 .color-rows-list {
@@ -498,7 +510,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1.5px solid rgba(0,0,0,0.15);
+    border: 1.5px solid rgba(0, 0, 0, 0.15);
     flex-shrink: 0;
   }
 
@@ -538,7 +550,9 @@
     outline: none;
     box-sizing: border-box;
     background: #fff;
-    &:focus { border-color: #006b2d; }
+    &:focus {
+      border-color: #006b2d;
+    }
   }
 
   .input-note {
@@ -553,7 +567,11 @@
   flex-direction: column;
   gap: 6px;
 
-  label { font-size: 12px; font-weight: 700; color: #374151; }
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+  }
 
   input {
     border: 1.5px solid #e2e8f0;
@@ -564,7 +582,9 @@
     box-sizing: border-box;
     background: #fff;
     width: 100%;
-    &:focus { border-color: #006b2d; }
+    &:focus {
+      border-color: #006b2d;
+    }
   }
 }
 
@@ -608,11 +628,22 @@
 }
 
 .no-offer {
-  color: #cbd5e1;
+  color: var(--text-subtle);
   font-size: 13px;
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
+.cards-list {
+  display: none;
+}
+
+.empty-cards {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
 @media (max-width: 768px) {
   .admin-section {
     padding: 16px 12px;
@@ -647,99 +678,11 @@
     gap: 6px;
   }
 
-  // ── Tabla → Tarjetas ──────────────────────────────────────────────────────
   .products-table-wrapper {
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    overflow: visible;
+    display: none;
   }
 
-  .products-table {
+  .cards-list {
     display: block;
-
-    thead {
-      display: none;
-    }
-
-    tbody {
-      display: block;
-    }
-
-    tbody tr {
-      display: block;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.07);
-      margin-bottom: 12px;
-      overflow: hidden;
-      border: 1px solid #f1f5f9;
-
-      &:hover td {
-        background: inherit;
-      }
-    }
-
-    tbody td {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 11px 16px;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 13px;
-      color: #1e293b;
-
-      &:last-child {
-        border-bottom: none;
-      }
-      &:nth-child(odd) {
-        background: #f8fafc;
-      }
-      &:nth-child(even) {
-        background: #fff;
-      }
-
-      &::before {
-        content: attr(data-label);
-        font-size: 11px;
-        font-weight: 700;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        flex-shrink: 0;
-        margin-right: 12px;
-      }
-    }
-
-    .td-img {
-      display: none;
-    }
-    .td-id {
-      display: none;
-    }
-    .td-name {
-      font-weight: 700;
-      font-size: 14px;
-      color: #1e293b;
-      background: #fff !important;
-      border-bottom: 2px solid #f1f5f9 !important;
-    }
-    .td-name::before {
-      display: none;
-    }
-    .td-name {
-      justify-content: flex-start;
-    }
-    .td-price {
-      color: #006b2d;
-      font-weight: 700;
-    }
-    .td-actions {
-      justify-content: flex-end;
-      gap: 8px;
-    }
-    .td-actions::before {
-      margin-right: auto;
-    }
   }
 }

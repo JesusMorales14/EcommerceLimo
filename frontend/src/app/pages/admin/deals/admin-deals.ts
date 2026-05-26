@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -28,6 +28,24 @@ export class AdminDealsPage implements OnInit, OnDestroy {
   remainingStr  = signal('--:--:--');
   startsInStr   = signal('--:--:--');
 
+  readonly PAGE_SIZE = 6;
+  currentPage = signal(1);
+
+  pagedOffers = computed(() => {
+    const start = (this.currentPage() - 1) * this.PAGE_SIZE;
+    return this.offers().slice(start, start + this.PAGE_SIZE);
+  });
+
+  totalPages = computed(() => Math.max(1, Math.ceil(this.offers().length / this.PAGE_SIZE)));
+
+  visiblePages = computed(() => {
+    const cur   = this.currentPage();
+    const end   = Math.min(cur + 2, this.totalPages());
+    return Array.from({ length: end - cur + 1 }, (_, i) => cur + i);
+  });
+
+  showEllipsis = computed(() => this.currentPage() + 2 < this.totalPages());
+
   private timerId: ReturnType<typeof setInterval> | null = null;
 
   startsAtInput = '';
@@ -51,7 +69,10 @@ export class AdminDealsPage implements OnInit, OnDestroy {
       this.scheduled.set(s);
       if (s && !this.session()) this.startCountdowns(null, new Date(s.startsAt));
     });
-    this.productService.getOffers().subscribe(res => this.offers.set(res.items));
+    this.productService.getOffers().subscribe(res => {
+      this.offers.set(res.items);
+      this.currentPage.set(1);
+    });
   }
 
   private startCountdowns(endsAt: Date | null, startsAt: Date | null) {
@@ -83,6 +104,12 @@ export class AdminDealsPage implements OnInit, OnDestroy {
   }
 
   remainingLabel(): string { return this.remainingStr(); }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
+  }
 
   minDatetime(): string {
     const d = new Date();

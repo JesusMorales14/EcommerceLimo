@@ -1,0 +1,163 @@
+:host {
+  --card-bg: var(--surface);
+  --card-alt-bg: var(--surface-2);
+  --card-border: var(--border);
+  --card-shadow: 0 1px 8px var(--shadow);
+  --card-radius: 14px;
+
+  --label-color: var(--text-subtle);
+  --value-color: var(--text);
+  --name-color: var(--text);
+  --name-border: var(--border);
+
+  --price-color: var(--primary);
+  --low-stock-color: #dc2626;
+
+  --badge-bg: var(--surface-3);
+  --badge-color: var(--text);
+  --offer-bg: var(--primary-light);
+  --offer-color: var(--primary);
+  --no-offer-color: var(--text-subtle);
+
+  --edit-color: var(--text-muted);
+  --edit-hover-bg: var(--primary-hover);
+  --edit-hover-color: var(--primary);
+  --del-color: var(--text-subtle);
+  --del-hover-bg: #fef2f225;
+  --del-hover-color: #dc2626;
+
+  display: block;
+}
+
+.product-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1.5px solid var(--card-border);
+  overflow: hidden;
+  margin-bottom: 12px;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 18px var(--primary-light);
+    border-color: var(--primary);
+  }
+}
+
+.card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--name-color);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--name-border);
+  background: var(--card-alt-bg);
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  font-size: 13px;
+  color: var(--value-color);
+  border-bottom: 1px solid var(--card-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:nth-child(odd) {
+    background: var(--card-alt-bg);
+  }
+
+  &:nth-child(even) {
+    background: var(--card-bg);
+  }
+}
+
+.card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--label-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.card-price {
+  font-weight: 700;
+  color: var(--price-color);
+}
+
+.low-stock {
+  color: var(--low-stock-color);
+  font-weight: 700;
+}
+
+.cat-badge {
+  background: var(--badge-bg);
+  color: var(--badge-color);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.offer-badge {
+  background: var(--offer-bg);
+  color: var(--offer-color);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.no-offer {
+  color: var(--no-offer-color);
+  font-size: 13px;
+}
+
+.card-actions {
+  justify-content: space-between;
+}
+
+.actions-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+.btn-edit {
+  color: var(--edit-color);
+
+  &:hover {
+    background: var(--edit-hover-bg);
+    color: var(--edit-hover-color);
+  }
+}
+
+.btn-del {
+  color: var(--del-color);
+
+  &:hover {
+    background: var(--del-hover-bg);
+    color: var(--del-hover-color);
+  }
+}

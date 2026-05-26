@@ -98,7 +98,7 @@
     gap: 10px;
     font-size: 22px;
     font-weight: 800;
-    color: #1e293b;
+    color: #ffffff;
     margin-bottom: 28px;
     .material-symbols-outlined {
       color: #006b2d;
@@ -144,7 +144,7 @@
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     font-size: 14px;
-    color: #1e293b;
+    color: #ffffff;
     outline: none;
     transition: border-color 0.2s;
     box-sizing: border-box;
@@ -295,7 +295,7 @@
     strong {
       display: block;
       font-size: 14px;
-      color: #1e293b;
+      color: #ffffff;
       margin-bottom: 2px;
     }
     span {
@@ -396,7 +396,7 @@
 }
 
 .back {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #0f172a 100%);
   transform: rotateY(180deg);
   justify-content: flex-start;
 }
@@ -425,7 +425,7 @@
 .card-cvv-box {
   flex: 1;
   background: #fff;
-  color: #1e293b;
+  color: #ffffff;
   border-radius: 6px;
   padding: 8px 12px;
   font-family: 'Courier New', monospace;
@@ -634,7 +634,7 @@
   gap: 8px;
   font-size: 15px;
   font-weight: 800;
-  color: #1e293b;
+  color: #ffffff;
   margin-bottom: 16px;
 
   .material-symbols-outlined {
@@ -685,7 +685,7 @@
     .ci-name {
       font-size: 13px;
       font-weight: 700;
-      color: #1e293b;
+      color: #ffffff;
       margin: 0 0 3px;
     }
     .ci-brand {
@@ -721,7 +721,7 @@
     .ci-price {
       font-size: 14px;
       font-weight: 800;
-      color: #1e293b;
+      color: #ffffff;
     }
   }
 }
@@ -804,7 +804,7 @@
 }
 
 .btn-coupon {
-  background: #1e293b;
+  background: #ffffff;
   color: #fff;
   border: none;
   padding: 9px 16px;
@@ -1222,15 +1222,25 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
   &:hover {
     border-color: var(--primary);
     color: var(--primary);
   }
-  .material-symbols-outlined { font-size: 18px; }
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
 }
 
 @keyframes successPop {
-  from { opacity: 0; transform: scale(0.85) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

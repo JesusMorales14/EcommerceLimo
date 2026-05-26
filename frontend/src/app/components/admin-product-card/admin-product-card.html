@@ -1,0 +1,39 @@
+<div class="product-card">
+  <div class="card-name">{{ product.name }}</div>
+
+  <div class="card-row">
+    <span class="card-label">CATEGORÍA</span>
+    <span class="cat-badge">{{ product.category }}</span>
+  </div>
+
+  <div class="card-row">
+    <span class="card-label">PRECIO</span>
+    <span class="card-price">{{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</span>
+  </div>
+
+  <div class="card-row">
+    <span class="card-label">STOCK</span>
+    <span [class.low-stock]="product.stock < 5">{{ product.stock }}</span>
+  </div>
+
+  <div class="card-row">
+    <span class="card-label">OFERTA</span>
+    @if (product.isOffer) {
+      <span class="offer-badge">Oferta</span>
+    } @else {
+      <span class="no-offer">—</span>
+    }
+  </div>
+
+  <div class="card-row card-actions">
+    <span class="card-label">ACCIONES</span>
+    <div class="actions-btns">
+      <button class="btn-edit" (click)="edit.emit(product)">
+        <span class="material-symbols-outlined">edit</span>
+      </button>
+      <button class="btn-del" (click)="remove.emit(product.id)">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+  </div>
+</div>

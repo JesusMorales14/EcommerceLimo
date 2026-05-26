@@ -24,9 +24,7 @@
     color: #fff;
     font-weight: 700;
   }
-  .promo-sep {
-    opacity: 0.4;
-  }
+
   .promo-icon {
     font-size: 15px;
     opacity: 0.9;
@@ -36,11 +34,13 @@
     font-size: 11px;
     padding: 6px 12px;
     gap: 6px;
+    display: flex;
     .promo-sep {
       display: none;
     }
     span:last-child {
-      display: none;
+      align-items: center;
+      gap: 4px;
     }
   }
 }

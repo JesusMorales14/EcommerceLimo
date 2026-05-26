@@ -16,6 +16,8 @@
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 107, 45, 0.45), 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s, box-shadow 0.2s, border-radius 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 
   &:hover {
     transform: translateY(-2px);
@@ -30,8 +32,12 @@
   }
 
   @media (max-width: 768px) {
-    bottom: 80px; // above bottom-nav
+    bottom: 80px;
     right: 16px;
+    border-radius: 50%;
+    padding: 0;
+    width: 52px;
+    justify-content: center;
   }
 }
 
@@ -47,6 +53,10 @@
   font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 // ── Chat panel ────────────────────────────────────────────────────────────────

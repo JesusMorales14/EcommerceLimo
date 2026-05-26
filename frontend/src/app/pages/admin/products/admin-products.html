@@ -14,10 +14,10 @@
           type="text"
           placeholder="Buscar por nombre o marca..."
           [ngModel]="search()"
-          (ngModelChange)="search.set($event)"
+          (ngModelChange)="onSearchChange($event)"
         />
         @if (search()) {
-          <button class="clear-btn" (click)="search.set('')">
+          <button class="clear-btn" (click)="onSearchChange('')">
             <span class="material-symbols-outlined">close</span>
           </button>
         }
@@ -222,7 +222,7 @@
       <button
         class="chip"
         [class.active]="selectedCategory() === ''"
-        (click)="selectedCategory.set('')"
+        (click)="onCategoryChange('')"
       >
         Todas
       </button>
@@ -230,14 +230,14 @@
         <button
           class="chip"
           [class.active]="selectedCategory() === cat"
-          (click)="selectedCategory.set(cat)"
+          (click)="onCategoryChange(cat)"
         >
           {{ cat }}
         </button>
       }
     </div>
 
-    <!-- Tabla -->
+    <!-- Tabla (desktop) -->
     <div class="products-table-wrapper">
       <table class="products-table">
         <thead>
@@ -253,33 +253,28 @@
           </tr>
         </thead>
         <tbody>
-          @for (product of filteredProducts(); track product.id) {
+          @for (product of pagedProducts(); track product.id) {
             <tr>
-              <td class="td-id" data-label="ID">#{{ product.id }}</td>
-              <td class="td-img" data-label="Imagen">
+              <td class="td-id">#{{ product.id }}</td>
+              <td class="td-img">
                 <img [src]="product.images[0]" [alt]="product.name" class="product-thumb" />
               </td>
-              <td class="td-name" data-label="Nombre">{{ product.name }}</td>
-              <td data-label="Categoría">
-                <span class="cat-badge">{{ product.category }}</span>
-              </td>
-              <td class="td-price" data-label="Precio">
-                {{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}
-              </td>
-              <td [class.low-stock]="product.stock < 5" data-label="Stock">{{ product.stock }}</td>
-              <td data-label="Oferta">
+              <td class="td-name">{{ product.name }}</td>
+              <td><span class="cat-badge">{{ product.category }}</span></td>
+              <td class="td-price">{{ product.price | currency: 'PEN' : 'S/ ' : '1.0-0' }}</td>
+              <td [class.low-stock]="product.stock < 5">{{ product.stock }}</td>
+              <td>
                 @if (product.isOffer) {
                   <span class="offer-badge">Oferta</span>
                 } @else {
                   <span class="no-offer">—</span>
                 }
               </td>
-              <td class="td-actions" data-label="Acciones">
+              <td class="td-actions">
                 <div class="actions-container">
                   <button class="btn-edit" (click)="openEdit(product)">
                     <span class="material-symbols-outlined">edit</span>
                   </button>
-
                   <button class="btn-del" (click)="delete(product.id)">
                     <span class="material-symbols-outlined">delete</span>
                   </button>
@@ -294,5 +289,35 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Tarjetas (mobile) -->
+    <div class="cards-list">
+      @for (product of pagedProducts(); track product.id) {
+        <app-admin-product-card
+          [product]="product"
+          (edit)="openEdit($event)"
+          (remove)="delete($event)"
+        />
+      } @empty {
+        <p class="empty-cards">No se encontraron productos.</p>
+      }
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="admin-pagination">
+        <button class="page-btn nav-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)" aria-label="Anterior">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (p of visiblePages(); track p) {
+          <button class="page-btn" [class.active]="p === currentPage()" (click)="goToPage(p)">{{ p }}</button>
+        }
+        @if (showEllipsis()) {
+          <span class="page-ellipsis">...</span>
+        }
+        <button class="page-btn nav-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)" aria-label="Siguiente">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    }
   }
 </div>

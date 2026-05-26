@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -35,12 +35,30 @@ export class AdminCouponsPage implements OnInit {
 
   form = this.emptyForm();
 
+  readonly PAGE_SIZE = 6;
+  currentPage = signal(1);
+
+  pagedCoupons = computed(() => {
+    const start = (this.currentPage() - 1) * this.PAGE_SIZE;
+    return this.coupons().slice(start, start + this.PAGE_SIZE);
+  });
+
+  totalPages = computed(() => Math.max(1, Math.ceil(this.coupons().length / this.PAGE_SIZE)));
+
+  visiblePages = computed(() => {
+    const cur = this.currentPage();
+    const end = Math.min(cur + 2, this.totalPages());
+    return Array.from({ length: end - cur + 1 }, (_, i) => cur + i);
+  });
+
+  showEllipsis = computed(() => this.currentPage() + 2 < this.totalPages());
+
   ngOnInit() { this.load(); }
 
   private load() {
     this.loading.set(true);
     this.couponSvc.getAll().subscribe({
-      next:  (c) => { this.coupons.set(c as Coupon[]); this.loading.set(false); },
+      next:  (c) => { this.coupons.set(c as Coupon[]); this.currentPage.set(1); this.loading.set(false); },
       error: () => this.loading.set(false),
     });
   }
@@ -54,6 +72,10 @@ export class AdminCouponsPage implements OnInit {
       maxUses:   100,
       expiresAt: '',
     };
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
   }
 
   openForm()  { this.form = this.emptyForm(); this.showForm.set(true); this.error.set(''); }

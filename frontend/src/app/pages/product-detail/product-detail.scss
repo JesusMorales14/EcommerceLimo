@@ -1,6 +1,6 @@
-$green:      #006b2d;
+$green: #006b2d;
 $green-dark: #004d20;
-$radius:     12px;
+$radius: 12px;
 
 .pdp {
   background: #f4f7f4;
@@ -14,7 +14,9 @@ $radius:     12px;
   color: #64748b;
   padding: 16px 0 24px;
   font-weight: 500;
-  strong { color: #1e293b; }
+  strong {
+    color: #ffffff;
+  }
 }
 
 // ── Main 2-col layout ─────────────────────────────────────────────────────────
@@ -26,14 +28,20 @@ $radius:     12px;
 }
 
 // ── Gallery ───────────────────────────────────────────────────────────────────
-.gallery { width: 480px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+.gallery {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .gallery-main {
   position: relative;
   background: white;
   border-radius: $radius;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   height: 460px;
 
   img {
@@ -63,7 +71,9 @@ $radius:     12px;
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .thumb {
@@ -78,10 +88,18 @@ $radius:     12px;
   padding: 0;
   transition: border-color 0.2s;
 
-  img { width: 100%; height: 100%; object-fit: cover; }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-  &.active { border-color: $green; }
-  &:hover { border-color: #94bda4; }
+  &.active {
+    border-color: $green;
+  }
+  &:hover {
+    border-color: #94bda4;
+  }
 }
 
 // ── Info column ───────────────────────────────────────────────────────────────
@@ -91,7 +109,7 @@ $radius:     12px;
   background: white;
   border-radius: $radius;
   padding: 28px;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -121,12 +139,27 @@ $radius:     12px;
   flex-wrap: wrap;
 }
 
-.stars { font-size: 16px; color: #f59e0b; }
-.review-count { font-size: 13px; color: $green; font-weight: 600; }
-.sku { font-size: 11px; color: #94a3b8; margin-left: auto; }
+.stars {
+  font-size: 16px;
+  color: #f59e0b;
+}
+.review-count {
+  font-size: 13px;
+  color: $green;
+  font-weight: 600;
+}
+.sku {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-left: auto;
+}
 
 // Price block
-.price-block { display: flex; flex-direction: column; gap: 6px; }
+.price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
 .price-row {
   display: flex;
@@ -167,11 +200,17 @@ $radius:     12px;
   border-radius: 8px;
   border: 1px solid #c8e6d4;
 
-  .material-symbols-outlined { font-size: 18px; }
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
 }
 
 // Options
-.option-group { display: flex; flex-direction: column; gap: 10px; }
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .option-label {
   font-size: 12px;
@@ -180,10 +219,15 @@ $radius:     12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
-  strong { color: #171d17; }
+  strong {
+    color: #171d17;
+  }
 }
 
-.color-dots { display: flex; gap: 8px; }
+.color-dots {
+  display: flex;
+  gap: 8px;
+}
 
 .dot {
   width: 28px;
@@ -191,13 +235,24 @@ $radius:     12px;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s;
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
 
-  &.active { border-color: $green; transform: scale(1.2); }
-  &:hover  { transform: scale(1.15); }
+  &.active {
+    border-color: $green;
+    transform: scale(1.2);
+  }
+  &:hover {
+    transform: scale(1.15);
+  }
 }
 
-.size-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.size-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
 .chip {
   padding: 7px 16px;
@@ -215,7 +270,10 @@ $radius:     12px;
     background: $green;
     color: white;
   }
-  &:hover:not(.active) { border-color: $green; color: $green; }
+  &:hover:not(.active) {
+    border-color: $green;
+    color: $green;
+  }
 }
 
 // Qty + action buttons
@@ -224,7 +282,10 @@ $radius:     12px;
   gap: 10px;
   align-items: center;
 
-  .btn-buy, .btn-fav { flex: 1; }
+  .btn-buy,
+  .btn-fav {
+    flex: 1;
+  }
 }
 
 .qty-selector {
@@ -246,8 +307,13 @@ $radius:     12px;
     color: #3a4a3a;
     transition: background 0.15s;
 
-    &:hover:not(:disabled) { background: #e8f0e8; }
-    &:disabled { opacity: 0.35; cursor: not-allowed; }
+    &:hover:not(:disabled) {
+      background: #e8f0e8;
+    }
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
   }
 
   span {
@@ -274,9 +340,16 @@ $radius:     12px;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover:not(:disabled) { background: #2d3e2d; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
-  .material-symbols-outlined { font-size: 17px; }
+  &:hover:not(:disabled) {
+    background: #2d3e2d;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
 }
 
 .btn-fav {
@@ -290,16 +363,22 @@ $radius:     12px;
   background: none;
   color: #94a3b8;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
   flex-shrink: 0;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     border-color: #e11d48;
     color: #e11d48;
     background: #fff1f2;
   }
 
-  .material-symbols-outlined { font-size: 20px; }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
 }
 
 .stock-warning {
@@ -314,7 +393,9 @@ $radius:     12px;
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 12px;
-  .material-symbols-outlined { font-size: 16px; }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
 .stock-low {
@@ -329,7 +410,9 @@ $radius:     12px;
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 12px;
-  .material-symbols-outlined { font-size: 16px; }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
 .pdp-loading {
@@ -341,8 +424,14 @@ $radius:     12px;
   color: #64748b;
   font-size: 15px;
 
-  .spin { animation: spin 1s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 .btn-add {
@@ -360,8 +449,12 @@ $radius:     12px;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover { background: $green-dark; }
-  .material-symbols-outlined { font-size: 17px; }
+  &:hover {
+    background: $green-dark;
+  }
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
 }
 
 // Delivery block
@@ -379,7 +472,11 @@ $radius:     12px;
   border-bottom: 1px solid #e8ede8;
 }
 
-.delivery-icon { font-size: 22px; color: $green; flex-shrink: 0; }
+.delivery-icon {
+  font-size: 22px;
+  color: $green;
+  flex-shrink: 0;
+}
 
 .delivery-info {
   flex: 1;
@@ -387,8 +484,14 @@ $radius:     12px;
   flex-direction: column;
   gap: 2px;
 
-  strong { font-size: 13px; color: #171d17; }
-  span   { font-size: 12px; color: #64748b; }
+  strong {
+    font-size: 13px;
+    color: #171d17;
+  }
+  span {
+    font-size: 12px;
+    color: #64748b;
+  }
 }
 
 .delivery-badge {
@@ -397,7 +500,10 @@ $radius:     12px;
   padding: 3px 10px;
   border-radius: 100px;
 
-  &.free { background: #e8f5ee; color: $green; }
+  &.free {
+    background: #e8f5ee;
+    color: $green;
+  }
 }
 
 .btn-location {
@@ -415,8 +521,12 @@ $radius:     12px;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover { background: #f0f8f4; }
-  .material-symbols-outlined { font-size: 16px; }
+  &:hover {
+    background: #f0f8f4;
+  }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
 // Trust strip
@@ -437,14 +547,17 @@ $radius:     12px;
   color: #64748b;
   text-align: center;
 
-  .material-symbols-outlined { font-size: 22px; color: $green; }
+  .material-symbols-outlined {
+    font-size: 22px;
+    color: $green;
+  }
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 .pdp-tabs {
   background: white;
   border-radius: $radius;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
@@ -463,14 +576,24 @@ $radius:     12px;
   font-weight: 700;
   color: #64748b;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   white-space: nowrap;
 
-  &.active { color: $green; border-bottom-color: $green; background: white; }
-  &:hover:not(.active) { color: #3a4a3a; }
+  &.active {
+    color: $green;
+    border-bottom-color: $green;
+    background: white;
+  }
+  &:hover:not(.active) {
+    color: #3a4a3a;
+  }
 }
 
-.tab-body { padding: 28px; }
+.tab-body {
+  padding: 28px;
+}
 
 // Description tab
 .tab-description h3 {
@@ -480,7 +603,11 @@ $radius:     12px;
   margin: 0 0 12px;
 }
 
-.tab-description p { color: #4a5c46; line-height: 1.7; margin: 0 0 20px; }
+.tab-description p {
+  color: #4a5c46;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
 
 .feature-list {
   list-style: none;
@@ -497,7 +624,10 @@ $radius:     12px;
     font-size: 14px;
     color: #3a4a3a;
 
-    .material-symbols-outlined { font-size: 18px; color: $green; }
+    .material-symbols-outlined {
+      font-size: 18px;
+      color: $green;
+    }
   }
 }
 
@@ -506,15 +636,23 @@ $radius:     12px;
   width: 100%;
   border-collapse: collapse;
 
-  tr:nth-child(even) { background: #f8faf8; }
+  tr:nth-child(even) {
+    background: #f8faf8;
+  }
 
   td {
     padding: 12px 16px;
     font-size: 14px;
     border-bottom: 1px solid #edf2ed;
 
-    &:first-child { font-weight: 700; color: #4a5c46; width: 40%; }
-    &:last-child  { color: #1e293b; }
+    &:first-child {
+      font-weight: 700;
+      color: #4a5c46;
+      width: 40%;
+    }
+    &:last-child {
+      color: #ffffff;
+    }
   }
 }
 
@@ -526,8 +664,14 @@ $radius:     12px;
   color: #64748b;
   font-size: 14px;
   padding: 20px 0;
-  .spin { animation: spin 1s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 .reviews-summary {
@@ -544,9 +688,21 @@ $radius:     12px;
   flex-shrink: 0;
 }
 
-.rating-num { font-size: 48px; font-weight: 800; color: #171d17; line-height: 1; }
-.rating-stars { font-size: 20px; color: #f59e0b; margin-bottom: 4px; }
-.rating-total { font-size: 13px; color: #64748b; }
+.rating-num {
+  font-size: 48px;
+  font-weight: 800;
+  color: #171d17;
+  line-height: 1;
+}
+.rating-stars {
+  font-size: 20px;
+  color: #f59e0b;
+  margin-bottom: 4px;
+}
+.rating-total {
+  font-size: 13px;
+  color: #64748b;
+}
 
 .rating-bars {
   flex: 1;
@@ -562,8 +718,18 @@ $radius:     12px;
   gap: 8px;
   font-size: 12px;
 
-  .bar-label { width: 24px; color: #64748b; text-align: right; flex-shrink: 0; }
-  .bar-pct   { width: 32px; color: #94a3b8; font-size: 11px; flex-shrink: 0; }
+  .bar-label {
+    width: 24px;
+    color: #64748b;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .bar-pct {
+    width: 32px;
+    color: #94a3b8;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
 }
 
 .bar-track {
@@ -589,7 +755,12 @@ $radius:     12px;
   padding: 20px;
   margin-bottom: 28px;
 
-  h4 { font-size: 15px; font-weight: 700; color: #171d17; margin: 0 0 14px; }
+  h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #171d17;
+    margin: 0 0 14px;
+  }
 
   textarea {
     width: 100%;
@@ -597,13 +768,15 @@ $radius:     12px;
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 14px;
-    color: #1e293b;
+    color: #ffffff;
     resize: vertical;
     font-family: inherit;
     outline: none;
     box-sizing: border-box;
     margin-top: 12px;
-    &:focus { border-color: $green; }
+    &:focus {
+      border-color: $green;
+    }
   }
 }
 
@@ -619,10 +792,16 @@ $radius:     12px;
   color: #e2e8f0;
   cursor: pointer;
   padding: 0 2px;
-  transition: color 0.15s, transform 0.1s;
+  transition:
+    color 0.15s,
+    transform 0.1s;
 
-  &.lit { color: #f59e0b; }
-  &:hover { transform: scale(1.2); }
+  &.lit {
+    color: #f59e0b;
+  }
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
 .review-err {
@@ -646,10 +825,19 @@ $radius:     12px;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover:not(:disabled) { background: $green-dark; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
-  .material-symbols-outlined { font-size: 17px; }
-  .spin { animation: spin 1s linear infinite; }
+  &:hover:not(:disabled) {
+    background: $green-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
 }
 
 .review-login-hint {
@@ -663,8 +851,18 @@ $radius:     12px;
   padding: 14px 18px;
   margin-bottom: 24px;
 
-  .material-symbols-outlined { font-size: 18px; color: #94a3b8; }
-  a { color: $green; font-weight: 700; text-decoration: none; &:hover { text-decoration: underline; } }
+  .material-symbols-outlined {
+    font-size: 18px;
+    color: #94a3b8;
+  }
+  a {
+    color: $green;
+    font-weight: 700;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .no-reviews {
@@ -686,13 +884,29 @@ $radius:     12px;
   margin-bottom: 8px;
   flex-wrap: wrap;
 
-  strong { font-size: 14px; color: #171d17; }
+  strong {
+    font-size: 14px;
+    color: #171d17;
+  }
 }
 
-.stars-sm { color: #f59e0b; font-size: 14px; letter-spacing: 1px; }
-.review-date { font-size: 11px; color: #94a3b8; margin-left: auto; }
+.stars-sm {
+  color: #f59e0b;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.review-date {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-left: auto;
+}
 
-.review-item p { font-size: 14px; color: #4a5c46; margin: 0; line-height: 1.6; }
+.review-item p {
+  font-size: 14px;
+  color: #4a5c46;
+  margin: 0;
+  line-height: 1.6;
+}
 
 // Not found
 .not-found {
@@ -702,37 +916,90 @@ $radius:     12px;
   padding: 100px 0;
   color: #94a3b8;
 
-  .material-symbols-outlined { font-size: 72px; margin-bottom: 16px; }
-  p { font-size: 16px; }
+  .material-symbols-outlined {
+    font-size: 72px;
+    margin-bottom: 16px;
+  }
+  p {
+    font-size: 16px;
+  }
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 1024px) {
-  .pdp-main { flex-direction: column; }
-  .gallery { width: 100%; }
-  .gallery-main { height: 360px; }
+  .pdp-main {
+    flex-direction: column;
+  }
+  .gallery {
+    width: 100%;
+  }
+  .gallery-main {
+    height: 360px;
+  }
 }
 
 @media (max-width: 768px) {
-  .pdp { padding: 0 12px 40px; }
-  .pdp-main { flex-direction: column; gap: 16px; }
-  .gallery { width: 100%; }
-  .gallery-main { height: 280px; }
-  .info-col { padding: 16px; gap: 14px; }
-  .info-title { font-size: 18px; }
-  .price-now { font-size: 26px; }
-  .greencard-box { font-size: 12px; }
+  .pdp {
+    padding: 0 12px 40px;
+  }
+  .pdp-main {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .gallery {
+    width: 100%;
+  }
+  .gallery-main {
+    height: 280px;
+  }
+  .info-col {
+    padding: 16px;
+    gap: 14px;
+  }
+  .info-title {
+    font-size: 18px;
+  }
+  .price-now {
+    font-size: 26px;
+  }
+  .greencard-box {
+    font-size: 12px;
+  }
 
-  .qty-actions { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
+  .qty-actions {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+  }
 
-  .trust-strip { gap: 4px; }
-  .trust-item { font-size: 10px; .material-symbols-outlined { font-size: 18px; } }
+  .trust-strip {
+    gap: 4px;
+  }
+  .trust-item {
+    font-size: 10px;
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+  }
 
-  .tab-btn { padding: 11px 14px; font-size: 12px; }
-  .tab-body { padding: 16px; }
+  .tab-btn {
+    padding: 11px 14px;
+    font-size: 12px;
+  }
+  .tab-body {
+    padding: 16px;
+  }
 
-  .reviews-summary { flex-direction: column; gap: 20px; }
-  .rating-num { font-size: 36px; }
+  .reviews-summary {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .rating-num {
+    font-size: 36px;
+  }
 
-  .specs-table td { padding: 10px 12px; font-size: 13px; }
+  .specs-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }

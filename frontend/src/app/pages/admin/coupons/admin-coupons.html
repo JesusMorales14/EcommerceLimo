@@ -90,7 +90,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (c of coupons(); track c.id) {
+          @for (c of pagedCoupons(); track c.id) {
             <tr [class.inactive]="!c.active">
               <td data-label="Código"><span class="code-chip">{{ c.code }}</span></td>
               <td data-label="Descuento">
@@ -118,6 +118,23 @@
         </tbody>
       </table>
     </div>
+
+    @if (totalPages() > 1) {
+      <div class="admin-pagination">
+        <button class="page-btn nav-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)" aria-label="Anterior">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (p of visiblePages(); track p) {
+          <button class="page-btn" [class.active]="p === currentPage()" (click)="goToPage(p)">{{ p }}</button>
+        }
+        @if (showEllipsis()) {
+          <span class="page-ellipsis">...</span>
+        }
+        <button class="page-btn nav-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)" aria-label="Siguiente">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    }
   }
 
 </div>

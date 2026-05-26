@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (u of users(); track u.id) {
+          @for (u of pagedUsers(); track u.id) {
             <tr>
               <td class="col-id" data-label="#">{{ u.id }}</td>
               <td class="col-name" data-label="Nombre">
@@ -52,6 +52,24 @@
         </tbody>
       </table>
     </div>
+
     <p class="total-count">{{ users().length }} usuarios en total</p>
+
+    @if (totalPages() > 1) {
+      <div class="admin-pagination">
+        <button class="page-btn nav-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)" aria-label="Anterior">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (p of visiblePages(); track p) {
+          <button class="page-btn" [class.active]="p === currentPage()" (click)="goToPage(p)">{{ p }}</button>
+        }
+        @if (showEllipsis()) {
+          <span class="page-ellipsis">...</span>
+        }
+        <button class="page-btn nav-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)" aria-label="Siguiente">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    }
   }
 </div>
