@@ -57,17 +57,33 @@
             </tr>
           </thead>
           <tbody>
-            @for (o of stats()!.recentOrders; track o.id) {
+            @for (o of pagedOrders(); track o.id) {
               <tr>
-                <td>#{{ o.id }}</td>
-                <td>{{ o.user?.name }}</td>
-                <td>{{ o.total | currency:'PEN':'S/ ':'1.0-0' }}</td>
-                <td><span class="status-chip">{{ o.status }}</span></td>
-                <td>{{ o.createdAt | date:'dd/MM/yy' }}</td>
+                <td class="col-id" data-label="#">#{{ o.id }}</td>
+                <td class="col-client" data-label="Cliente">{{ o.user?.name }}</td>
+                <td class="col-total" data-label="Total">{{ o.total | currency:'PEN':'S/ ':'1.0-0' }}</td>
+                <td class="col-status" data-label="Estado"><span class="status-chip">{{ o.status }}</span></td>
+                <td class="col-date" data-label="Fecha">{{ o.createdAt | date:'dd/MM/yy' }}</td>
               </tr>
             }
           </tbody>
         </table>
+
+        @if (totalPages() > 1) {
+          <div class="pagination">
+            <button class="page-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)">
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            @for (p of pages(); track p) {
+              <button class="page-btn" [class.active]="currentPage() === p" (click)="goToPage(p)">
+                {{ p }}
+              </button>
+            }
+            <button class="page-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        }
       </div>
     }
   }

@@ -159,6 +159,52 @@
   }
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-hover);
+  }
+
+  &.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
 .admin-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -252,5 +298,87 @@
 
   .admin-card {
     padding: 24px 20px;
+  }
+
+  .recent-orders {
+    padding: 16px 12px;
+  }
+
+  .orders-mini-table {
+    display: block;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+    }
+
+    tbody tr {
+      display: block;
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 1px 8px var(--shadow);
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+
+      &:hover td {
+        background: inherit;
+      }
+    }
+
+    tbody td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border-2);
+      font-size: 13px;
+      color: var(--text);
+
+      &:last-child {
+        border-bottom: none;
+      }
+      &:nth-child(odd) {
+        background: var(--surface-2);
+      }
+      &:nth-child(even) {
+        background: var(--surface);
+      }
+
+      &::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-subtle);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+        margin-right: 12px;
+      }
+    }
+
+    .col-id {
+      display: none;
+    }
+
+    .col-client {
+      background: var(--surface-2) !important;
+      border-bottom: 2px solid var(--border) !important;
+      font-size: 14px;
+      font-weight: 700;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .col-status {
+      .status-chip {
+        font-size: 0.8rem;
+      }
+    }
   }
 }
