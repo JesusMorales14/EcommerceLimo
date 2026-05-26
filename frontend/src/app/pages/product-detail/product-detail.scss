@@ -1,9 +1,7 @@
-$green: #006b2d;
-$green-dark: #004d20;
 $radius: 12px;
 
 .pdp {
-  background: #f4f7f4;
+  background: var(--bg);
   min-height: 100vh;
   padding: 0 max(24px, 4vw) 56px;
 }
@@ -11,11 +9,11 @@ $radius: 12px;
 // ── Breadcrumb ────────────────────────────────────────────────────────────────
 .breadcrumb {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   padding: 16px 0 24px;
   font-weight: 500;
   strong {
-    color: #ffffff;
+    color: var(--text);
   }
 }
 
@@ -38,10 +36,10 @@ $radius: 12px;
 
 .gallery-main {
   position: relative;
-  background: white;
+  background: var(--surface);
   border-radius: $radius;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
   height: 460px;
 
   img {
@@ -57,8 +55,8 @@ $radius: 12px;
   position: absolute;
   top: 16px;
   left: 16px;
-  background: $green;
-  color: white;
+  background: var(--primary);
+  color: #fff;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 1.5px;
@@ -82,7 +80,7 @@ $radius: 12px;
   flex-shrink: 0;
   border: 2px solid transparent;
   border-radius: 8px;
-  background: white;
+  background: var(--surface);
   overflow: hidden;
   cursor: pointer;
   padding: 0;
@@ -95,10 +93,10 @@ $radius: 12px;
   }
 
   &.active {
-    border-color: $green;
+    border-color: var(--primary);
   }
   &:hover {
-    border-color: #94bda4;
+    border-color: var(--text-subtle);
   }
 }
 
@@ -106,10 +104,10 @@ $radius: 12px;
 .info-col {
   flex: 1;
   min-width: 0;
-  background: white;
+  background: var(--surface);
   border-radius: $radius;
   padding: 28px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -118,7 +116,7 @@ $radius: 12px;
 .info-brand {
   font-size: 12px;
   font-weight: 800;
-  color: $green;
+  color: var(--primary);
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 0;
@@ -127,7 +125,7 @@ $radius: 12px;
 .info-title {
   font-size: 22px;
   font-weight: 800;
-  color: #171d17;
+  color: var(--text);
   margin: 0;
   line-height: 1.25;
 }
@@ -145,12 +143,12 @@ $radius: 12px;
 }
 .review-count {
   font-size: 13px;
-  color: $green;
+  color: var(--primary);
   font-weight: 600;
 }
 .sku {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--text-subtle);
   margin-left: auto;
 }
 
@@ -170,12 +168,12 @@ $radius: 12px;
 .price-now {
   font-size: 30px;
   font-weight: 800;
-  color: #171d17;
+  color: var(--text);
 }
 
 .badge-off {
   background: #ba1a1a;
-  color: white;
+  color: #fff;
   font-size: 11px;
   font-weight: 800;
   padding: 4px 10px;
@@ -184,7 +182,7 @@ $radius: 12px;
 
 .price-before {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-subtle);
   margin: 0;
 }
 
@@ -192,13 +190,13 @@ $radius: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #e8f5ee;
-  color: $green;
+  background: var(--primary-light);
+  color: var(--primary);
   font-size: 13px;
   font-weight: 600;
   padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid #c8e6d4;
+  border: 1px solid var(--border);
 
   .material-symbols-outlined {
     font-size: 18px;
@@ -215,12 +213,12 @@ $radius: 12px;
 .option-label {
   font-size: 12px;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
   strong {
-    color: #171d17;
+    color: var(--text);
   }
 }
 
@@ -240,7 +238,7 @@ $radius: 12px;
     border-color 0.15s;
 
   &.active {
-    border-color: $green;
+    border-color: var(--primary);
     transform: scale(1.2);
   }
   &:hover {
@@ -256,23 +254,23 @@ $radius: 12px;
 
 .chip {
   padding: 7px 16px;
-  border: 1.5px solid #d1ddd1;
+  border: 1.5px solid var(--border);
   border-radius: 7px;
-  background: white;
+  background: var(--surface);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
-  color: #3a4a3a;
+  color: var(--text);
 
   &.active {
-    border-color: $green;
-    background: $green;
-    color: white;
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
   }
   &:hover:not(.active) {
-    border-color: $green;
-    color: $green;
+    border-color: var(--primary);
+    color: var(--primary);
   }
 }
 
@@ -291,7 +289,7 @@ $radius: 12px;
 .qty-selector {
   display: flex;
   align-items: center;
-  border: 1.5px solid #d1ddd1;
+  border: 1.5px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
   height: 44px;
@@ -299,16 +297,16 @@ $radius: 12px;
   button {
     width: 36px;
     height: 100%;
-    background: #f4f7f4;
+    background: var(--surface-2);
     border: none;
     font-size: 18px;
     font-weight: 700;
     cursor: pointer;
-    color: #3a4a3a;
+    color: var(--text);
     transition: background 0.15s;
 
     &:hover:not(:disabled) {
-      background: #e8f0e8;
+      background: var(--surface-3);
     }
     &:disabled {
       opacity: 0.35;
@@ -321,7 +319,8 @@ $radius: 12px;
     text-align: center;
     font-size: 15px;
     font-weight: 700;
-    color: #171d17;
+    color: var(--text);
+    background: var(--surface);
   }
 }
 
@@ -331,17 +330,17 @@ $radius: 12px;
   justify-content: center;
   gap: 7px;
   padding: 12px;
-  background: #171d17;
-  color: white;
+  background: var(--text);
+  color: var(--surface);
   border: none;
   border-radius: 9px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: opacity 0.2s;
 
   &:hover:not(:disabled) {
-    background: #2d3e2d;
+    opacity: 0.85;
   }
   &:disabled {
     opacity: 0.5;
@@ -359,9 +358,9 @@ $radius: 12px;
   width: 44px;
   height: 44px;
   border-radius: 9px;
-  border: 1.5px solid #e2e8f0;
-  background: none;
-  color: #94a3b8;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-subtle);
   cursor: pointer;
   transition:
     border-color 0.2s,
@@ -373,7 +372,7 @@ $radius: 12px;
   &.active {
     border-color: #e11d48;
     color: #e11d48;
-    background: #fff1f2;
+    background: rgba(225, 29, 72, 0.08);
   }
 
   .material-symbols-outlined {
@@ -385,9 +384,9 @@ $radius: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fef2f2;
+  background: rgba(220, 38, 38, 0.08);
   color: #dc2626;
-  border: 1px solid #fecaca;
+  border: 1px solid rgba(220, 38, 38, 0.25);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 13px;
@@ -402,9 +401,9 @@ $radius: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fffbeb;
+  background: rgba(217, 119, 6, 0.08);
   color: #d97706;
-  border: 1px solid #fed7aa;
+  border: 1px solid rgba(217, 119, 6, 0.25);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 13px;
@@ -421,45 +420,17 @@ $radius: 12px;
   justify-content: center;
   gap: 10px;
   min-height: 60vh;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 15px;
 
   .spin {
     animation: spin 1s linear infinite;
   }
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-}
-
-.btn-add {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 12px;
-  background: $green;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: $green-dark;
-  }
-  .material-symbols-outlined {
-    font-size: 17px;
-  }
 }
 
 // Delivery block
 .delivery-block {
-  border: 1px solid #e8ede8;
+  border: 1px solid var(--border);
   border-radius: $radius;
   overflow: hidden;
 }
@@ -469,12 +440,16 @@ $radius: 12px;
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid #e8ede8;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .delivery-icon {
   font-size: 22px;
-  color: $green;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -486,11 +461,11 @@ $radius: 12px;
 
   strong {
     font-size: 13px;
-    color: #171d17;
+    color: var(--text);
   }
   span {
     font-size: 12px;
-    color: #64748b;
+    color: var(--text-muted);
   }
 }
 
@@ -501,31 +476,8 @@ $radius: 12px;
   border-radius: 100px;
 
   &.free {
-    background: #e8f5ee;
-    color: $green;
-  }
-}
-
-.btn-location {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  padding: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: $green;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #f0f8f4;
-  }
-  .material-symbols-outlined {
-    font-size: 16px;
+    background: var(--primary-light);
+    color: var(--primary);
   }
 }
 
@@ -544,27 +496,27 @@ $radius: 12px;
   flex: 1;
   font-size: 11px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-muted);
   text-align: center;
 
   .material-symbols-outlined {
     font-size: 22px;
-    color: $green;
+    color: var(--primary);
   }
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 .pdp-tabs {
-  background: white;
+  background: var(--surface);
   border-radius: $radius;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
   overflow: hidden;
 }
 
 .tabs-nav {
   display: flex;
-  border-bottom: 1px solid #e8ede8;
-  background: #f8faf8;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
 }
 
 .tab-btn {
@@ -574,20 +526,22 @@ $radius: 12px;
   border-bottom: 3px solid transparent;
   font-size: 13px;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition:
     color 0.2s,
-    border-color 0.2s;
+    border-color 0.2s,
+    background 0.2s;
   white-space: nowrap;
 
   &.active {
-    color: $green;
-    border-bottom-color: $green;
-    background: white;
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: var(--surface);
   }
   &:hover:not(.active) {
-    color: #3a4a3a;
+    color: var(--text);
+    background: var(--primary-hover);
   }
 }
 
@@ -599,36 +553,14 @@ $radius: 12px;
 .tab-description h3 {
   font-size: 16px;
   font-weight: 800;
-  color: #171d17;
+  color: var(--text);
   margin: 0 0 12px;
 }
 
 .tab-description p {
-  color: #4a5c46;
+  color: var(--text-2);
   line-height: 1.7;
   margin: 0 0 20px;
-}
-
-.feature-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: #3a4a3a;
-
-    .material-symbols-outlined {
-      font-size: 18px;
-      color: $green;
-    }
-  }
 }
 
 // Specs tab
@@ -637,21 +569,19 @@ $radius: 12px;
   border-collapse: collapse;
 
   tr:nth-child(even) {
-    background: #f8faf8;
+    background: var(--surface-2);
   }
 
   td {
     padding: 12px 16px;
     font-size: 14px;
-    border-bottom: 1px solid #edf2ed;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
 
     &:first-child {
       font-weight: 700;
-      color: #4a5c46;
+      color: var(--text-muted);
       width: 40%;
-    }
-    &:last-child {
-      color: #ffffff;
     }
   }
 }
@@ -661,16 +591,11 @@ $radius: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 14px;
   padding: 20px 0;
   .spin {
     animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
   }
 }
 
@@ -691,7 +616,7 @@ $radius: 12px;
 .rating-num {
   font-size: 48px;
   font-weight: 800;
-  color: #171d17;
+  color: var(--text);
   line-height: 1;
 }
 .rating-stars {
@@ -701,7 +626,7 @@ $radius: 12px;
 }
 .rating-total {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .rating-bars {
@@ -720,13 +645,13 @@ $radius: 12px;
 
   .bar-label {
     width: 24px;
-    color: #64748b;
+    color: var(--text-muted);
     text-align: right;
     flex-shrink: 0;
   }
   .bar-pct {
     width: 32px;
-    color: #94a3b8;
+    color: var(--text-subtle);
     font-size: 11px;
     flex-shrink: 0;
   }
@@ -735,7 +660,7 @@ $radius: 12px;
 .bar-track {
   flex: 1;
   height: 8px;
-  background: #f1f5f9;
+  background: var(--surface-2);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -749,8 +674,8 @@ $radius: 12px;
 
 // Review form
 .review-form {
-  background: #f8faf8;
-  border: 1px solid #d1ddd1;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 28px;
@@ -758,24 +683,30 @@ $radius: 12px;
   h4 {
     font-size: 15px;
     font-weight: 700;
-    color: #171d17;
+    color: var(--text);
     margin: 0 0 14px;
   }
 
   textarea {
     width: 100%;
-    border: 1.5px solid #d1ddd1;
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 14px;
-    color: #ffffff;
+    color: var(--text);
+    background: var(--surface);
     resize: vertical;
     font-family: inherit;
     outline: none;
     box-sizing: border-box;
     margin-top: 12px;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+      color: var(--text-subtle);
+    }
     &:focus {
-      border-color: $green;
+      border-color: var(--primary);
     }
   }
 }
@@ -789,7 +720,7 @@ $radius: 12px;
   background: none;
   border: none;
   font-size: 28px;
-  color: #e2e8f0;
+  color: var(--border);
   cursor: pointer;
   padding: 0 2px;
   transition:
@@ -816,8 +747,8 @@ $radius: 12px;
   gap: 7px;
   margin-top: 14px;
   padding: 10px 22px;
-  background: $green;
-  color: white;
+  background: var(--primary);
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 13px;
@@ -826,7 +757,7 @@ $radius: 12px;
   transition: background 0.2s;
 
   &:hover:not(:disabled) {
-    background: $green-dark;
+    background: var(--primary-dark);
   }
   &:disabled {
     opacity: 0.5;
@@ -845,18 +776,19 @@ $radius: 12px;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #64748b;
-  background: #f8fafc;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px 18px;
   margin-bottom: 24px;
 
   .material-symbols-outlined {
     font-size: 18px;
-    color: #94a3b8;
+    color: var(--text-subtle);
   }
   a {
-    color: $green;
+    color: var(--primary);
     font-weight: 700;
     text-decoration: none;
     &:hover {
@@ -867,13 +799,13 @@ $radius: 12px;
 
 .no-reviews {
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-subtle);
   font-size: 14px;
   padding: 32px 0;
 }
 
 .review-item {
-  border-top: 1px solid #edf2ed;
+  border-top: 1px solid var(--border);
   padding: 16px 0;
 }
 
@@ -886,7 +818,7 @@ $radius: 12px;
 
   strong {
     font-size: 14px;
-    color: #171d17;
+    color: var(--text);
   }
 }
 
@@ -897,13 +829,13 @@ $radius: 12px;
 }
 .review-date {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--text-subtle);
   margin-left: auto;
 }
 
 .review-item p {
   font-size: 14px;
-  color: #4a5c46;
+  color: var(--text-2);
   margin: 0;
   line-height: 1.6;
 }
@@ -914,7 +846,7 @@ $radius: 12px;
   flex-direction: column;
   align-items: center;
   padding: 100px 0;
-  color: #94a3b8;
+  color: var(--text-subtle);
 
   .material-symbols-outlined {
     font-size: 72px;
@@ -922,6 +854,13 @@ $radius: 12px;
   }
   p {
     font-size: 16px;
+  }
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
