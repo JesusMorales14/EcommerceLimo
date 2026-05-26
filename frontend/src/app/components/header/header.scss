@@ -600,19 +600,6 @@
   font-size: 26px;
 }
 
-// ── Mobile account dropdown ───────────────────────────────────────────────────
-.mobile-account-wrap {
-  position: relative;
-}
-
-.mobile-account-dropdown {
-  position: fixed;
-  top: 56px;
-  right: 8px;
-  left: auto;
-  min-width: 220px;
-  z-index: 1600;
-}
 
 // ── Category drawer (mobile) ──────────────────────────────────────────────────
 // NOTE: drawer-overlay and category-drawer use 100vw/100vh instead of

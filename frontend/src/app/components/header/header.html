@@ -268,46 +268,9 @@
             themeService.isDark() ? 'light_mode' : 'dark_mode'
           }}</span>
         </button>
-        <div class="mobile-account-wrap">
-          @if (showAccountMenu()) {
-            <div class="account-backdrop" (click)="closeAccountMenu()"></div>
-          }
-          <button
-            class="mobile-icon-btn"
-            (click)="toggleAccountMenu()"
-            aria-label="Mi cuenta"
-          >
-            <span class="material-symbols-outlined">person</span>
-          </button>
-          @if (showAccountMenu()) {
-            <div class="account-dropdown mobile-account-dropdown">
-              @if (authService.isLoggedIn()) {
-                <div class="dropdown-user">
-                  <strong>{{ authService.user()?.name }}</strong>
-                  <span>{{ authService.user()?.email }}</span>
-                </div>
-                <a routerLink="/account" class="dropdown-item" (click)="closeAccountMenu()">
-                  <span class="material-symbols-outlined">person</span> Mi Perfil y Pedidos
-                </a>
-                @if (authService.isAdmin()) {
-                  <a routerLink="/admin" class="dropdown-item admin-item" (click)="closeAccountMenu()">
-                    <span class="material-symbols-outlined">admin_panel_settings</span> Panel Admin
-                  </a>
-                }
-                <button class="dropdown-item logout-item" (click)="logout()">
-                  <span class="material-symbols-outlined">logout</span> Cerrar sesión
-                </button>
-              } @else {
-                <a routerLink="/login" class="dropdown-item" (click)="closeAccountMenu()">
-                  <span class="material-symbols-outlined">login</span> Iniciar sesión
-                </a>
-                <a routerLink="/register" class="dropdown-item" (click)="closeAccountMenu()">
-                  <span class="material-symbols-outlined">person_add</span> Crear cuenta
-                </a>
-              }
-            </div>
-          }
-        </div>
+        <a routerLink="/account" class="mobile-icon-btn" aria-label="Mi cuenta">
+          <span class="material-symbols-outlined">person</span>
+        </a>
         <button
           class="mobile-icon-btn mobile-menu-btn"
           (click)="openMobileMenu()"
