@@ -68,8 +68,9 @@
         </h3>
         <div class="form-grid">
           <div class="field" [class.field-error]="hasError('nombre')">
-            <label>Nombre *</label>
+            <label for="nombre">Nombre *</label>
             <input
+              id="nombre"
               type="text"
               name="nombre"
               [(ngModel)]="form.nombre"
@@ -82,8 +83,9 @@
             }
           </div>
           <div class="field" [class.field-error]="hasError('apellidos')">
-            <label>Apellidos *</label>
+            <label for="apellidos">Apellidos *</label>
             <input
+              id="apellidos"
               type="text"
               name="apellidos"
               [(ngModel)]="form.apellidos"
@@ -96,8 +98,9 @@
             }
           </div>
           <div class="field" [class.field-error]="hasError('dni')">
-            <label>DNI / CE *</label>
+            <label for="dni">DNI / CE *</label>
             <input
+              id="dni"
               type="text"
               name="dni"
               [(ngModel)]="form.dni"
@@ -112,8 +115,9 @@
             }
           </div>
           <div class="field" [class.field-error]="hasError('telefono')">
-            <label>Teléfono *</label>
+            <label for="telefono">Teléfono *</label>
             <input
+              id="telefono"
               type="tel"
               name="telefono"
               [(ngModel)]="form.telefono"
@@ -127,8 +131,9 @@
             }
           </div>
           <div class="field full" [class.field-error]="hasError('email')">
-            <label>Correo electrónico *</label>
+            <label for="email">Correo electrónico *</label>
             <input
+              id="email"
               type="email"
               name="email"
               [(ngModel)]="form.email"
@@ -143,8 +148,9 @@
             }
           </div>
           <div class="field full">
-            <label>Dirección</label>
+            <label for="direccion">Dirección</label>
             <input
+              id="direccion"
               type="text"
               name="direccion"
               [(ngModel)]="form.direccion"
@@ -173,8 +179,9 @@
           </label>
         </div>
         <div class="field" style="margin-top: 16px;">
-          <label>N° de Pedido (si aplica)</label>
+          <label for="pedidoNum">N° de Pedido (si aplica)</label>
           <input
+            id="pedidoNum"
             type="text"
             name="pedidoNum"
             [(ngModel)]="form.pedidoNum"
@@ -190,8 +197,9 @@
           Detalle de la Reclamación
         </h3>
         <div class="field" [class.field-error]="hasError('detalle')">
-          <label>Descripción del problema * <span class="char-hint">(mínimo 10 caracteres)</span></label>
+          <label for="detalle">Descripción del problema * <span class="char-hint">(mínimo 10 caracteres)</span></label>
           <textarea
+            id="detalle"
             name="detalle"
             [(ngModel)]="form.detalle"
             placeholder="Describe detalladamente lo sucedido, incluyendo fechas y cualquier información relevante..."
@@ -204,8 +212,9 @@
           }
         </div>
         <div class="field">
-          <label>Pedido o acción solicitada</label>
+          <label for="accion">Pedido o acción solicitada</label>
           <textarea
+            id="accion"
             name="accion"
             [(ngModel)]="form.accion"
             placeholder="¿Qué solución esperas de nosotros? (reembolso, cambio de producto, etc.)"

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ReclamacionService } from '../../core/services/reclamacion.service';
-import { Reclamacion } from '../../core/models/reclamacion.model';
+import type { Reclamacion, ReclamacionBien, ReclamacionTipo } from '../../core/models/reclamacion.model';
 
 @Component({
   selector: 'app-libro-reclamaciones',
@@ -22,7 +22,11 @@ export class LibroReclamacionesPage {
 
   touched = new Set<string>();
 
-  form = {
+  form: {
+    nombre: string; apellidos: string; dni: string; email: string;
+    telefono: string; direccion: string; tipo: ReclamacionTipo;
+    bien: ReclamacionBien; pedidoNum: string; detalle: string; accion: string; acepta: boolean;
+  } = {
     nombre: '', apellidos: '', dni: '', email: '',
     telefono: '', direccion: '', tipo: 'RECLAMO',
     bien: 'PRODUCTO', pedidoNum: '', detalle: '', accion: '', acepta: false,
@@ -49,7 +53,7 @@ export class LibroReclamacionesPage {
         return '';
       case 'telefono':
         if (!this.form.telefono.trim()) return 'El teléfono es requerido.';
-        if (!/^[\d\s\+\-\(\)]{7,15}$/.test(this.form.telefono.trim())) return 'Ingresa un número de teléfono válido.';
+        if (!/^[\d\s+\-()]{7,15}$/.test(this.form.telefono.trim())) return 'Ingresa un número de teléfono válido.';
         return '';
       case 'detalle':
         if (!this.form.detalle.trim()) return 'La descripción es requerida.';
@@ -67,7 +71,7 @@ export class LibroReclamacionesPage {
   isFormValid(): boolean {
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email.trim());
     const dniValid   = /^\d{7,12}$/.test(this.form.dni.trim());
-    const telValid   = /^[\d\s\+\-\(\)]{7,15}$/.test(this.form.telefono.trim());
+    const telValid   = /^[\d\s+\-()]{7,15}$/.test(this.form.telefono.trim());
     return !!(
       this.form.nombre.trim()    &&
       this.form.apellidos.trim() &&
@@ -85,8 +89,8 @@ export class LibroReclamacionesPage {
     if (!this.isFormValid()) return;
     this.submitting.set(true);
     this.error.set('');
-    const { acepta, ...payload } = this.form;
-    this.reclamacionService.create(payload as any).subscribe({
+    const { acepta: _, ...payload } = this.form;
+    this.reclamacionService.create(payload).subscribe({
       next: (rec) => {
         this.submitted_rec.set(rec);
         this.submitted.set(true);
