@@ -182,22 +182,13 @@
           <a
             [routerLink]="['/category', cat.id]"
             routerLinkActive="active"
-            class="drawer-link"
+            [class]="'drawer-link' + (cat.id === 'ofertas' ? ' drawer-link-offers' : '')"
             (click)="closeMobileMenu()"
           >
             <span class="material-symbols-outlined drawer-link-icon">{{ cat.icon }}</span>
             <span>{{ cat.label }}</span>
           </a>
         }
-        <a
-          [routerLink]="['/category', 'ofertas']"
-          routerLinkActive="active"
-          class="drawer-link drawer-link-offers"
-          (click)="closeMobileMenu()"
-        >
-          <span class="material-symbols-outlined drawer-link-icon">local_offer</span>
-          <span>Ofertas</span>
-        </a>
 
       </nav>
 
