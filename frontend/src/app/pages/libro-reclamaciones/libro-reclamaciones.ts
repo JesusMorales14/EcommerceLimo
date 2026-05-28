@@ -20,22 +20,68 @@ export class LibroReclamacionesPage {
   submitted_rec = signal<Reclamacion | null>(null);
   error      = signal('');
 
+  touched = new Set<string>();
+
   form = {
     nombre: '', apellidos: '', dni: '', email: '',
     telefono: '', direccion: '', tipo: 'RECLAMO',
     bien: 'PRODUCTO', pedidoNum: '', detalle: '', accion: '', acepta: false,
   };
 
+  touch(field: string) {
+    this.touched.add(field);
+  }
+
+  getError(field: string): string {
+    if (!this.touched.has(field)) return '';
+    switch (field) {
+      case 'nombre':
+        return !this.form.nombre.trim() ? 'El nombre es requerido.' : '';
+      case 'apellidos':
+        return !this.form.apellidos.trim() ? 'Los apellidos son requeridos.' : '';
+      case 'dni':
+        if (!this.form.dni.trim()) return 'El DNI / CE es requerido.';
+        if (!/^\d{7,12}$/.test(this.form.dni.trim())) return 'Debe contener entre 7 y 12 dígitos numéricos.';
+        return '';
+      case 'email':
+        if (!this.form.email.trim()) return 'El correo electrónico es requerido.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email.trim())) return 'Ingresa un correo electrónico válido.';
+        return '';
+      case 'telefono':
+        if (!this.form.telefono.trim()) return 'El teléfono es requerido.';
+        if (!/^[\d\s\+\-\(\)]{7,15}$/.test(this.form.telefono.trim())) return 'Ingresa un número de teléfono válido.';
+        return '';
+      case 'detalle':
+        if (!this.form.detalle.trim()) return 'La descripción es requerida.';
+        if (this.form.detalle.trim().length < 10) return 'La descripción debe tener al menos 10 caracteres.';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  hasError(field: string): boolean {
+    return this.getError(field) !== '';
+  }
+
   isFormValid(): boolean {
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email.trim());
+    const dniValid   = /^\d{7,12}$/.test(this.form.dni.trim());
+    const telValid   = /^[\d\s\+\-\(\)]{7,15}$/.test(this.form.telefono.trim());
     return !!(
-      this.form.nombre.trim() && this.form.apellidos.trim() &&
-      this.form.dni.trim()    && this.form.email.trim()     &&
-      this.form.telefono.trim() && this.form.detalle.trim() &&
+      this.form.nombre.trim()    &&
+      this.form.apellidos.trim() &&
+      dniValid                   &&
+      emailValid                 &&
+      telValid                   &&
+      this.form.detalle.trim().length >= 10 &&
       this.form.acepta
     );
   }
 
   submit() {
+    // Touch all validated fields to show errors
+    ['nombre', 'apellidos', 'dni', 'email', 'telefono', 'detalle'].forEach(f => this.touched.add(f));
     if (!this.isFormValid()) return;
     this.submitting.set(true);
     this.error.set('');
@@ -62,6 +108,7 @@ export class LibroReclamacionesPage {
     this.submitted.set(false);
     this.submitted_rec.set(null);
     this.error.set('');
+    this.touched.clear();
     this.form = {
       nombre: '', apellidos: '', dni: '', email: '',
       telefono: '', direccion: '', tipo: 'RECLAMO',

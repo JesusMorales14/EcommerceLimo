@@ -16,7 +16,9 @@ export class ReclamacionesService {
     const rec = await this.prisma.reclamacion.create({
       data: { ...dto, userId: userId ?? null },
     });
-    await this.mail.sendReclamacionAdmin(rec);
+    try {
+      await this.mail.sendReclamacionAdmin(rec);
+    } catch { /* mail es no-crítico, la reclamación ya fue guardada */ }
     return rec;
   }
 

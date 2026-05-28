@@ -1037,6 +1037,11 @@
     overflow-x: hidden;
   }
 
+  // Prevent iOS Safari auto-zoom on input focus (triggers when font-size < 16px)
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+
   .step-bar {
     gap: 0;
     margin-bottom: 24px;

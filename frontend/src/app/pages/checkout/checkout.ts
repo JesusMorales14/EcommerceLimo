@@ -232,7 +232,10 @@ export class CheckoutPage implements OnInit, AfterViewInit {
         this.orderSuccess.set(true);
       },
       error: (err) => {
-        this.error.set(err.error?.message ?? 'Error al procesar el pedido. Intenta nuevamente.');
+        const msg = err.status === 0
+          ? 'No se pudo conectar al servidor. Verifica tu conexión e intenta nuevamente.'
+          : (err.error?.message ?? 'Error al procesar el pedido. Intenta nuevamente.');
+        this.error.set(msg);
         this.placing.set(false);
       },
     });
@@ -249,7 +252,10 @@ export class CheckoutPage implements OnInit, AfterViewInit {
     this.couponSvc.validate(this.couponCode.trim(), this.cartService.total()).subscribe({
       next: (r) => { this.couponResult.set(r); this.applyingCoupon.set(false); },
       error: (err) => {
-        this.couponError.set(err.error?.message ?? 'Cupón inválido o expirado.');
+        const msg = err.status === 0
+          ? 'No se pudo conectar al servidor. Espera un momento y vuelve a intentarlo.'
+          : (err.error?.message ?? 'Cupón inválido o expirado.');
+        this.couponError.set(msg);
         this.applyingCoupon.set(false);
       },
     });

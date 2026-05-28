@@ -67,27 +67,35 @@
           Datos del Consumidor
         </h3>
         <div class="form-grid">
-          <div class="field">
+          <div class="field" [class.field-error]="hasError('nombre')">
             <label>Nombre *</label>
             <input
               type="text"
               name="nombre"
               [(ngModel)]="form.nombre"
               placeholder="Ingresa tu nombre"
+              (blur)="touch('nombre')"
               required
             />
+            @if (getError('nombre')) {
+              <span class="field-msg">{{ getError('nombre') }}</span>
+            }
           </div>
-          <div class="field">
+          <div class="field" [class.field-error]="hasError('apellidos')">
             <label>Apellidos *</label>
             <input
               type="text"
               name="apellidos"
               [(ngModel)]="form.apellidos"
               placeholder="Ingresa tus apellidos"
+              (blur)="touch('apellidos')"
               required
             />
+            @if (getError('apellidos')) {
+              <span class="field-msg">{{ getError('apellidos') }}</span>
+            }
           </div>
-          <div class="field">
+          <div class="field" [class.field-error]="hasError('dni')">
             <label>DNI / CE *</label>
             <input
               type="text"
@@ -95,28 +103,44 @@
               [(ngModel)]="form.dni"
               placeholder="12345678"
               maxlength="12"
+              inputmode="numeric"
+              (blur)="touch('dni')"
               required
             />
+            @if (getError('dni')) {
+              <span class="field-msg">{{ getError('dni') }}</span>
+            }
           </div>
-          <div class="field">
+          <div class="field" [class.field-error]="hasError('telefono')">
             <label>Teléfono *</label>
             <input
               type="tel"
               name="telefono"
               [(ngModel)]="form.telefono"
               placeholder="+51 999 999 999"
+              inputmode="tel"
+              (blur)="touch('telefono')"
               required
             />
+            @if (getError('telefono')) {
+              <span class="field-msg">{{ getError('telefono') }}</span>
+            }
           </div>
-          <div class="field full">
+          <div class="field full" [class.field-error]="hasError('email')">
             <label>Correo electrónico *</label>
             <input
               type="email"
               name="email"
               [(ngModel)]="form.email"
               placeholder="tu&#64;correo.com"
+              inputmode="email"
+              autocomplete="email"
+              (blur)="touch('email')"
               required
             />
+            @if (getError('email')) {
+              <span class="field-msg">{{ getError('email') }}</span>
+            }
           </div>
           <div class="field full">
             <label>Dirección</label>
@@ -165,15 +189,19 @@
           <span class="material-symbols-outlined">description</span>
           Detalle de la Reclamación
         </h3>
-        <div class="field">
-          <label>Descripción del problema *</label>
+        <div class="field" [class.field-error]="hasError('detalle')">
+          <label>Descripción del problema * <span class="char-hint">(mínimo 10 caracteres)</span></label>
           <textarea
             name="detalle"
             [(ngModel)]="form.detalle"
             placeholder="Describe detalladamente lo sucedido, incluyendo fechas y cualquier información relevante..."
             rows="5"
+            (blur)="touch('detalle')"
             required
           ></textarea>
+          @if (getError('detalle')) {
+            <span class="field-msg">{{ getError('detalle') }}</span>
+          }
         </div>
         <div class="field">
           <label>Pedido o acción solicitada</label>
@@ -207,7 +235,7 @@
       <button
         type="submit"
         class="btn-submit"
-        [disabled]="!isFormValid() || submitting()"
+        [disabled]="submitting()"
       >
         @if (submitting()) {
           <span class="material-symbols-outlined spin">progress_activity</span>

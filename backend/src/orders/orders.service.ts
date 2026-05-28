@@ -67,7 +67,9 @@ export class OrdersService {
       }))
     );
 
-    await this.mail.sendOrderConfirmation(order.user.email, order);
+    try {
+      await this.mail.sendOrderConfirmation(order.user.email, order);
+    } catch { /* mail es no-crítico, el pedido ya fue guardado */ }
     return order;
   }
 
