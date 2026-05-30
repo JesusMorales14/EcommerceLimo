@@ -30,7 +30,7 @@ export class ProductListComponent implements OnInit {
   breadcrumb  = '';
   loading     = signal(true);
 
-  baseProducts: Product[] = [];
+  baseProducts = signal<Product[]>([]);
 
   page   = signal(1);
   pages  = signal(1);
@@ -45,7 +45,7 @@ export class ProductListComponent implements OnInit {
   }
 
   filteredProducts = computed(() => {
-    const list = [...this.baseProducts];
+    const list = [...this.baseProducts()];
     switch (this.sortBy()) {
       case 'price-asc':  return list.sort((a, b) => a.price - b.price);
       case 'price-desc': return list.sort((a, b) => b.price - a.price);
@@ -97,7 +97,7 @@ export class ProductListComponent implements OnInit {
     if (isOffers) {
       this.productService.getOffers().subscribe({
         next: (res) => {
-          this.baseProducts = res.items.filter(p => p.isOffer);
+          this.baseProducts.set(res.items.filter(p => p.isOffer));
           this.total.set(res.total);
           this.pages.set(1);
           this.loading.set(false);
@@ -107,7 +107,7 @@ export class ProductListComponent implements OnInit {
     } else {
       this.productService.getAll(id, subId, this.page()).subscribe({
         next: (res) => {
-          this.baseProducts = res.items;
+          this.baseProducts.set(res.items);
           this.total.set(res.total);
           this.pages.set(res.pages);
           this.loading.set(false);
