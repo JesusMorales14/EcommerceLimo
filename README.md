@@ -14,7 +14,7 @@ Construida con Angular 17+ en el frontend y NestJS en el backend, con modo oscur
 | Backend | NestJS, TypeScript |
 | Base de datos | PostgreSQL + Prisma ORM |
 | Autenticación | JWT (access + refresh tokens) |
-| Pagos | Stripe |
+| Pagos | Simulación |
 | Testing | Vitest (frontend) · Jest (backend) |
 | CI/CD | GitHub Actions |
 
