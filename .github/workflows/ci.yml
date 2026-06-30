@@ -1,0 +1,350 @@
+name: CI/CD Pipeline — EcommerceLimo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '22'
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOBS
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+
+  # ── 1. Análisis Estático de Código (ESLint) ──────────────────────────────────
+  lint:
+    name: "🔍 Análisis Estático — ESLint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias (frontend)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Ejecutar ESLint — Frontend
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Setup Node.js para backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias (backend)
+        run: npm ci
+        working-directory: backend
+
+      - name: Ejecutar ESLint — Backend
+        run: npm run lint:ci
+        working-directory: backend
+
+  # ── 2. Análisis de Seguridad (CodeQL) ────────────────────────────────────────
+  codeql:
+    name: "🛡️ Análisis de Seguridad — CodeQL"
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Inicializar CodeQL (TypeScript / JavaScript)
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Ejecutar análisis CodeQL
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+
+  # ── 3. Tests Unitarios — Backend (Jest) ──────────────────────────────────────
+  backend-unit:
+    name: "🧪 Tests Unitarios — Backend"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+        working-directory: backend
+
+      - name: Ejecutar tests unitarios con cobertura
+        run: npm run test:cov -- --forceExit --ci
+        working-directory: backend
+
+      - name: Subir reporte de cobertura (backend)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage-report
+          path: backend/coverage/
+          retention-days: 7
+
+  # ── 4. Tests Unitarios — Frontend (Vitest) ───────────────────────────────────
+  frontend-unit:
+    name: "🧪 Tests Unitarios — Frontend"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+        working-directory: frontend
+
+      - name: Ejecutar tests unitarios con cobertura
+        run: npm test -- --watch=false --coverage
+        working-directory: frontend
+
+      - name: Subir reporte de cobertura (frontend)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-coverage-report
+          path: frontend/coverage/
+          retention-days: 7
+
+  # ── 5. Tests de Integración — Backend E2E (con PostgreSQL) ───────────────────
+  backend-e2e:
+    name: "🔗 Tests Integración — Backend E2E"
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: ecommercelimo
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
+      JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
+      STRIPE_SECRET_KEY: "sk_test_dummy"
+      STRIPE_WEBHOOK_SECRET: "whsec_dummy"
+      FRONTEND_URL: "http://localhost:4200"
+      PORT: "3000"
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+        working-directory: backend
+
+      - name: Ejecutar migraciones Prisma
+        run: npx prisma migrate deploy
+        working-directory: backend
+
+      - name: Poblar base de datos (seed)
+        run: npx ts-node prisma/seed.ts
+        working-directory: backend
+
+      - name: Ejecutar tests de integración E2E
+        run: npm run test:e2e -- --forceExit
+        working-directory: backend
+
+  # ── 6. Tests Funcionales y No Funcionales — Playwright ───────────────────────
+  frontend-e2e:
+    name: "🌐 Tests Funcionales/No Funcionales — Playwright"
+    runs-on: ubuntu-latest
+    needs: [lint, backend-unit, frontend-unit]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: ecommercelimo
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
+      JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
+      STRIPE_SECRET_KEY: "sk_test_dummy"
+      STRIPE_WEBHOOK_SECRET: "whsec_dummy"
+      FRONTEND_URL: "http://localhost:4200"
+      PORT: "3000"
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias (backend)
+        run: npm ci
+        working-directory: backend
+
+      - name: Instalar dependencias (frontend)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Ejecutar migraciones y poblar DB
+        run: |
+          npx prisma migrate deploy
+          npx ts-node prisma/seed.ts
+        working-directory: backend
+
+      - name: Build Backend (producción)
+        run: npm run build
+        working-directory: backend
+
+      - name: Instalar navegadores Playwright (Chromium + dependencias del SO)
+        run: npx playwright install chromium --with-deps
+        working-directory: frontend
+
+      - name: Iniciar Backend en background
+        run: nohup npm run start:prod > /tmp/backend.log 2>&1 &
+        working-directory: backend
+
+      - name: Iniciar Frontend dev server en background
+        run: nohup npm start > /tmp/frontend.log 2>&1 &
+        working-directory: frontend
+
+      - name: Esperar a que el Backend esté disponible
+        run: |
+          echo "Esperando backend en puerto 3000..."
+          timeout 60 bash -c 'until curl -sf http://localhost:3000/products > /dev/null; do sleep 2; done'
+          echo "✅ Backend listo"
+
+      - name: Esperar a que el Frontend esté disponible
+        run: |
+          echo "Esperando frontend en puerto 4200..."
+          timeout 90 bash -c 'until curl -sf http://localhost:4200 > /dev/null; do sleep 3; done'
+          echo "✅ Frontend listo"
+
+      - name: Ejecutar pruebas funcionales (Playwright)
+        run: npm run e2e:functional
+        working-directory: frontend
+
+      - name: Ejecutar pruebas no funcionales (Playwright)
+        run: npm run e2e:non-functional
+        working-directory: frontend
+
+      - name: Subir reporte Playwright
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 7
+
+      - name: Subir capturas de fallos
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-failures
+          path: frontend/test-results/
+          retention-days: 7
+
+      - name: Mostrar logs del backend si hay fallos
+        if: failure()
+        run: cat /tmp/backend.log || true
+
+  # ── 7. Build de Producción ────────────────────────────────────────────────────
+  build:
+    name: "🏗️ Build de Producción"
+    runs-on: ubuntu-latest
+    needs: [lint, backend-unit, frontend-unit]
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias (frontend)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build Angular (producción)
+        run: npm run build
+        working-directory: frontend
+
+      - name: Instalar dependencias (backend)
+        run: npm ci
+        working-directory: backend
+
+      - name: Build NestJS (producción)
+        run: npm run build
+        working-directory: backend
+
+      - name: Subir artefactos de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-builds
+          path: |
+            frontend/dist/
+            backend/dist/
+          retention-days: 14
+
+      - name: Resumen del build
+        run: |
+          echo "## ✅ Build de Producción Completado" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Componente | Estado |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Angular Frontend | ✅ OK |" >> $GITHUB_STEP_SUMMARY
+          echo "| NestJS Backend   | ✅ OK |" >> $GITHUB_STEP_SUMMARY

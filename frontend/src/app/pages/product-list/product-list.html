@@ -17,6 +17,7 @@
     <span class="toolbar-label">Ordenar por</span>
     <select
       class="sort-select"
+      aria-label="Ordenar productos"
       [ngModel]="sortBy()"
       (ngModelChange)="sortBy.set($event)">
       <option value="relevance">Más relevantes</option>
