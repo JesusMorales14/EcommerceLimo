@@ -10,7 +10,7 @@ export class AuthService {
   private router = inject(Router);
 
   private _user  = signal<User | null>(this.restoreUser());
-  private _token = signal<string | null>(localStorage.getItem('gh_token'));
+  private _token = signal<string | null>(this.restoreToken());
 
   isLoggedIn = computed(() => this._user() !== null);
   isAdmin    = computed(() => this._user()?.role === 'ADMIN');
@@ -67,5 +67,9 @@ export class AuthService {
       const raw = localStorage.getItem('gh_user');
       return raw ? JSON.parse(raw) : null;
     } catch { return null; }
+  }
+
+  private restoreToken(): string | null {
+    try { return localStorage.getItem('gh_token'); } catch { return null; }
   }
 }
