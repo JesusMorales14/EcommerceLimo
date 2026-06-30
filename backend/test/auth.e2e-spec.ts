@@ -19,14 +19,18 @@ describe('Auth (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true }),
+    );
     await app.init();
 
     prisma = moduleFixture.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
-    await prisma.user.delete({ where: { email: testEmail } }).catch(() => undefined);
+    await prisma.user
+      .delete({ where: { email: testEmail } })
+      .catch(() => undefined);
     await app.close();
   });
 
@@ -41,17 +45,18 @@ describe('Auth (e2e)', () => {
       .expect(201);
 
     expect(res.body.token).toBeDefined();
-    expect(res.body.user).toMatchObject({ email: testEmail, name: 'Usuario E2E' });
+    expect(res.body.user).toMatchObject({
+      email: testEmail,
+      name: 'Usuario E2E',
+    });
   });
 
   it('POST /auth/register falla con email duplicado', async () => {
-    const res = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send({
-        name: 'Usuario Duplicado',
-        email: testEmail,
-        password: testPassword,
-      });
+    const res = await request(app.getHttpServer()).post('/auth/register').send({
+      name: 'Usuario Duplicado',
+      email: testEmail,
+      password: testPassword,
+    });
 
     expect(res.status).toBe(409);
   });

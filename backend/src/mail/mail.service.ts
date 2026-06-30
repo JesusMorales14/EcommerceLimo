@@ -54,8 +54,14 @@ export class MailService {
 
   async sendReclamacionRespuesta(rec: any) {
     if (!rec.email) return;
-    const tipo  = rec.tipo === 'RECLAMO' ? 'Reclamo' : 'Queja';
-    const estado = { PENDIENTE: 'Pendiente', EN_REVISION: 'En revisión', RESUELTO: 'Resuelto', CERRADO: 'Cerrado' }[rec.estado as string] ?? rec.estado;
+    const tipo = rec.tipo === 'RECLAMO' ? 'Reclamo' : 'Queja';
+    const estado =
+      {
+        PENDIENTE: 'Pendiente',
+        EN_REVISION: 'En revisión',
+        RESUELTO: 'Resuelto',
+        CERRADO: 'Cerrado',
+      }[rec.estado as string] ?? rec.estado;
     await this.send(
       rec.email,
       `📋 Actualización de tu ${tipo} #${rec.id} — ${estado}`,

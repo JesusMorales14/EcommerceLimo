@@ -13,14 +13,20 @@ export class DealSessionsService {
     });
     if (!session) return null;
     if (new Date(session.endsAt) <= now) {
-      await this.prisma.dealSession.update({ where: { id: session.id }, data: { active: false } });
+      await this.prisma.dealSession.update({
+        where: { id: session.id },
+        data: { active: false },
+      });
       return null;
     }
     return session;
   }
 
   async create(endsAt: Date, startsAt?: Date) {
-    await this.prisma.dealSession.updateMany({ where: { active: true }, data: { active: false } });
+    await this.prisma.dealSession.updateMany({
+      where: { active: true },
+      data: { active: false },
+    });
     return this.prisma.dealSession.create({
       data: { endsAt, startsAt: startsAt ?? new Date(), active: true },
     });
@@ -36,7 +42,10 @@ export class DealSessionsService {
   }
 
   async cancel() {
-    await this.prisma.dealSession.updateMany({ where: { active: true }, data: { active: false } });
+    await this.prisma.dealSession.updateMany({
+      where: { active: true },
+      data: { active: false },
+    });
     return { ok: true };
   }
 }

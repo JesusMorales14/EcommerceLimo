@@ -30,14 +30,17 @@ export class CouponsController {
 
   @UseGuards(JwtGuard, AdminGuard)
   @Post()
-  create(@Body() body: {
-    code: string;
-    discount: number;
-    isPercent: boolean;
-    minAmount: number;
-    maxUses: number;
-    expiresAt?: string;
-  }) {
+  create(
+    @Body()
+    body: {
+      code: string;
+      discount: number;
+      isPercent: boolean;
+      minAmount: number;
+      maxUses: number;
+      expiresAt?: string;
+    },
+  ) {
     return this.coupons.create(body);
   }
 

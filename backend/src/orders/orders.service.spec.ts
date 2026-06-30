@@ -6,17 +6,36 @@ import { MailService } from '../mail/mail.service';
 import { CouponsService } from '../coupons/coupons.service';
 
 const mockProduct = {
-  id: 1, name: 'Samsung Galaxy S24', brand: 'Samsung', price: 1899, stock: 5,
-  category: 'tecnologia', subCategory: 'smartphones', description: '',
-  images: [], colors: [], sizes: [], isOffer: false, discount: null,
-  colorImages: {}, createdAt: new Date(),
+  id: 1,
+  name: 'Samsung Galaxy S24',
+  brand: 'Samsung',
+  price: 1899,
+  stock: 5,
+  category: 'tecnologia',
+  subCategory: 'smartphones',
+  description: '',
+  images: [],
+  colors: [],
+  sizes: [],
+  isOffer: false,
+  discount: null,
+  colorImages: {},
+  createdAt: new Date(),
 };
 
 const mockOrder = {
-  id: 1, userId: 1, total: 1899, status: 'PENDIENTE',
-  paymentMethod: 'TARJETA', createdAt: new Date(),
-  deliveryName: null, deliveryPhone: null, deliveryAddress: null,
-  deliveryNotes: null, deliveryLat: null, deliveryLng: null,
+  id: 1,
+  userId: 1,
+  total: 1899,
+  status: 'PENDIENTE',
+  paymentMethod: 'TARJETA',
+  createdAt: new Date(),
+  deliveryName: null,
+  deliveryPhone: null,
+  deliveryAddress: null,
+  deliveryNotes: null,
+  deliveryLat: null,
+  deliveryLng: null,
   items: [{ productId: 1, quantity: 1, price: 1899, product: mockProduct }],
   user: { id: 1, name: 'Test User', email: 'test@tienda.com' },
 };
@@ -31,29 +50,29 @@ describe('OrdersService', () => {
     prisma = {
       product: {
         findUnique: jest.fn(),
-        update:     jest.fn(),
+        update: jest.fn(),
       },
       order: {
-        create:     jest.fn(),
-        findMany:   jest.fn(),
+        create: jest.fn(),
+        findMany: jest.fn(),
         findUnique: jest.fn(),
-        update:     jest.fn(),
+        update: jest.fn(),
       },
     };
     mail = {
       sendOrderConfirmation: jest.fn().mockResolvedValue(undefined),
-      sendStatusUpdate:      jest.fn().mockResolvedValue(undefined),
+      sendStatusUpdate: jest.fn().mockResolvedValue(undefined),
     };
     coupons = {
       validate: jest.fn(),
-      use:      jest.fn().mockResolvedValue(undefined),
+      use: jest.fn().mockResolvedValue(undefined),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OrdersService,
-        { provide: PrismaService,  useValue: prisma  },
-        { provide: MailService,    useValue: mail    },
+        { provide: PrismaService, useValue: prisma },
+        { provide: MailService, useValue: mail },
         { provide: CouponsService, useValue: coupons },
       ],
     }).compile();
@@ -189,16 +208,24 @@ describe('OrdersService', () => {
   describe('updateStatus', () => {
     it('actualiza el estado de la orden y lo retorna', async () => {
       prisma.order.findUnique.mockResolvedValue(mockOrder);
-      prisma.order.update.mockResolvedValue({ ...mockOrder, status: 'ENVIADO' });
+      prisma.order.update.mockResolvedValue({
+        ...mockOrder,
+        status: 'ENVIADO',
+      });
 
-      const result = await service.updateStatus(1, { status: 'ENVIADO' } as any);
+      const result = await service.updateStatus(1, {
+        status: 'ENVIADO',
+      } as any);
 
       expect(result.status).toBe('ENVIADO');
     });
 
     it('envía correo de actualización de estado al usuario', async () => {
       prisma.order.findUnique.mockResolvedValue(mockOrder);
-      prisma.order.update.mockResolvedValue({ ...mockOrder, status: 'ENTREGADO' });
+      prisma.order.update.mockResolvedValue({
+        ...mockOrder,
+        status: 'ENTREGADO',
+      });
 
       await service.updateStatus(1, { status: 'ENTREGADO' } as any);
 

@@ -22,7 +22,15 @@ export class UsersService {
   async findOne(id: number) {
     return this.prisma.user.findUnique({
       where: { id },
-      select: { id: true, name: true, email: true, role: true, phone: true, address: true, createdAt: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        phone: true,
+        address: true,
+        createdAt: true,
+      },
     });
   }
 }

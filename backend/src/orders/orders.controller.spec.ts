@@ -3,10 +3,10 @@ import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 
 const mockOrdersService = {
-  createOrder:   jest.fn(),
+  createOrder: jest.fn(),
   getUserOrders: jest.fn(),
-  getAllOrders:   jest.fn(),
-  updateStatus:  jest.fn(),
+  getAllOrders: jest.fn(),
+  updateStatus: jest.fn(),
 };
 
 describe('OrdersController', () => {

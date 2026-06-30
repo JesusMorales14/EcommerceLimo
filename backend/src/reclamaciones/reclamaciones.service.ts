@@ -10,7 +10,10 @@ const includeUser = {
 
 @Injectable()
 export class ReclamacionesService {
-  constructor(private prisma: PrismaService, private mail: MailService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mail: MailService,
+  ) {}
 
   async create(dto: CreateReclamacionDto, userId?: number) {
     const rec = await this.prisma.reclamacion.create({
@@ -18,7 +21,9 @@ export class ReclamacionesService {
     });
     try {
       await this.mail.sendReclamacionAdmin(rec);
-    } catch { /* mail es no-crítico, la reclamación ya fue guardada */ }
+    } catch {
+      /* mail es no-crítico, la reclamación ya fue guardada */
+    }
     return rec;
   }
 
@@ -43,7 +48,8 @@ export class ReclamacionesService {
       where: { id },
       data: {
         estado: dto.estado,
-        respuesta: dto.respuesta !== undefined ? dto.respuesta : exists.respuesta,
+        respuesta:
+          dto.respuesta !== undefined ? dto.respuesta : exists.respuesta,
       },
       include: includeUser,
     });

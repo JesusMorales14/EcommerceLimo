@@ -4,8 +4,8 @@ import { ReviewsService } from './reviews.service';
 
 const mockReviewsService = {
   getByProduct: jest.fn(),
-  getStats:     jest.fn(),
-  create:       jest.fn(),
+  getStats: jest.fn(),
+  create: jest.fn(),
 };
 
 describe('ReviewsController', () => {

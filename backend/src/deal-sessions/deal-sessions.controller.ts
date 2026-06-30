@@ -20,7 +20,10 @@ export class DealSessionsController {
   @UseGuards(JwtGuard, AdminGuard)
   @Post()
   create(@Body('endsAt') endsAt: string, @Body('startsAt') startsAt?: string) {
-    return this.service.create(new Date(endsAt), startsAt ? new Date(startsAt) : undefined);
+    return this.service.create(
+      new Date(endsAt),
+      startsAt ? new Date(startsAt) : undefined,
+    );
   }
 
   @UseGuards(JwtGuard, AdminGuard)

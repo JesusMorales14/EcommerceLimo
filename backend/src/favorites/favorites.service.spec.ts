@@ -24,7 +24,10 @@ describe('FavoritesService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FavoritesService, { provide: PrismaService, useValue: prisma }],
+      providers: [
+        FavoritesService,
+        { provide: PrismaService, useValue: prisma },
+      ],
     }).compile();
 
     service = module.get<FavoritesService>(FavoritesService);
@@ -35,7 +38,11 @@ describe('FavoritesService', () => {
   describe('toggleFavorite', () => {
     it('agrega el producto a favoritos si no existía', async () => {
       prisma.favorite.findUnique.mockResolvedValue(null);
-      prisma.favorite.create.mockResolvedValue({ id: 1, userId: 1, productId: 1 });
+      prisma.favorite.create.mockResolvedValue({
+        id: 1,
+        userId: 1,
+        productId: 1,
+      });
 
       const result = await service.toggleFavorite(1, 1);
 
@@ -47,7 +54,11 @@ describe('FavoritesService', () => {
     });
 
     it('quita el producto de favoritos si ya existía', async () => {
-      prisma.favorite.findUnique.mockResolvedValue({ id: 5, userId: 1, productId: 1 });
+      prisma.favorite.findUnique.mockResolvedValue({
+        id: 5,
+        userId: 1,
+        productId: 1,
+      });
       prisma.favorite.delete.mockResolvedValue({ id: 5 });
 
       const result = await service.toggleFavorite(1, 1);

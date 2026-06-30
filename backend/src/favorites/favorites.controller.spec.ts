@@ -62,7 +62,10 @@ describe('FavoritesController', () => {
 
   describe('remove', () => {
     it('delega en toggleFavorite (toggle también remueve) convirtiendo productId a número', () => {
-      service.toggleFavorite.mockReturnValue({ favorited: false, productId: 5 });
+      service.toggleFavorite.mockReturnValue({
+        favorited: false,
+        productId: 5,
+      });
 
       const result = controller.remove(req, '5');
 

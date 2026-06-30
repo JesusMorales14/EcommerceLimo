@@ -18,15 +18,17 @@ const mockUser = {
 
 describe('AuthService', () => {
   let service: AuthService;
-  let prisma: { user: { findUnique: jest.Mock; create: jest.Mock; update: jest.Mock } };
+  let prisma: {
+    user: { findUnique: jest.Mock; create: jest.Mock; update: jest.Mock };
+  };
   let jwt: { sign: jest.Mock };
 
   beforeEach(async () => {
     prisma = {
       user: {
         findUnique: jest.fn(),
-        create:     jest.fn(),
-        update:     jest.fn(),
+        create: jest.fn(),
+        update: jest.fn(),
       },
     };
     jwt = { sign: jest.fn().mockReturnValue('jwt-token-mock') };
@@ -35,7 +37,7 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: PrismaService, useValue: prisma },
-        { provide: JwtService,    useValue: jwt   },
+        { provide: JwtService, useValue: jwt },
       ],
     }).compile();
 
@@ -64,7 +66,11 @@ describe('AuthService', () => {
       prisma.user.findUnique.mockResolvedValue(null);
       prisma.user.create.mockResolvedValue(mockUser);
 
-      await service.register({ name: 'Test', email: 'test@tienda.com', password: 'MiClave123' });
+      await service.register({
+        name: 'Test',
+        email: 'test@tienda.com',
+        password: 'MiClave123',
+      });
 
       const createCall = prisma.user.create.mock.calls[0][0];
       expect(createCall.data.password).not.toBe('MiClave123');
@@ -75,7 +81,11 @@ describe('AuthService', () => {
       prisma.user.findUnique.mockResolvedValue(mockUser);
 
       await expect(
-        service.register({ name: 'Test', email: 'test@tienda.com', password: '123' }),
+        service.register({
+          name: 'Test',
+          email: 'test@tienda.com',
+          password: '123',
+        }),
       ).rejects.toThrow(ConflictException);
     });
 
@@ -83,7 +93,11 @@ describe('AuthService', () => {
       prisma.user.findUnique.mockResolvedValue(mockUser);
 
       await expect(
-        service.register({ name: 'Test', email: 'test@tienda.com', password: '123' }),
+        service.register({
+          name: 'Test',
+          email: 'test@tienda.com',
+          password: '123',
+        }),
       ).rejects.toThrow();
 
       expect(prisma.user.create).not.toHaveBeenCalled();
@@ -97,7 +111,10 @@ describe('AuthService', () => {
       const hash = await bcrypt.hash('Password123', 10);
       prisma.user.findUnique.mockResolvedValue({ ...mockUser, password: hash });
 
-      const result = await service.login({ email: 'test@tienda.com', password: 'Password123' });
+      const result = await service.login({
+        email: 'test@tienda.com',
+        password: 'Password123',
+      });
 
       expect(result.token).toBe('jwt-token-mock');
       expect(result.user.id).toBe(1);
@@ -116,7 +133,10 @@ describe('AuthService', () => {
       prisma.user.findUnique.mockResolvedValue({ ...mockUser, password: hash });
 
       await expect(
-        service.login({ email: 'test@tienda.com', password: 'PasswordIncorrecta' }),
+        service.login({
+          email: 'test@tienda.com',
+          password: 'PasswordIncorrecta',
+        }),
       ).rejects.toThrow(UnauthorizedException);
     });
   });
@@ -140,7 +160,12 @@ describe('AuthService', () => {
 
   describe('updateProfile', () => {
     it('actualiza nombre, teléfono y dirección del usuario', async () => {
-      const updated = { ...mockUser, name: 'Nuevo Nombre', phone: '+51999999999', address: 'Av. Lima 123' };
+      const updated = {
+        ...mockUser,
+        name: 'Nuevo Nombre',
+        phone: '+51999999999',
+        address: 'Av. Lima 123',
+      };
       prisma.user.update.mockResolvedValue(updated);
 
       const result = await service.updateProfile(1, {

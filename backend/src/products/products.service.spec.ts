@@ -28,17 +28,17 @@ describe('ProductsService', () => {
   beforeEach(async () => {
     prisma = {
       product: {
-        findMany:   jest.fn(),
+        findMany: jest.fn(),
         findUnique: jest.fn(),
-        create:     jest.fn(),
-        update:     jest.fn(),
-        delete:     jest.fn(),
-        count:      jest.fn(),
+        create: jest.fn(),
+        update: jest.fn(),
+        delete: jest.fn(),
+        count: jest.fn(),
       },
       order: {
-        count:     jest.fn(),
+        count: jest.fn(),
         aggregate: jest.fn(),
-        findMany:  jest.fn(),
+        findMany: jest.fn(),
       },
     };
 
@@ -94,7 +94,14 @@ describe('ProductsService', () => {
       prisma.product.findMany.mockResolvedValue([]);
       prisma.product.count.mockResolvedValue(85);
 
-      const result = await service.findAll(undefined, undefined, undefined, undefined, 1, 40);
+      const result = await service.findAll(
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        1,
+        40,
+      );
 
       expect(result.pages).toBe(3);
     });
@@ -139,9 +146,18 @@ describe('ProductsService', () => {
       prisma.product.create.mockResolvedValue(mockProduct);
 
       const dto = {
-        name: 'Samsung Galaxy S24', brand: 'Samsung', price: 1899, stock: 10,
-        images: [], colors: [], sizes: [], category: 'tecnologia',
-        subCategory: 'smartphones', description: 'Smartphone', isOffer: false, colorImages: {},
+        name: 'Samsung Galaxy S24',
+        brand: 'Samsung',
+        price: 1899,
+        stock: 10,
+        images: [],
+        colors: [],
+        sizes: [],
+        category: 'tecnologia',
+        subCategory: 'smartphones',
+        description: 'Smartphone',
+        isOffer: false,
+        colorImages: {},
       };
 
       const result = await service.create(dto);
@@ -169,7 +185,9 @@ describe('ProductsService', () => {
     it('lanza NotFoundException si el producto no existe', async () => {
       prisma.product.findUnique.mockResolvedValue(null);
 
-      await expect(service.update(999, { price: 2000 })).rejects.toThrow(NotFoundException);
+      await expect(service.update(999, { price: 2000 })).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('no llama a update si el producto no existe', async () => {

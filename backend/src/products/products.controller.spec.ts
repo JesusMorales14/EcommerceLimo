@@ -3,11 +3,11 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 
 const mockProductsService = {
-  findAll:  jest.fn(),
-  findOne:  jest.fn(),
-  create:   jest.fn(),
-  update:   jest.fn(),
-  remove:   jest.fn(),
+  findAll: jest.fn(),
+  findOne: jest.fn(),
+  create: jest.fn(),
+  update: jest.fn(),
+  remove: jest.fn(),
   getStats: jest.fn(),
 };
 
@@ -28,9 +28,29 @@ describe('ProductsController', () => {
   });
 
   it('getAll llama a findAll con los parámetros correctos', async () => {
-    mockProductsService.findAll.mockResolvedValue({ items: [], total: 0, page: 1, pages: 1 });
-    await controller.getAll('tecnologia', undefined, undefined, undefined, '1', '10');
-    expect(mockProductsService.findAll).toHaveBeenCalledWith('tecnologia', undefined, undefined, undefined, 1, 10, undefined);
+    mockProductsService.findAll.mockResolvedValue({
+      items: [],
+      total: 0,
+      page: 1,
+      pages: 1,
+    });
+    await controller.getAll(
+      'tecnologia',
+      undefined,
+      undefined,
+      undefined,
+      '1',
+      '10',
+    );
+    expect(mockProductsService.findAll).toHaveBeenCalledWith(
+      'tecnologia',
+      undefined,
+      undefined,
+      undefined,
+      1,
+      10,
+      undefined,
+    );
   });
 
   it('getById convierte el id a número antes de llamar a findOne', async () => {

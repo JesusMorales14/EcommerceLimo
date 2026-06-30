@@ -24,19 +24,32 @@ export class OrdersService {
 
   async createOrder(userId: number, dto: CreateOrderDto) {
     const products = await Promise.all(
-      dto.items.map(item => this.prisma.product.findUnique({ where: { id: item.productId } }))
+      dto.items.map((item) =>
+        this.prisma.product.findUnique({ where: { id: item.productId } }),
+      ),
     );
 
     for (let i = 0; i < dto.items.length; i++) {
       const product = products[i];
-      const item    = dto.items[i];
-      if (!product) throw new BadRequestException(`Producto ${item.productId} no encontrado`);
-      if (product.stock < item.quantity) throw new BadRequestException(`Stock insuficiente para "${product.name}"`);
+      const item = dto.items[i];
+      if (!product)
+        throw new BadRequestException(
+          `Producto ${item.productId} no encontrado`,
+        );
+      if (product.stock < item.quantity)
+        throw new BadRequestException(
+          `Stock insuficiente para "${product.name}"`,
+        );
     }
 
-    let total = dto.items.reduce((sum, item, i) => sum + products[i]!.price * item.quantity, 0);
+    let total = dto.items.reduce(
+      (sum, item, i) => sum + products[i]!.price * item.quantity,
+      0,
+    );
     const itemsData = dto.items.map((item, i) => ({
-      productId: products[i]!.id, quantity: item.quantity, price: products[i]!.price,
+      productId: products[i]!.id,
+      quantity: item.quantity,
+      price: products[i]!.price,
     }));
 
     if (dto.couponCode) {
@@ -47,29 +60,34 @@ export class OrdersService {
 
     const order = await this.prisma.order.create({
       data: {
-        userId, total,
-        paymentMethod:   dto.paymentMethod,
-        deliveryName:    dto.delivery?.name,
-        deliveryPhone:   dto.delivery?.phone,
+        userId,
+        total,
+        paymentMethod: dto.paymentMethod,
+        deliveryName: dto.delivery?.name,
+        deliveryPhone: dto.delivery?.phone,
         deliveryAddress: dto.delivery?.address,
-        deliveryNotes:   dto.delivery?.notes,
-        deliveryLat:     dto.delivery?.lat,
-        deliveryLng:     dto.delivery?.lng,
+        deliveryNotes: dto.delivery?.notes,
+        deliveryLat: dto.delivery?.lat,
+        deliveryLng: dto.delivery?.lng,
         items: { create: itemsData },
       },
       include: includeAll,
     });
 
     await Promise.all(
-      dto.items.map(item => this.prisma.product.update({
-        where: { id: item.productId },
-        data:  { stock: { decrement: item.quantity } },
-      }))
+      dto.items.map((item) =>
+        this.prisma.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.quantity } },
+        }),
+      ),
     );
 
     try {
       await this.mail.sendOrderConfirmation(order.user.email, order);
-    } catch { /* mail es no-crítico, el pedido ya fue guardado */ }
+    } catch {
+      /* mail es no-crítico, el pedido ya fue guardado */
+    }
     return order;
   }
 

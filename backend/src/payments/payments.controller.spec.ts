@@ -3,8 +3,8 @@ import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
 
 const mockPaymentsService = {
-  createPaymentIntent:   jest.fn(),
-  handleWebhook:         jest.fn(),
+  createPaymentIntent: jest.fn(),
+  handleWebhook: jest.fn(),
 };
 
 describe('PaymentsController', () => {

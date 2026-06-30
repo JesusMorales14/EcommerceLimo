@@ -9,21 +9,22 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin, callback) => {
-      const allowed = !origin
-        || origin === 'http://localhost:4200'
-        || /\.netlify\.app$/.test(origin)
-        || /\.vercel\.app$/.test(origin);
+      const allowed =
+        !origin ||
+        origin === 'http://localhost:4200' ||
+        /\.netlify\.app$/.test(origin) ||
+        /\.vercel\.app$/.test(origin);
       callback(null, allowed ? origin : false);
     },
     credentials: true,
   });
 
-  app.useGlobalPipes(
-    new ValidationPipe({ transform: true, whitelist: true }),
-  );
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`🚀 Backend corriendo en http://localhost:${process.env.PORT ?? 3000}`);
+  console.log(
+    `🚀 Backend corriendo en http://localhost:${process.env.PORT ?? 3000}`,
+  );
 }
 
 bootstrap();

@@ -35,7 +35,9 @@ export class PaymentsService {
         this.logger.log(`Pago exitoso: ${obj.id} — $${obj.amount / 100}`);
         break;
       case 'payment_intent.payment_failed':
-        this.logger.warn(`Pago fallido: ${obj.id} — ${obj.last_payment_error?.message}`);
+        this.logger.warn(
+          `Pago fallido: ${obj.id} — ${obj.last_payment_error?.message}`,
+        );
         break;
       default:
         this.logger.debug(`Evento no manejado: ${event.type}`);

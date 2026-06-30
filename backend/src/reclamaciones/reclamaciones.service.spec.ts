@@ -153,7 +153,11 @@ describe('ReclamacionesService', () => {
   describe('updateEstado', () => {
     it('actualiza el estado y la respuesta, y notifica al usuario', async () => {
       prisma.reclamacion.findUnique.mockResolvedValue(mockReclamacion);
-      const updated = { ...mockReclamacion, estado: 'RESUELTO', respuesta: 'Listo' };
+      const updated = {
+        ...mockReclamacion,
+        estado: 'RESUELTO',
+        respuesta: 'Listo',
+      };
       prisma.reclamacion.update.mockResolvedValue(updated);
 
       const result = await service.updateEstado(1, {

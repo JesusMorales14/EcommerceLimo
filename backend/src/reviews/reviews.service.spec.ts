@@ -4,8 +4,12 @@ import { ReviewsService } from './reviews.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const mockReview = {
-  id: 1, userId: 1, productId: 1, rating: 5,
-  comment: 'Excelente producto', createdAt: new Date(),
+  id: 1,
+  userId: 1,
+  productId: 1,
+  rating: 5,
+  comment: 'Excelente producto',
+  createdAt: new Date(),
   user: { id: 1, name: 'Ana García' },
 };
 
@@ -18,11 +22,11 @@ describe('ReviewsService', () => {
   beforeEach(async () => {
     prisma = {
       review: {
-        findMany:  jest.fn(),
+        findMany: jest.fn(),
         findFirst: jest.fn(),
         findUnique: jest.fn(),
-        create:    jest.fn(),
-        delete:    jest.fn(),
+        create: jest.fn(),
+        delete: jest.fn(),
       },
       product: {
         findUnique: jest.fn(),
@@ -30,10 +34,7 @@ describe('ReviewsService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ReviewsService,
-        { provide: PrismaService, useValue: prisma },
-      ],
+      providers: [ReviewsService, { provide: PrismaService, useValue: prisma }],
     }).compile();
 
     service = module.get<ReviewsService>(ReviewsService);
@@ -72,28 +73,38 @@ describe('ReviewsService', () => {
 
       expect(result).toEqual(mockReview);
       expect(prisma.review.create).toHaveBeenCalledWith(
-        expect.objectContaining({ data: { userId: 1, productId: 1, rating: 5, comment: 'Excelente' } }),
+        expect.objectContaining({
+          data: { userId: 1, productId: 1, rating: 5, comment: 'Excelente' },
+        }),
       );
     });
 
     it('lanza BadRequestException si el rating es menor a 1', async () => {
-      await expect(service.create(1, 1, 0, 'Malo')).rejects.toThrow(BadRequestException);
+      await expect(service.create(1, 1, 0, 'Malo')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('lanza BadRequestException si el rating es mayor a 5', async () => {
-      await expect(service.create(1, 1, 6, 'Muy bueno')).rejects.toThrow(BadRequestException);
+      await expect(service.create(1, 1, 6, 'Muy bueno')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('lanza NotFoundException si el producto no existe', async () => {
       prisma.product.findUnique.mockResolvedValue(null);
-      await expect(service.create(1, 99, 5, 'Ok')).rejects.toThrow(NotFoundException);
+      await expect(service.create(1, 99, 5, 'Ok')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('lanza BadRequestException si el usuario ya reseñó ese producto', async () => {
       prisma.product.findUnique.mockResolvedValue(mockProduct);
       prisma.review.findFirst.mockResolvedValue(mockReview);
 
-      await expect(service.create(1, 1, 4, 'Segunda reseña')).rejects.toThrow(BadRequestException);
+      await expect(service.create(1, 1, 4, 'Segunda reseña')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('no llama a create si la validación de rating falla', async () => {
@@ -126,12 +137,16 @@ describe('ReviewsService', () => {
 
     it('lanza NotFoundException si la reseña no existe', async () => {
       prisma.review.findUnique.mockResolvedValue(null);
-      await expect(service.remove(1, 99, false)).rejects.toThrow(NotFoundException);
+      await expect(service.remove(1, 99, false)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('lanza BadRequestException si un usuario intenta eliminar la reseña de otro', async () => {
       prisma.review.findUnique.mockResolvedValue({ ...mockReview, userId: 5 });
-      await expect(service.remove(1, 1, false)).rejects.toThrow(BadRequestException);
+      await expect(service.remove(1, 1, false)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('no llama a delete si la reseña no existe', async () => {
@@ -146,7 +161,9 @@ describe('ReviewsService', () => {
   describe('getStats', () => {
     it('retorna promedio, total y distribución correctos', async () => {
       prisma.review.findMany.mockResolvedValue([
-        { rating: 5 }, { rating: 4 }, { rating: 5 },
+        { rating: 5 },
+        { rating: 4 },
+        { rating: 5 },
       ]);
 
       const result = await service.getStats(1);
@@ -166,7 +183,13 @@ describe('ReviewsService', () => {
     it('retorna distribución con todos los ratings del 1 al 5 inicializados', async () => {
       prisma.review.findMany.mockResolvedValue([{ rating: 3 }]);
       const result = await service.getStats(1);
-      expect(result.distribution).toMatchObject({ 1: 0, 2: 0, 3: 1, 4: 0, 5: 0 });
+      expect(result.distribution).toMatchObject({
+        1: 0,
+        2: 0,
+        3: 1,
+        4: 0,
+        5: 0,
+      });
     });
   });
 });

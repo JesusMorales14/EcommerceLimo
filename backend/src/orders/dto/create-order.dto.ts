@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 class OrderItemDto {
   @IsNumber()
@@ -24,10 +30,12 @@ export class CreateOrderDto {
   @Type(() => OrderItemDto)
   items!: OrderItemDto[];
 
-  @IsString() @IsOptional()
+  @IsString()
+  @IsOptional()
   paymentMethod?: string;
 
-  @IsString() @IsOptional()
+  @IsString()
+  @IsOptional()
   couponCode?: string;
 
   @IsOptional()

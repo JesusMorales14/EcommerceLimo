@@ -90,7 +90,10 @@ describe('CouponsService', () => {
     });
 
     it('lanza BadRequestException si el cupón está inactivo', async () => {
-      prisma.coupon.findUnique.mockResolvedValue({ ...mockCoupon, active: false });
+      prisma.coupon.findUnique.mockResolvedValue({
+        ...mockCoupon,
+        active: false,
+      });
 
       await expect(service.validate('DESCUENTO20', 200)).rejects.toThrow(
         BadRequestException,
@@ -121,7 +124,10 @@ describe('CouponsService', () => {
     });
 
     it('lanza BadRequestException si el monto no alcanza el mínimo', async () => {
-      prisma.coupon.findUnique.mockResolvedValue({ ...mockCoupon, minAmount: 500 });
+      prisma.coupon.findUnique.mockResolvedValue({
+        ...mockCoupon,
+        minAmount: 500,
+      });
 
       await expect(service.validate('DESCUENTO20', 200)).rejects.toThrow(
         BadRequestException,

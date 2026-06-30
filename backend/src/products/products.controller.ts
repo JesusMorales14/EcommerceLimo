@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -22,7 +32,7 @@ export class ProductsController {
     return this.products.findAll(
       category,
       subCategory,
-      isOffer    !== undefined ? isOffer    === 'true' : undefined,
+      isOffer !== undefined ? isOffer === 'true' : undefined,
       search,
       page ? +page : 1,
       limit ? +limit : 40,
@@ -37,17 +47,25 @@ export class ProductsController {
   }
 
   @Get(':id')
-  getById(@Param('id') id: string) { return this.products.findOne(+id); }
+  getById(@Param('id') id: string) {
+    return this.products.findOne(+id);
+  }
 
   @UseGuards(JwtGuard, AdminGuard)
   @Post()
-  create(@Body() dto: CreateProductDto) { return this.products.create(dto); }
+  create(@Body() dto: CreateProductDto) {
+    return this.products.create(dto);
+  }
 
   @UseGuards(JwtGuard, AdminGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateProductDto) { return this.products.update(+id, dto); }
+  update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+    return this.products.update(+id, dto);
+  }
 
   @UseGuards(JwtGuard, AdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.products.remove(+id); }
+  remove(@Param('id') id: string) {
+    return this.products.remove(+id);
+  }
 }

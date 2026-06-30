@@ -17,7 +17,10 @@ describe('DealSessionsService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DealSessionsService, { provide: PrismaService, useValue: prisma }],
+      providers: [
+        DealSessionsService,
+        { provide: PrismaService, useValue: prisma },
+      ],
     }).compile();
 
     service = module.get<DealSessionsService>(DealSessionsService);
@@ -57,7 +60,10 @@ describe('DealSessionsService', () => {
         endsAt: new Date(Date.now() - 1000),
       };
       prisma.dealSession.findFirst.mockResolvedValue(session);
-      prisma.dealSession.update.mockResolvedValue({ ...session, active: false });
+      prisma.dealSession.update.mockResolvedValue({
+        ...session,
+        active: false,
+      });
 
       const result = await service.getActive();
 
@@ -75,7 +81,11 @@ describe('DealSessionsService', () => {
     it('desactiva cualquier sesión activa previa y crea una nueva', async () => {
       const endsAt = new Date(Date.now() + 1000 * 60 * 60);
       prisma.dealSession.updateMany.mockResolvedValue({ count: 1 });
-      prisma.dealSession.create.mockResolvedValue({ id: 2, endsAt, active: true });
+      prisma.dealSession.create.mockResolvedValue({
+        id: 2,
+        endsAt,
+        active: true,
+      });
 
       const result = await service.create(endsAt);
 
@@ -93,7 +103,12 @@ describe('DealSessionsService', () => {
       const endsAt = new Date(Date.now() + 1000 * 60 * 60);
       const startsAt = new Date(Date.now() + 1000 * 60);
       prisma.dealSession.updateMany.mockResolvedValue({ count: 0 });
-      prisma.dealSession.create.mockResolvedValue({ id: 3, endsAt, startsAt, active: true });
+      prisma.dealSession.create.mockResolvedValue({
+        id: 3,
+        endsAt,
+        startsAt,
+        active: true,
+      });
 
       await service.create(endsAt, startsAt);
 

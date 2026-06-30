@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 const mockPrisma = {
   user: {
-    findMany:  jest.fn(),
+    findMany: jest.fn(),
     findUnique: jest.fn(),
   },
 };

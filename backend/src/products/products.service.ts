@@ -28,8 +28,8 @@ export class ProductsService {
     const where: any = {
       ...(category !== undefined ? { category } : {}),
       ...(subCategory !== undefined ? { subCategory } : {}),
-      ...(isOffer     !== undefined ? { isOffer }     : {}),
-      ...(isFeatured  !== undefined ? { isFeatured }  : {}),
+      ...(isOffer !== undefined ? { isOffer } : {}),
+      ...(isFeatured !== undefined ? { isFeatured } : {}),
       ...searchFilter,
     };
 
