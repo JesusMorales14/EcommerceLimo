@@ -140,24 +140,10 @@ jobs:
           path: frontend/coverage/
           retention-days: 7
 
-  # ── 5. Tests de Integración — Backend E2E (con PostgreSQL) ───────────────────
+  # ── 5. Tests de Integración — Backend E2E (con PostgreSQL nativo) ─────────────
   backend-e2e:
     name: "🔗 Tests Integración — Backend E2E"
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: ecommercelimo
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ci_test_password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     env:
       DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
       JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
@@ -168,6 +154,12 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
+
+      - name: Iniciar PostgreSQL nativo del runner
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'ci_test_password';"
+          sudo -u postgres createdb ecommercelimo
 
       - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
@@ -197,20 +189,6 @@ jobs:
     name: "🌐 Tests Funcionales/No Funcionales — Playwright"
     runs-on: ubuntu-latest
     needs: [lint, backend-unit, frontend-unit]
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: ecommercelimo
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ci_test_password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     env:
       DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
       JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
@@ -221,6 +199,12 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
+
+      - name: Iniciar PostgreSQL nativo del runner
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'ci_test_password';"
+          sudo -u postgres createdb ecommercelimo
 
       - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
