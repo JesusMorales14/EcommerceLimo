@@ -1,8 +1,9 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import type { OnInit} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
-import { User } from '../../../core/models/user.model';
+import type { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-admin-users',

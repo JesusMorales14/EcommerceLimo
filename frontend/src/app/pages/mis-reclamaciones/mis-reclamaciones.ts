@@ -1,9 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import type { OnInit} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReclamacionService } from '../../core/services/reclamacion.service';
+import type {
+  Reclamacion, ReclamacionEstado} from '../../core/models/reclamacion.model';
 import {
-  Reclamacion, ReclamacionEstado,
   ESTADO_LABELS, ESTADO_COLORS, TIPO_LABELS, TIPO_COLORS, ESTADO_ORDER,
 } from '../../core/models/reclamacion.model';
 

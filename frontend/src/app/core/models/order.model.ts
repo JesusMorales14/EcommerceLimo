@@ -1,4 +1,4 @@
-import { Product } from './product.model';
+import type { Product } from './product.model';
 
 export type OrderStatus =
   | 'PENDING'

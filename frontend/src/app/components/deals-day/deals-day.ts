@@ -10,9 +10,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './deals-day.scss',
 })
 export class DealsDay {
-  @Input() name: string = '';
-  @Input() category: string = '';
-  @Input() price: number = 0;
-  @Input() oldPrice: number = 0;
-  @Input() image: string = '';
+  @Input() name = '';
+  @Input() category = '';
+  @Input() price = 0;
+  @Input() oldPrice = 0;
+  @Input() image = '';
 }

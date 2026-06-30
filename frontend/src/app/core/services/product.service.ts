@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
+import type { Product } from '../models/product.model';
 import { ApiService } from './api.service';
 
 export interface ProductPage {

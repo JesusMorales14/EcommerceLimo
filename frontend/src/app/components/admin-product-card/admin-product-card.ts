@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../core/models/product.model';
+import type { Product } from '../../core/models/product.model';
 import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({

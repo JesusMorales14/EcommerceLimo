@@ -1,5 +1,5 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
-import { Product } from '../models/product.model';
+import type { Product } from '../models/product.model';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 

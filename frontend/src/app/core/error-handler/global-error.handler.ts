@@ -1,4 +1,5 @@
-import { ErrorHandler, inject, Injectable, NgZone } from '@angular/core';
+import type { ErrorHandler} from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoggerService } from '../logger/logger.service';
 

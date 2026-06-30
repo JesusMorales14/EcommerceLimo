@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import type { OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Product } from '../../core/models/product.model';
+import type { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart';
 import { FavoritesService } from '../../core/services/favorites.service';

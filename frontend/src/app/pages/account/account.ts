@@ -1,10 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import type { OnInit} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { OrderService } from '../../core/services/order.service';
-import { Order, OrderStatus, ORDER_STATUS_COLORS } from '../../core/models/order.model';
+import type { Order, OrderStatus} from '../../core/models/order.model';
+import { ORDER_STATUS_COLORS } from '../../core/models/order.model';
 import { CurrencyPenPipe, OrderStatusPipe } from '../../shared/pipes';
 
 @Component({

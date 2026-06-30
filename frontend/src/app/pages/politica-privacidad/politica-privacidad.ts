@@ -1,4 +1,5 @@
-import { Component, signal, AfterViewInit, OnDestroy } from '@angular/core';
+import type { AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 const SECTIONS = ['responsable', 'datos', 'finalidad', 'base', 'conservacion', 'derechos', 'terceros', 'cookies', 'seguridad', 'contacto'];
 

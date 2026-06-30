@@ -1,4 +1,5 @@
-import { APP_INITIALIZER, ApplicationConfig, ErrorHandler, inject, provideBrowserGlobalErrorListeners } from '@angular/core';
+import type { ApplicationConfig} from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, inject, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withInMemoryScrolling, withPreloading, PreloadAllModules } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';

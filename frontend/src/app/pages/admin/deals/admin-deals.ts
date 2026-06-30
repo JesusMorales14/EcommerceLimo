@@ -1,10 +1,12 @@
-import { Component, inject, OnDestroy, OnInit, signal, computed } from '@angular/core';
+import type { OnDestroy, OnInit} from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { DealSessionService, DealSession } from '../../../core/services/deal-session.service';
+import type { DealSession } from '../../../core/services/deal-session.service';
+import { DealSessionService } from '../../../core/services/deal-session.service';
 import { ProductService } from '../../../core/services/product.service';
-import { Product } from '../../../core/models/product.model';
+import type { Product } from '../../../core/models/product.model';
 
 @Component({
   selector: 'app-admin-deals',

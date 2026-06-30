@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Reclamacion, ReclamacionEstado } from '../models/reclamacion.model';
+import type { Reclamacion, ReclamacionEstado } from '../models/reclamacion.model';
 import { ApiService } from './api.service';
 
 @Injectable({ providedIn: 'root' })

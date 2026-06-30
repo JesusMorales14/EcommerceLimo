@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RecentlyViewedService } from '../../core/services/recently-viewed.service';
 import { CartService } from '../../core/services/cart';
-import { Product } from '../../core/models/product.model';
+import type { Product } from '../../core/models/product.model';
 import { CurrencyPenPipe } from '../../shared/pipes';
 
 @Component({

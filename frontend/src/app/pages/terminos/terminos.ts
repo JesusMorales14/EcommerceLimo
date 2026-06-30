@@ -1,4 +1,5 @@
-import { Component, signal, AfterViewInit, OnDestroy } from '@angular/core';
+import type { AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 const SECTIONS = ['aceptacion', 'uso', 'cuenta', 'compras', 'envios', 'devoluciones', 'propiedad', 'responsabilidad', 'modificaciones', 'contacto'];

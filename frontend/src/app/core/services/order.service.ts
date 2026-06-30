@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Order, OrderStatus } from '../models/order.model';
+import type { Order, OrderStatus } from '../models/order.model';
 import { ApiService } from './api.service';
 
 export interface OrderItemInput { productId: number; quantity: number; }

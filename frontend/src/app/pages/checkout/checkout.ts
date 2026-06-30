@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, AfterViewInit, signal } from '@angular/core';
+import type { OnInit, AfterViewInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';

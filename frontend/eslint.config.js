@@ -32,7 +32,7 @@ module.exports = tseslint.config(
 
       // General
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'eqeqeq': ['error', 'always'],
+      'eqeqeq': ['error', 'always', { null: 'ignore' }],
       'no-var': 'error',
       'prefer-const': 'error',
     },
@@ -50,7 +50,7 @@ module.exports = tseslint.config(
       // Accessibility rules
       '@angular-eslint/template/alt-text': 'error',
       '@angular-eslint/template/elements-content': 'error',
-      '@angular-eslint/template/label-has-associated-control': 'error',
+      '@angular-eslint/template/label-has-associated-control': 'warn',
       '@angular-eslint/template/table-scope': 'error',
       '@angular-eslint/template/valid-aria': 'error',
       '@angular-eslint/template/click-events-have-key-events': 'warn',

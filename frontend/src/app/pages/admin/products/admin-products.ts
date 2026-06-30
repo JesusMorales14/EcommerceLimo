@@ -1,9 +1,10 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import type { OnInit} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
-import { Product } from '../../../core/models/product.model';
+import type { Product } from '../../../core/models/product.model';
 import { AdminProductCard } from '../../../components/admin-product-card/admin-product-card';
 import { CurrencyPenPipe } from '../../../shared/pipes';
 
