@@ -1,4 +1,4 @@
-name: 🤖 Revisión IA de Código — Claude
+name: 🤖 Revisión IA de Código — Gemini
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   ai-code-review:
-    name: "🤖 Análisis IA — Claude Haiku"
+    name: "🤖 Análisis IA — Gemini Flash"
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -25,9 +25,9 @@ jobs:
             | head -c 14000 > /tmp/pr.diff
           echo "Tamaño del diff: $(wc -c < /tmp/pr.diff) bytes"
 
-      - name: Analizar con Claude y publicar revisión en el PR
+      - name: Analizar con Gemini y publicar revisión en el PR
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -37,14 +37,14 @@ jobs:
           const fs     = require('fs');
           const { execSync } = require('child_process');
 
-          const apiKey = process.env.ANTHROPIC_API_KEY;
+          const apiKey = process.env.GEMINI_API_KEY;
           if (!apiKey) {
-            console.log('⚠️  ANTHROPIC_API_KEY no configurada — omitiendo revisión IA.');
+            console.log('⚠️  GEMINI_API_KEY no configurada — omitiendo revisión IA.');
             process.exit(0);
           }
 
-          const diff     = fs.readFileSync('/tmp/pr.diff', 'utf8').trim();
-          const prTitle  = process.env.PR_TITLE || '(sin título)';
+          const diff    = fs.readFileSync('/tmp/pr.diff', 'utf8').trim();
+          const prTitle = process.env.PR_TITLE || '(sin título)';
 
           if (!diff) {
             console.log('ℹ️  Sin cambios relevantes en .ts/.html/.scss — omitiendo revisión.');
@@ -76,18 +76,17 @@ jobs:
           ].join('\n');
 
           const payload = JSON.stringify({
-            model: 'claude-haiku-4-5-20251001',
-            max_tokens: 900,
-            messages: [{ role: 'user', content: prompt }],
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { maxOutputTokens: 900, temperature: 0.3 },
           });
 
+          const path = `/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
           const options = {
-            hostname: 'api.anthropic.com',
-            path: '/v1/messages',
+            hostname: 'generativelanguage.googleapis.com',
+            path,
             method: 'POST',
             headers: {
-              'x-api-key': apiKey,
-              'anthropic-version': '2023-06-01',
               'content-type': 'application/json',
               'content-length': Buffer.byteLength(payload),
             },
@@ -99,19 +98,20 @@ jobs:
             res.on('end', () => {
               let review;
               try {
-                review = JSON.parse(body).content[0].text;
+                const parsed = JSON.parse(body);
+                review = parsed.candidates[0].content.parts[0].text;
               } catch (e) {
-                console.error('Error parseando respuesta de Claude:', body);
+                console.error('Error parseando respuesta de Gemini:', body);
                 process.exit(0);
               }
 
               const comment = [
-                '## 🤖 Revisión Automática de Código — Claude AI',
+                '## 🤖 Revisión Automática de Código — IA (Gemini 2.0 Flash)',
                 '',
                 review,
                 '',
                 '---',
-                '<sub>⚡ Análisis generado por <strong>Claude Haiku</strong> · Pipeline CI/CD EcommerceLimo · <em>4.6 Calidad 4.0</em></sub>',
+                '<sub>⚡ Análisis generado por <strong>Google Gemini 2.0 Flash</strong> · Pipeline CI/CD EcommerceLimo · <em>4.6 Calidad 4.0</em></sub>',
               ].join('\n');
 
               fs.writeFileSync('/tmp/ai-review.md', comment);
@@ -129,7 +129,7 @@ jobs:
           });
 
           req.on('error', (e) => {
-            console.error('Error llamando a Claude API:', e.message);
+            console.error('Error llamando a Gemini API:', e.message);
             process.exit(0);
           });
 
