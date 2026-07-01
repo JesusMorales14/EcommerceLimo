@@ -47,7 +47,7 @@ payload = json.dumps({
 
 url = (
     'https://generativelanguage.googleapis.com/v1beta/'
-    f'models/gemini-1.5-flash-latest:generateContent?key={api_key}'
+    f'models/gemini-3.1-flash-lite:generateContent?key={api_key}'
 )
 
 req = urllib.request.Request(
