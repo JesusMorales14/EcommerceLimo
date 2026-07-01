@@ -80,10 +80,10 @@ except (KeyError, IndexError, json.JSONDecodeError) as e:
     sys.exit(0)
 
 comment = (
-    '## Revision Automatica de Codigo - IA (Gemini 1.5 Flash)\n\n'
+    '## Revision Automatica de Codigo - IA (Gemini 3.1 Flash Lite)\n\n'
     + review
     + '\n\n---\n'
-    + '<sub>Analisis generado por Google Gemini 1.5 Flash · '
+    + '<sub>Analisis generado por Google Gemini 3.1 Flash Lite · '
     + 'Pipeline CI/CD EcommerceLimo · 4.6 Calidad 4.0</sub>'
 )
 
