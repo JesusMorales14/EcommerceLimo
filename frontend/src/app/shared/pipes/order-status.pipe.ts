@@ -5,7 +5,7 @@ import { ORDER_STATUS_LABELS, type OrderStatus } from '../../core/models/order.m
 @Pipe({ name: 'orderStatus', standalone: true, pure: true })
 export class OrderStatusPipe implements PipeTransform {
   transform(value: OrderStatus | string | null | undefined): string {
-    if (!value) return '';
-    return ORDER_STATUS_LABELS[value as OrderStatus] ?? value;
+    if (value == null || value === '') return '';
+    return ORDER_STATUS_LABELS[value as OrderStatus] ?? String(value);
   }
 }
