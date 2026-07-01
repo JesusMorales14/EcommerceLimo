@@ -25,73 +25,12 @@ jobs:
             | head -c 12000 > /tmp/pr.diff
           echo "Bytes en diff: $(wc -c < /tmp/pr.diff)"
 
-      - name: Llamar a Gemini API y generar revisión
+      - name: Analizar con Gemini y generar revisión
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PR_TITLE: ${{ github.event.pull_request.title }}
-        run: |
-          python3 << 'PYEOF'
-          import os, json, urllib.request, sys
-
-          api_key  = os.environ.get('GEMINI_API_KEY', '')
-          pr_title = os.environ.get('PR_TITLE', '(sin título)')
-
-          if not api_key:
-              print('⚠️  GEMINI_API_KEY no configurada — omitiendo revisión IA.')
-              sys.exit(0)
-
-          diff = open('/tmp/pr.diff').read().strip()
-          if not diff:
-              print('ℹ️  Sin cambios en .ts/.html/.scss — omitiendo revisión.')
-              open('/tmp/ai-review.md', 'w').write('')
-              sys.exit(0)
-
-          prompt = f"""Eres un revisor senior especializado en Angular 21 (standalone + signals) y NestJS 11.
-          Analiza el siguiente diff del Pull Request titulado: "{pr_title}".
-          Responde SIEMPRE en español con estas secciones exactas:
-
-          ## 🔴 Problemas críticos
-          (bugs, vulnerabilidades, lógica incorrecta — si no hay, escribe "Ninguno")
-
-          ## 🟡 Sugerencias de mejora
-          (rendimiento, legibilidad, buenas prácticas — máx. 5 puntos concisos)
-
-          ## 🟢 Puntos positivos
-          (qué está bien implementado — máx. 3 puntos)
-
-          ## ✅ Veredicto
-          Una sola frase indicando si el PR puede aprobarse o requiere cambios.
-
-          ```diff
-          {diff}
-          ```"""
-
-          payload = json.dumps({
-              'contents': [{'parts': [{'text': prompt}]}],
-              'generationConfig': {'maxOutputTokens': 900, 'temperature': 0.3},
-          }).encode()
-
-          url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}'
-          req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
-
-          try:
-              with urllib.request.urlopen(req, timeout=30) as resp:
-                  data   = json.loads(resp.read())
-                  review = data['candidates'][0]['content']['parts'][0]['text']
-          except Exception as e:
-              print(f'Error llamando a Gemini: {e}')
-              sys.exit(0)
-
-          comment = f"""## 🤖 Revisión Automática de Código — IA (Gemini 1.5 Flash)
-
-          {review}
-
-          ---
-          <sub>⚡ Análisis generado por **Google Gemini 1.5 Flash** · Pipeline CI/CD EcommerceLimo · <em>4.6 Calidad 4.0</em></sub>"""
-
-          open('/tmp/ai-review.md', 'w').write(comment)
-          print('✅ Revisión generada correctamente')
-          PYEOF
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: python3 .github/scripts/gemini_review.py
 
       - name: Publicar revisión en el PR
         env:
