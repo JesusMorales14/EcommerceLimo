@@ -157,7 +157,8 @@ jobs:
   e2e:
     name: 🌐 Playwright — funcional · accesibilidad · rendimiento
     needs: [frontend, backend]
-    runs-on: ubuntu-latest
+    # Versión fija: Playwright aún no soporta el ubuntu-latest más reciente (26.04)
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:16-alpine
