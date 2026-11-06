@@ -10,7 +10,7 @@ ARG BUILD_CONFIGURATION=production
 RUN npx ng build --configuration ${BUILD_CONFIGURATION}
 
 # ── Etapa 2: servidor estático (Nginx sin privilegios) ───────────────────────
-FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
+FROM nginxinc/nginx-unprivileged:1.31-alpine AS runtime
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 EXPOSE 8080
