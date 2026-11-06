@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # ── Etapa 1: dependencias + build ────────────────────────────────────────────
-FROM node:22-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /app
 RUN apk add --no-cache openssl
 COPY package.json package-lock.json ./
@@ -10,7 +10,7 @@ COPY . .
 RUN npx prisma generate && npm run build && npm prune --omit=dev
 
 # ── Etapa 2: imagen de ejecución mínima ──────────────────────────────────────
-FROM node:22-alpine AS runtime
+FROM node:25-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 RUN apk add --no-cache openssl
