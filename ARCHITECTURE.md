@@ -99,7 +99,7 @@ app/
 
 | Área | Medidas |
 |---|---|
-| Calidad | ESLint estricto (TS + plantillas), Prettier, pruebas con umbral de cobertura, SonarQube con Quality Gate, CodeQL, Dependabot, plantillas de PR |
+| Calidad | ESLint estricto (TS + plantillas), Prettier, pruebas con umbral de cobertura, SonarQube con Quality Gate, CodeQL, plantillas de PR |
 | SEO | `SeoTitleStrategy` + `SeoService` por ruta (título, descripción, canonical, Open Graph/Twitter, `noindex` en áreas privadas), JSON-LD de producto, `robots.txt`, sitemap dinámico (`/sitemap.xml`) |
 | Rendimiento | Lazy loading por feature, precarga selectiva, `@defer`, `OnPush` + zoneless, carga diferida de Leaflet/Stripe, presupuestos de bundle, índices de BD, caché HTTP en categorías, imágenes optimizadas |
 | Accesibilidad | Reglas a11y de angular-eslint en error, HTML semántico, *skip link*, foco visible, `aria-*`, diálogos accesibles, `prefers-reduced-motion`, pruebas automáticas con axe |

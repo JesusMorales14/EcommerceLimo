@@ -53,7 +53,7 @@ EcommerceLimo/
 │   │   ├── infrastructure/   Prisma (BD) y correo
 │   │   └── modules/          un módulo por dominio (controller → service → repository)
 │   └── prisma/               esquema, migraciones y seed
-├── .github/                  workflows de CI/CD, Dependabot y plantillas
+├── .github/                  workflows de CI/CD y plantillas
 ├── docker-compose.yml        entorno local completo (PostgreSQL + API + SPA)
 └── sonar-project.properties  configuración de SonarQube
 ```
