@@ -1,0 +1,18 @@
+<ol class="order-timeline" aria-label="Seguimiento del pedido">
+  @for (step of steps; track step.status; let last = $last) {
+    <li
+      class="tl-step"
+      [class.done]="isDone(status(), step.status)"
+      [class.active]="status() === step.status"
+      [attr.aria-current]="status() === step.status ? 'step' : null"
+    >
+      <div class="tl-dot" aria-hidden="true">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ step.icon }}</span>
+      </div>
+      <span class="tl-label">{{ step.label }}</span>
+    </li>
+    @if (!last) {
+      <li class="tl-line" [class.done]="isDone(status(), step.status)" aria-hidden="true"></li>
+    }
+  }
+</ol>

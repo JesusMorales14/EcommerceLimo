@@ -1,0 +1,39 @@
+<section class="offers-card" aria-labelledby="offers-title">
+  <h2 id="offers-title">
+    <span class="material-symbols-outlined" aria-hidden="true">sell</span>
+    Productos marcados como oferta ({{ offers().length }})
+  </h2>
+  <p class="form-hint">
+    Para agregar o quitar productos de las ofertas, ve a
+    <a routerLink="/admin/products">Gestión de Productos</a> y activa/desactiva el campo <em>Marcar como oferta</em>.
+  </p>
+
+  @if (offers().length === 0) {
+    <div class="no-offers">
+      <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+      <p>No hay productos marcados como oferta.</p>
+      <a routerLink="/admin/products" class="btn-go">Ir a Productos →</a>
+    </div>
+  } @else {
+    <ul class="offers-grid">
+      @for (product of pager.items(); track product.id) {
+        <li class="offer-chip">
+          <img [src]="product.images[0]" alt="" loading="lazy" width="48" height="48" />
+          <div class="chip-info">
+            <span class="chip-name">{{ product.name }}</span>
+            <span class="chip-price">{{ product.price | currencyPen }}</span>
+          </div>
+          @if (product.discount) {
+            <span class="chip-badge">-{{ product.discount }}%</span>
+          }
+        </li>
+      }
+    </ul>
+    <app-pagination
+      [page]="pager.page()"
+      [totalPages]="pager.totalPages()"
+      label="Paginación de ofertas"
+      (pageChange)="pager.goTo($event)"
+    />
+  }
+</section>

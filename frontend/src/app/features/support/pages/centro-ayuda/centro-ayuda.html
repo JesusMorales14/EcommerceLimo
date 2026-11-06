@@ -1,0 +1,52 @@
+<div class="help-page">
+
+  <section class="help-hero">
+    <span class="material-symbols-outlined hero-icon" aria-hidden="true">support_agent</span>
+    <h1 class="hero-title">Centro de Ayuda</h1>
+    <p class="hero-desc">¿Tienes alguna duda? Aquí encontrarás respuestas a las preguntas más frecuentes.</p>
+  </section>
+
+  <div class="help-content">
+
+    <div class="category-tabs" role="group" aria-label="Filtrar preguntas por categoría">
+      @for (cat of categories; track cat.id) {
+        <button
+          type="button"
+          class="cat-tab"
+          [class.active]="activeCategory() === cat.id"
+          [attr.aria-pressed]="activeCategory() === cat.id"
+          (click)="setCategory(cat.id)"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">{{ cat.icon }}</span>
+          <span class="cat-label">{{ cat.label }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="faq-list">
+      @for (faq of filteredFaqs(); track faq.id) {
+        <app-faq-item [faq]="faq" [open]="openFaqIds().has(faq.id)" (toggled)="toggle($event)" />
+      }
+    </div>
+
+    <div class="contact-section">
+      <h2 class="contact-title">¿No encontraste lo que buscabas?</h2>
+      <p class="contact-desc">Contáctanos directamente y te ayudaremos con cualquier consulta.</p>
+      <div class="contact-cards">
+        <a href="mailto:soporte@ecommercelimo.com" class="contact-card">
+          <span class="material-symbols-outlined" aria-hidden="true">email</span>
+          <span>soporte&#64;ecommercelimo.com</span>
+        </a>
+        <a href="tel:+51986123456" class="contact-card">
+          <span class="material-symbols-outlined" aria-hidden="true">phone</span>
+          <span>+51 986 123 456</span>
+        </a>
+        <a href="https://wa.me/51986123456" target="_blank" rel="noopener" class="contact-card">
+          <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+          <span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,29 @@
+@let stats = store.stats();
+<div class="reviews-summary">
+  <div class="rating-big">
+    <span class="rating-num">{{ stats.average | number: '1.1-1' }}</span>
+    <div>
+      <app-star-rating class="rating-stars" [value]="stats.average" />
+      <span class="rating-total">{{ stats.total }} opiniones</span>
+    </div>
+  </div>
+  <ul class="rating-bars" aria-label="Distribución de valoraciones">
+    @for (star of starLevels; track star) {
+      @let percent = store.distributionPercent(star);
+      <li class="bar-row">
+        <span class="bar-label">{{ star }}★</span>
+        <div
+          class="bar-track"
+          role="progressbar"
+          [attr.aria-valuenow]="percent"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [attr.aria-label]="star + ' estrellas'"
+        >
+          <div class="bar-fill" [style.width.%]="percent"></div>
+        </div>
+        <span class="bar-pct">{{ percent }}%</span>
+      </li>
+    }
+  </ul>
+</div>

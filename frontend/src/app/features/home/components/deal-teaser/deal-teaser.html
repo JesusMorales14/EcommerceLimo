@@ -1,0 +1,40 @@
+<section class="deal-teaser" aria-labelledby="teaser-title">
+  <div class="teaser-glow" aria-hidden="true"></div>
+  <div class="teaser-content">
+    <div class="teaser-left">
+      <span class="teaser-eyebrow">
+        <span class="teaser-dot" aria-hidden="true"></span>
+        PRÓXIMAMENTE
+      </span>
+      <h2 id="teaser-title" class="teaser-title">¡Ofertas del Día se activan pronto!</h2>
+      <p class="teaser-sub">
+        Prepárate para descuentos increíbles. Las ofertas comenzarán el
+        <strong>{{ session().startsAt | date: 'dd/MM/yyyy' }}</strong>
+        a las <strong>{{ session().startsAt | date: 'HH:mm' }}</strong>.
+      </p>
+    </div>
+    <div class="teaser-right">
+      <p class="teaser-label" id="teaser-clock-label">Las ofertas comienzan en</p>
+      <div class="teaser-clock" role="timer" aria-labelledby="teaser-clock-label">
+        <div class="clock-unit">
+          <span class="clock-num">{{ time().hours }}</span>
+          <span class="clock-label">HRS</span>
+        </div>
+        <span class="clock-sep" aria-hidden="true">:</span>
+        <div class="clock-unit">
+          <span class="clock-num">{{ time().minutes }}</span>
+          <span class="clock-label">MIN</span>
+        </div>
+        <span class="clock-sep" aria-hidden="true">:</span>
+        <div class="clock-unit">
+          <span class="clock-num">{{ time().seconds }}</span>
+          <span class="clock-label">SEG</span>
+        </div>
+      </div>
+      <p class="teaser-end-note">
+        <span class="material-symbols-outlined" aria-hidden="true">timer</span>
+        Finaliza el {{ session().endsAt | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
+    </div>
+  </div>
+</section>

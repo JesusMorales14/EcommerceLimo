@@ -1,0 +1,52 @@
+@use '../../styles/claim-form';
+
+:host {
+  display: block;
+}
+
+// ── Bien options ──────────────────────────────────────────────────────────────
+.bien-options {
+  display: flex;
+  gap: 12px;
+}
+
+.bien-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+
+  input[type='radio'] { display: none; }
+
+  .material-symbols-outlined {
+    font-size: 20px;
+    color: var(--text-muted);
+  }
+
+  &.selected {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-hover);
+
+    .material-symbols-outlined { color: var(--primary); }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .bien-options {
+    flex-direction: column;
+  }
+}
+
+.order-field {
+  margin-top: 16px;
+}

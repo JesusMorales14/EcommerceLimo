@@ -1,0 +1,14 @@
+<section class="section-block" aria-labelledby="featured-title">
+  <div class="section-head">
+    <h2 id="featured-title">Productos Destacados</h2>
+    @if (hasMore()) {
+      <a routerLink="/destacados" class="link-ver-mas">Ver todos →</a>
+    }
+  </div>
+
+  <div class="products-grid">
+    @for (product of products(); track product.id) {
+      <app-product-card [product]="product" [showDescription]="false" />
+    }
+  </div>
+</section>

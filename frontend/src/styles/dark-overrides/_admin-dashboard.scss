@@ -1,0 +1,57 @@
+// Ajustes de modo oscuro: ADMIN DASHBOARD
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .admin-hero {
+    h1 {
+      color: var(--text);
+    }
+    p {
+      color: var(--text-muted);
+    }
+  }
+  .stat-card {
+    background: var(--surface);
+    .stat-info .stat-value {
+      color: var(--text);
+    }
+    .stat-info .stat-label {
+      color: var(--text-muted);
+    }
+  }
+  .recent-orders {
+    background: var(--surface);
+    h3 {
+      color: var(--text);
+    }
+  }
+  .orders-mini-table {
+    th {
+      background: var(--surface-2);
+      color: var(--text-muted);
+    }
+    td {
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+    .status-chip {
+      background: var(--surface-2);
+      color: var(--text-muted);
+    }
+  }
+  .admin-card {
+    background: var(--surface);
+    h2 {
+      color: var(--text);
+    }
+    p {
+      color: var(--text-muted);
+    }
+    .card-arrow {
+      color: var(--border);
+    }
+    &:hover {
+      box-shadow: 0 8px 24px var(--shadow-lg);
+    }
+  }
+}

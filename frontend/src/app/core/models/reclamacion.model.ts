@@ -50,3 +50,38 @@ export const TIPO_COLORS: Record<ReclamacionTipo, string> = {
 export const ESTADO_ORDER: ReclamacionEstado[] = [
   'PENDIENTE', 'EN_REVISION', 'RESUELTO', 'CERRADO',
 ];
+
+export interface ReclamacionTimelineStep {
+  readonly estado: ReclamacionEstado;
+  readonly label: string;
+  readonly icon: string;
+}
+
+/** Pasos del seguimiento de una reclamación. */
+export const RECLAMACION_TIMELINE: readonly ReclamacionTimelineStep[] = [
+  { estado: 'PENDIENTE', label: 'Pendiente', icon: 'schedule' },
+  { estado: 'EN_REVISION', label: 'En revisión', icon: 'manage_search' },
+  { estado: 'RESUELTO', label: 'Resuelto', icon: 'check_circle' },
+  { estado: 'CERRADO', label: 'Cerrado', icon: 'lock' },
+];
+
+export const BIEN_LABELS: Record<ReclamacionBien, string> = {
+  PRODUCTO: 'Producto',
+  SERVICIO: 'Servicio',
+};
+
+/** Indica si `step` ya fue superado por el estado actual de la reclamación. */
+export function isReclamacionStepDone(current: ReclamacionEstado, step: ReclamacionEstado): boolean {
+  return ESTADO_ORDER.indexOf(current) > ESTADO_ORDER.indexOf(step);
+}
+
+export type ReclamacionFilter = ReclamacionEstado | 'TODOS';
+
+export type ReclamacionCounts = Record<ReclamacionFilter, number>;
+
+/** Cuenta las reclamaciones por estado (y el total). */
+export function countByEstado(list: readonly Reclamacion[]): ReclamacionCounts {
+  const counts: ReclamacionCounts = { TODOS: list.length, PENDIENTE: 0, EN_REVISION: 0, RESUELTO: 0, CERRADO: 0 };
+  for (const item of list) counts[item.estado]++;
+  return counts;
+}

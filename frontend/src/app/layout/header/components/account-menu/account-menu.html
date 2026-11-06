@@ -1,0 +1,45 @@
+<div class="account-wrap">
+  @if (isOpen()) {
+    <div class="account-backdrop" (click)="close()" role="presentation"></div>
+  }
+  <button
+    type="button"
+    class="icon-btn"
+    (click)="toggle()"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="menu"
+    aria-controls="account-dropdown"
+  >
+    <span class="material-symbols-outlined" aria-hidden="true">person</span>
+    <span class="icon-label">{{ auth.isLoggedIn() ? firstName() : 'Mi Cuenta' }}</span>
+  </button>
+
+  @if (isOpen()) {
+    <div id="account-dropdown" class="account-dropdown" role="menu">
+      @if (auth.isLoggedIn()) {
+        <div class="dropdown-user">
+          <strong>{{ auth.user()?.name }}</strong>
+          <span>{{ auth.user()?.email }}</span>
+        </div>
+        <a routerLink="/account" class="dropdown-item" role="menuitem" (click)="close()">
+          <span class="material-symbols-outlined" aria-hidden="true">person</span> Mi Perfil y Pedidos
+        </a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="dropdown-item admin-item" role="menuitem" (click)="close()">
+            <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span> Panel Admin
+          </a>
+        }
+        <button type="button" class="dropdown-item logout-item" role="menuitem" (click)="logout()">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span> Cerrar sesión
+        </button>
+      } @else {
+        <a routerLink="/login" class="dropdown-item" role="menuitem" (click)="close()">
+          <span class="material-symbols-outlined" aria-hidden="true">login</span> Iniciar sesión
+        </a>
+        <a routerLink="/register" class="dropdown-item" role="menuitem" (click)="close()">
+          <span class="material-symbols-outlined" aria-hidden="true">person_add</span> Crear cuenta
+        </a>
+      }
+    </div>
+  }
+</div>

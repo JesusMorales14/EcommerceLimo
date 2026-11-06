@@ -53,7 +53,7 @@ describe('GlobalErrorHandler', () => {
   it('navega a / si el error es un ChunkLoadError', () => {
     const error = new Error('ChunkLoadError: failed to load chunk');
     const zone = TestBed.inject(NgZone);
-    const runSpy = vi.spyOn(zone, 'run').mockImplementation((fn: any) => fn());
+    const runSpy = vi.spyOn(zone, 'run').mockImplementation((fn: () => unknown) => fn());
 
     handler.handleError(error);
 
@@ -63,7 +63,7 @@ describe('GlobalErrorHandler', () => {
 
   it('navega a / si el mensaje incluye "Loading chunk"', () => {
     const error = new Error('Loading chunk 5 failed');
-    vi.spyOn(TestBed.inject(NgZone), 'run').mockImplementation((fn: any) => fn());
+    vi.spyOn(TestBed.inject(NgZone), 'run').mockImplementation((fn: () => unknown) => fn());
 
     handler.handleError(error);
 

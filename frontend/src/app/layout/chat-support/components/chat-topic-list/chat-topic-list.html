@@ -1,0 +1,13 @@
+<div class="chat-welcome">
+  <div class="bubble-bot">¡Hola! 👋 Soy el asistente de <strong>EcommerceLimo</strong>. ¿En qué puedo ayudarte hoy?</div>
+</div>
+<p class="chat-categories-label" id="chat-topics-label">Elige un tema:</p>
+<div class="chat-topics" role="list" aria-labelledby="chat-topics-label">
+  @for (topic of topics(); track topic.id) {
+    <button type="button" class="topic-btn" role="listitem" (click)="selected.emit(topic)">
+      <span class="material-symbols-outlined topic-icon" aria-hidden="true">{{ topic.icon }}</span>
+      <span class="topic-label">{{ topic.label }}</span>
+      <span class="material-symbols-outlined topic-arrow" aria-hidden="true">chevron_right</span>
+    </button>
+  }
+</div>

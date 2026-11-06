@@ -1,0 +1,24 @@
+@let items = favorites.favoriteItems();
+<div class="favorites-page">
+  <div class="page-header">
+    <h1>
+      <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+      Mis Favoritos
+      <span class="count">({{ items.length }})</span>
+    </h1>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">heart_broken</span>
+      <p>Aún no tienes productos favoritos</p>
+      <a routerLink="/" class="btn-shop">Explorar productos</a>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (product of items; track product.id) {
+        <app-product-card [product]="product" [showDescription]="false" />
+      }
+    </div>
+  }
+</div>

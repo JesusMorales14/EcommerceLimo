@@ -1,0 +1,12 @@
+@for (review of reviews(); track review.id) {
+  <article class="review-item">
+    <header class="review-header">
+      <strong>{{ review.user.name }}</strong>
+      <app-star-rating class="stars-sm" [value]="review.rating" />
+      <time class="review-date" [attr.datetime]="review.createdAt">{{ review.createdAt | date: 'dd/MM/yyyy' }}</time>
+    </header>
+    <p>{{ review.comment }}</p>
+  </article>
+} @empty {
+  <p class="no-reviews">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+}

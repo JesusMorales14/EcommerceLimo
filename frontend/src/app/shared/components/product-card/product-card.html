@@ -1,0 +1,53 @@
+@let product = this.product();
+<article class="product-card" [style.animation-delay.ms]="animationDelayMs()">
+  <div class="card-img">
+    <a class="card-img-link" [routerLink]="detailLink()" tabindex="-1" aria-hidden="true">
+      <img class="img-main" [src]="product.images[0]" [alt]="product.name" loading="lazy" decoding="async" />
+      @if (product.images[1]) {
+        <img class="img-hover" [src]="product.images[1]" alt="" loading="lazy" decoding="async" />
+      }
+    </a>
+    <span class="brand-badge">{{ product.brand }}</span>
+    @if (product.discount) {
+      <span class="badge-off">-{{ product.discount }}%</span>
+    }
+    <button
+      type="button"
+      class="btn-wish"
+      [class.active]="isFavorite()"
+      [attr.aria-pressed]="isFavorite()"
+      [attr.aria-label]="(isFavorite() ? 'Quitar de favoritos: ' : 'Agregar a favoritos: ') + product.name"
+      (click)="toggleFavorite()"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">
+        {{ isFavorite() ? 'favorite' : 'favorite_border' }}
+      </span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <h3 class="card-name">
+      <a [routerLink]="detailLink()">{{ product.name }}</a>
+    </h3>
+    @if (showDescription() && product.description) {
+      <p class="card-desc">{{ product.description }}</p>
+    }
+    <div class="card-prices">
+      <span class="price-now">{{ finalPrice() | currencyPen }}</span>
+      @if (product.discount) {
+        <span class="price-old"><span class="visually-hidden">Antes: </span>{{ product.price | currencyPen }}</span>
+      }
+    </div>
+    @if (product.stock > 0) {
+      <p class="card-free-ship">
+        <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+        Despacho gratis
+      </p>
+      <button type="button" class="btn-add" (click)="addToCart()" [attr.aria-label]="'Agregar al carro: ' + product.name">
+        <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span> Agregar
+      </button>
+    } @else {
+      <p class="out-of-stock">Sin stock</p>
+    }
+  </div>
+</article>

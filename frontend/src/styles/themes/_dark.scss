@@ -1,0 +1,28 @@
+// Paleta del tema oscuro (CSS custom properties)
+[data-theme='dark'] {
+  --bg: #0d1a0e;
+  --surface: #162716;
+  --surface-2: #1c3020;
+  --surface-3: #243a28;
+  --border: #2a402a;
+  --border-2: #223222;
+  --text: #ffffff;
+  --text-2: #e0f0e0;
+  --text-muted: #b0ccb0;
+  --text-subtle: #80a080;
+  --primary: #00c853;
+  --primary-dark: #00a843;
+  --primary-hover: rgba(0, 200, 83, 0.12);
+  --primary-light: rgba(0, 200, 83, 0.15);
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.5);
+  --header-bg: rgba(13, 26, 14, 0.97);
+  --cat-bg: #1c3020;
+  --search-bg: #1c3020;
+  --search-border: #2a402a;
+  --nav-bg: rgba(22, 39, 22, 0.97);
+  --nav-border: #2a402a;
+  --nav-inactive: #80a080;
+  --card-bg: #162716;
+  --card-img-bg: #1c3020;
+}

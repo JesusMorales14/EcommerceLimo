@@ -1,0 +1,70 @@
+// Ajustes de modo oscuro: SEARCH PAGE
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .search-page {
+    background: var(--bg);
+  }
+  .search-header {
+    border-color: var(--border);
+    h1 {
+      color: var(--text);
+      em {
+        color: var(--primary);
+      }
+    }
+    .result-count {
+      color: var(--text-muted);
+    }
+  }
+
+  // Brand showcase — dark mode explicit overrides
+  .brand-row {
+    border-color: var(--border);
+  }
+  .brand-info {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .brand-eyebrow {
+    color: var(--text-muted);
+  }
+  .brand-name {
+    color: var(--text);
+  }
+  .brand-divider {
+    background: linear-gradient(to right, var(--primary), transparent);
+  }
+  .brand-description {
+    color: var(--text-muted);
+  }
+  .brand-products-count {
+    color: var(--primary);
+    background: var(--primary-hover);
+    border-color: var(--primary-light);
+  }
+  .brand-dots .dot {
+    background: var(--border);
+    &:first-child {
+      background: var(--primary);
+    }
+  }
+  .brand-count-badge {
+    color: #ffffff;
+  }
+
+  // Loading / empty states on search
+  .search-page .loading-state,
+  .search-page .empty-state {
+    color: var(--text-muted);
+    .material-symbols-outlined {
+      color: var(--text-muted);
+    }
+    p {
+      color: var(--text-muted);
+    }
+    strong {
+      color: var(--text);
+    }
+  }
+}

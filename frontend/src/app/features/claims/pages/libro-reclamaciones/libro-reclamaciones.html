@@ -1,0 +1,20 @@
+<div class="reclamaciones-page">
+  <section class="reclamaciones-hero">
+    <span class="material-symbols-outlined hero-icon" aria-hidden="true">assignment</span>
+    <h1 class="hero-title">Libro de Reclamaciones</h1>
+    <p class="hero-desc">
+      Conforme a la Ley N° 29571 — Código de Protección y Defensa del Consumidor, ponemos a tu disposición este libro
+      de reclamaciones virtual.
+    </p>
+    <div class="legal-note">
+      <span class="material-symbols-outlined" aria-hidden="true">info</span>
+      <span>Responderemos tu reclamo o queja en un plazo máximo de <strong>30 días calendario</strong>.</span>
+    </div>
+  </section>
+
+  @if (registeredClaim(); as claim) {
+    <app-claim-success-card [claim]="claim" (newClaim)="registeredClaim.set(null)" />
+  } @else {
+    <app-claim-form (submitted)="registeredClaim.set($event)" />
+  }
+</div>

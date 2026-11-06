@@ -1,0 +1,39 @@
+@if (store.product(); as product) {
+  <section class="pdp-tabs">
+    <div class="tabs-nav" role="tablist" aria-label="Información del producto">
+      @for (tab of tabs(); track tab.id; let i = $index) {
+        <button
+          type="button"
+          role="tab"
+          class="tab-btn"
+          [id]="'tab-' + tab.id"
+          [class.active]="activeTab() === tab.id"
+          [attr.aria-selected]="activeTab() === tab.id"
+          [attr.aria-controls]="'panel-' + tab.id"
+          [attr.tabindex]="activeTab() === tab.id ? 0 : -1"
+          (click)="activeTab.set(tab.id)"
+          (keydown)="onKeydown($event, i)"
+        >
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+
+    <div class="tab-body" role="tabpanel" [id]="'panel-' + activeTab()" [attr.aria-labelledby]="'tab-' + activeTab()">
+      @switch (activeTab()) {
+        @case ('description') {
+          <div class="tab-description">
+            <h2>Sobre este producto</h2>
+            <p>{{ product.description }}</p>
+          </div>
+        }
+        @case ('specs') {
+          <app-product-specs [product]="product" />
+        }
+        @case ('reviews') {
+          <app-product-reviews />
+        }
+      }
+    </div>
+  </section>
+}

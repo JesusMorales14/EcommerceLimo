@@ -1,0 +1,47 @@
+// Ajustes de modo oscuro: FOOTER
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .main-footer {
+    background: var(--surface-2);
+    color: var(--text-2);
+  }
+  .brand-title {
+    color: var(--text);
+  }
+  .brand-desc {
+    color: var(--text-muted);
+  }
+  .col-title {
+    color: var(--text-2);
+  }
+  .footer-links a {
+    color: var(--text-muted);
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  .social-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-muted);
+    &:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-hover);
+    }
+  }
+  .copyright {
+    color: var(--text-muted);
+  }
+  .payment-methods {
+    color: var(--text-subtle);
+  }
+  .footer-bottom {
+    border-color: var(--border);
+  }
+  app-footer footer {
+    background: var(--surface-3);
+    color: var(--text-2);
+  }
+}

@@ -1,0 +1,88 @@
+@use '../../styles/checkout-shared';
+
+:host {
+  display: block;
+}
+
+// ── Card 3D ───────────────────────────────────────────────────────────────────
+.card-section {
+  display: flex;
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 24px;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accepted-cards {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.card-logo {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid #e2e8f0;
+
+  &.visa {
+    color: #1a1f71;
+  }
+  &.mc {
+    color: #eb001b;
+  }
+  &.amex {
+    color: #007bc1;
+  }
+}
+
+.ssl-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #16a34a;
+  font-weight: 700;
+  margin-left: auto;
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .card-section {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 20px !important;
+    align-items: stretch !important;
+
+    > * {
+      flex: none !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+  }
+
+  .card-form {
+    width: 100% !important;
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

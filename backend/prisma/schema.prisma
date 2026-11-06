@@ -78,6 +78,10 @@ model Product {
   orderItems  OrderItem[]
   favorites   Favorite[]
   reviews     Review[]
+
+  @@index([category, subCategory])
+  @@index([isOffer])
+  @@index([isFeatured])
 }
 
 model Favorite {
@@ -109,6 +113,9 @@ model Order {
   user      User         @relation(fields: [userId], references: [id])
 
   items     OrderItem[]
+
+  @@index([userId, createdAt])
+  @@index([status])
 }
 
 model OrderItem {
@@ -121,6 +128,9 @@ model OrderItem {
 
   productId Int
   product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
 }
 
 model Review {
@@ -136,6 +146,7 @@ model Review {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
+  @@index([productId])
 }
 
 model DealSession {
@@ -144,6 +155,8 @@ model DealSession {
   endsAt    DateTime
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+
+  @@index([active, startsAt])
 }
 
 model Reclamacion {
@@ -165,6 +178,9 @@ model Reclamacion {
   user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+
+  @@index([estado, createdAt])
+  @@index([userId])
 }
 
 model Coupon {

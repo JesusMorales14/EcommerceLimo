@@ -1,0 +1,76 @@
+@let card = store.card();
+<div class="card-section">
+  <app-credit-card-preview [card]="card" [flipped]="flipped()" />
+
+  <div class="card-form">
+    <div class="field">
+      <label for="card-holder">Nombre del titular</label>
+      <input
+        id="card-holder"
+        type="text"
+        name="holder"
+        class="uppercase"
+        [ngModel]="card.holder"
+        (ngModelChange)="store.updateCard({ holder: $event })"
+        placeholder="COMO APARECE EN LA TARJETA"
+        autocomplete="cc-name"
+      />
+    </div>
+    <div class="field">
+      <label for="card-number">Número de tarjeta</label>
+      <input
+        #numberInput
+        id="card-number"
+        type="text"
+        name="cardnumber"
+        [value]="card.number"
+        (input)="onNumberInput(numberInput)"
+        placeholder="1234 5678 9012 3456"
+        autocomplete="cc-number"
+        inputmode="numeric"
+        maxlength="19"
+      />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="card-expiry">Vencimiento (MM/AA)</label>
+        <input
+          #expiryInput
+          id="card-expiry"
+          type="text"
+          name="expiry"
+          [value]="card.expiry"
+          (input)="onExpiryInput(expiryInput)"
+          placeholder="MM/AA"
+          autocomplete="cc-exp"
+          inputmode="numeric"
+          maxlength="5"
+        />
+      </div>
+      <div class="field">
+        <label for="card-cvv">CVV</label>
+        <input
+          id="card-cvv"
+          type="password"
+          name="cvv"
+          [ngModel]="card.cvv"
+          (ngModelChange)="store.updateCard({ cvv: $event })"
+          placeholder="•••"
+          autocomplete="cc-csc"
+          inputmode="numeric"
+          maxlength="4"
+          (focus)="flipped.set(true)"
+          (blur)="flipped.set(false)"
+        />
+      </div>
+    </div>
+    <div class="accepted-cards" aria-label="Tarjetas aceptadas">
+      <span class="card-logo visa">VISA</span>
+      <span class="card-logo mc">MC</span>
+      <span class="card-logo amex">AMEX</span>
+      <span class="ssl-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">lock</span> Pago 256-bit SSL
+      </span>
+    </div>
+  </div>
+</div>

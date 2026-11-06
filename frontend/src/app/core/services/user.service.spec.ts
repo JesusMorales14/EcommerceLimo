@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
 import { type User } from '../models/user.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 const mockUser: User = {
   id: 1,

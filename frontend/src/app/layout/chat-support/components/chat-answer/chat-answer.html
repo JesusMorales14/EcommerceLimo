@@ -1,0 +1,29 @@
+<button type="button" class="chat-back" (click)="back.emit()">
+  <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+  Volver a temas
+</button>
+
+<div class="chat-question-header">
+  <span class="material-symbols-outlined q-icon" aria-hidden="true">{{ topic().icon }}</span>
+  <strong>{{ topic().label }}</strong>
+</div>
+
+<div class="bubble-bot answer-bubble" aria-live="polite">
+  @for (line of lines(); track $index) {
+    @if (line.trim()) {
+      <p>{{ line }}</p>
+    } @else {
+      <br />
+    }
+  }
+</div>
+
+<p class="chat-more-help">¿Necesitas más ayuda?</p>
+<div class="chat-more-actions">
+  <a [href]="emailHref" class="more-btn">
+    <span class="material-symbols-outlined" aria-hidden="true">mail</span> Email
+  </a>
+  <a [href]="whatsappUrl" target="_blank" rel="noopener noreferrer" class="more-btn more-btn-green">
+    <span class="material-symbols-outlined" aria-hidden="true">chat</span> WhatsApp
+  </a>
+</div>

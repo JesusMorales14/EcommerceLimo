@@ -1,0 +1,18 @@
+<div class="price-block">
+  <div class="price-row">
+    <span class="price-now">{{ finalPrice() | currencyPen }}</span>
+    @if (product().discount) {
+      <span class="badge-off">-{{ product().discount }}% OFF</span>
+    }
+  </div>
+  @if (product().discount) {
+    <p class="price-before">
+      Precio normal: <s>{{ product().price | currencyPen }}</s>
+    </p>
+  }
+  <div class="greencard-box">
+    <span class="material-symbols-outlined" aria-hidden="true">credit_card</span>
+    Hasta {{ installments.count }} cuotas sin interés de {{ installment() | currencyPen: 2 }} con
+    {{ installments.cardName }}
+  </div>
+</div>

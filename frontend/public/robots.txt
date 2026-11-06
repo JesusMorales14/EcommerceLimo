@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account
+Disallow: /checkout
+Disallow: /cart
+Disallow: /favorites
+Disallow: /mis-reclamaciones
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://ecommerce-limo.vercel.app/sitemap.xml

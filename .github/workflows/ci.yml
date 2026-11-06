@@ -1,334 +1,282 @@
-name: CI/CD Pipeline — EcommerceLimo
+# ─────────────────────────────────────────────────────────────────────────────
+# Integración continua — EcommerceLimo (monorepo Angular + NestJS)
+#
+#  changes ──┬─ frontend (lint · test+cobertura · build) ─┐
+#            ├─ backend  (lint · typecheck · test · build)─┼─ sonarqube (Quality Gate)
+#            ├─ backend-e2e (PostgreSQL de servicio)       │
+#            └─ e2e (Playwright funcional + a11y + perf) ───┘
+#                                                └─ docker (build de imágenes)
+# ─────────────────────────────────────────────────────────────────────────────
+name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+  workflow_dispatch:
+
+# Cancela ejecuciones anteriores de la misma rama/PR
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 env:
   NODE_VERSION: '22'
+  # Variables de la API usadas en pruebas de integración / e2e
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommercelimo
+  JWT_SECRET: ci-jwt-secret-con-al-menos-32-caracteres-de-largo
+  FRONTEND_URL: http://localhost:4200
+  CORS_ORIGINS: http://localhost:4200
+  E2E_USER_PASSWORD: Usuario123-ci
+  SEED_ADMIN_PASSWORD: Admin123456-ci
+  SEED_USER_PASSWORD: Usuario123-ci
 
-# ─────────────────────────────────────────────────────────────────────────────
-# JOBS
-# ─────────────────────────────────────────────────────────────────────────────
 jobs:
-
-  # ── 1. Análisis Estático de Código (ESLint) ──────────────────────────────────
-  lint:
-    name: "🔍 Análisis Estático — ESLint"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Instalar dependencias (frontend)
-        run: npm ci
-        working-directory: frontend
-
-      - name: Ejecutar ESLint — Frontend
-        run: npm run lint
-        working-directory: frontend
-
-      - name: Setup Node.js para backend
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Instalar dependencias (backend)
-        run: npm ci
-        working-directory: backend
-
-      - name: Ejecutar ESLint — Backend
-        run: npm run lint:ci
-        working-directory: backend
-
-  # ── 2. Análisis de Seguridad (CodeQL) ────────────────────────────────────────
-  codeql:
-    name: "🛡️ Análisis de Seguridad — CodeQL"
+  # ── Detecta qué partes del monorepo cambiaron ──────────────────────────────
+  changes:
+    name: 🔎 Detectar cambios
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
-      actions: read
-      contents: read
+      pull-requests: read
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Inicializar CodeQL (TypeScript / JavaScript)
-        uses: github/codeql-action/init@v3
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
-          languages: javascript-typescript
-          queries: security-and-quality
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/ci.yml'
+            backend:
+              - 'backend/**'
+              - '.github/workflows/ci.yml'
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Ejecutar análisis CodeQL
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:javascript-typescript"
-
-  # ── 3. Tests Unitarios — Backend (Jest) ──────────────────────────────────────
-  backend-unit:
-    name: "🧪 Tests Unitarios — Backend"
+  # ── Frontend: lint, pruebas unitarias con cobertura y build ────────────────
+  frontend:
+    name: 🅰️ Frontend — lint · test · build
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Instalar dependencias
-        run: npm ci
-        working-directory: backend
-
-      - name: Ejecutar tests unitarios con cobertura
-        run: npm run test:cov -- --forceExit --ci
-        working-directory: backend
-
-      - name: Subir reporte de cobertura (backend)
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: backend-coverage-report
-          path: backend/coverage/
-          retention-days: 7
-
-  # ── 4. Tests Unitarios — Frontend (Vitest) ───────────────────────────────────
-  frontend-unit:
-    name: "🧪 Tests Unitarios — Frontend"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Instalar dependencias
-        run: npm ci
+    defaults:
+      run:
         working-directory: frontend
-
-      - name: Ejecutar tests unitarios con cobertura
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: ESLint (incluye reglas de accesibilidad)
+        run: npm run lint
+      - name: Pruebas unitarias (Vitest) con umbral de cobertura
         run: npm test -- --watch=false --coverage
-        working-directory: frontend
-
-      - name: Subir reporte de cobertura (frontend)
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Build de producción (con budgets de tamaño)
+        run: npm run build
+      - uses: actions/upload-artifact@v4
         with:
-          name: frontend-coverage-report
-          path: frontend/coverage/
+          name: frontend-coverage
+          path: frontend/coverage/lcov.info
           retention-days: 7
 
-  # ── 5. Tests de Integración — Backend E2E (con PostgreSQL nativo) ─────────────
-  backend-e2e:
-    name: "🔗 Tests Integración — Backend E2E"
+  # ── Backend: lint, tipos, pruebas unitarias con cobertura y build ──────────
+  backend:
+    name: 🐈 Backend — lint · test · build
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
-      JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
-      STRIPE_SECRET_KEY: "sk_test_dummy"
-      STRIPE_WEBHOOK_SECRET: "whsec_dummy"
-      FRONTEND_URL: "http://localhost:4200"
-      PORT: "3000"
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Iniciar PostgreSQL nativo del runner
-        run: |
-          sudo systemctl start postgresql.service
-          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'ci_test_password';"
-          sudo -u postgres createdb ecommercelimo
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: npm
           cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma generate
+      - name: ESLint
+        run: npm run lint:ci
+      - name: Verificación de tipos
+        run: npx tsc --noEmit
+      - name: Pruebas unitarias (Jest) con umbral de cobertura
+        run: npm run test:cov -- --ci
+      - name: Build
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage/lcov.info
+          retention-days: 7
 
-      - name: Instalar dependencias
-        run: npm ci
-        working-directory: backend
-
-      - name: Ejecutar migraciones Prisma
-        run: npx prisma migrate deploy
-        working-directory: backend
-
-      - name: Poblar base de datos (seed)
-        run: npx ts-node prisma/seed.ts
-        working-directory: backend
-
-      - name: Ejecutar tests de integración E2E
-        run: npm run test:e2e -- --forceExit
-        working-directory: backend
-
-  # ── 6. Tests Funcionales y No Funcionales — Playwright ───────────────────────
-  frontend-e2e:
-    name: "🌐 Tests Funcionales/No Funcionales — Playwright"
+  # ── Backend: pruebas de integración contra PostgreSQL real ─────────────────
+  backend-e2e:
+    name: 🔗 Backend — integración (PostgreSQL)
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    needs: [lint, backend-unit, frontend-unit]
-    env:
-      DATABASE_URL: "postgresql://postgres:ci_test_password@localhost:5432/ecommercelimo"
-      JWT_SECRET: "ci-jwt-secret-32chars-minimum-length-required"
-      STRIPE_SECRET_KEY: "sk_test_dummy"
-      STRIPE_WEBHOOK_SECRET: "whsec_dummy"
-      FRONTEND_URL: "http://localhost:4200"
-      PORT: "3000"
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ecommercelimo
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Iniciar PostgreSQL nativo del runner
-        run: |
-          sudo systemctl start postgresql.service
-          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'ci_test_password';"
-          sudo -u postgres createdb ecommercelimo
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Instalar dependencias (backend)
-        run: npm ci
-        working-directory: backend
-
-      - name: Instalar dependencias (frontend)
-        run: npm ci
-        working-directory: frontend
-
-      - name: Ejecutar migraciones y poblar DB
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - name: Migraciones y datos de prueba
         run: |
           npx prisma migrate deploy
-          npx ts-node prisma/seed.ts
-        working-directory: backend
+          npm run seed
+      - name: Pruebas e2e (supertest)
+        run: npm run test:e2e -- --ci --forceExit
 
-      - name: Build Backend (producción)
-        run: npm run build
+  # ── Pruebas de extremo a extremo en navegador ───────────────────────────────
+  e2e:
+    name: 🌐 Playwright — funcional · accesibilidad · rendimiento
+    needs: [frontend, backend]
+    # Versión fija: Playwright aún no soporta el ubuntu-latest más reciente (26.04)
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ecommercelimo
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
+      - name: Instalar dependencias
+        run: |
+          npm ci --prefix backend
+          npm ci --prefix frontend
+      - name: Preparar base de datos y API
         working-directory: backend
-
-      - name: Instalar navegadores Playwright (Chromium + dependencias del SO)
+        run: |
+          npx prisma migrate deploy
+          npm run seed
+          npm run build
+          nohup npm run start:prod > /tmp/backend.log 2>&1 &
+      - name: Instalar Chromium
+        working-directory: frontend
         run: npx playwright install chromium --with-deps
+      - name: Levantar frontend
         working-directory: frontend
-
-      - name: Iniciar Backend en background
-        run: nohup npm run start:prod > /tmp/backend.log 2>&1 &
-        working-directory: backend
-
-      - name: Iniciar Frontend dev server en background
         run: nohup npm start > /tmp/frontend.log 2>&1 &
+      - name: Esperar servicios
+        run: |
+          npx --yes wait-on@8 -t 120000 http://localhost:3000/health/live http://localhost:4200
+      - name: Pruebas funcionales
         working-directory: frontend
-
-      - name: Esperar a que el Backend esté disponible
-        run: |
-          echo "Esperando backend en puerto 3000..."
-          timeout 60 bash -c 'until curl -sf http://localhost:3000/products > /dev/null; do sleep 2; done'
-          echo "✅ Backend listo"
-
-      - name: Esperar a que el Frontend esté disponible
-        run: |
-          echo "Esperando frontend en puerto 4200..."
-          timeout 90 bash -c 'until curl -sf http://localhost:4200 > /dev/null; do sleep 3; done'
-          echo "✅ Frontend listo"
-
-      - name: Ejecutar pruebas funcionales (Playwright)
         run: npm run e2e:functional
+      - name: Pruebas no funcionales (axe + rendimiento)
         working-directory: frontend
-
-      - name: Ejecutar pruebas no funcionales (Playwright)
         run: npm run e2e:non-functional
-        working-directory: frontend
-
-      - name: Subir reporte Playwright
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
           path: frontend/playwright-report/
           retention-days: 7
-
-      - name: Subir capturas de fallos
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: playwright-failures
-          path: frontend/test-results/
-          retention-days: 7
-
-      - name: Mostrar logs del backend si hay fallos
+      - name: Logs de la API ante fallos
         if: failure()
         run: cat /tmp/backend.log || true
 
-  # ── 7. Build de Producción ────────────────────────────────────────────────────
-  build:
-    name: "🏗️ Build de Producción"
+  # ── Calidad de código: SonarQube / SonarCloud ──────────────────────────────
+  sonarqube:
+    name: 📊 SonarQube — Quality Gate
+    needs: [frontend, backend]
+    # Requiere los secretos SONAR_TOKEN (y SONAR_HOST_URL si es SonarQube propio)
+    if: >-
+      always() && !cancelled() &&
+      !contains(needs.*.result, 'failure') &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
-    needs: [lint, backend-unit, frontend-unit]
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Instalar dependencias (frontend)
-        run: npm ci
-        working-directory: frontend
-
-      - name: Build Angular (producción)
-        run: npm run build
-        working-directory: frontend
-
-      - name: Instalar dependencias (backend)
-        run: npm ci
-        working-directory: backend
-
-      - name: Build NestJS (producción)
-        run: npm run build
-        working-directory: backend
-
-      - name: Subir artefactos de build
-        uses: actions/upload-artifact@v4
+          fetch-depth: 0 # necesario para el análisis de código nuevo / blame
+      - name: Descargar reportes de cobertura
+        uses: actions/download-artifact@v4
         with:
-          name: production-builds
-          path: |
-            frontend/dist/
-            backend/dist/
-          retention-days: 14
-
-      - name: Resumen del build
+          pattern: '*-coverage'
+          path: coverage-reports
+      - name: Ubicar reportes lcov con rutas relativas a la raíz
         run: |
-          echo "## ✅ Build de Producción Completado" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Componente | Estado |" >> $GITHUB_STEP_SUMMARY
-          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Angular Frontend | ✅ OK |" >> $GITHUB_STEP_SUMMARY
-          echo "| NestJS Backend   | ✅ OK |" >> $GITHUB_STEP_SUMMARY
+          mkdir -p frontend/coverage backend/coverage
+          if [ -f coverage-reports/frontend-coverage/lcov.info ]; then
+            sed 's#^SF:#SF:frontend/#' coverage-reports/frontend-coverage/lcov.info > frontend/coverage/lcov.info
+          fi
+          if [ -f coverage-reports/backend-coverage/lcov.info ]; then
+            sed 's#^SF:#SF:backend/#' coverage-reports/backend-coverage/lcov.info > backend/coverage/lcov.info
+          fi
+      - name: Análisis SonarQube
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Vacío ⇒ SonarCloud (https://sonarcloud.io)
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+      - name: Verificar Quality Gate
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+      - name: Aviso si no hay token configurado
+        if: env.SONAR_TOKEN == ''
+        run: echo "::warning::SONAR_TOKEN no configurado; se omite el análisis de SonarQube."
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # ── Verifica que las imágenes Docker se construyen ─────────────────────────
+  docker:
+    name: 🐳 Docker — build de imágenes
+    needs: [frontend, backend]
+    if: always() && !cancelled() && !contains(needs.*.result, 'failure') && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [frontend, backend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.app }}
+          push: false
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}

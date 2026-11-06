@@ -1,0 +1,125 @@
+<header class="main-header">
+  <div class="promo-bar">
+    <span class="material-symbols-outlined promo-icon" aria-hidden="true">local_shipping</span>
+    <span>¡El detalle perfecto existe y está aquí!</span>
+  </div>
+
+  @if (search.isOpen()) {
+    <app-search-results-modal />
+  }
+
+  @if (mobileMenuOpen()) {
+    <app-mobile-menu [closing]="mobileMenuClosing()" (closed)="closeMobileMenu()" />
+  }
+
+  <!-- Fila 1: logo · buscador · acciones de usuario -->
+  <div class="header-top">
+    <div class="header-container">
+      <a class="logo" routerLink="/" aria-label="EcommerceLimo, ir al inicio">
+        <span class="material-symbols-outlined logo-icon" aria-hidden="true">storefront</span>
+        <span class="logo-text">EcommerceLimo</span>
+      </a>
+
+      <form class="search-bar" role="search" (submit)="submitSearch($event)">
+        <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+        <input
+          type="search"
+          name="query"
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+          placeholder="Buscar productos..."
+          aria-label="Buscar productos"
+        />
+        <button type="submit" class="search-btn">Buscar</button>
+      </form>
+
+      <!-- Móvil: tema, cuenta y menú hamburguesa -->
+      <div class="mobile-actions">
+        <button
+          type="button"
+          class="mobile-icon-btn"
+          (click)="toggleTheme($event)"
+          [attr.aria-label]="theme.isDark() ? 'Activar modo claro' : 'Activar modo oscuro'"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">
+            {{ theme.isDark() ? 'light_mode' : 'dark_mode' }}
+          </span>
+        </button>
+        <a routerLink="/account" class="mobile-icon-btn" aria-label="Mi cuenta">
+          <span class="material-symbols-outlined" aria-hidden="true">person</span>
+        </a>
+        <button
+          type="button"
+          class="mobile-icon-btn mobile-menu-btn"
+          (click)="openMobileMenu()"
+          aria-label="Abrir menú de categorías"
+          aria-controls="mobile-menu"
+          [attr.aria-expanded]="mobileMenuOpen()"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+        </button>
+      </div>
+
+      <nav class="user-menu" aria-label="Acciones de usuario">
+        <button
+          type="button"
+          class="icon-btn theme-toggle"
+          (click)="toggleTheme($event)"
+          [attr.aria-label]="theme.isDark() ? 'Activar modo claro' : 'Activar modo oscuro'"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">
+            {{ theme.isDark() ? 'light_mode' : 'dark_mode' }}
+          </span>
+          <span class="icon-label" aria-hidden="true">Tema</span>
+        </button>
+
+        <a routerLink="/favorites" class="icon-btn" [attr.aria-label]="'Favoritos (' + favorites.count() + ')'">
+          <span class="icon-wrap">
+            <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+            @if (favorites.count() > 0) {
+              <span class="badge badge-fav" aria-hidden="true">{{ favorites.count() }}</span>
+            }
+          </span>
+          <span class="icon-label" aria-hidden="true">Favoritos</span>
+        </a>
+
+        <app-account-menu />
+
+        <button
+          type="button"
+          class="icon-btn cart-btn"
+          (click)="openCart()"
+          [attr.aria-label]="'Abrir mi carro (' + cart.count() + ' productos)'"
+        >
+          <span class="icon-wrap">
+            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
+            @if (cart.count() > 0) {
+              <span class="badge" aria-hidden="true">{{ cart.count() }}</span>
+            }
+          </span>
+          <span class="icon-label" aria-hidden="true">Mi Carro</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Buscador móvil (visible solo en pantallas pequeñas) -->
+  <div class="main-search">
+    <form class="mobile-search-row" role="search" (submit)="submitSearch($event)">
+      <span class="material-symbols-outlined ms-icon" aria-hidden="true">search</span>
+      <input
+        type="search"
+        name="mobileQuery"
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+        placeholder="Buscar en EcommerceLimo"
+        aria-label="Buscar productos"
+      />
+      <button type="submit" class="ms-btn" aria-label="Buscar">
+        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+      </button>
+    </form>
+  </div>
+
+  <app-category-nav />
+</header>

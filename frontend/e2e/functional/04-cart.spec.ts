@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// El CartService es in-memory (no localStorage). El carrito persiste mientras
-// se use Angular Router. La UI principal es el cart drawer (aside.cart-drawer),
-// no la página /cart (que queda vacía tras un full page reload).
+// El carrito se persiste en localStorage ('cart_items'). La UI principal es el
+// drawer lateral (aside.cart-drawer); la página /cart muestra el mismo contenido.
 
 test.describe('PF-04: Carrito de Compras', () => {
   test('PF-04-01: carrito vacío muestra estado vacío', async ({ page }) => {

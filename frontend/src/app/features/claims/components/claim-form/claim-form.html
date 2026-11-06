@@ -1,0 +1,35 @@
+<form class="reclamaciones-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <app-claim-type-section [form]="form" />
+  <app-consumer-data-section [form]="form" />
+  <app-claimed-item-section [form]="form" />
+  <app-claim-detail-section [form]="form" />
+
+  <div class="form-card acepta-card">
+    <label class="acepta-label">
+      <input type="checkbox" formControlName="acepta" />
+      <span>
+        Declaro que la información proporcionada es verídica y acepto que EcommerceLimo trate mis datos personales para
+        gestionar esta reclamación, conforme a la
+        <a routerLink="/privacidad" class="inline-link" target="_blank" rel="noopener">Política de Privacidad</a>.
+      </span>
+    </label>
+    <app-field-error [control]="form.controls.acepta" [messages]="acceptMessages" />
+  </div>
+
+  @if (error()) {
+    <div class="form-error" role="alert">
+      <span class="material-symbols-outlined" aria-hidden="true">error</span>
+      {{ error() }}
+    </div>
+  }
+
+  <button type="submit" class="btn-submit" [disabled]="submitting()">
+    @if (submitting()) {
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Enviando...
+    } @else {
+      <span class="material-symbols-outlined" aria-hidden="true">send</span>
+      Enviar Reclamación
+    }
+  </button>
+</form>

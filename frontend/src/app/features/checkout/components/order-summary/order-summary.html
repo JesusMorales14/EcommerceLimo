@@ -1,0 +1,53 @@
+<div class="order-total-card">
+  <h3>Resumen</h3>
+
+  @for (item of store.items(); track item.product.id + (item.selectedColor ?? '')) {
+    <div class="total-line-item">
+      <span>{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
+      <span>{{ cart.itemPrice(item) * item.quantity | currencyPen }}</span>
+    </div>
+  }
+
+  <div class="total-divider"></div>
+
+  <app-coupon-form />
+
+  <div class="total-row">
+    <span>Subtotal</span>
+    <span>{{ store.subtotal() | currencyPen }}</span>
+  </div>
+  @if (store.coupon(); as coupon) {
+    <div class="total-row discount-row">
+      <span>Descuento</span>
+      <span>−{{ coupon.discountAmount | currencyPen }}</span>
+    </div>
+  }
+  <div class="total-row">
+    <span>Envío</span>
+    <span class="free-tag">Gratis</span>
+  </div>
+
+  <div class="grand-total">
+    <strong>Total a pagar</strong>
+    <strong class="grand-amount">{{ store.total() | currencyPen }}</strong>
+  </div>
+
+  @if (store.error()) {
+    <div class="confirm-error" role="alert">{{ store.error() }}</div>
+  }
+
+  <button type="button" class="btn-confirm" [disabled]="store.placing()" (click)="store.confirmOrder()">
+    @if (store.placing()) {
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Procesando pago...
+    } @else {
+      <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+      Confirmar y pagar
+    }
+  </button>
+
+  <div class="security-row">
+    <span><span class="material-symbols-outlined" aria-hidden="true">verified_user</span> Pago 100% seguro</span>
+    <span><span class="material-symbols-outlined" aria-hidden="true">replay</span> Devolución garantizada</span>
+  </div>
+</div>

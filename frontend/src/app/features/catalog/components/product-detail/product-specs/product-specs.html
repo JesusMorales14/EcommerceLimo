@@ -1,0 +1,19 @@
+@let product = this.product();
+<table class="specs-table">
+  <caption class="visually-hidden">Especificaciones de {{ product.name }}</caption>
+  <tbody>
+    <tr><th scope="row">Marca</th><td>{{ product.brand }}</td></tr>
+    <tr><th scope="row">Categoría</th><td>{{ product.category | titlecase }}</td></tr>
+    @if (product.subCategory) {
+      <tr><th scope="row">Subcategoría</th><td>{{ product.subCategory }}</td></tr>
+    }
+    @if (product.sizes.length) {
+      <tr><th scope="row">Tallas disponibles</th><td>{{ product.sizes.join(', ') }}</td></tr>
+    }
+    @if (product.colors.length) {
+      <tr><th scope="row">Colores disponibles</th><td>{{ product.colors.length }}</td></tr>
+    }
+    <tr><th scope="row">Stock disponible</th><td>{{ product.stock }} unidades</td></tr>
+    <tr><th scope="row">Código producto</th><td>#{{ product.id }}</td></tr>
+  </tbody>
+</table>

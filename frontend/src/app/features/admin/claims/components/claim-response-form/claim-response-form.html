@@ -1,0 +1,37 @@
+@let id = claim().id;
+<form class="panel-actions" (ngSubmit)="submit()">
+  @if (error()) {
+    <div class="save-feedback error" role="alert">
+      <span class="material-symbols-outlined" aria-hidden="true">error</span>
+      {{ error() }}
+    </div>
+  }
+  <div class="action-row">
+    <div class="field">
+      <label [for]="'estado-' + id">Estado</label>
+      <select [id]="'estado-' + id" name="estado" [ngModel]="estado()" (ngModelChange)="estado.set($event)" [disabled]="saving()">
+        @for (option of estadoOptions; track option) {
+          <option [value]="option">{{ estadoLabels[option] }}</option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="field">
+    <label [for]="'respuesta-' + id">Respuesta al consumidor</label>
+    <textarea
+      [id]="'respuesta-' + id"
+      name="respuesta"
+      rows="3"
+      maxlength="2000"
+      placeholder="Escribe una respuesta para el consumidor..."
+      [ngModel]="respuesta()"
+      (ngModelChange)="respuesta.set($event)"
+    ></textarea>
+  </div>
+  <button type="submit" class="btn-save-resp" [disabled]="saving()">
+    <span class="material-symbols-outlined" [class.spin]="saving()" aria-hidden="true">
+      {{ saving() ? 'progress_activity' : 'save' }}
+    </span>
+    {{ saving() ? 'Guardando...' : 'Guardar cambios' }}
+  </button>
+</form>

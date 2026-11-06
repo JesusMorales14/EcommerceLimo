@@ -1,0 +1,38 @@
+@let controls = form().controls;
+<fieldset class="form-card" [formGroup]="form()">
+  <legend class="card-title">
+    <span class="material-symbols-outlined" aria-hidden="true">person</span>
+    Datos del Consumidor
+  </legend>
+  <div class="form-grid">
+    <div class="field" [class.field-error]="invalid('nombre')">
+      <label for="nombre">Nombre *</label>
+      <input id="nombre" type="text" formControlName="nombre" placeholder="Ingresa tu nombre" autocomplete="given-name" [attr.aria-invalid]="invalid('nombre')" />
+      <app-field-error [control]="controls.nombre" [messages]="messages['nombre']" />
+    </div>
+    <div class="field" [class.field-error]="invalid('apellidos')">
+      <label for="apellidos">Apellidos *</label>
+      <input id="apellidos" type="text" formControlName="apellidos" placeholder="Ingresa tus apellidos" autocomplete="family-name" [attr.aria-invalid]="invalid('apellidos')" />
+      <app-field-error [control]="controls.apellidos" [messages]="messages['apellidos']" />
+    </div>
+    <div class="field" [class.field-error]="invalid('dni')">
+      <label for="dni">DNI / CE *</label>
+      <input id="dni" type="text" formControlName="dni" placeholder="12345678" maxlength="12" inputmode="numeric" [attr.aria-invalid]="invalid('dni')" />
+      <app-field-error [control]="controls.dni" [messages]="messages['dni']" />
+    </div>
+    <div class="field" [class.field-error]="invalid('telefono')">
+      <label for="telefono">Teléfono *</label>
+      <input id="telefono" type="tel" formControlName="telefono" placeholder="+51 999 999 999" inputmode="tel" autocomplete="tel" [attr.aria-invalid]="invalid('telefono')" />
+      <app-field-error [control]="controls.telefono" [messages]="messages['telefono']" />
+    </div>
+    <div class="field full" [class.field-error]="invalid('email')">
+      <label for="email">Correo electrónico *</label>
+      <input id="email" type="email" formControlName="email" placeholder="tu&#64;correo.com" inputmode="email" autocomplete="email" [attr.aria-invalid]="invalid('email')" />
+      <app-field-error [control]="controls.email" [messages]="messages['email']" />
+    </div>
+    <div class="field full">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" formControlName="direccion" placeholder="Dirección de domicilio (opcional)" autocomplete="street-address" />
+    </div>
+  </div>
+</fieldset>

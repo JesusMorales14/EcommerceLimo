@@ -1,0 +1,54 @@
+// Ajustes de modo oscuro: ADMIN DEALS
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .admin-deals-page {
+    background: var(--bg);
+  }
+  .status-card {
+    background: var(--surface-2);
+    border-color: var(--border);
+    &.active {
+      border-color: var(--primary);
+      background: var(--primary-hover);
+    }
+    &.scheduled {
+      border-color: #b45309;
+      background: #2a1a00;
+    }
+    .status-info h3 {
+      color: var(--text);
+    }
+    .status-info p {
+      color: var(--text-muted);
+    }
+  }
+  .form-card,
+  .offers-card {
+    background: var(--surface);
+    border-color: var(--border);
+    h2 {
+      color: var(--text);
+    }
+    .form-hint {
+      color: var(--text-muted);
+    }
+  }
+  .offer-chip {
+    background: var(--surface-2);
+    border-color: var(--border);
+    .chip-info .chip-name {
+      color: var(--text);
+    }
+    .chip-info .chip-price {
+      color: var(--primary);
+    }
+    .chip-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+  }
+  .no-offers {
+    color: var(--text-muted);
+  }
+}

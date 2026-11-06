@@ -1,0 +1,46 @@
+<div class="coupons-table-wrap">
+  <table class="coupons-table">
+    <caption class="visually-hidden">Cupones de descuento</caption>
+    <thead>
+      <tr>
+        <th scope="col">Código</th>
+        <th scope="col">Descuento</th>
+        <th scope="col">Mín.</th>
+        <th scope="col">Usos</th>
+        <th scope="col">Expira</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (coupon of coupons(); track coupon.id) {
+        <tr [class.inactive]="!coupon.active">
+          <td data-label="Código"><span class="code-chip">{{ coupon.code }}</span></td>
+          <td data-label="Descuento">
+            {{ coupon.isPercent ? coupon.discount + '%' : (coupon.discount | currencyPen: 2) }}
+          </td>
+          <td data-label="Mínimo">{{ coupon.minAmount | currencyPen }}</td>
+          <td data-label="Usos">{{ coupon.usedCount }} / {{ coupon.maxUses }}</td>
+          <td data-label="Expira">{{ coupon.expiresAt ? (coupon.expiresAt | date: 'dd/MM/yy HH:mm') : '—' }}</td>
+          <td data-label="Estado">
+            <span class="status-dot" [class.active]="coupon.active">{{ coupon.active ? 'Activo' : 'Inactivo' }}</span>
+          </td>
+          <td class="actions" data-label="Acciones">
+            <button
+              type="button"
+              class="btn-toggle"
+              (click)="toggled.emit(coupon)"
+              [attr.aria-label]="(coupon.active ? 'Desactivar' : 'Activar') + ' cupón ' + coupon.code"
+              [attr.aria-pressed]="coupon.active"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">{{ coupon.active ? 'toggle_on' : 'toggle_off' }}</span>
+            </button>
+            <button type="button" class="btn-delete" (click)="removed.emit(coupon)" [attr.aria-label]="'Eliminar cupón ' + coupon.code">
+              <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

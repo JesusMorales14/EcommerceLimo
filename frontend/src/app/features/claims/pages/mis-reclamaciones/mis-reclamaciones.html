@@ -1,0 +1,35 @@
+<div class="misrec-page">
+  <section class="misrec-hero">
+    <span class="material-symbols-outlined hero-icon" aria-hidden="true">manage_search</span>
+    <div>
+      <h1>Mis Reclamaciones</h1>
+      <p>Consulta el estado de tus reclamos y quejas enviadas.</p>
+    </div>
+    <a routerLink="/reclamaciones" class="btn-new-rec">
+      <span class="material-symbols-outlined" aria-hidden="true">add</span>
+      Nueva reclamación
+    </a>
+  </section>
+
+  @if (claimsResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Cargando reclamaciones...
+    </div>
+  } @else if (claims().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">assignment_late</span>
+      <p>No tienes reclamaciones registradas</p>
+      <a routerLink="/reclamaciones" class="btn-submit-rec">
+        <span class="material-symbols-outlined" aria-hidden="true">assignment</span>
+        Presentar una reclamación
+      </a>
+    </div>
+  } @else {
+    <div class="rec-list">
+      @for (claim of claims(); track claim.id) {
+        <app-claim-card [claim]="claim" [expanded]="expandedId() === claim.id" (toggled)="toggle($event)" />
+      }
+    </div>
+  }
+</div>

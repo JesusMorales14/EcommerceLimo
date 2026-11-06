@@ -1,3 +1,4 @@
+import type { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { provideRouter } from '@angular/router';
@@ -17,7 +18,7 @@ describe('adminGuard', () => {
   it('retorna true si el usuario es administrador', () => {
     setup(true);
     const result = TestBed.runInInjectionContext(() =>
-      adminGuard({} as any, {} as any)
+      adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
     );
     expect(result).toBe(true);
   });
@@ -25,7 +26,7 @@ describe('adminGuard', () => {
   it('redirige a / si el usuario no es administrador', () => {
     setup(false);
     const result = TestBed.runInInjectionContext(() =>
-      adminGuard({} as any, {} as any)
+      adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
     ) as UrlTree;
 
     const router = TestBed.inject(Router);

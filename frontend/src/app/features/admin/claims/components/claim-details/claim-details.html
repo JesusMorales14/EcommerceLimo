@@ -1,0 +1,45 @@
+@let rec = claim();
+<div class="panel-grid">
+  <div class="panel-info">
+    <h3>Datos del consumidor</h3>
+    <dl class="info-list">
+      <div class="info-row">
+        <dt class="material-symbols-outlined" aria-label="Nombre">person</dt>
+        <dd>{{ rec.nombre }} {{ rec.apellidos }}</dd>
+      </div>
+      <div class="info-row">
+        <dt class="material-symbols-outlined" aria-label="Documento">badge</dt>
+        <dd>{{ rec.dni }}</dd>
+      </div>
+      <div class="info-row">
+        <dt class="material-symbols-outlined" aria-label="Correo">email</dt>
+        <dd>{{ rec.email }}</dd>
+      </div>
+      <div class="info-row">
+        <dt class="material-symbols-outlined" aria-label="Teléfono">phone</dt>
+        <dd>{{ rec.telefono }}</dd>
+      </div>
+      @if (rec.direccion) {
+        <div class="info-row">
+          <dt class="material-symbols-outlined" aria-label="Dirección">location_on</dt>
+          <dd>{{ rec.direccion }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+  <div class="panel-detail">
+    <h3>Detalle de la reclamación</h3>
+    <div class="detail-chip-row">
+      <span class="chip">{{ tipoLabels[rec.tipo] }}</span>
+      <span class="chip">{{ bienLabels[rec.bien] }}</span>
+      @if (rec.pedidoNum) {
+        <span class="chip">Pedido #{{ rec.pedidoNum }}</span>
+      }
+    </div>
+    <p class="detalle-text">{{ rec.detalle }}</p>
+    @if (rec.accion) {
+      <p class="accion-label">Acción solicitada:</p>
+      <p class="detalle-text">{{ rec.accion }}</p>
+    }
+  </div>
+</div>

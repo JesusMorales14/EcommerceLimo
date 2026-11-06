@@ -1,0 +1,16 @@
+<div class="category-chips" role="group" aria-label="Filtrar por categoría">
+  <button type="button" class="chip" [class.active]="selected() === ''" [attr.aria-pressed]="selected() === ''" (click)="selected.set('')">
+    Todas
+  </button>
+  @for (category of categories(); track category) {
+    <button
+      type="button"
+      class="chip"
+      [class.active]="selected() === category"
+      [attr.aria-pressed]="selected() === category"
+      (click)="selected.set(category)"
+    >
+      {{ category }}
+    </button>
+  }
+</div>

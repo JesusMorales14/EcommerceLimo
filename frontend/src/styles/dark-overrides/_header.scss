@@ -1,0 +1,41 @@
+// Ajustes de modo oscuro: HEADER
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  // Promo bar — always white text on green gradient
+  .promo-bar {
+    color: rgba(255, 255, 255, 0.92);
+    strong {
+      color: #fff;
+    }
+  }
+
+  // Category nav — CRITICAL: cat-link usaba var(--text-2) = verde medio, ilegible sobre fondo oscuro
+  .category-nav {
+    background: var(--cat-bg);
+    border-color: var(--border-2);
+  }
+  .cat-link {
+    color: var(--text);
+  }
+  .offers-link {
+    color: #f87171;
+    &:hover,
+    &.active {
+      color: #f87171;
+    }
+  }
+
+  // Header icon buttons and labels
+  .icon-btn {
+    color: var(--text);
+  }
+  .icon-label {
+    color: var(--text-2);
+  }
+
+  // Mobile header buttons
+  .mobile-icon-btn {
+    color: var(--text);
+  }
+}

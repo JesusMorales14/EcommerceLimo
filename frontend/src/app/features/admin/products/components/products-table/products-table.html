@@ -1,0 +1,52 @@
+<div class="products-table-wrapper">
+  <table class="products-table">
+    <caption class="visually-hidden">Listado de productos</caption>
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Categoría</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Oferta</th>
+        <th scope="col" class="th-actions">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of products(); track product.id) {
+        <tr>
+          <td class="td-id">#{{ product.id }}</td>
+          <td class="td-img">
+            <img [src]="product.images[0]" alt="" class="product-thumb" loading="lazy" width="44" height="44" />
+          </td>
+          <td class="td-name">{{ product.name }}</td>
+          <td><span class="cat-badge">{{ product.category }}</span></td>
+          <td class="td-price">{{ product.price | currencyPen }}</td>
+          <td [class.low-stock]="product.stock < lowStock">{{ product.stock }}</td>
+          <td>
+            @if (product.isOffer) {
+              <span class="offer-badge">Oferta</span>
+            } @else {
+              <span class="no-offer" aria-label="No">—</span>
+            }
+          </td>
+          <td class="td-actions">
+            <div class="actions-container">
+              <button type="button" class="btn-edit" (click)="edit.emit(product)" [attr.aria-label]="'Editar ' + product.name">
+                <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+              </button>
+              <button type="button" class="btn-del" (click)="remove.emit(product)" [attr.aria-label]="'Eliminar ' + product.name">
+                <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="empty-row">No se encontraron productos.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

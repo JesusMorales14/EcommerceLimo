@@ -1,0 +1,21 @@
+<ul class="delivery-block" aria-label="Opciones de entrega">
+  @for (option of deliveryOptions; track option.title) {
+    <li class="delivery-row">
+      <span class="material-symbols-outlined delivery-icon" aria-hidden="true">{{ option.icon }}</span>
+      <div class="delivery-info">
+        <strong>{{ option.title }}</strong>
+        <span>{{ option.subtitle }}</span>
+      </div>
+      <span class="delivery-badge free">{{ option.badge }}</span>
+    </li>
+  }
+</ul>
+
+<ul class="trust-strip" aria-label="Garantías">
+  @for (item of trustItems; track item.icon) {
+    <li class="trust-item">
+      <span class="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</span>
+      <span>{{ item.label }}</span>
+    </li>
+  }
+</ul>

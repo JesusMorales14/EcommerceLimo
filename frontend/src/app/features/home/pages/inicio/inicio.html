@@ -1,0 +1,21 @@
+<div class="home">
+  <app-home-hero />
+
+  @if (deals.showTeaser()) {
+    <app-deal-teaser [session]="deals.scheduledSession()!" [remainingMs]="deals.untilStart()" />
+  }
+
+  @if (deals.isActive()) {
+    <app-deals-section [products]="deals.offers()" [remainingMs]="deals.remaining()" />
+  }
+
+  <app-promo-banners />
+
+  <app-recently-viewed />
+
+  @defer (on viewport) {
+    <app-featured-section [products]="featuredProducts()" [hasMore]="hasMoreFeatured()" />
+  } @placeholder {
+    <div class="featured-placeholder" aria-hidden="true"></div>
+  }
+</div>

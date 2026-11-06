@@ -1,0 +1,33 @@
+@if (store.coupon(); as coupon) {
+  <div class="coupon-applied" role="status">
+    <span class="material-symbols-outlined" aria-hidden="true">local_offer</span>
+    <span>Cupón <strong>{{ coupon.code }}</strong> aplicado</span>
+    <button type="button" class="btn-remove-coupon" (click)="remove()" aria-label="Quitar cupón">✕</button>
+  </div>
+} @else {
+  <form class="coupon-row" (ngSubmit)="apply()">
+    <label for="coupon-code" class="visually-hidden">Código de cupón</label>
+    <input
+      id="coupon-code"
+      class="coupon-input"
+      name="coupon"
+      [ngModel]="code()"
+      (ngModelChange)="code.set($event)"
+      placeholder="Código de cupón"
+      autocomplete="off"
+      [attr.aria-invalid]="!!store.couponError()"
+      aria-describedby="coupon-error"
+    />
+    <button type="submit" class="btn-coupon" [disabled]="store.applyingCoupon()">
+      @if (store.applyingCoupon()) {
+        <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+        <span class="visually-hidden">Aplicando cupón…</span>
+      } @else {
+        Aplicar
+      }
+    </button>
+  </form>
+  @if (store.couponError()) {
+    <p id="coupon-error" class="coupon-error" role="alert">{{ store.couponError() }}</p>
+  }
+}

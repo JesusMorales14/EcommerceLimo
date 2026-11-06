@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpErrorResponse, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import type { HttpHandlerFn} from '@angular/common/http';
+import { HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { provideRouter, Router } from '@angular/router';
 import { throwError, firstValueFrom } from 'rxjs';
 import { vi } from 'vitest';
@@ -32,7 +33,7 @@ describe('errorInterceptor', () => {
     vi.spyOn(router, 'navigate').mockResolvedValue(true);
   });
 
-  function run(status: number, errorBody: any = {}) {
+  function run(status: number, errorBody: unknown = {}) {
     const req = new HttpRequest('GET', '/api/test');
     const httpError = new HttpErrorResponse({ status, error: errorBody, url: '/api/test' });
     const next: HttpHandlerFn = vi.fn(() => throwError(() => httpError));

@@ -1,0 +1,124 @@
+// Estilos compartidos por las secciones del formulario de reclamaciones
+.form-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 20px;
+
+  .material-symbols-outlined {
+    font-size: 22px;
+    color: var(--primary);
+  }
+}
+
+// ── Form grid ─────────────────────────────────────────────────────────────────
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+// ── Field ─────────────────────────────────────────────────────────────────────
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &.full {
+    grid-column: span 2;
+  }
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+
+  input,
+  textarea {
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    resize: vertical;
+
+    &::placeholder {
+      color: var(--text-subtle);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+  }
+}
+
+// ── Field-level validation ────────────────────────────────────────────────────
+.field-error {
+  input, textarea {
+    border-color: #dc2626 !important;
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+    }
+  }
+}
+
+.field-msg {
+  font-size: 0.78rem;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.char-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-subtle);
+  margin-left: 4px;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+
+    .field.full { grid-column: span 1; }
+  }
+
+  .form-card {
+    padding: 18px 16px;
+  }
+}
+
+// Los <fieldset> semánticos no deben alterar el diseño de las tarjetas
+fieldset.form-card {
+  min-width: 0;
+  margin: 0;
+}
+
+legend.card-title {
+  float: left;
+  width: 100%;
+  padding: 0;
+}
+
+legend.card-title + * {
+  clear: both;
+}

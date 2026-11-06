@@ -1,0 +1,112 @@
+.favorites-page {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+
+    .material-symbols-outlined {
+      color: #e11d48;
+      font-size: 30px;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .count {
+      font-size: 16px;
+      color: var(--text-subtle);
+      font-weight: 400;
+    }
+  }
+}
+
+// ── Estado vacío ──────────────────────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px var(--shadow);
+
+  .material-symbols-outlined {
+    font-size: 70px;
+    color: #e11d48;
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 16px;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .btn-shop {
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 36px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-block;
+    transition: background 0.2s;
+    &:hover {
+      background: var(--primary-dark);
+    }
+  }
+}
+
+// ── Grid de productos ─────────────────────────────────────────────────────────
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .favorites-page {
+    padding: 16px 12px;
+  }
+
+  .page-header {
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .empty-state {
+    padding: 60px 20px;
+
+    .material-symbols-outlined {
+      font-size: 56px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .products-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

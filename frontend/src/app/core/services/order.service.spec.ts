@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { OrderService, type DeliveryInfo } from './order.service';
 import { type Order } from '../models/order.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 const mockOrder: Order = {
   id: 1,

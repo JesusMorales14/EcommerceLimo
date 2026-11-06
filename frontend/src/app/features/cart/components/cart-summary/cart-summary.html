@@ -1,0 +1,46 @@
+<aside class="summary-card" aria-labelledby="cart-summary-title">
+  <h2 id="cart-summary-title">Resumen del Pedido</h2>
+
+  @for (item of cart.items(); track item.product.id + (item.selectedColor ?? '')) {
+    <div class="summary-product-line">
+      <span class="sp-name">{{ item.product.name }} <em>x{{ item.quantity }}</em></span>
+      <span>{{ cart.itemPrice(item) * item.quantity | currencyPen }}</span>
+    </div>
+  }
+
+  <div class="summary-divider"></div>
+
+  <div class="summary-line">
+    <span>Subtotal</span>
+    <span>{{ cart.total() | currencyPen }}</span>
+  </div>
+  <div class="summary-line">
+    <span>Envío</span>
+    <span class="free">Gratis</span>
+  </div>
+
+  <div class="total-line">
+    <div class="total-label">
+      <strong>Total</strong>
+      <small>IGV INCLUIDO</small>
+    </div>
+    <span class="total-amount">{{ cart.total() | currencyPen }}</span>
+  </div>
+
+  <button type="button" class="btn-checkout" (click)="checkout()">
+    <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+    {{ auth.isLoggedIn() ? 'Proceder al pago' : 'Iniciar sesión y pagar' }}
+    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+  </button>
+
+  <div class="trust-badges">
+    <div class="badge-item">
+      <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+      <p><strong>Compra Segura:</strong> Encriptación de grado bancario.</p>
+    </div>
+    <div class="badge-item">
+      <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+      <p><strong>Envío Priority:</strong> 24 a 48 horas hábiles.</p>
+    </div>
+  </div>
+</aside>

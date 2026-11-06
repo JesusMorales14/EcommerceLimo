@@ -1,0 +1,40 @@
+<div class="admin-coupons-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link" aria-label="Volver al panel de administración">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      </a>
+      <div>
+        <h1>Cupones de descuento</h1>
+        <p>Crea y gestiona cupones para tus clientes</p>
+      </div>
+    </div>
+    <button type="button" class="btn-new" (click)="showForm.set(true)">
+      <span class="material-symbols-outlined" aria-hidden="true">add</span>
+      Nuevo cupón
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <app-coupon-form (saved)="onSaved()" (cancelled)="showForm.set(false)" />
+  }
+
+  @if (couponsResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span> Cargando...
+    </div>
+  } @else if (coupons().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">local_offer</span>
+      <p>No hay cupones creados aún.</p>
+    </div>
+  } @else {
+    <app-coupons-table [coupons]="pager.items()" (toggled)="toggle($event)" (removed)="remove($event)" />
+    <app-pagination
+      [page]="pager.page()"
+      [totalPages]="pager.totalPages()"
+      label="Paginación de cupones"
+      (pageChange)="pager.goTo($event)"
+    />
+  }
+</div>

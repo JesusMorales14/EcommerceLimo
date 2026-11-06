@@ -1,0 +1,94 @@
+@let delivery = store.delivery();
+@let method = store.selectedPaymentMethod();
+<section class="checkout-step" aria-labelledby="confirm-title">
+  <h2 id="confirm-title">
+    <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span> Confirmar pedido
+  </h2>
+
+  <div class="confirm-layout">
+    <div class="confirm-left">
+      <div class="confirm-block">
+        <h3 class="confirm-block-title">
+          <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
+          Productos ({{ store.itemCount() }})
+        </h3>
+        @for (item of store.items(); track item.product.id + (item.selectedColor ?? '')) {
+          <div class="confirm-item">
+            <img
+              [src]="item.selectedImageUrl || item.product.images[0]"
+              [alt]="item.product.name"
+              class="ci-img"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="ci-info">
+              <p class="ci-name">{{ item.product.name }}</p>
+              <p class="ci-brand">{{ item.product.brand }}</p>
+              @if (item.selectedColor) {
+                <p class="ci-color">
+                  <span class="ci-color-dot" [style.background]="item.selectedColor" aria-hidden="true"></span>
+                  {{ item.selectedColor }}
+                </p>
+              }
+            </div>
+            <div class="ci-right">
+              <span class="ci-qty">x{{ item.quantity }}</span>
+              <span class="ci-price">{{ cart.itemPrice(item) * item.quantity | currencyPen }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="confirm-block">
+        <h3 class="confirm-block-title">
+          <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+          Dirección de entrega
+          <button type="button" class="edit-btn" (click)="store.goToStep(Step.Delivery)" aria-label="Editar dirección de entrega">
+            <span class="material-symbols-outlined" aria-hidden="true">edit</span> Editar
+          </button>
+        </h3>
+        <div class="confirm-detail">
+          <span class="material-symbols-outlined" aria-hidden="true">person</span>
+          <span>{{ delivery.name }} — {{ delivery.phone }}</span>
+        </div>
+        <div class="confirm-detail">
+          <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+          <span>{{ delivery.address }}</span>
+        </div>
+        @if (delivery.notes) {
+          <div class="confirm-detail">
+            <span class="material-symbols-outlined" aria-hidden="true">comment</span>
+            <span>{{ delivery.notes }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="confirm-block">
+        <h3 class="confirm-block-title">
+          <span class="material-symbols-outlined" aria-hidden="true">{{ method?.icon ?? 'payments' }}</span>
+          Método de pago
+          <button type="button" class="edit-btn" (click)="store.goToStep(Step.Payment)" aria-label="Editar método de pago">
+            <span class="material-symbols-outlined" aria-hidden="true">edit</span> Editar
+          </button>
+        </h3>
+        <div class="confirm-detail">
+          <span class="material-symbols-outlined" aria-hidden="true">{{ method?.icon ?? 'payments' }}</span>
+          <strong>{{ method?.label }}</strong>
+          @if (store.paymentMethod() === 'card' && store.card().holder) {
+            <span class="card-masked">{{ store.card().holder }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-right">
+      <app-order-summary />
+    </div>
+  </div>
+
+  <div class="step-footer">
+    <button type="button" class="btn-secondary" (click)="store.prevStep()">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Volver
+    </button>
+  </div>
+</section>

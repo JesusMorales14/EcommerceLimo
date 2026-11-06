@@ -1,0 +1,121 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Despliegue continuo — se ejecuta cuando el CI de `main` termina en verde.
+#
+#  1. Publica las imágenes Docker en GitHub Container Registry (GHCR).
+#  2. Despliega la API (Render, mediante deploy hook).
+#  3. Despliega la SPA (Vercel, mediante la CLI).
+#
+# Secretos (Settings → Secrets and variables → Actions):
+#   RENDER_DEPLOY_HOOK_URL                 · hook de despliegue del servicio en Render
+#   VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+# Cada paso se omite con un aviso si su secreto no está configurado.
+# ─────────────────────────────────────────────────────────────────────────────
+name: CD
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: cd-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  images:
+    name: 🐳 Publicar imágenes (GHCR)
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [frontend, backend]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/ecommercelimo-${{ matrix.app }}
+          tags: |
+            type=sha,format=short
+            type=raw,value=latest
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.app }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}
+
+  deploy-backend:
+    name: 🚀 Desplegar API (Render)
+    needs: images
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://ecommercelimo.onrender.com/health
+    env:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+    steps:
+      - name: Disparar despliegue
+        if: env.RENDER_DEPLOY_HOOK_URL != ''
+        run: curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL"
+      - name: Verificar salud de la API (smoke test)
+        if: env.RENDER_DEPLOY_HOOK_URL != ''
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS https://ecommercelimo.onrender.com/health; then exit 0; fi
+            sleep 20
+          done
+          echo "::error::La API no respondió a /health tras el despliegue" && exit 1
+      - name: Aviso sin configuración
+        if: env.RENDER_DEPLOY_HOOK_URL == ''
+        run: echo "::warning::RENDER_DEPLOY_HOOK_URL no configurado; despliegue de la API omitido."
+
+  deploy-frontend:
+    name: 🚀 Desplegar SPA (Vercel)
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://ecommerce-limo.vercel.app
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+        if: env.VERCEL_TOKEN != ''
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        if: env.VERCEL_TOKEN != ''
+        with:
+          node-version: '22'
+      - name: Build y despliegue con Vercel CLI
+        if: env.VERCEL_TOKEN != ''
+        run: |
+          npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+      - name: Aviso sin configuración
+        if: env.VERCEL_TOKEN == ''
+        working-directory: .
+        run: echo "::warning::VERCEL_TOKEN no configurado; despliegue del frontend omitido (o lo hace la integración Git de Vercel)."

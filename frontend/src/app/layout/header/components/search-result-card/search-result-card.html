@@ -1,0 +1,15 @@
+<button type="button" class="srm-product-card" (click)="selected.emit(product().id)">
+  <div class="srm-product-img-wrap">
+    <img [src]="product().images[0]" [alt]="product().name" loading="lazy" decoding="async" class="srm-product-img" />
+    @if (product().isOffer) {
+      <span class="srm-offer-badge">Oferta</span>
+    }
+  </div>
+  <div class="srm-product-info">
+    @if (showBrand()) {
+      <p class="srm-product-brand-tag">{{ product().brand }}</p>
+    }
+    <p class="srm-product-name">{{ product().name }}</p>
+    <p class="srm-product-price">{{ product().price | currencyPen }}</p>
+  </div>
+</button>

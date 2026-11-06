@@ -1,0 +1,21 @@
+// Ajustes de modo oscuro: FORMS & INPUTS
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--border);
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+  .page-card,
+  .card,
+  [class*='form-'] {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+}

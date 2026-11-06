@@ -1,0 +1,43 @@
+<section class="form-card" aria-labelledby="deal-form-title">
+  <h2 id="deal-form-title">
+    <span class="material-symbols-outlined" aria-hidden="true">add_alarm</span>
+    {{ replacing() ? 'Reemplazar oferta activa' : 'Activar nueva oferta' }}
+  </h2>
+  <p class="form-hint">
+    Elige hasta cuándo estarán visibles las "Ofertas del Día". Los productos que se muestran son los marcados como
+    <strong>oferta</strong> en el catálogo de productos.
+  </p>
+
+  @if (error()) {
+    <div class="alert-error" role="alert">{{ error() }}</div>
+  }
+  @if (success()) {
+    <div class="alert-success" role="status">{{ success() }}</div>
+  }
+
+  <div class="field-row">
+    <div class="field">
+      <label for="deal-starts">
+        Fecha y hora de inicio <span class="optional">(opcional — por defecto: ahora)</span>
+      </label>
+      <input id="deal-starts" type="datetime-local" name="startsAt" [ngModel]="startsAt()" (ngModelChange)="startsAt.set($event)" />
+    </div>
+    <div class="field">
+      <label for="deal-ends">Fecha y hora de fin *</label>
+      <input
+        id="deal-ends"
+        type="datetime-local"
+        name="endsAt"
+        [min]="minDatetime"
+        [ngModel]="endsAt()"
+        (ngModelChange)="endsAt.set($event)"
+      />
+    </div>
+    <button type="button" class="btn-activate" [disabled]="saving()" (click)="activate()">
+      <span class="material-symbols-outlined" [class.spin]="saving()" aria-hidden="true">
+        {{ saving() ? 'progress_activity' : 'local_fire_department' }}
+      </span>
+      {{ saving() ? 'Guardando...' : 'Activar oferta' }}
+    </button>
+  </div>
+</section>

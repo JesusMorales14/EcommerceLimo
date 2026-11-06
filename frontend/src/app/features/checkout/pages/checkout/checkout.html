@@ -1,0 +1,26 @@
+@if (store.orderSuccess()) {
+  <app-order-success-dialog />
+}
+
+<div class="checkout-page">
+  <h1 class="visually-hidden">Finalizar compra</h1>
+  <app-checkout-steps [current]="store.step()" />
+
+  @if (store.error() && store.step() !== Step.Confirm) {
+    <div class="checkout-error" role="alert">
+      <span class="material-symbols-outlined" aria-hidden="true">error</span> {{ store.error() }}
+    </div>
+  }
+
+  @switch (store.step()) {
+    @case (Step.Delivery) {
+      <app-delivery-step />
+    }
+    @case (Step.Payment) {
+      <app-payment-step />
+    }
+    @case (Step.Confirm) {
+      <app-confirm-step />
+    }
+  }
+</div>

@@ -1,0 +1,29 @@
+<div class="admin-deals-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link" aria-label="Volver al panel de administración">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      </a>
+      <div>
+        <h1>Ofertas del Día</h1>
+        <p>Configura el tiempo y los productos en oferta para el banner de inicio</p>
+      </div>
+    </div>
+  </div>
+
+  @if (activeResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span> Cargando...
+    </div>
+  } @else {
+    <app-deal-status-card
+      [active]="active()"
+      [scheduled]="scheduled()"
+      [remainingMs]="remaining()"
+      [untilStartMs]="untilStart()"
+      (cancelled)="cancel()"
+    />
+    <app-deal-session-form [replacing]="!!active()" (activated)="reload()" />
+    <app-offers-overview [offers]="offers()" />
+  }
+</div>

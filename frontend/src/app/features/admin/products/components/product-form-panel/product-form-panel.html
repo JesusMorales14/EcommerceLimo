@@ -1,0 +1,76 @@
+<div class="form-overlay" (click)="closed.emit()" role="presentation"></div>
+<aside class="product-form-panel" role="dialog" aria-modal="true" aria-labelledby="product-form-title">
+  <div class="form-header">
+    <h2 id="product-form-title">{{ isEdit() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+    <button type="button" class="close-form" (click)="closed.emit()" aria-label="Cerrar formulario">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="form-error" role="alert">{{ error() }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="form-grid">
+      <div class="field full">
+        <label for="product-name">Nombre *</label>
+        <input id="product-name" formControlName="name" placeholder="Nombre del producto" />
+      </div>
+      <div class="field full">
+        <label for="product-description">Descripción</label>
+        <textarea id="product-description" formControlName="description" rows="3" placeholder="Descripción del producto"></textarea>
+      </div>
+      <div class="field">
+        <label for="product-price">Precio (S/) *</label>
+        <input id="product-price" type="number" formControlName="price" min="0" step="0.01" />
+      </div>
+      <div class="field">
+        <label for="product-discount">Descuento (%)</label>
+        <input id="product-discount" type="number" formControlName="discount" min="0" max="100" placeholder="0" />
+      </div>
+      <div class="field">
+        <label for="product-stock">Stock *</label>
+        <input id="product-stock" type="number" formControlName="stock" min="0" />
+      </div>
+      <div class="field">
+        <label for="product-brand">Marca</label>
+        <input id="product-brand" formControlName="brand" placeholder="Marca" />
+      </div>
+      <div class="field">
+        <label for="product-category">Categoría *</label>
+        <input id="product-category" formControlName="category" placeholder="ej: tecnologia" />
+      </div>
+      <div class="field">
+        <label for="product-subcategory">Subcategoría</label>
+        <input id="product-subcategory" formControlName="subCategory" placeholder="ej: smartphones" />
+      </div>
+
+      <app-color-images-editor [(colors)]="colors" [(images)]="images" [(colorImages)]="colorImages" />
+
+      <div class="field">
+        <label for="product-sizes">Tallas (separadas por coma)</label>
+        <input id="product-sizes" formControlName="sizes" placeholder="S, M, L" />
+      </div>
+      <div class="field check">
+        <label>
+          <input type="checkbox" formControlName="isOffer" />
+          Marcar como oferta
+        </label>
+      </div>
+      <div class="field check">
+        <label>
+          <input type="checkbox" formControlName="isFeatured" />
+          Mostrar en Productos Destacados
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closed.emit()">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : isEdit() ? 'Actualizar' : 'Crear producto' }}
+      </button>
+    </div>
+  </form>
+</aside>

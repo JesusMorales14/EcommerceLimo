@@ -1,0 +1,31 @@
+// Ajustes de modo oscuro: AUTH PAGES (LOGIN / REGISTER)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .auth-page {
+    background: var(--bg);
+  }
+  .auth-card {
+    background: var(--surface);
+  }
+  .auth-card h1 {
+    color: var(--text);
+  }
+  .auth-sub {
+    color: var(--text-muted);
+  }
+  .auth-link {
+    color: var(--text-muted);
+    a {
+      color: var(--primary);
+    }
+  }
+  .auth-error {
+    background: #3f0000;
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  .field label {
+    color: var(--text-2);
+  }
+}

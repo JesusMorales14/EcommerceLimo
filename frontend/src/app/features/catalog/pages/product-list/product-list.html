@@ -1,0 +1,35 @@
+<div class="plp-page">
+  <section class="cat-hero">
+    <div class="cat-hero-inner">
+      <app-breadcrumb class="breadcrumb" [items]="breadcrumb()" />
+      <h1 class="cat-hero-title">{{ title() }}</h1>
+      @if (description()) {
+        <p class="cat-hero-desc">{{ description() }}</p>
+      }
+      <span class="cat-hero-count">{{ total() }} productos disponibles</span>
+    </div>
+  </section>
+
+  <app-catalog-toolbar [(sort)]="sortBy" />
+
+  @if (productsResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Cargando productos...
+    </div>
+  } @else if (products().length > 0) {
+    <h2 class="visually-hidden">Productos</h2>
+    <div class="product-grid">
+      @for (product of products(); track product.id; let i = $index) {
+        <app-product-card [product]="product" [animationDelayMs]="animationDelay(i)" />
+      }
+    </div>
+  } @else {
+    <div class="empty-state" role="status">
+      <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+      <p>No se encontraron productos en esta categoría.</p>
+    </div>
+  }
+
+  <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="goToPage($event)" />
+</div>

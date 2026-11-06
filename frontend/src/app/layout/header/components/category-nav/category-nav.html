@@ -1,0 +1,18 @@
+<nav class="category-nav" aria-label="Categorías">
+  <div class="header-container cat-scroll">
+    @for (cat of categories(); track cat.id) {
+      <a
+        [routerLink]="['/category', cat.id]"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        class="cat-link"
+        [class.offers-link]="cat.id === 'ofertas'"
+      >
+        @if (cat.id === 'ofertas') {
+          <span class="material-symbols-outlined" aria-hidden="true">{{ cat.icon }}</span>
+        }
+        {{ cat.label }}
+      </a>
+    }
+  </div>
+</nav>

@@ -8,8 +8,6 @@ export default defineConfig({
 
     passWithNoTests: true,
 
-    include: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
-
     coverage: {
       provider: 'v8',
 
@@ -29,14 +27,17 @@ export default defineConfig({
         '**/app.ts',
         '**/core/models/**',
         '**/core/config/**',
-        '**/core/services/index.ts',
+        '**/index.ts',
+        '**/test-setup.ts',
+        '**/testing/**',
       ],
 
+      // Umbrales mínimos exigidos en CI (Quality Gate local, además de SonarQube)
       thresholds: {
-        statements: 70,
-        branches: 60,
-        functions: 70,
-        lines: 70,
+        statements: 80,
+        branches: 75,
+        functions: 75,
+        lines: 80,
       },
     },
   },

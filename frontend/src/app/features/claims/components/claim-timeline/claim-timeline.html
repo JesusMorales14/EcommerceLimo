@@ -1,0 +1,18 @@
+<ol class="rec-timeline" aria-label="Seguimiento de la reclamación">
+  @for (step of steps; track step.estado; let last = $last) {
+    <li
+      class="tl-step"
+      [class.done]="isDone(status(), step.estado)"
+      [class.active]="status() === step.estado"
+      [attr.aria-current]="status() === step.estado ? 'step' : null"
+    >
+      <div class="tl-dot" aria-hidden="true">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ step.icon }}</span>
+      </div>
+      <span class="tl-label">{{ step.label }}</span>
+    </li>
+    @if (!last) {
+      <li class="tl-line" [class.done]="isDone(status(), step.estado)" aria-hidden="true"></li>
+    }
+  }
+</ol>

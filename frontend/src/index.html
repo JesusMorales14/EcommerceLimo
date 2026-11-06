@@ -1,26 +1,46 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-PE">
   <head>
     <meta charset="utf-8" />
-    <title>EcommerceLimo</title>
+    <title>EcommerceLimo | Tienda online de tecnología, moda y hogar</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="logoIcon.png" />
+    <meta
+      name="description"
+      content="EcommerceLimo: tecnología, electrodomésticos, moda, hogar y más. Envío gratis, pago seguro y devoluciones sin costo."
+    />
+    <meta name="theme-color" content="#006b2d" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1a0e" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:site_name" content="EcommerceLimo" />
+    <meta property="og:locale" content="es_PE" />
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- Rendimiento: conexiones tempranas a orígenes de terceros -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <!-- Apply saved theme before Angular boots to prevent flash of unstyled content -->
+
+    <!-- Evita el parpadeo de tema aplicando la preferencia guardada antes de que arranque Angular -->
     <script>
-      (function(){var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
     <app-root></app-root>
+    <noscript>Necesitas habilitar JavaScript para usar EcommerceLimo.</noscript>
   </body>
 </html>

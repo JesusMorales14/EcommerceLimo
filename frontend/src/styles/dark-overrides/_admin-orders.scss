@@ -1,0 +1,52 @@
+// Ajustes de modo oscuro: ADMIN ORDERS
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .empty-orders {
+    background: var(--surface);
+    p {
+      color: var(--text-muted);
+    }
+  }
+  .order-card {
+    background: var(--surface);
+  }
+  .order-card-header {
+    border-color: var(--border-2);
+  }
+  .order-meta {
+    .order-id {
+      color: var(--text);
+    }
+    .order-date,
+    .order-user {
+      color: var(--text-muted);
+    }
+  }
+  .order-item-row {
+    border-color: var(--border-2);
+    .oi-name {
+      color: var(--text-2);
+    }
+    .oi-qty {
+      color: var(--text-muted);
+    }
+    .oi-price {
+      color: var(--text);
+    }
+  }
+  .order-card-footer {
+    background: var(--surface-2);
+    .order-total {
+      color: var(--text-muted);
+      strong {
+        color: var(--primary);
+      }
+    }
+  }
+  .status-selector {
+    label {
+      color: var(--text-muted);
+    }
+  }
+}

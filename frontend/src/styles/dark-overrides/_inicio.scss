@@ -1,0 +1,36 @@
+// Ajustes de modo oscuro: INICIO (HOME)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .home {
+    background: var(--bg);
+  }
+  .category-strip-section {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .cat-chip {
+    color: var(--text);
+    &:hover {
+      background: var(--primary-hover);
+      color: var(--primary);
+    }
+  }
+  .cat-chip-icon {
+    color: var(--primary);
+  }
+  .cat-chip-label {
+    color: var(--text);
+  }
+  .section-head h2 {
+    color: var(--text);
+  }
+  .link-ver-mas {
+    color: var(--primary);
+  }
+  .timer {
+    background: #2a1a00;
+    color: #f59e0b;
+    border-color: #5a3f00;
+  }
+}

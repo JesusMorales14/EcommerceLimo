@@ -1,79 +1,61 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { type Product } from '../models/product.model';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import type { Product } from '../models/product.model';
 import { ProductService } from './product.service';
+import { groupSearchResults } from './search-grouping';
 
-export interface SearchBrand {
-  name: string;
-  products: Product[];
-}
+export type { SearchBrand } from './search-grouping';
 
+const SEARCH_DEBOUNCE_MS = 300;
+const SEARCH_LIMIT = 100;
+
+/** Estado del buscador global (modal de resultados agrupados por marca). */
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  private productService = inject(ProductService);
-  private router         = inject(Router);
+  private readonly productService = inject(ProductService);
+  private readonly router = inject(Router);
+  private readonly query$ = new Subject<string>();
 
-  isOpen   = signal(false);
-  loading  = signal(false);
-  query    = signal('');
-  brands   = signal<SearchBrand[]>([]);
-  products = signal<Product[]>([]);
-
-  private query$ = new Subject<string>();
+  readonly isOpen = signal(false);
+  readonly loading = signal(false);
+  readonly query = signal('');
+  readonly brands = signal<ReturnType<typeof groupSearchResults>['brands']>([]);
+  readonly products = signal<Product[]>([]);
+  readonly hasResults = computed(() => this.brands().length > 0 || this.products().length > 0);
 
   constructor() {
-    this.query$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(q => {
-        this.loading.set(true);
-        this.brands.set([]);
-        this.products.set([]);
-        return this.productService.search(q, 1, 100);
-      }),
-    ).subscribe({
-      next: (res) => {
-        const q = this.query();
-        const brandMap = new Map<string, Product[]>();
-        const brandMatchedIds = new Set<number>();
-
-        for (const p of res.items) {
-          if (this.isRelevant(p.brand, q)) {
-            if (!brandMap.has(p.brand)) brandMap.set(p.brand, []);
-            brandMap.get(p.brand)!.push(p);
-            brandMatchedIds.add(p.id);
-          }
-        }
-
-        this.brands.set(
-          Array.from(brandMap.entries()).map(([name, prods]) => ({ name, products: prods }))
-        );
-        this.products.set(
-          res.items.filter(p => !brandMatchedIds.has(p.id) && this.isRelevant(p.name, q))
-        );
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false),
-    });
+    this.query$
+      .pipe(
+        debounceTime(SEARCH_DEBOUNCE_MS),
+        distinctUntilChanged(),
+        tap(() => this.resetResults(true)),
+        switchMap((query) => this.productService.search(query, 1, SEARCH_LIMIT)),
+        takeUntilDestroyed(),
+      )
+      .subscribe({
+        next: (page) => {
+          const grouped = groupSearchResults(page.items, this.query());
+          this.brands.set(grouped.brands);
+          this.products.set(grouped.products);
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
+      });
   }
 
-  hasResults(): boolean {
-    return this.brands().length > 0 || this.products().length > 0;
-  }
-
-  open(q: string): void {
-    this.query.set(q);
+  open(query: string): void {
+    this.query.set(query);
     this.isOpen.set(true);
     this.loading.set(true);
-    this.query$.next(q);
+    this.query$.next(query);
   }
 
   close(): void {
     this.isOpen.set(false);
-    this.brands.set([]);
-    this.products.set([]);
+    this.resetResults(false);
   }
 
   navigateTo(productId: number): void {
@@ -81,11 +63,9 @@ export class SearchService {
     void this.router.navigate(['/product', productId]);
   }
 
-  // Matches `q` at the start of a word in `text`, avoiding mid-word hits.
-  private isRelevant(text: string, q: string): boolean {
-    if (!text) return false;
-    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const re = new RegExp(`(^|[\\s\\-_\\.])${escaped}`, 'i');
-    return re.test(text.trim());
+  private resetResults(loading: boolean): void {
+    this.loading.set(loading);
+    this.brands.set([]);
+    this.products.set([]);
   }
 }

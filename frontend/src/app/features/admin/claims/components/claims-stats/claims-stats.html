@@ -1,0 +1,11 @@
+<ul class="stats-row" aria-label="Resumen de reclamaciones">
+  @for (stat of stats; track stat.key) {
+    <li class="stat-card" [class.total]="stat.variant === 'total'" [class.pending]="stat.variant === 'pending'" [class.review]="stat.variant === 'review'" [class.resolved]="stat.variant === 'resolved'">
+      <span class="material-symbols-outlined" aria-hidden="true">{{ stat.icon }}</span>
+      <div>
+        <strong>{{ counts()[stat.key] }}</strong>
+        <span>{{ stat.label }}</span>
+      </div>
+    </li>
+  }
+</ul>

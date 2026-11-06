@@ -1,0 +1,39 @@
+@let rec = claim();
+<article class="rec-card" [class.expanded]="expanded()">
+  <button
+    type="button"
+    class="rec-row"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-controls]="'admin-claim-' + rec.id"
+    (click)="toggled.emit(rec.id)"
+  >
+    <span class="row-left">
+      <span class="rec-id">#{{ rec.id }}</span>
+      <app-status-badge class="tipo-badge" [label]="tipoLabels[rec.tipo]" [color]="tipoColors[rec.tipo]" />
+      <span class="rec-name">
+        <strong>{{ rec.nombre }} {{ rec.apellidos }}</strong>
+        <span>{{ rec.email }}</span>
+      </span>
+    </span>
+    <span class="row-right">
+      @if (rec.pedidoNum) {
+        <span class="pedido-chip">
+          <span class="material-symbols-outlined" aria-hidden="true">receipt</span>
+          {{ rec.pedidoNum }}
+        </span>
+      }
+      <app-status-badge class="estado-badge" [label]="estadoLabels[rec.estado]" [color]="estadoColors[rec.estado]" />
+      <time class="rec-date" [attr.datetime]="rec.createdAt">{{ rec.createdAt | date: 'dd/MM/yy' }}</time>
+      <span class="material-symbols-outlined toggle-icon" aria-hidden="true">
+        {{ expanded() ? 'expand_less' : 'expand_more' }}
+      </span>
+    </span>
+  </button>
+
+  @if (expanded()) {
+    <div class="rec-panel" [id]="'admin-claim-' + rec.id">
+      <app-claim-details [claim]="rec" />
+      <app-claim-response-form [claim]="rec" [saving]="saving()" [error]="error()" (saved)="saved.emit($event)" />
+    </div>
+  }
+</article>

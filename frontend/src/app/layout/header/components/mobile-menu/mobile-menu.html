@@ -1,0 +1,59 @@
+<div class="drawer-overlay" [class.closing]="closing()" (click)="closed.emit()" role="presentation"></div>
+<aside
+  id="mobile-menu"
+  class="category-drawer"
+  [class.closing]="closing()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="mobile-menu-title"
+>
+  <div class="drawer-header">
+    <h2 id="mobile-menu-title" class="drawer-title">Categorías</h2>
+    <button type="button" class="drawer-close-btn" (click)="closed.emit()" aria-label="Cerrar menú">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
+    </button>
+  </div>
+
+  <nav class="drawer-nav" aria-label="Categorías">
+    @for (cat of categories(); track cat.id) {
+      <a
+        [routerLink]="['/category', cat.id]"
+        routerLinkActive="active"
+        class="drawer-link"
+        [class.drawer-link-offers]="cat.id === 'ofertas'"
+        (click)="closed.emit()"
+      >
+        <span class="material-symbols-outlined drawer-link-icon" aria-hidden="true">{{ cat.icon }}</span>
+        <span>{{ cat.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="drawer-footer">
+    @for (group of linkGroups; track group.title) {
+      <nav class="drawer-footer-section" [attr.aria-label]="group.title">
+        <span class="drawer-footer-title">{{ group.title.toUpperCase() }}</span>
+        @for (link of group.links; track link.path) {
+          <a [routerLink]="link.path" class="drawer-footer-link" (click)="closed.emit()">{{ link.label }}</a>
+        }
+      </nav>
+    }
+
+    <div class="drawer-footer-section">
+      <span class="drawer-footer-title">SÍGUENOS</span>
+      <div class="drawer-social">
+        @for (social of socialLinks; track social.network) {
+          <a
+            [href]="social.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="drawer-social-btn"
+            [attr.aria-label]="social.label + ' (se abre en una nueva pestaña)'"
+          >
+            <app-social-icon [network]="social.network" />
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</aside>

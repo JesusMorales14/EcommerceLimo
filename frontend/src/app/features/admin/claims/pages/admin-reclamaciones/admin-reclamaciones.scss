@@ -1,0 +1,145 @@
+.adminrec-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 72px;
+  overflow-x: hidden;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 2px;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+// ── States ────────────────────────────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 0;
+  color: var(--text-muted);
+  .spin {
+    animation: spin 1s linear infinite;
+    font-size: 24px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 56px 24px;
+  .material-symbols-outlined {
+    font-size: 48px;
+    color: var(--text-subtle);
+    display: block;
+    margin-bottom: 10px;
+  }
+  p {
+    color: var(--text-muted);
+    margin: 0;
+  }
+}
+
+// ── List ──────────────────────────────────────────────────────────────────────
+.rec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+.toast-success {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #16a34a;
+  color: #fff;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  z-index: 9999;
+  animation: slideUp 0.3s ease;
+  white-space: nowrap;
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminrec-page {
+    padding: 20px 12px 56px;
+  }
+
+  .header-left h1 {
+    font-size: 1.15rem;
+  }
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

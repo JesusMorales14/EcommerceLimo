@@ -1,0 +1,60 @@
+@let rec = claim();
+<article class="rec-card" [class.expanded]="expanded()">
+  <button
+    type="button"
+    class="rec-header"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-controls]="'claim-detail-' + rec.id"
+    (click)="toggled.emit(rec.id)"
+  >
+    <span class="rec-meta">
+      <span class="rec-id">#{{ rec.id }}</span>
+      <app-status-badge class="tipo-badge" [label]="tipoLabels[rec.tipo]" [color]="tipoColors[rec.tipo]" />
+      <span class="bien-chip">{{ bienLabels[rec.bien] }}</span>
+    </span>
+    <span class="rec-right">
+      <app-status-badge class="estado-badge" [label]="estadoLabels[rec.estado]" [color]="estadoColors[rec.estado]" />
+      <time class="rec-date" [attr.datetime]="rec.createdAt">{{ rec.createdAt | date: 'dd/MM/yyyy' }}</time>
+      <span class="material-symbols-outlined toggle-icon" aria-hidden="true">
+        {{ expanded() ? 'expand_less' : 'expand_more' }}
+      </span>
+    </span>
+  </button>
+
+  <app-claim-timeline [status]="rec.estado" />
+
+  @if (expanded()) {
+    <div class="rec-detail" [id]="'claim-detail-' + rec.id">
+      <div class="detail-section">
+        <h3>Descripción del problema</h3>
+        <p>{{ rec.detalle }}</p>
+      </div>
+      @if (rec.pedidoNum) {
+        <div class="detail-row">
+          <span class="material-symbols-outlined" aria-hidden="true">receipt</span>
+          <span>Pedido relacionado: <strong>{{ rec.pedidoNum }}</strong></span>
+        </div>
+      }
+      @if (rec.accion) {
+        <div class="detail-section">
+          <h3>Acción solicitada</h3>
+          <p>{{ rec.accion }}</p>
+        </div>
+      }
+      @if (rec.respuesta) {
+        <div class="admin-response">
+          <div class="response-header">
+            <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+            <strong>Respuesta de EcommerceLimo</strong>
+          </div>
+          <p>{{ rec.respuesta }}</p>
+        </div>
+      } @else {
+        <div class="pending-response">
+          <span class="material-symbols-outlined" aria-hidden="true">hourglass_empty</span>
+          <span>En espera de respuesta — plazo máximo 30 días calendario</span>
+        </div>
+      }
+    </div>
+  }
+</article>

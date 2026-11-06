@@ -1,0 +1,142 @@
+:host {
+  display: block;
+}
+
+// Review form
+.review-form {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 28px;
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 14px;
+  }
+
+  textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    margin-top: 12px;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+      color: var(--text-subtle);
+    }
+    &:focus {
+      border-color: var(--primary);
+    }
+  }
+}
+
+.star-picker {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--border);
+  cursor: pointer;
+  padding: 0 2px;
+  transition:
+    color 0.15s,
+    transform 0.1s;
+
+  &.lit {
+    color: #f59e0b;
+  }
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.review-err {
+  font-size: 13px;
+  color: #dc2626;
+  margin: 8px 0 0;
+}
+
+.btn-submit-review {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 10px 22px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+.review-login-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+    color: var(--text-subtle);
+  }
+  a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+fieldset.star-picker {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}

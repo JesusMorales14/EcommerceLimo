@@ -1,0 +1,74 @@
+<section class="checkout-step" aria-labelledby="payment-title">
+  <h2 id="payment-title">
+    <span class="material-symbols-outlined" aria-hidden="true">credit_card</span> Método de pago
+  </h2>
+
+  <div class="payment-grid" role="radiogroup" aria-labelledby="payment-title">
+    @for (method of methods; track method.id) {
+      <label class="method-card" [class.selected]="store.paymentMethod() === method.id">
+        <input
+          type="radio"
+          name="payment"
+          class="visually-hidden"
+          [value]="method.id"
+          [checked]="store.paymentMethod() === method.id"
+          (change)="store.selectPaymentMethod(method.id)"
+        />
+        <span class="method-icon material-symbols-outlined" aria-hidden="true">{{ method.icon }}</span>
+        <span class="method-text">
+          <strong>{{ method.label }}</strong>
+          <span>{{ method.description }}</span>
+        </span>
+        @if (store.paymentMethod() === method.id) {
+          <span class="check material-symbols-outlined" aria-hidden="true">check_circle</span>
+        }
+      </label>
+    }
+  </div>
+
+  @switch (store.paymentMethod()) {
+    @case ('card') {
+      <app-card-payment-form />
+    }
+    @case ('paypal') {
+      <div class="external-method paypal">
+        <div class="ext-logo">PayPal</div>
+        <p>Serás redirigido a PayPal para completar tu pago de forma segura.</p>
+        <div class="ext-icons">
+          <span class="material-symbols-outlined" aria-hidden="true">verified_user</span> Protección al comprador incluida
+        </div>
+      </div>
+    }
+    @case ('mercadopago') {
+      <div class="external-method mp">
+        <div class="ext-logo">Mercado Pago</div>
+        <p>Paga en cuotas sin interés con todas tus tarjetas a través de Mercado Pago.</p>
+        <div class="ext-icons">
+          <span class="material-symbols-outlined" aria-hidden="true">payments</span> Hasta 12 cuotas sin interés
+        </div>
+      </div>
+    }
+    @case ('cash') {
+      <div class="cash-box">
+        <span class="material-symbols-outlined" aria-hidden="true">payments</span>
+        <div>
+          <h3>Pago en efectivo al recibir</h3>
+          <p>El repartidor cobrará el monto exacto al entregar. Ten listo el efectivo.</p>
+          <p class="cash-amount">
+            Monto a pagar: <strong>{{ store.total() | currencyPen }}</strong>
+          </p>
+        </div>
+      </div>
+    }
+  }
+
+  <div class="step-footer">
+    <button type="button" class="btn-secondary" (click)="store.prevStep()">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Volver
+    </button>
+    <button type="button" class="btn-primary" (click)="store.nextStep()">
+      Revisar pedido
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </button>
+  </div>
+</section>

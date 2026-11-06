@@ -1,0 +1,129 @@
+@use '../../styles/card';
+
+:host {
+  display: block;
+}
+
+// ── Offers grid ───────────────────────────────────────────────────────────────
+.no-offers {
+  text-align: center;
+  padding: 32px;
+  color: var(--text-subtle);
+  .material-symbols-outlined {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 14px;
+    margin: 0 0 12px;
+    color: var(--text-muted);
+  }
+  .btn-go {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.offer-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 2px 10px var(--primary-light);
+  }
+
+  img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: var(--surface-3);
+    flex-shrink: 0;
+  }
+
+  .chip-info {
+    flex: 1;
+    min-width: 0;
+    .chip-name {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chip-price {
+      display: block;
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+  }
+
+  .chip-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .offer-chip {
+    padding: 12px 14px;
+
+    img {
+      width: 48px;
+      height: 48px;
+    }
+
+    .chip-info .chip-name {
+      font-size: 13px;
+      white-space: normal;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .offer-chip img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+ul.offers-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

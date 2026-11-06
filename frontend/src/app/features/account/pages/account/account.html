@@ -1,0 +1,45 @@
+<div class="account-page">
+  <app-profile-header (editRequested)="editMode.set(true)" />
+
+  @if (editMode()) {
+    <app-profile-edit-form (closed)="editMode.set(false)" />
+  }
+
+  <section class="account-body" aria-labelledby="orders-title">
+    @if (orderSuccess()) {
+      <div class="order-success-banner" role="status">
+        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+        <div>
+          <strong>¡Pedido confirmado!</strong>
+          <p>Tu pedido fue procesado exitosamente. Recibirás un email con los detalles de seguimiento.</p>
+        </div>
+      </div>
+    }
+    <h2 id="orders-title">Mis Pedidos</h2>
+
+    @if (ordersResource.isLoading()) {
+      <div class="loading-state" role="status">
+        <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+        Cargando pedidos...
+      </div>
+    } @else if (orders().length === 0) {
+      <div class="empty-orders">
+        <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+        <p>Aún no tienes pedidos</p>
+        <a routerLink="/" class="btn-shop">Ir a la tienda</a>
+      </div>
+    } @else {
+      <div class="orders-list">
+        @for (order of pager.items(); track order.id) {
+          <app-order-card [order]="order" />
+        }
+      </div>
+      <app-pagination
+        [page]="pager.page()"
+        [totalPages]="pager.totalPages()"
+        label="Paginación de pedidos"
+        (pageChange)="pager.goTo($event)"
+      />
+    }
+  </section>
+</div>

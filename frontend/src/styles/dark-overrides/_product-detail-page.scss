@@ -1,0 +1,203 @@
+// Ajustes de modo oscuro: PRODUCT DETAIL PAGE (PDP)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .pdp {
+    background: var(--bg);
+  }
+  .gallery-main {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .thumb {
+    background: var(--surface);
+    border-color: var(--border-2);
+  }
+  .info-col {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .info-title {
+    color: var(--text);
+  }
+  .greencard-box {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary-light);
+  }
+  .chip {
+    background: var(--surface);
+    color: var(--text-2);
+    border-color: var(--border);
+    &.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    &:hover:not(.active) {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  }
+  .qty-selector {
+    border-color: var(--border);
+    button {
+      background: var(--surface-2);
+      color: var(--text);
+      &:hover:not(:disabled) {
+        background: var(--surface-3);
+      }
+    }
+    span {
+      color: var(--text);
+    }
+  }
+  .btn-buy {
+    background: var(--surface-3);
+    color: var(--text);
+    &:hover:not(:disabled) {
+      background: var(--border);
+    }
+  }
+  .btn-fav {
+    border-color: var(--border);
+    color: var(--text-muted);
+  }
+  .delivery-block {
+    border-color: var(--border);
+  }
+  .delivery-row {
+    border-color: var(--border);
+  }
+  .delivery-info {
+    strong {
+      color: var(--text);
+    }
+    span {
+      color: var(--text-muted);
+    }
+  }
+  .delivery-badge.free {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  .btn-location {
+    color: var(--primary);
+    &:hover {
+      background: var(--primary-hover);
+    }
+  }
+  .trust-item {
+    color: var(--text-muted);
+  }
+  .pdp-tabs {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .tabs-nav {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+  .tab-btn {
+    color: var(--text-muted);
+    &.active {
+      color: var(--primary);
+      background: var(--surface);
+      border-bottom-color: var(--primary);
+    }
+    &:hover:not(.active) {
+      color: var(--text);
+    }
+  }
+  .tab-description {
+    h3 {
+      color: var(--text);
+    }
+    p {
+      color: var(--text-2);
+    }
+  }
+  .feature-list li {
+    color: var(--text-2);
+  }
+  .specs-table {
+    tr:nth-child(even) {
+      background: var(--surface-2);
+    }
+    td {
+      border-color: var(--border);
+      &:first-child {
+        color: var(--text-2);
+      }
+      &:last-child {
+        color: var(--text);
+      }
+    }
+  }
+  .review-form {
+    background: var(--surface-2);
+    border-color: var(--border);
+    h4 {
+      color: var(--text);
+    }
+    textarea {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+  }
+  .review-item {
+    border-color: var(--border);
+    p {
+      color: var(--text-2);
+    }
+  }
+  .review-header {
+    strong {
+      color: var(--text);
+    }
+  }
+  .bar-track {
+    background: var(--surface-3);
+  }
+  .bar-label {
+    color: var(--text-muted);
+  }
+  .bar-pct {
+    color: var(--text-muted);
+  }
+  .rating-num {
+    color: var(--text);
+  }
+  .rating-total {
+    color: var(--text-muted);
+  }
+  .review-login-hint {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    a {
+      color: var(--primary);
+    }
+  }
+  .stock-warning {
+    background: #3f0000;
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  .stock-low {
+    background: #2a1a00;
+    color: #fbbf24;
+    border-color: #5a3500;
+  }
+  .no-reviews {
+    color: var(--text-muted);
+  }
+  .breadcrumb {
+    strong {
+      color: var(--text);
+    }
+  }
+  .pdp-loading {
+    color: var(--text-muted);
+  }
+}

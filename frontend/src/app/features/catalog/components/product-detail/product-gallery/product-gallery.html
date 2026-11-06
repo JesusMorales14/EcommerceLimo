@@ -1,0 +1,32 @@
+<div class="gallery">
+  <div class="gallery-main">
+    <img
+      [src]="selectedImage()"
+      [alt]="productName()"
+      width="480"
+      height="460"
+      fetchpriority="high"
+      decoding="async"
+      (error)="useFallback($event)"
+    />
+    @if (discount()) {
+      <span class="badge-sustainable">-{{ discount() }}% OFF</span>
+    }
+  </div>
+  @if (images().length > 1) {
+    <div class="gallery-thumbs" role="group" aria-label="Imágenes del producto">
+      @for (img of images(); track $index) {
+        <button
+          type="button"
+          class="thumb"
+          [class.active]="selectedIndex() === $index"
+          [attr.aria-pressed]="selectedIndex() === $index"
+          [attr.aria-label]="'Ver imagen ' + ($index + 1) + ' de ' + images().length"
+          (click)="selectedIndex.set($index)"
+        >
+          <img [src]="img" alt="" loading="lazy" decoding="async" (error)="useFallback($event)" />
+        </button>
+      }
+    </div>
+  }
+</div>

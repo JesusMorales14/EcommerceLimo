@@ -1,0 +1,98 @@
+// Ajustes de modo oscuro: PLP (PRODUCT LIST PAGE)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .plp-page {
+    background: var(--bg);
+  }
+  .breadcrumb {
+    color: var(--text-muted);
+    a {
+      color: var(--text-muted);
+      &:hover {
+        color: var(--primary);
+      }
+    }
+  }
+  .filter-sidebar {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .filter-header {
+    h3 {
+      color: var(--text);
+    }
+  }
+  .filter-group {
+    border-color: var(--border);
+  }
+  .filter-title {
+    color: var(--text-2);
+  }
+  .btn-clear {
+    color: var(--primary);
+  }
+  .check-item {
+    color: var(--text);
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  .price-dash {
+    color: var(--text-muted);
+  }
+  .price-input-wrap {
+    border-color: var(--border);
+    background: var(--surface-2);
+    span {
+      color: var(--text-muted);
+    }
+    input {
+      color: var(--text);
+      background: transparent;
+    }
+  }
+  .sort-select {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .area-title {
+    color: var(--text);
+  }
+  .result-count {
+    color: var(--text-muted);
+  }
+  .filter-toggle-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    .material-symbols-outlined {
+      color: var(--text);
+    }
+  }
+  .loading-state,
+  .empty-state {
+    color: var(--text-muted);
+    .material-symbols-outlined {
+      color: var(--text-muted);
+    }
+  }
+  .plp-pagination .page-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    &.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    &:hover:not(:disabled):not(.active) {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  }
+  .out-of-stock {
+    color: #f87171;
+  }
+}

@@ -1,0 +1,113 @@
+// Estilos compartidos por las secciones de productos del inicio
+// ── Section block ─────────────────────────────────────────────────────────────
+.section-block {
+  padding: 48px max(32px, 5vw);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+  }
+}
+
+.section-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff8e1;
+  color: #7a4f00;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid #f5c842;
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+.link-ver-mas {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+// ── Product cards ─────────────────────────────────────────────────────────────
+.products-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+// ── Responsive: Tablet ────────────────────────────────────────────────────────
+@media (max-width: 1024px) {
+  .products-row,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ── Responsive: Mobile ────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .section-block {
+    padding: 28px 16px;
+  }
+  .section-head {
+    margin-bottom: 20px;
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .products-row,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+// ── Responsive: Mobile small ──────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .section-block {
+    padding: 24px 12px;
+  }
+  .section-head h2 {
+    font-size: 18px;
+  }
+
+  .products-row,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}

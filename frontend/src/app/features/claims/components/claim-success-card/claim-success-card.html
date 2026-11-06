@@ -1,0 +1,21 @@
+<div class="success-card" role="status">
+  <span class="material-symbols-outlined success-icon" aria-hidden="true">check_circle</span>
+  <h2>Reclamación registrada con éxito</h2>
+  <div class="ref-badge">
+    N° de referencia: <strong>#{{ claim().id }}</strong>
+  </div>
+  <p>
+    Hemos recibido tu reclamación y notificado al equipo. Te responderemos al correo
+    <strong>{{ claim().email }}</strong> en un plazo máximo de <strong>30 días calendario</strong>.
+  </p>
+  <div class="success-actions">
+    <a routerLink="/mis-reclamaciones" class="btn-track">
+      <span class="material-symbols-outlined" aria-hidden="true">manage_search</span>
+      Ver estado de mi reclamación
+    </a>
+    <button type="button" class="btn-new" (click)="newClaim.emit()">
+      <span class="material-symbols-outlined" aria-hidden="true">add</span>
+      Nueva reclamación
+    </button>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="adminrec-page">
+  @if (toast()) {
+    <div class="toast-success" role="status">
+      <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+      {{ toast() }}
+    </div>
+  }
+
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin" class="back-link" aria-label="Volver al panel de administración">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      </a>
+      <div>
+        <h1>Libro de Reclamaciones</h1>
+        <p>Gestiona reclamos y quejas de los consumidores</p>
+      </div>
+    </div>
+  </div>
+
+  @if (!claimsResource.isLoading()) {
+    <app-claims-stats [counts]="counts()" />
+  }
+
+  <app-claims-filter-tabs [counts]="counts()" [(selected)]="filter" />
+
+  @if (claimsResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Cargando reclamaciones...
+    </div>
+  } @else if (filtered().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">assignment_late</span>
+      <p>No hay reclamaciones en esta categoría</p>
+    </div>
+  } @else {
+    <div class="rec-list">
+      @for (claim of filtered(); track claim.id) {
+        <app-admin-claim-card
+          [claim]="claim"
+          [expanded]="expandedId() === claim.id"
+          [saving]="updatingId() === claim.id"
+          [error]="errorId() === claim.id ? errorMessage() : ''"
+          (toggled)="toggle($event)"
+          (saved)="save(claim, $event)"
+        />
+      }
+    </div>
+  }
+</div>

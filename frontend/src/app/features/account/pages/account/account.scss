@@ -1,0 +1,111 @@
+.account-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+
+// ── Shared btn base ───────────────────────────────────────────────────────────
+
+// ── Orders ────────────────────────────────────────────────────────────────────
+.order-success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--primary-light);
+  border: 1.5px solid rgba(0, 107, 45, 0.3);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+
+  .material-symbols-outlined {
+    font-size: 30px;
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  strong {
+    display: block;
+    font-size: 15px;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  p {
+    font-size: 13px;
+    color: var(--text);
+    margin: 0;
+  }
+}
+
+.account-body {
+  h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 40px;
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+.empty-orders {
+  text-align: center;
+  padding: 60px;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px var(--shadow);
+
+  .material-symbols-outlined {
+    font-size: 60px;
+    color: var(--text-subtle);
+    display: block;
+    margin-bottom: 12px;
+  }
+  p {
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .btn-shop {
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-block;
+    transition: background 0.2s;
+    &:hover {
+      background: var(--primary-dark);
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .account-page {
+    padding: 16px 12px;
+  }
+  .empty-orders {
+    padding: 40px 20px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,42 @@
+@if (history.items().length > 0) {
+  <section class="rv-section" aria-labelledby="rv-title">
+    <div class="rv-head">
+      <div class="rv-title-row">
+        <span class="material-symbols-outlined rv-icon" aria-hidden="true">history</span>
+        <h2 id="rv-title">Vistos recientemente</h2>
+      </div>
+      <button type="button" class="rv-clear" (click)="history.clear()">Limpiar historial</button>
+    </div>
+
+    <div class="rv-scroll-wrapper">
+      <ul class="rv-track">
+        @for (product of history.items(); track product.id) {
+          <li class="rv-card">
+            <a class="rv-link" [routerLink]="['/product', product.id]">
+              <div class="rv-img-wrap">
+                <img [src]="product.images[0]" [alt]="product.name" loading="lazy" decoding="async" />
+                @if (product.discount) {
+                  <span class="rv-badge">-{{ product.discount }}%</span>
+                }
+              </div>
+              <div class="rv-info">
+                <p class="rv-brand">{{ product.brand }}</p>
+                <p class="rv-name">{{ product.name }}</p>
+                <p class="rv-price">{{ priceOf(product) | currencyPen }}</p>
+              </div>
+            </a>
+            <button
+              type="button"
+              class="rv-add-btn"
+              (click)="addToCart(product)"
+              [attr.aria-label]="'Agregar al carro: ' + product.name"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
+              Agregar
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}

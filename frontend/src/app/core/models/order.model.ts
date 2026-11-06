@@ -41,4 +41,30 @@ export interface Order {
   userId: number;
   items: OrderItem[];
   user?: { id: number; name: string; email: string };
+  paymentMethod?: string;
+  deliveryName?: string;
+  deliveryPhone?: string;
+  deliveryAddress?: string;
+  deliveryNotes?: string;
+}
+
+export interface OrderTimelineStep {
+  readonly status: OrderStatus;
+  readonly label: string;
+  readonly icon: string;
+}
+
+/** Pasos visibles del seguimiento de un pedido (en orden de avance). */
+export const ORDER_TIMELINE_STEPS: readonly OrderTimelineStep[] = [
+  { status: 'PENDING', label: 'Pendiente', icon: 'schedule' },
+  { status: 'PROCESSING', label: 'En proceso', icon: 'inventory' },
+  { status: 'SHIPPING', label: 'En camino', icon: 'local_shipping' },
+  { status: 'READY_FOR_PICKUP', label: 'Para retiro', icon: 'store' },
+  { status: 'DELIVERED', label: 'Entregado', icon: 'check_circle' },
+];
+
+/** Indica si `step` ya fue superado por el estado actual del pedido. */
+export function isOrderStepDone(current: OrderStatus, step: OrderStatus): boolean {
+  const order = ORDER_TIMELINE_STEPS.map((s) => s.status);
+  return order.indexOf(current) > order.indexOf(step);
 }

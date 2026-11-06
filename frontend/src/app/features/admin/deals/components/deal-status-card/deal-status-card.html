@@ -1,0 +1,46 @@
+@if (active(); as session) {
+  <div class="status-card active" role="status">
+    <div class="status-icon" aria-hidden="true">
+      <span class="material-symbols-outlined" aria-hidden="true">local_fire_department</span>
+    </div>
+    <div class="status-info">
+      <h2>Oferta activa ahora</h2>
+      <p>Tiempo restante: <strong class="countdown" role="timer">{{ remaining() }}</strong></p>
+      <p class="ends-at">Termina el {{ session.endsAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <button type="button" class="btn-cancel" (click)="cancelled.emit()">
+      <span class="material-symbols-outlined" aria-hidden="true">cancel</span> Cancelar oferta
+    </button>
+  </div>
+} @else if (scheduled(); as session) {
+  <div class="status-card scheduled" role="status">
+    <div class="status-icon" aria-hidden="true">
+      <span class="material-symbols-outlined" aria-hidden="true">event_upcoming</span>
+    </div>
+    <div class="status-info">
+      <div class="scheduled-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">schedule</span> Sesión programada
+      </div>
+      <h2>
+        La oferta se activará el {{ session.startsAt | date: 'dd/MM/yyyy' }} a las {{ session.startsAt | date: 'HH:mm' }}
+      </h2>
+      <p class="starts-in-row">
+        Comienza en: <strong class="countdown-scheduled" role="timer">{{ untilStart() }}</strong>
+      </p>
+      <p class="ends-at">Finaliza el {{ session.endsAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <button type="button" class="btn-cancel" (click)="cancelled.emit()">
+      <span class="material-symbols-outlined" aria-hidden="true">cancel</span> Cancelar programación
+    </button>
+  </div>
+} @else {
+  <div class="status-card inactive" role="status">
+    <div class="status-icon" aria-hidden="true">
+      <span class="material-symbols-outlined" aria-hidden="true">timer_off</span>
+    </div>
+    <div class="status-info">
+      <h2>Sin oferta activa</h2>
+      <p>La sección "Ofertas del Día" está oculta en el inicio.</p>
+    </div>
+  </div>
+}

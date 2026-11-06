@@ -1,0 +1,31 @@
+<section class="recent-orders" aria-labelledby="recent-orders-title">
+  <h2 id="recent-orders-title">Pedidos recientes</h2>
+  <table class="orders-mini-table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Total</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of pager.items(); track order.id) {
+        <tr>
+          <td class="col-id" data-label="#">#{{ order.id }}</td>
+          <td class="col-client" data-label="Cliente">{{ order.user?.name }}</td>
+          <td class="col-total" data-label="Total">{{ order.total | currencyPen }}</td>
+          <td class="col-status" data-label="Estado"><span class="status-chip">{{ order.status | orderStatus }}</span></td>
+          <td class="col-date" data-label="Fecha">{{ order.createdAt | date: 'dd/MM/yy' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <app-pagination
+    [page]="pager.page()"
+    [totalPages]="pager.totalPages()"
+    label="Paginación de pedidos recientes"
+    (pageChange)="pager.goTo($event)"
+  />
+</section>

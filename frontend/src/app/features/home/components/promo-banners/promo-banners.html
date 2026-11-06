@@ -1,0 +1,11 @@
+<section class="promo-banners" aria-label="Promociones">
+  @for (banner of banners; track banner.categoryId) {
+    <a class="promo-card" [class.promo-green]="banner.variant === 'green'" [class.promo-dark]="banner.variant === 'dark'" [routerLink]="['/category', banner.categoryId]">
+      <div class="promo-text">
+        <span class="promo-tag">{{ banner.tag }}</span>
+        <h3>{{ banner.title }}</h3>
+        <span class="promo-cta">{{ banner.cta }}</span>
+      </div>
+    </a>
+  }
+</section>

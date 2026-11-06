@@ -1,0 +1,16 @@
+<ol class="step-bar" aria-label="Progreso de la compra">
+  @for (item of steps; track item.step; let last = $last) {
+    <li
+      class="step-item"
+      [class.active]="current() >= item.step"
+      [class.done]="current() > item.step"
+      [attr.aria-current]="current() === item.step ? 'step' : null"
+    >
+      <span class="step-num" aria-hidden="true">{{ current() > item.step ? '✓' : item.step }}</span>
+      <span class="step-label">{{ item.label }}</span>
+    </li>
+    @if (!last) {
+      <li class="step-line" [class.active]="current() > item.step" aria-hidden="true"></li>
+    }
+  }
+</ol>

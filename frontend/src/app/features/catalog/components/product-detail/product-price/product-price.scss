@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+// Price block
+.price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.price-now {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.badge-off {
+  background: #ba1a1a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.price-before {
+  font-size: 13px;
+  color: var(--text-subtle);
+  margin: 0;
+}
+
+.greencard-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .price-now {
+    font-size: 26px;
+  }
+  .greencard-box {
+    font-size: 12px;
+  }
+}

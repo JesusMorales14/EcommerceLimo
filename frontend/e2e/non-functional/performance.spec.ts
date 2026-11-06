@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 
 // Umbrales de rendimiento (ms) — basados en Core Web Vitals
@@ -19,7 +20,7 @@ interface PaintEntry {
   startTime: number;
 }
 
-async function getTimings(page: import('@playwright/test').Page): Promise<{
+async function getTimings(page: Page): Promise<{
   dcl: number;
   load: number;
   fcp: number;
@@ -64,7 +65,7 @@ test.describe('PNF-02: Rendimiento de Carga de Páginas', () => {
 
   test('PNF-02-03: Catálogo de productos carga en tiempo aceptable', async ({ page }) => {
     await page.goto('/category/tecnologia');
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => undefined);
     const t = await getTimings(page);
 
     console.log(`[Catálogo] DCL=${t.dcl.toFixed(0)}ms | Load=${t.load.toFixed(0)}ms | FCP=${t.fcp.toFixed(0)}ms`);

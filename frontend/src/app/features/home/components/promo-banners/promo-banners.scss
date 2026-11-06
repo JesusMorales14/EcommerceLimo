@@ -1,0 +1,98 @@
+:host {
+  display: block;
+}
+
+// ── Promo Banners ─────────────────────────────────────────────────────────────
+.promo-banners {
+  display: flex;
+  gap: 20px;
+  padding: 48px max(32px, 5vw);
+  justify-content: center;
+}
+
+.promo-card {
+  flex: 1;
+  border-radius: 14px;
+  padding: 48px 40px;
+  cursor: pointer;
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+  &:hover {
+    filter: brightness(1.07);
+    transform: translateY(-2px);
+  }
+}
+
+.promo-green {
+  background: linear-gradient(135deg, #006b2d 0%, #009140 100%);
+}
+.promo-dark {
+  background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2d 100%);
+}
+
+.promo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.promo-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.promo-card h3 {
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.promo-cta {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+// ── Responsive: Mobile ────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .promo-banners {
+    flex-direction: column;
+    padding: 32px 16px;
+    justify-content: center;
+    gap: 12px;
+  }
+  .promo-card {
+    padding: 30px 24px;
+  }
+  .promo-card h3 {
+    font-size: 20px;
+  }
+}
+
+// ── Responsive: Mobile small ──────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .promo-banners {
+    padding: 24px 12px;
+    gap: 10px;
+  }
+  .promo-card {
+    padding: 26px 20px;
+  }
+  .promo-card h3 {
+    font-size: 18px;
+  }
+  .promo-cta {
+    font-size: 13px;
+  }
+}
+
+a.promo-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}

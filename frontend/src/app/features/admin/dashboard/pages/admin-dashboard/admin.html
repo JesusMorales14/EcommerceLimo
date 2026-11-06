@@ -1,0 +1,23 @@
+<div class="admin-page">
+  <div class="admin-hero">
+    <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span>
+    <div>
+      <h1>Panel de Administración</h1>
+      <p>Gestiona productos, pedidos, usuarios y el estado de las entregas</p>
+    </div>
+  </div>
+
+  @if (statsResource.isLoading()) {
+    <div class="stats-loading" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span> Cargando métricas...
+    </div>
+  } @else if (statsResource.hasValue()) {
+    @let stats = statsResource.value();
+    <app-stats-grid [stats]="stats" />
+    @if (stats.recentOrders.length > 0) {
+      <app-recent-orders-table [orders]="stats.recentOrders" />
+    }
+  }
+
+  <app-admin-nav-cards />
+</div>

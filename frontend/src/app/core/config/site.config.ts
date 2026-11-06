@@ -1,5 +1,11 @@
+/** Configuración estática de la tienda (textos de marca, SEO y beneficios). */
 export const SITE_CONFIG = {
   storeName: 'EcommerceLimo',
+  locale: 'es_PE',
+  currency: 'PEN',
+  defaultDescription:
+    'EcommerceLimo: tecnología, electrodomésticos, moda, hogar y más. Envío gratis, pago seguro y devoluciones sin costo.',
+  defaultImage: '/logoIcon.png',
 
   installments: {
     count: 12,

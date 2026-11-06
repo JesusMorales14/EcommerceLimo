@@ -1,0 +1,47 @@
+# Entorno local completo: PostgreSQL + API (NestJS) + SPA (Angular/Nginx).
+#   docker compose up --build
+# Frontend: http://localhost:8080 · API: http://localhost:3000
+# Requisito: crear backend/.env a partir de backend/.env.example
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: limo
+      POSTGRES_PASSWORD: limo
+      POSTGRES_DB: ecommercelimo
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U limo -d ecommercelimo']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://limo:limo@db:5432/ecommercelimo
+      CORS_ORIGINS: http://localhost:8080,http://localhost:4200
+      FRONTEND_URL: http://localhost:8080
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        BUILD_CONFIGURATION: development
+    ports:
+      - '8080:8080'
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

@@ -1,42 +1,27 @@
 import { inject, Injectable } from '@angular/core';
+import type { Coupon, CouponResult, CreateCouponInput } from '../models/coupon.model';
 import { ApiService } from './api.service';
 
-export interface CouponResult {
-  code: string;
-  discount: number;
-  isPercent: boolean;
-  discountAmount: number;
-  finalAmount: number;
-}
+export type { CouponResult } from '../models/coupon.model';
 
 @Injectable({ providedIn: 'root' })
 export class CouponService {
-  private api = inject(ApiService);
+  private readonly api = inject(ApiService);
 
   validate(code: string, amount: number) {
-    return this.api.get<CouponResult>('/coupons/validate', {
-      code,
-      amount: String(amount),
-    });
+    return this.api.get<CouponResult>('/coupons/validate', { code, amount: String(amount) });
   }
 
   getAll() {
-    return this.api.get<any[]>('/coupons');
+    return this.api.get<Coupon[]>('/coupons');
   }
 
-  create(data: {
-    code: string;
-    discount: number;
-    isPercent: boolean;
-    minAmount: number;
-    maxUses: number;
-    expiresAt?: string;
-  }) {
-    return this.api.post<any>('/coupons', data);
+  create(data: CreateCouponInput) {
+    return this.api.post<Coupon>('/coupons', data);
   }
 
   toggle(id: number) {
-    return this.api.patch<any>(`/coupons/${id}/toggle`, {});
+    return this.api.patch<Coupon>(`/coupons/${id}/toggle`, {});
   }
 
   delete(id: number) {
