@@ -81,7 +81,7 @@ jobs:
         run: npm test -- --watch=false --coverage
       - name: Build de producción (con budgets de tamaño)
         run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: frontend-coverage
           path: frontend/coverage/lcov.info
@@ -113,7 +113,7 @@ jobs:
         run: npm run test:cov -- --ci
       - name: Build
         run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: backend-coverage
           path: backend/coverage/lcov.info
@@ -204,7 +204,7 @@ jobs:
       - name: Pruebas no funcionales (axe + rendimiento)
         working-directory: frontend
         run: npm run e2e:non-functional
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
