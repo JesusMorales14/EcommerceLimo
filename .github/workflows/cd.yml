@@ -36,7 +36,7 @@ jobs:
       matrix:
         app: [frontend, backend]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: docker/setup-buildx-action@v3
@@ -101,7 +101,7 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.VERCEL_TOKEN != ''
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
