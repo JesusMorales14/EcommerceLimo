@@ -22,8 +22,9 @@ test.describe('PF-01: Página de Inicio', () => {
   });
 
   test('PF-01-04: muestra la sección de Productos Destacados', async ({ page }) => {
-    // La sección siempre se renderiza (los productos cargan asincrónicamente)
-    const section = page.locator('.section-block h2:has-text("Productos Destacados")');
+    // La sección se carga con @defer (on viewport): hay que desplazarse hasta ella.
+    await page.locator('.featured-placeholder').scrollIntoViewIfNeeded();
+    const section = page.getByRole('heading', { name: 'Productos Destacados' });
     await expect(section).toBeVisible({ timeout: 10_000 });
   });
 
