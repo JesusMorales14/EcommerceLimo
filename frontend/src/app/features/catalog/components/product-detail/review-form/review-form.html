@@ -1,0 +1,44 @@
+@if (auth.isLoggedIn()) {
+  <form class="review-form" (ngSubmit)="submit()">
+    <h3>Deja tu opinión</h3>
+    <fieldset class="star-picker">
+      <legend class="visually-hidden">Tu valoración</legend>
+      @for (value of ratingOptions; track value) {
+        <button
+          type="button"
+          class="star-btn"
+          [class.lit]="value <= rating()"
+          [attr.aria-pressed]="value === rating()"
+          [attr.aria-label]="value + (value === 1 ? ' estrella' : ' estrellas')"
+          (click)="rating.set(value)"
+        >
+          ★
+        </button>
+      }
+    </fieldset>
+    <label for="review-comment" class="visually-hidden">Comentario</label>
+    <textarea
+      id="review-comment"
+      name="comment"
+      rows="3"
+      [ngModel]="comment()"
+      (ngModelChange)="comment.set($event)"
+      placeholder="Escribe tu experiencia con este producto..."
+      maxlength="1000"
+    ></textarea>
+    @if (store.reviewError()) {
+      <p class="review-err" role="alert">{{ store.reviewError() }}</p>
+    }
+    <button type="submit" class="btn-submit-review" [disabled]="store.submittingReview()">
+      <span class="material-symbols-outlined" [class.spin]="store.submittingReview()" aria-hidden="true">
+        {{ store.submittingReview() ? 'progress_activity' : 'send' }}
+      </span>
+      Publicar reseña
+    </button>
+  </form>
+} @else {
+  <div class="review-login-hint">
+    <span class="material-symbols-outlined" aria-hidden="true">login</span>
+    <a routerLink="/login">Inicia sesión</a> para dejar una reseña
+  </div>
+}

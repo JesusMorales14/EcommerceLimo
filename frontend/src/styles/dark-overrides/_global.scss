@@ -1,0 +1,7 @@
+// Ajustes de modo oscuro: GLOBAL: iconos heredan color del padre en dark mode
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+  .material-symbols-outlined {
+    color: inherit;
+  }
+}

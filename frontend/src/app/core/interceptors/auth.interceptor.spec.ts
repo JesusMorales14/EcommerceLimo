@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpRequest, HttpResponse, HttpHandlerFn } from '@angular/common/http';
+import type { HttpHandlerFn } from '@angular/common/http';
+import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 import { authInterceptor } from './auth.interceptor';

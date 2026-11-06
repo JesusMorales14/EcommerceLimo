@@ -1,0 +1,14 @@
+// Ajustes de modo oscuro: CATEGORY DRAWER (hamburger menu)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .drawer-link {
+    color: var(--text);
+  }
+  .drawer-link-icon {
+    color: var(--text-muted);
+  }
+  .drawer-nav {
+    background: var(--surface);
+  }
+}

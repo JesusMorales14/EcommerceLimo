@@ -1,12 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import type { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
-import { PrismaService } from './../src/prisma/prisma.service';
+import { PrismaService } from '../src/infrastructure/prisma/prisma.service';
+import { createTestApp } from './utils/create-test-app';
 
 describe('Auth (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
   let prisma: PrismaService;
 
   const testEmail = `e2e-test-${Date.now()}@ecommercelimo.com`;
@@ -14,17 +12,8 @@ describe('Auth (e2e)', () => {
   let token: string;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(
-      new ValidationPipe({ transform: true, whitelist: true }),
-    );
-    await app.init();
-
-    prisma = moduleFixture.get<PrismaService>(PrismaService);
+    app = await createTestApp();
+    prisma = app.get(PrismaService);
   });
 
   afterAll(async () => {
@@ -65,7 +54,7 @@ describe('Auth (e2e)', () => {
     const res = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ email: testEmail, password: testPassword })
-      .expect(201);
+      .expect(200);
 
     expect(res.body.token).toBeDefined();
     expect(res.body.user.email).toBe(testEmail);
@@ -90,5 +79,31 @@ describe('Auth (e2e)', () => {
 
   it('GET /auth/me sin token retorna 401', async () => {
     await request(app.getHttpServer()).get('/auth/me').expect(401);
+  });
+
+  it('PATCH /auth/profile rechaza campos no permitidos (evita escalar a ADMIN)', async () => {
+    await request(app.getHttpServer())
+      .patch('/auth/profile')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'Nuevo Nombre', role: 'ADMIN' })
+      .expect(400);
+  });
+
+  it('PATCH /auth/profile actualiza los campos permitidos', async () => {
+    const res = await request(app.getHttpServer())
+      .patch('/auth/profile')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'Nuevo Nombre' })
+      .expect(200);
+    expect(res.body).toMatchObject({ name: 'Nuevo Nombre', role: 'USER' });
+    expect(res.body).not.toHaveProperty('password');
+  });
+
+  it('POST /auth/register valida los datos de entrada', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({ name: 'X', email: 'no-es-correo', password: '1' })
+      .expect(400);
+    expect(Array.isArray(res.body.message)).toBe(true);
   });
 });

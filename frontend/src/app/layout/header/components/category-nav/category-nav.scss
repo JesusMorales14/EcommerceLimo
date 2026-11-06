@@ -1,0 +1,100 @@
+@use '../../styles/container';
+
+:host {
+  display: block;
+}
+
+// ── Category nav ──────────────────────────────────────────────────────────────
+.category-nav {
+  background: var(--cat-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  transition: background 0.3s;
+  .header-container {
+    height: 44px;
+    gap: 0;
+  }
+}
+
+.cat-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-wrap: nowrap;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.cat-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px;
+  height: 44px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  transition: color 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2.5px;
+    background: var(--primary);
+    border-radius: 2px 2px 0 0;
+    transition:
+      left 0.25s ease,
+      right 0.25s ease;
+  }
+
+  &:hover {
+    color: var(--primary);
+    &::after {
+      left: 10px;
+      right: 10px;
+    }
+  }
+
+  &.active {
+    color: var(--primary);
+    font-weight: 700;
+    &::after {
+      left: 10px;
+      right: 10px;
+    }
+  }
+
+  .material-symbols-outlined {
+    font-size: 15px;
+  }
+}
+
+.offers-link {
+  color: #ba1a1a;
+  margin-left: auto;
+  &::after {
+    background: #ba1a1a;
+  }
+  &:hover {
+    color: #9b1212;
+  }
+  &.active {
+    color: #ba1a1a;
+    &::after {
+      background: #ba1a1a;
+    }
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .category-nav {
+    display: none;
+  }
+}

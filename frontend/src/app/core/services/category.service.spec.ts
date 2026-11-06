@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { CategoryService, type Category } from './category.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 const mockCategories: Category[] = [
   { id: 'tecnologia', label: 'Tecnología', icon: 'tv', desc: 'Productos tech', subCategories: [{ id: 'monitores', label: 'Monitores' }] },

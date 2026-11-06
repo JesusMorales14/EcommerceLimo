@@ -1,0 +1,22 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Tokens de diseño en tiempo de compilación (SCSS).
+// Los colores viven como CSS custom properties en `themes/_light.scss` y
+// `themes/_dark.scss` para soportar el cambio de tema en tiempo de ejecución.
+// Uso en componentes: `@use 'tokens' as *;`
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Radios
+$radius-sm: 8px;
+$radius: 12px;
+$radius-lg: 20px;
+
+// Breakpoints (mobile-first: usar con `@media (max-width: ...)`)
+$bp-xs: 375px;
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+// Transiciones
+$transition-fast: 0.15s ease;
+$transition-base: 0.25s ease;

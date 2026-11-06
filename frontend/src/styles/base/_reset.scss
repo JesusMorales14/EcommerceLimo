@@ -1,0 +1,43 @@
+// Reset y estilos base de elementos HTML
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+a {
+  color: inherit;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+// Inputs de búsqueda sin el estilo nativo del navegador
+input[type='search'] {
+  appearance: none;
+}
+
+// ── App shell ─────────────────────────────────────────────────────────────────
+app-footer {
+  display: block;
+}

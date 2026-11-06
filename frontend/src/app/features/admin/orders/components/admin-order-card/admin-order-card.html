@@ -1,0 +1,44 @@
+@let order = this.order();
+<article class="order-card" [attr.aria-labelledby]="'admin-order-' + order.id">
+  <div class="order-card-header">
+    <div class="order-meta">
+      <h2 class="order-id" [id]="'admin-order-' + order.id">Pedido #{{ order.id }}</h2>
+      <time class="order-date" [attr.datetime]="order.createdAt">{{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }}</time>
+      <span class="order-user">Cliente: {{ order.user?.name || 'ID #' + order.userId }}</span>
+    </div>
+    <div class="status-controls">
+      <app-status-badge class="status-badge" [label]="statusLabels[order.status]" [color]="statusColors[order.status]" />
+    </div>
+  </div>
+
+  <ul class="order-items">
+    @for (item of order.items; track item.id) {
+      <li class="order-item-row">
+        <span class="oi-name">{{ item.product.name }}</span>
+        <span class="oi-qty">x{{ item.quantity }}</span>
+        <span class="oi-price">{{ item.price * item.quantity | currencyPen }}</span>
+      </li>
+    }
+  </ul>
+
+  <div class="order-card-footer">
+    <span class="order-total">Total: <strong>{{ order.total | currencyPen }}</strong></span>
+    <div class="status-selector">
+      <label [for]="'order-status-' + order.id">Actualizar estado:</label>
+      <select
+        #statusSelect
+        [id]="'order-status-' + order.id"
+        [value]="order.status"
+        [disabled]="updating()"
+        (change)="onStatusSelected(statusSelect)"
+      >
+        @for (option of statusOptions; track option) {
+          <option [value]="option" [selected]="option === order.status">{{ statusLabels[option] }}</option>
+        }
+      </select>
+      @if (updating()) {
+        <span class="updating-text" role="status">Actualizando...</span>
+      }
+    </div>
+  </div>
+</article>

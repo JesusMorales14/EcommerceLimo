@@ -1,75 +1,76 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import type { AuthResponse, User } from '../models/user.model';
 import { ApiService } from './api.service';
+import { SessionStorageService } from './session-storage.service';
 
+export interface RegisterInput {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+}
+
+export type ProfileUpdate = Partial<Pick<User, 'name' | 'phone' | 'address'>>;
+
+/** Autenticación y estado de la sesión del usuario (signals). */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api    = inject(ApiService);
-  private router = inject(Router);
+  private readonly api = inject(ApiService);
+  private readonly router = inject(Router);
+  private readonly storage = inject(SessionStorageService);
 
-  private _user  = signal<User | null>(this.restoreUser());
-  private _token = signal<string | null>(this.restoreToken());
+  private readonly _user = signal<User | null>(this.storage.readUser());
+  private readonly _token = signal<string | null>(this.storage.readToken());
 
-  isLoggedIn = computed(() => this._user() !== null);
-  isAdmin    = computed(() => this._user()?.role === 'ADMIN');
-  user       = this._user.asReadonly();
+  readonly user = this._user.asReadonly();
+  readonly isLoggedIn = computed(() => this._user() !== null && this._token() !== null);
+  readonly isAdmin = computed(() => this._user()?.role === 'ADMIN');
 
-  initSession() {
+  /** Revalida la sesión guardada contra el backend al iniciar la app. */
+  initSession(): void {
     if (!this._token()) return;
     this.api.get<User>('/auth/me').subscribe({
-      next: user => this.updateLocalUser(user),
+      next: (user) => this.updateLocalUser(user),
       error: () => this.logout(),
     });
   }
 
   login(email: string, password: string) {
-    return this.api.post<AuthResponse>('/auth/login', { email, password })
-      .pipe(tap(res => this.saveSession(res)));
+    return this.api.post<AuthResponse>('/auth/login', { email, password }).pipe(tap((res) => this.saveSession(res)));
   }
 
-  register(data: { name: string; email: string; password: string; phone?: string }) {
-    return this.api.post<AuthResponse>('/auth/register', data)
-      .pipe(tap(res => this.saveSession(res)));
+  register(data: RegisterInput) {
+    return this.api.post<AuthResponse>('/auth/register', data).pipe(tap((res) => this.saveSession(res)));
   }
 
-  updateProfile(data: { name?: string; phone?: string; address?: string }) {
-    return this.api.patch<User>('/auth/profile', data)
-      .pipe(tap(user => this.updateLocalUser(user)));
+  updateProfile(data: ProfileUpdate) {
+    return this.api.patch<User>('/auth/profile', data).pipe(tap((user) => this.updateLocalUser(user)));
   }
 
-  logout() {
+  logout(): void {
     this._user.set(null);
     this._token.set(null);
-    localStorage.removeItem('gh_token');
-    localStorage.removeItem('gh_user');
-    this.router.navigate(['/']);
+    this.storage.clear();
+    void this.router.navigate(['/']);
   }
 
-  getToken() { return this._token(); }
+  getToken(): string | null {
+    return this._token();
+  }
 
-  updateLocalUser(data: Partial<User>) {
-    const updated = { ...this._user()!, ...data };
+  updateLocalUser(data: Partial<User>): void {
+    const current = this._user();
+    if (!current) return;
+    const updated = { ...current, ...data };
     this._user.set(updated);
-    localStorage.setItem('gh_user', JSON.stringify(updated));
+    this.storage.saveUser(updated);
   }
 
-  private saveSession(res: AuthResponse) {
-    this._token.set(res.token);
-    this._user.set(res.user);
-    localStorage.setItem('gh_token', res.token);
-    localStorage.setItem('gh_user', JSON.stringify(res.user));
-  }
-
-  private restoreUser(): User | null {
-    try {
-      const raw = localStorage.getItem('gh_user');
-      return raw ? JSON.parse(raw) : null;
-    } catch { return null; }
-  }
-
-  private restoreToken(): string | null {
-    try { return localStorage.getItem('gh_token'); } catch { return null; }
+  private saveSession({ token, user }: AuthResponse): void {
+    this._token.set(token);
+    this._user.set(user);
+    this.storage.save(token, user);
   }
 }

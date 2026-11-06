@@ -1,0 +1,31 @@
+<div class="admin-section">
+  <div class="section-header">
+    <div>
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Admin
+      </a>
+      <h1>Pedidos</h1>
+    </div>
+  </div>
+
+  @if (ordersResource.isLoading()) {
+    <div class="loading" role="status">Cargando pedidos...</div>
+  } @else if (orders().length === 0) {
+    <div class="empty-orders">
+      <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+      <p>No hay pedidos registrados</p>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of pager.items(); track order.id) {
+        <app-admin-order-card [order]="order" [updating]="updatingId() === order.id" (statusChange)="updateStatus($event)" />
+      }
+    </div>
+    <app-pagination
+      [page]="pager.page()"
+      [totalPages]="pager.totalPages()"
+      label="Paginación de pedidos"
+      (pageChange)="pager.goTo($event)"
+    />
+  }
+</div>

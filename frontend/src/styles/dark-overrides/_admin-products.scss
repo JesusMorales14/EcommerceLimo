@@ -1,0 +1,146 @@
+// Ajustes de modo oscuro: ADMIN PRODUCTS
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .section-header {
+    h1 {
+      color: var(--text);
+    }
+  }
+  .product-form-panel {
+    background: var(--surface);
+    .form-header h2 {
+      color: var(--text);
+    }
+    .close-form {
+      color: var(--text-muted);
+      &:hover {
+        color: var(--text);
+      }
+    }
+  }
+  .form-error {
+    background: #3f0000;
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  .products-table-wrapper {
+    background: var(--surface);
+  }
+  .products-table {
+    th {
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border-color: var(--border-2);
+    }
+    td {
+      color: var(--text-2);
+      border-color: var(--border-2);
+    }
+    tr:hover td {
+      background: var(--surface-2);
+    }
+    .td-id {
+      color: var(--text-muted);
+    }
+    .td-price {
+      color: var(--primary);
+    }
+    .low-stock {
+      color: #f87171;
+    }
+  }
+  .category-chips .chip {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border-color: transparent;
+    &:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    &.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+  }
+  .color-images-section {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+  .color-images-label {
+    strong {
+      color: var(--text);
+    }
+  }
+  .colors-input-row label {
+    color: var(--text-2);
+  }
+  .color-image-row {
+    background: var(--surface);
+    border-color: var(--border);
+    &.first-color {
+      border-color: var(--primary-light);
+      background: var(--primary-hover);
+    }
+    .color-name-label {
+      color: var(--text-2);
+    }
+  }
+  .colors-main-input,
+  .color-image-input {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .no-colors-images label {
+    color: var(--text-2);
+  }
+  .cat-badge {
+    background: var(--surface-2);
+    color: var(--text-2);
+  }
+  .offer-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  .btn-edit {
+    color: var(--text-muted);
+    &:hover {
+      background: var(--surface-2);
+      color: var(--primary);
+    }
+  }
+  .btn-del {
+    color: var(--border);
+    &:hover {
+      background: #3f0000;
+      color: #f87171;
+    }
+  }
+  .no-offer {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .products-table tbody tr {
+      background: var(--surface) !important;
+      border-color: var(--border);
+    }
+    .products-table tbody td {
+      border-color: var(--border-2);
+      color: var(--text);
+      &:nth-child(odd) {
+        background: var(--surface-2);
+      }
+      &:nth-child(even) {
+        background: var(--surface);
+      }
+    }
+    .products-table .td-name {
+      background: var(--surface) !important;
+      border-color: var(--border) !important;
+      color: var(--text);
+    }
+  }
+}

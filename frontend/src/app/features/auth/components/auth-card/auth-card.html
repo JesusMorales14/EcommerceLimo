@@ -1,0 +1,22 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="material-symbols-outlined" aria-hidden="true">eco</span>
+      <span>{{ storeName }}</span>
+    </div>
+    <h1>{{ heading() }}</h1>
+    @if (subtitle()) {
+      <p class="auth-sub">{{ subtitle() }}</p>
+    }
+
+    @if (error()) {
+      <div class="auth-error" role="alert">{{ error() }}</div>
+    }
+
+    <ng-content />
+
+    <p class="auth-link">
+      <ng-content select="[authFooter]" />
+    </p>
+  </div>
+</div>

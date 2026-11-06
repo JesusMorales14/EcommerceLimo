@@ -1,0 +1,60 @@
+<div class="admin-section">
+  <div class="section-header">
+    <div class="title-head">
+      <a routerLink="/admin" class="back-link">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Admin
+      </a>
+      <h1>Productos</h1>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap" role="search">
+        <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+        <input
+          class="search-input"
+          type="search"
+          name="productSearch"
+          placeholder="Buscar por nombre o marca..."
+          aria-label="Buscar productos por nombre o marca"
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+        />
+        @if (search()) {
+          <button type="button" class="clear-btn" (click)="search.set('')" aria-label="Limpiar búsqueda">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        }
+      </div>
+      <button type="button" class="btn-primary" (click)="openCreate()">
+        <span class="material-symbols-outlined" aria-hidden="true">add</span> Nuevo producto
+      </button>
+    </div>
+  </div>
+
+  @let form = formState();
+  @if (form.open) {
+    <app-product-form-panel [product]="form.product" (saved)="onSaved()" (closed)="closeForm()" />
+  }
+
+  @if (productsResource.isLoading()) {
+    <div class="loading" role="status">Cargando productos...</div>
+  } @else {
+    <app-category-chips [categories]="categories()" [(selected)]="selectedCategory" />
+
+    <app-products-table [products]="pager.items()" (edit)="openEdit($event)" (remove)="remove($event)" />
+
+    <div class="cards-list">
+      @for (product of pager.items(); track product.id) {
+        <app-admin-product-card [product]="product" (edit)="openEdit($event)" (remove)="remove($event)" />
+      } @empty {
+        <p class="empty-cards">No se encontraron productos.</p>
+      }
+    </div>
+
+    <app-pagination
+      [page]="pager.page()"
+      [totalPages]="pager.totalPages()"
+      label="Paginación de productos"
+      (pageChange)="pager.goTo($event)"
+    />
+  }
+</div>

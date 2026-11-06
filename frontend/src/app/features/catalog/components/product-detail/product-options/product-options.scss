@@ -1,0 +1,85 @@
+:host {
+  display: block;
+}
+
+// Options
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  strong {
+    color: var(--text);
+  }
+}
+
+.color-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+
+  &.active {
+    border-color: var(--primary);
+    transform: scale(1.2);
+  }
+  &:hover {
+    transform: scale(1.15);
+  }
+}
+
+.size-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 7px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text);
+
+  &.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+  }
+  &:hover:not(.active) {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+fieldset.option-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+legend.option-label {
+  padding: 0;
+}

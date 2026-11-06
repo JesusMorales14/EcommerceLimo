@@ -1,0 +1,142 @@
+:host {
+  display: block;
+}
+
+// ── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.2) 65%),
+    url('https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1200&auto=format&fit=crop')
+      center/cover no-repeat;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding: 72px max(40px, 6vw);
+  color: white;
+}
+
+.hero-content {
+  max-width: 580px;
+}
+
+.badge-new {
+  display: inline-block;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: #ffffff;
+}
+
+.hero p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 36px;
+  max-width: 460px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-fill {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.15s;
+  &:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.2s,
+    transform 0.15s;
+  &:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+  }
+}
+
+// ── Responsive: Mobile ────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .hero {
+    min-height: 300px;
+    padding: 44px 20px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 6.5vw, 34px);
+  }
+  .hero p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .btn-fill,
+  .btn-outline {
+    padding: 12px 22px;
+    font-size: 13px;
+  }
+}
+
+// ── Responsive: Mobile small ──────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .hero {
+    min-height: 260px;
+    padding: 36px 16px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 28px);
+  }
+  .hero p {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+    .btn-fill,
+    .btn-outline {
+      width: 100%;
+      justify-content: center;
+      padding: 13px 20px;
+    }
+  }
+}
+
+.btn-fill,
+.btn-outline {
+  display: inline-block;
+  text-decoration: none;
+}

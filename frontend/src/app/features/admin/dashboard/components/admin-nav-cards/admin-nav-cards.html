@@ -1,0 +1,10 @@
+<nav class="admin-cards" aria-label="Secciones de administración">
+  @for (section of sections; track section.path) {
+    <a [routerLink]="section.path" class="admin-card">
+      <span class="material-symbols-outlined" aria-hidden="true">{{ section.icon }}</span>
+      <h2>{{ section.title }}</h2>
+      <p>{{ section.description }}</p>
+      <span class="card-arrow material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+  }
+</nav>

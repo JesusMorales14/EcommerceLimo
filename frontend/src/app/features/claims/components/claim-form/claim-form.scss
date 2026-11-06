@@ -1,0 +1,110 @@
+@use '../../styles/claim-form';
+
+:host {
+  display: block;
+}
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+.reclamaciones-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ── Acepta ────────────────────────────────────────────────────────────────────
+.acepta-card {
+  padding: 18px 24px;
+}
+
+.acepta-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+}
+
+.inline-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+// ── Form error ────────────────────────────────────────────────────────────────
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  border-radius: 12px;
+  color: #dc2626;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+
+  .material-symbols-outlined { font-size: 20px; flex-shrink: 0; }
+
+  :root[data-theme='dark'] & {
+    background: rgba(220, 38, 38, 0.12);
+    border-color: rgba(220, 38, 38, 0.4);
+    color: #f87171;
+  }
+}
+
+// ── Submit button ─────────────────────────────────────────────────────────────
+.btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  width: 100%;
+
+  .material-symbols-outlined { font-size: 22px; }
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

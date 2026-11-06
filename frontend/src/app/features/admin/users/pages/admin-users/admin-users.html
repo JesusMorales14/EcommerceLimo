@@ -1,0 +1,31 @@
+<div class="admin-users-page">
+  <div class="page-header">
+    <a routerLink="/admin" class="back-link">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      Panel Admin
+    </a>
+    <h1>Usuarios</h1>
+    <p>Lista de todos los usuarios registrados</p>
+  </div>
+
+  @if (usersResource.isLoading()) {
+    <div class="loading-state" role="status">
+      <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+      Cargando usuarios...
+    </div>
+  } @else if (users().length === 0) {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">group</span>
+      <p>No hay usuarios registrados</p>
+    </div>
+  } @else {
+    <app-users-table [users]="pager.items()" />
+    <p class="total-count">{{ users().length }} usuarios en total</p>
+    <app-pagination
+      [page]="pager.page()"
+      [totalPages]="pager.totalPages()"
+      label="Paginación de usuarios"
+      (pageChange)="pager.goTo($event)"
+    />
+  }
+</div>

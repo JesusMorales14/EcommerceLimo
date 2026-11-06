@@ -1,0 +1,81 @@
+// Ajustes de modo oscuro: ADMIN COUPONS
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .admin-coupons-page {
+    background: var(--bg);
+  }
+  .page-header {
+    h1 {
+      color: var(--text);
+    }
+    p {
+      color: var(--text-muted);
+    }
+  }
+  .header-left {
+    h1 {
+      color: var(--text);
+    }
+    p {
+      color: var(--text-muted);
+    }
+  }
+
+  .coupon-form-card {
+    background: var(--surface);
+    h3 {
+      color: var(--text);
+    }
+  }
+  .coupons-table-wrap {
+    background: var(--surface);
+  }
+  .coupons-table {
+    th {
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border-color: var(--border-2);
+    }
+    td {
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+  }
+  .code-chip {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .status-dot {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    &.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+  }
+  .toggle-label {
+    color: var(--text-2);
+  }
+
+  @media (max-width: 768px) {
+    .coupons-table tbody tr {
+      background: var(--surface) !important;
+      border-color: var(--border);
+    }
+    .coupons-table tbody td {
+      border-color: var(--border-2);
+      color: var(--text);
+      &:nth-child(odd) {
+        background: var(--surface-2);
+      }
+      &:nth-child(even) {
+        background: var(--surface);
+      }
+    }
+    .coupons-table td:first-child {
+      background: var(--surface) !important;
+      border-color: var(--border) !important;
+    }
+  }
+}

@@ -1,0 +1,95 @@
+:host {
+  display: block;
+}
+
+// Order tracking timeline
+.order-timeline {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tl-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+
+  &.done,
+  &.active {
+    opacity: 1;
+  }
+
+  .tl-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+
+    .material-symbols-outlined {
+      font-size: 17px;
+      color: var(--text-muted);
+    }
+  }
+
+  &.done .tl-dot {
+    background: var(--primary);
+    .material-symbols-outlined {
+      color: #fff;
+    }
+  }
+  &.active .tl-dot {
+    background: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+    .material-symbols-outlined {
+      color: #fff;
+    }
+  }
+
+  .tl-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-subtle);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  &.done .tl-label,
+  &.active .tl-label {
+    color: var(--primary);
+  }
+}
+
+.tl-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  min-width: 20px;
+  margin-bottom: 22px;
+  transition: background 0.2s;
+
+  &.done {
+    background: var(--primary);
+  }
+}
+
+ol.order-timeline {
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}

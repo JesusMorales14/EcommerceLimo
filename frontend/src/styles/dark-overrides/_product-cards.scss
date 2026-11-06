@@ -1,0 +1,63 @@
+// Ajustes de modo oscuro: PRODUCT CARDS (inicio, search, plp, favorites)
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .product-card {
+    background: var(--card-bg);
+    border-color: var(--border);
+    &:hover {
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+  }
+  .card-img-wrap,
+  .card-img {
+    background: var(--card-img-bg);
+  }
+  .card-body {
+    background: var(--card-bg);
+  }
+  .card-name {
+    color: var(--text);
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  .card-brand {
+    color: var(--text-subtle);
+  }
+  .card-stars {
+    color: #f59e0b;
+    span {
+      color: var(--text-subtle);
+    }
+  }
+  .price-now {
+    color: var(--text);
+  }
+  .price-old {
+    color: var(--text-muted);
+  }
+  .card-shipping,
+  .card-free-ship {
+    color: var(--primary);
+    .material-symbols-outlined {
+      color: var(--primary);
+    }
+  }
+  .btn-wish {
+    background: var(--surface);
+    color: var(--text-muted);
+  }
+  .btn-add-card,
+  .btn-add {
+    background: var(--primary);
+    color: #fff;
+    &:hover {
+      background: var(--primary-dark);
+    }
+  }
+  .badge-off {
+    background: #991b1b;
+    color: #fff;
+  }
+}

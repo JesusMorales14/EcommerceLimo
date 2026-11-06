@@ -1,0 +1,160 @@
+:host {
+  display: block;
+}
+
+%hero-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+
+  .material-symbols-outlined { font-size: 18px; }
+}
+
+// ── Hero card ─────────────────────────────────────────────────────────────────
+.account-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "avatar info"
+    "avatar actions";
+  column-gap: 20px;
+  row-gap: 16px;
+  align-items: start;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border: 1.5px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.hero-avatar {
+  grid-area: avatar;
+  align-self: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .material-symbols-outlined {
+    font-size: 40px;
+    color: var(--primary);
+  }
+}
+
+.hero-info {
+  grid-area: info;
+  align-self: center;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+
+  // Email — dato importante → verde claro
+  p:first-of-type {
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0 0 2px;
+  }
+}
+
+.hero-actions {
+  grid-area: actions;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.btn-edit {
+  @extend %hero-btn;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  &:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.btn-admin {
+  @extend %hero-btn;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  &:hover { background: var(--primary-dark); }
+}
+
+.btn-reclamaciones {
+  @extend %hero-btn;
+  background: var(--surface);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.btn-logout {
+  @extend %hero-btn;
+  background: none;
+  border: 1.5px solid rgba(220, 38, 38, 0.4);
+  color: #ef4444;
+  &:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: #dc2626;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .account-hero {
+    padding: 20px 18px;
+    column-gap: 14px;
+    row-gap: 14px;
+    grid-template-areas:
+      "avatar info"
+      "actions actions";
+  }
+
+  .hero-info h1 {
+    font-size: 18px;
+  }
+}
+
+.address-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  .material-symbols-outlined {
+    font-size: 14px;
+    color: var(--primary);
+  }
+}

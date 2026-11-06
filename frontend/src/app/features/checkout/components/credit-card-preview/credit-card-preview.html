@@ -1,0 +1,26 @@
+<div class="card-3d" [class.flipped]="flipped()" aria-hidden="true">
+  <div class="card-face front">
+    <div class="card-header-row">
+      <span class="card-chip material-symbols-outlined">sim_card</span>
+      <span class="card-brand-chip">{{ brand() }}</span>
+    </div>
+    <div class="card-number-display">{{ maskedNumber() }}</div>
+    <div class="card-footer-row">
+      <div>
+        <div class="card-field-label">TITULAR</div>
+        <div class="card-field-value">{{ card().holder || 'NOMBRE APELLIDO' }}</div>
+      </div>
+      <div>
+        <div class="card-field-label">VENCE</div>
+        <div class="card-field-value">{{ card().expiry || '••/••' }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-face back">
+    <div class="card-stripe"></div>
+    <div class="card-cvv-zone">
+      <span>CVV</span>
+      <div class="card-cvv-box">•••</div>
+    </div>
+  </div>
+</div>

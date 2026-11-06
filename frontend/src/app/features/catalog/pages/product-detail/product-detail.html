@@ -1,0 +1,22 @@
+@if (store.loading()) {
+  <div class="pdp-loading" role="status">
+    <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span>
+    Cargando producto...
+  </div>
+} @else if (store.product(); as product) {
+  <div class="pdp">
+    <app-breadcrumb class="breadcrumb" [items]="breadcrumb()" />
+
+    <div class="pdp-main">
+      <app-product-gallery [images]="store.activeImages()" [productName]="product.name" [discount]="product.discount" />
+      <app-product-purchase-panel />
+    </div>
+
+    <app-product-tabs />
+  </div>
+} @else {
+  <div class="not-found" role="status">
+    <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+    <p>Producto no encontrado.</p>
+  </div>
+}

@@ -1,0 +1,43 @@
+<form class="coupon-form-card" [formGroup]="form" (ngSubmit)="save()" novalidate aria-labelledby="coupon-form-title">
+  <h2 id="coupon-form-title">Crear cupón</h2>
+  @if (error()) {
+    <div class="form-error" role="alert">{{ error() }}</div>
+  }
+  <div class="form-grid">
+    <div class="field">
+      <label for="coupon-code">Código *</label>
+      <input id="coupon-code" formControlName="code" placeholder="VERANO20" class="uppercase" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label for="coupon-discount">Descuento *</label>
+      <div class="discount-row">
+        <input id="coupon-discount" type="number" formControlName="discount" min="1" class="discount-input" />
+        <label class="toggle-label">
+          <input type="checkbox" formControlName="isPercent" />
+          <span>%</span>
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="coupon-min">Monto mínimo</label>
+      <input id="coupon-min" type="number" formControlName="minAmount" min="0" placeholder="0" />
+    </div>
+    <div class="field">
+      <label for="coupon-uses">Usos máximos</label>
+      <input id="coupon-uses" type="number" formControlName="maxUses" min="1" placeholder="100" />
+    </div>
+    <div class="field full">
+      <label for="coupon-expires">Expira (opcional)</label>
+      <input id="coupon-expires" type="datetime-local" formControlName="expiresAt" />
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn-cancel" (click)="cancelled.emit()">Cancelar</button>
+    <button type="submit" class="btn-save" [disabled]="saving()">
+      <span class="material-symbols-outlined" [class.spin]="saving()" aria-hidden="true">
+        {{ saving() ? 'progress_activity' : 'check' }}
+      </span>
+      Guardar
+    </button>
+  </div>
+</form>

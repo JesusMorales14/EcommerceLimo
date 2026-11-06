@@ -1,0 +1,9 @@
+@if (store.loadingReviews()) {
+  <div class="reviews-loading" role="status">
+    <span class="material-symbols-outlined spin" aria-hidden="true">progress_activity</span> Cargando reseñas...
+  </div>
+} @else {
+  <app-review-summary />
+  <app-review-form />
+  <app-review-list [reviews]="store.reviews()" />
+}

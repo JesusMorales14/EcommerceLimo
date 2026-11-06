@@ -1,0 +1,28 @@
+@let items = cart.items();
+<div class="cart-page-wrapper">
+  <div class="cart-header">
+    <h1>Tu Carrito <span>({{ items.length | i18nPlural: productPlural }})</span></h1>
+  </div>
+
+  @if (items.length > 0) {
+    <div class="cart-content">
+      <div class="left-column">
+        <div class="items-list">
+          @for (item of items; track item.product.id + '_' + (item.selectedColor ?? '')) {
+            <app-cart-item [item]="item" />
+          }
+        </div>
+      </div>
+
+      <div class="right-column">
+        <app-cart-summary />
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <span class="material-symbols-outlined" aria-hidden="true">shopping_cart_off</span>
+      <p>Tu carrito está vacío</p>
+      <a routerLink="/" class="btn-back">Volver a la tienda</a>
+    </div>
+  }
+</div>

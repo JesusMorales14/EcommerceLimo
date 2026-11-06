@@ -1,9 +1,13 @@
-name: 🤖 Revisión IA de Código — Gemini 2.0
+name: Revisión IA de Código — Gemini 2.0
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [main]
+
+concurrency:
+  group: ai-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   ai-code-review:

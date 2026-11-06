@@ -1,0 +1,66 @@
+@if (store.product(); as product) {
+  @let stats = store.stats();
+  <div class="info-col">
+    <p class="info-brand">{{ product.brand }}</p>
+    <h1 class="info-title">{{ product.name }}</h1>
+
+    <div class="info-reviews">
+      <app-star-rating class="stars" [value]="stats.average" />
+      <span class="review-count">
+        @if (stats.total) {
+          {{ stats.average | number: '1.1-1' }} ({{ stats.total }} opiniones)
+        } @else {
+          Sin opiniones aún
+        }
+      </span>
+      <span class="sku">SKU: #{{ product.id }}</span>
+    </div>
+
+    <app-product-price [product]="product" />
+
+    <app-product-options
+      [colors]="product.colors"
+      [sizes]="product.sizes"
+      [selectedColor]="store.selectedColorIndex()"
+      [selectedSize]="store.selectedSize()"
+      (colorChange)="store.selectedColorIndex.set($event)"
+      (sizeChange)="store.selectedSize.set($event)"
+    />
+
+    @if (stock() === 0) {
+      <div class="stock-warning" role="status">
+        <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        Sin stock disponible
+      </div>
+    } @else if (stock() <= lowStockThreshold) {
+      <div class="stock-low" role="status">
+        <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+        ¡Solo quedan {{ stock() }} unidades!
+      </div>
+    }
+
+    <div class="qty-actions">
+      <div class="qty-selector" role="group" aria-label="Cantidad">
+        <button type="button" (click)="decrement()" [disabled]="quantity() === 1" aria-label="Disminuir cantidad">−</button>
+        <span aria-live="polite">{{ quantity() }}</span>
+        <button type="button" (click)="increment()" [disabled]="quantity() >= stock()" aria-label="Aumentar cantidad">+</button>
+      </div>
+      <button type="button" class="btn-buy" (click)="addToCart()" [disabled]="stock() === 0">
+        <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
+        {{ stock() === 0 ? 'Sin stock' : 'Comprar ahora' }}
+      </button>
+      <button
+        type="button"
+        class="btn-fav"
+        [class.active]="isFavorite()"
+        [attr.aria-pressed]="isFavorite()"
+        [attr.aria-label]="isFavorite() ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+        (click)="toggleFavorite()"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</span>
+      </button>
+    </div>
+
+    <app-product-delivery-info />
+  </div>
+}

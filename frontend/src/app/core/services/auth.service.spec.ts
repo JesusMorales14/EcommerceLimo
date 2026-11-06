@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { AuthService } from './auth.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 describe('AuthService', () => {
   let service: AuthService;

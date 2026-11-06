@@ -1,6 +1,16 @@
 import { inject, Injectable } from '@angular/core';
+import type { Order } from '../models/order.model';
 import type { Product } from '../models/product.model';
 import { ApiService } from './api.service';
+
+/** Métricas del panel de administración. */
+export interface AdminStats {
+  totalProducts: number;
+  lowStock: number;
+  totalOrders: number;
+  totalRevenue: number;
+  recentOrders: Order[];
+}
 
 export interface ProductPage {
   items: Product[];
@@ -54,12 +64,6 @@ export class ProductService {
   }
 
   getStats() {
-    return this.api.get<{
-      totalProducts: number;
-      lowStock: number;
-      totalOrders: number;
-      totalRevenue: number;
-      recentOrders: any[];
-    }>('/products/stats');
+    return this.api.get<AdminStats>('/admin/stats');
   }
 }

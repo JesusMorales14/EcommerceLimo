@@ -1,0 +1,282 @@
+// Ajustes de modo oscuro: CHECKOUT
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .checkout-page {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+  }
+
+  // Step bar
+  .step-num {
+    background: var(--surface-3) !important;
+    color: var(--text-muted) !important;
+  }
+  .step-item.active .step-num {
+    background: #006b2d !important;
+    color: #fff !important;
+  }
+  .step-item.done .step-num {
+    background: #16a34a !important;
+    color: #fff !important;
+  }
+  .step-label {
+    color: var(--text-muted) !important;
+  }
+  .step-item.active .step-label {
+    color: var(--primary) !important;
+  }
+  .step-line {
+    background: var(--border) !important;
+  }
+  .step-line.active {
+    background: var(--primary) !important;
+  }
+  .step-footer {
+    border-color: var(--border) !important;
+  }
+
+  // Checkout headings & labels
+  .checkout-step h2 {
+    color: var(--text) !important;
+  }
+  .checkout-step h2 .material-symbols-outlined {
+    color: var(--primary) !important;
+  }
+  .field label {
+    color: var(--text-2) !important;
+  }
+
+  // Payment method cards
+  .method-card {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    &.selected {
+      border-color: var(--primary) !important;
+      background: var(--primary-hover) !important;
+    }
+    .method-text strong {
+      color: var(--text) !important;
+    }
+    .method-text span {
+      color: var(--text-muted) !important;
+    }
+    .method-icon {
+      color: var(--text-2) !important;
+    }
+    &.selected .method-icon {
+      color: var(--primary) !important;
+    }
+    .check {
+      color: var(--primary) !important;
+    }
+  }
+
+  // Card logos & stripe
+  .card-logo {
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
+  }
+  .stripe-element-wrap {
+    background: var(--surface-2) !important;
+    border-color: var(--border) !important;
+  }
+  .ssl-badge {
+    color: var(--primary) !important;
+  }
+
+  // External payment boxes
+  .external-method {
+    &.paypal {
+      background: var(--surface-2) !important;
+      border-color: var(--border) !important;
+      .ext-logo {
+        color: #7ea8d4 !important;
+      }
+      .ext-icons {
+        color: #7ea8d4 !important;
+      }
+      p {
+        color: var(--text-muted) !important;
+      }
+    }
+    &.mp {
+      background: var(--surface-2) !important;
+      border-color: var(--border) !important;
+      .ext-logo {
+        color: #009ee3 !important;
+      }
+      .ext-icons {
+        color: #009ee3 !important;
+      }
+      p {
+        color: var(--text-muted) !important;
+      }
+    }
+  }
+
+  // Cash box
+  .cash-box {
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-light) !important;
+    h4 {
+      color: var(--primary) !important;
+    }
+    p {
+      color: var(--text-2) !important;
+    }
+    .cash-amount strong {
+      color: var(--primary) !important;
+    }
+    > .material-symbols-outlined {
+      color: var(--primary) !important;
+    }
+  }
+
+  // Map & coords
+  #delivery-map {
+    border-color: var(--border) !important;
+  }
+  .map-tip {
+    color: var(--text-muted) !important;
+    .material-symbols-outlined {
+      color: var(--text-muted) !important;
+    }
+  }
+  .coords-badge {
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-light) !important;
+    color: var(--primary) !important;
+  }
+
+  // Confirm step blocks
+  .confirm-block {
+    background: var(--surface) !important;
+    box-shadow: 0 2px 12px var(--shadow) !important;
+  }
+  .confirm-block-title {
+    color: var(--text) !important;
+    .material-symbols-outlined {
+      color: var(--primary) !important;
+    }
+  }
+  .confirm-detail {
+    color: var(--text-2) !important;
+    .material-symbols-outlined {
+      color: var(--text-muted) !important;
+    }
+  }
+  .confirm-item {
+    border-color: var(--border-2) !important;
+    .ci-name {
+      color: var(--text) !important;
+    }
+    .ci-brand {
+      color: var(--text-muted) !important;
+    }
+    .ci-color {
+      color: var(--text-muted) !important;
+    }
+    .ci-qty {
+      color: var(--text-muted) !important;
+    }
+    .ci-price {
+      color: var(--text) !important;
+    }
+  }
+  .edit-btn {
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
+    .material-symbols-outlined {
+      color: var(--text-muted) !important;
+    }
+  }
+  .card-masked {
+    color: var(--text-muted) !important;
+  }
+
+  // Order total card
+  .order-total-card {
+    background: var(--surface-2) !important;
+    h3 {
+      color: var(--text) !important;
+    }
+  }
+  .total-line-item {
+    color: var(--text) !important;
+    em {
+      color: var(--primary) !important;
+    }
+  }
+  .total-divider {
+    border-color: var(--border) !important;
+  }
+  .total-row {
+    color: var(--text) !important;
+    .free-tag {
+      color: var(--primary) !important;
+    }
+  }
+  .grand-total {
+    border-color: var(--border) !important;
+    strong {
+      color: var(--text) !important;
+    }
+    .grand-amount {
+      color: var(--primary) !important;
+    }
+  }
+  .coupon-input {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+  }
+  .coupon-applied {
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-light) !important;
+    color: var(--primary) !important;
+    strong {
+      color: var(--primary) !important;
+    }
+  }
+  .btn-remove-coupon {
+    color: var(--text-muted) !important;
+  }
+  .coupon-error {
+    color: #f87171 !important;
+  }
+  .discount-row {
+    color: #4ade80 !important;
+  }
+  .security-row > span {
+    color: var(--text-muted) !important;
+    .material-symbols-outlined {
+      color: var(--primary) !important;
+    }
+  }
+
+  // Step footer buttons
+  .btn-secondary {
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
+    .material-symbols-outlined {
+      color: var(--text-muted) !important;
+    }
+    &:hover {
+      border-color: var(--primary) !important;
+      color: var(--primary) !important;
+    }
+  }
+
+  // Checkout errors
+  .checkout-error {
+    background: #3f0000 !important;
+    color: #f87171 !important;
+    border-color: #7f1d1d !important;
+  }
+  .confirm-error {
+    background: #3f0000 !important;
+    color: #f87171 !important;
+    border-color: #7f1d1d !important;
+  }
+}

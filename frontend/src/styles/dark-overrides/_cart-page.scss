@@ -1,0 +1,115 @@
+// Ajustes de modo oscuro: CART PAGE
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .cart-page-wrapper {
+    background: var(--bg);
+  }
+  .cart-header h1 {
+    color: var(--text);
+    span {
+      color: var(--text-muted);
+    }
+  }
+  .cart-item-card {
+    background: var(--surface);
+    .item-details h3 {
+      color: var(--text);
+    }
+    .item-details .category-tag {
+      color: var(--primary);
+    }
+    .item-details .color-label {
+      color: var(--text-muted);
+    }
+    .item-details .price-original {
+      color: var(--text-muted);
+    }
+    .item-details .badge-discount {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .item-details .action-btn {
+      color: var(--text-muted);
+    }
+    .item-price-qty .subtotal {
+      color: var(--text);
+    }
+    .item-price-qty .qty-selector {
+      background: var(--surface-2);
+      button {
+        color: var(--text);
+        &:hover {
+          background: var(--surface-3);
+        }
+      }
+      span {
+        color: var(--text);
+      }
+    }
+  }
+  .summary-card {
+    background: var(--surface-2);
+    h3 {
+      color: var(--text);
+    }
+    .summary-product-line {
+      color: var(--text-muted);
+      .sp-name em {
+        color: var(--primary);
+      }
+    }
+    .summary-divider {
+      border-color: var(--border);
+    }
+    .summary-line {
+      color: var(--text-2);
+      .free {
+        color: var(--primary);
+      }
+    }
+    .total-line {
+      border-color: var(--border);
+      .total-label strong {
+        color: var(--text);
+      }
+      .total-label small {
+        color: var(--text-muted);
+      }
+      .total-amount {
+        color: var(--primary);
+      }
+    }
+  }
+  .trust-badges .badge-item {
+    p {
+      color: var(--text-muted);
+    }
+  }
+  .cart-page-wrapper .empty-state {
+    background: var(--surface);
+  }
+  .order-success {
+    background: var(--primary-hover);
+    border-color: var(--primary-light);
+    strong {
+      color: var(--primary);
+    }
+    p {
+      color: var(--text-2);
+    }
+  }
+  .order-error {
+    background: #3f0000;
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  .auth-notice {
+    background: #2a1a00;
+    color: #fbbf24;
+    border-color: #5a3500;
+    a {
+      color: #f59e0b;
+    }
+  }
+}

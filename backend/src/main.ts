@@ -1,30 +1,18 @@
-import 'dotenv/config';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { configureApp } from './app.setup';
 
-async function bootstrap() {
-  // rawBody: true es necesario para verificar la firma del webhook de Stripe
+async function bootstrap(): Promise<void> {
+  // rawBody es necesario para verificar la firma de los webhooks de Stripe
   const app = await NestFactory.create(AppModule, { rawBody: true });
+  const config = configureApp(app);
 
-  app.enableCors({
-    origin: (origin, callback) => {
-      const allowed =
-        !origin ||
-        origin === 'http://localhost:4200' ||
-        /\.netlify\.app$/.test(origin) ||
-        /\.vercel\.app$/.test(origin);
-      callback(null, allowed ? origin : false);
-    },
-    credentials: true,
-  });
-
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(
-    `🚀 Backend corriendo en http://localhost:${process.env.PORT ?? 3000}`,
+  await app.listen(config.port);
+  Logger.log(
+    `🚀 API escuchando en el puerto ${config.port} (${config.nodeEnv})`,
+    'Bootstrap',
   );
 }
 
-bootstrap();
+void bootstrap();

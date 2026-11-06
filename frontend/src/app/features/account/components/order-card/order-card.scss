@@ -1,0 +1,134 @@
+:host {
+  display: block;
+}
+
+.order-card {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 2px 10px var(--shadow);
+  border: 1.5px solid var(--border);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+
+  // ID pedido → dato importante → verde claro
+  .order-id {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--primary);
+    display: block;
+  }
+  .order-date {
+    font-size: 12px;
+    color: var(--text-subtle);
+    display: block;
+    margin-top: 2px;
+  }
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.order-cancelled-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(220, 38, 38, 0.08);
+  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ef4444;
+
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
+}
+
+.order-items {
+  padding: 12px 20px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-2);
+  font-size: 13px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .oi-name {
+    flex: 1;
+    color: var(--text);
+  }
+  .oi-qty {
+    color: var(--text-subtle);
+    font-weight: 600;
+  }
+  // Precio → dato importante → verde claro
+  .oi-price {
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 70px;
+    text-align: right;
+  }
+}
+
+.order-card-footer {
+  padding: 14px 20px;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  text-align: right;
+  font-size: 14px;
+  color: var(--text);
+
+  // Total → dato más importante → verde claro
+  strong {
+    color: var(--primary);
+    font-size: 17px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .order-card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+  .order-item-row {
+    font-size: 12px;
+  }
+  .order-card-footer {
+    font-size: 13px;
+  }
+}
+
+h3.order-id {
+  margin: 0;
+}
+
+ul.order-items {
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}

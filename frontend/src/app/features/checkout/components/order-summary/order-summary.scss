@@ -1,0 +1,109 @@
+@use '../../styles/checkout-shared';
+
+:host {
+  display: block;
+}
+
+// ── Order total card ──────────────────────────────────────────────────────────
+.order-total-card {
+  background: #f1f6f1;
+  border-radius: 16px;
+  padding: 28px;
+  position: sticky;
+  top: 120px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
+}
+
+.total-line-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  em {
+    font-style: normal;
+    color: #006b2d;
+    font-weight: 700;
+  }
+}
+
+.total-divider {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 14px 0;
+}
+
+.discount-row {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+  .free-tag {
+    color: #006b2d;
+    font-weight: 700;
+  }
+}
+
+.grand-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  padding-top: 16px;
+  margin: 16px 0;
+  strong {
+    font-size: 16px;
+  }
+  .grand-amount {
+    font-size: 28px;
+    font-weight: 900;
+    color: #006b2d;
+  }
+}
+
+.confirm-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.security-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+
+  > span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #64748b;
+    .material-symbols-outlined {
+      font-size: 15px;
+      color: #16a34a;
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .order-total-card {
+    position: static;
+    top: auto;
+  }
+}

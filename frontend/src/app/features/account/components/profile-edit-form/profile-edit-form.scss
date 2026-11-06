@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+// ── Edit card ─────────────────────────────────────────────────────────────────
+.edit-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border: 1.5px solid var(--border);
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+  }
+}
+
+.edit-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  label {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  input {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface-2);
+    outline: none;
+    font-family: inherit;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    transition: border-color 0.2s;
+    &:focus {
+      border-color: var(--primary);
+    }
+  }
+
+  .full-width {
+    flex: 0 0 100%;
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.btn-save {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+    font-size: 18px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .edit-card {
+    padding: 18px 16px;
+  }
+  .edit-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.edit-error {
+  display: block;
+  margin-top: 4px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+}

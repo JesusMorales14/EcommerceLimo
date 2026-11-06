@@ -6,7 +6,7 @@ export class RecentlyViewedService {
   private readonly KEY = 'recently_viewed';
   private readonly MAX = 10;
 
-  private _items = signal<Product[]>([]);
+  private readonly _items = signal<Product[]>([]);
   items = this._items.asReadonly();
 
   constructor() {

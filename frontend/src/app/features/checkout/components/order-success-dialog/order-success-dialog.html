@@ -1,0 +1,21 @@
+<div class="success-overlay">
+  <div class="success-card" role="alertdialog" aria-modal="true" aria-labelledby="success-title" aria-describedby="success-desc">
+    <div class="success-icon-wrap" aria-hidden="true">
+      <span class="material-symbols-outlined success-icon" aria-hidden="true">check_circle</span>
+    </div>
+    <h2 id="success-title">¡Compra realizada<br />con éxito!</h2>
+    <p id="success-desc">
+      Tu pedido fue confirmado correctamente. Recibirás los detalles en tu correo electrónico.
+    </p>
+    <div class="success-actions">
+      <a #primaryAction routerLink="/account" class="btn-confirm">
+        <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+        Ver mis pedidos
+      </a>
+      <a routerLink="/" class="btn-secondary-success">
+        <span class="material-symbols-outlined" aria-hidden="true">home</span>
+        Seguir comprando
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+// Ajustes de modo oscuro: CART DRAWER
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .cart-drawer {
+    background: var(--surface);
+  }
+  .drawer-header {
+    border-color: var(--border);
+    h2 {
+      color: var(--text);
+    }
+  }
+  .drawer-item {
+    border-color: var(--border-2);
+  }
+  .drawer-item-img {
+    background: var(--card-img-bg);
+  }
+  .drawer-item-brand {
+    color: var(--text-subtle);
+  }
+  .drawer-item-name {
+    color: var(--text);
+  }
+  .drawer-item-color {
+    color: var(--text-muted);
+  }
+  .drawer-item-price {
+    color: var(--primary);
+  }
+  .drawer-qty {
+    button {
+      background: var(--surface-2);
+      color: var(--text);
+      &:hover {
+        background: var(--surface-3);
+      }
+    }
+    span {
+      color: var(--text);
+    }
+  }
+  .drawer-remove-btn {
+    color: var(--border);
+  }
+  .drawer-empty {
+    color: var(--text-muted);
+  }
+  .drawer-footer {
+    border-color: var(--border);
+  }
+  .drawer-subtotal {
+    span {
+      color: var(--text-muted);
+    }
+    strong {
+      color: var(--text);
+    }
+  }
+  .close-btn {
+    color: var(--text-muted);
+    &:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+  }
+}

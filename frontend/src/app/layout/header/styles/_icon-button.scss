@@ -1,0 +1,96 @@
+// Botones de icono compartidos por el header y sus subcomponentes
+.icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: var(--text);
+  transition:
+    background 0.2s,
+    transform 0.1s;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .material-symbols-outlined {
+    font-size: 22px;
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 300,
+      'GRAD' 0,
+      'opsz' 24;
+    transition: font-variation-settings 0.2s;
+  }
+
+  &:hover .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+  }
+}
+
+.icon-label {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-2);
+}
+.icon-wrap {
+  position: relative;
+  display: flex;
+}
+
+// ── Theme toggle ──────────────────────────────────────────────────────────────
+.theme-toggle {
+  .material-symbols-outlined {
+    font-size: 22px;
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24 !important;
+    color: var(--text-2);
+    transition: transform 0.4s ease;
+  }
+
+  &:hover .material-symbols-outlined {
+    transform: rotate(30deg);
+  }
+}
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--primary);
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 2px solid var(--header-bg);
+}
+
+.badge-fav {
+  background: #e11d48 !important;
+}

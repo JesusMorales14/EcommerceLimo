@@ -1,0 +1,41 @@
+<button
+  type="button"
+  class="chat-fab"
+  [class.open]="isOpen()"
+  (click)="toggle()"
+  [attr.aria-label]="isOpen() ? 'Cerrar ayuda' : 'Abrir ayuda'"
+  [attr.aria-expanded]="isOpen()"
+  aria-controls="chat-panel"
+>
+  <span class="material-symbols-outlined chat-fab-icon" aria-hidden="true">{{ isOpen() ? 'close' : 'chat_bubble' }}</span>
+  @if (!isOpen()) {
+    <span class="chat-fab-label" aria-hidden="true">Ayuda</span>
+  }
+</button>
+
+@if (isOpen()) {
+  <div id="chat-panel" class="chat-panel" role="dialog" aria-labelledby="chat-title">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar" aria-hidden="true">
+          <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+        </div>
+        <div>
+          <h2 id="chat-title" class="chat-title">Soporte EcommerceLimo</h2>
+          <span class="chat-status"><span class="status-dot" aria-hidden="true"></span> Respuesta instantánea</span>
+        </div>
+      </div>
+      <button type="button" class="chat-close" (click)="close()" aria-label="Cerrar chat">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <div class="chat-body">
+      @if (activeTopic(); as topic) {
+        <app-chat-answer [topic]="topic" (back)="activeTopic.set(null)" />
+      } @else {
+        <app-chat-topic-list [topics]="topics" (selected)="activeTopic.set($event)" />
+      }
+    </div>
+  </div>
+}

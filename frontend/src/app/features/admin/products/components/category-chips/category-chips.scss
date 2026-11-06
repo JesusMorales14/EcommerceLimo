@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+// ── Category chips ────────────────────────────────────────────────────────────
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  .chip {
+    background: #f1f5f9;
+    border: 1.5px solid transparent;
+    color: #64748b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: capitalize;
+    transition: all 0.15s;
+
+    &:hover {
+      border-color: #006b2d;
+      color: #006b2d;
+    }
+    &.active {
+      background: #006b2d;
+      color: #fff;
+      border-color: #006b2d;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .category-chips {
+    gap: 6px;
+  }
+}

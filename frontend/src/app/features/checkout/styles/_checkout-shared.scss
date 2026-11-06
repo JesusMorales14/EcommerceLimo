@@ -1,0 +1,182 @@
+// Estilos compartidos por los pasos del checkout (campos, botones, pie de paso)
+// ── Step container ────────────────────────────────────────────────────────────
+.checkout-step {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 28px;
+    .material-symbols-outlined {
+      color: #006b2d;
+      font-size: 26px;
+    }
+  }
+}
+
+.field {
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+    &:focus {
+      border-color: #006b2d;
+      box-shadow: 0 0 0 3px rgba(0, 107, 45, 0.08);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.btn-confirm {
+  width: 100%;
+  background: #006b2d;
+  color: #fff;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition:
+    background 0.2s,
+    transform 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #005124;
+    transform: translateY(-1px);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+// ── Step footer ───────────────────────────────────────────────────────────────
+.step-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #006b2d;
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  &:hover {
+    background: #005124;
+  }
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1.5px solid #e2e8f0;
+  color: #64748b;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+  text-decoration: none;
+  &:hover {
+    border-color: #94a3b8;
+    color: #374151;
+  }
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .checkout-step h2 {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+  .field-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step-footer {
+    flex-direction: column-reverse;
+    gap: 10px;
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

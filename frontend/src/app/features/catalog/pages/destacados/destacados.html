@@ -1,0 +1,47 @@
+<div class="fp-page">
+  <section class="fp-hero">
+    <div class="fp-hero-inner">
+      <app-breadcrumb class="fp-breadcrumb" [items]="breadcrumb" />
+      <div class="fp-hero-title-row">
+        <span class="material-symbols-outlined fp-hero-icon" aria-hidden="true">star</span>
+        <h1 class="fp-hero-title">Productos Destacados</h1>
+      </div>
+      <p class="fp-hero-desc">Nuestra selección especial de los mejores productos</p>
+      <span class="fp-hero-count" aria-live="polite">{{ filteredProducts().length | i18nPlural: productPlural }}</span>
+    </div>
+  </section>
+
+  <app-featured-filters
+    [brands]="brands()"
+    [categories]="categories()"
+    [hasActiveFilters]="hasActiveFilters()"
+    [(searchText)]="searchText"
+    [(brand)]="selectedBrand"
+    [(category)]="selectedCategory"
+    [(sort)]="sortBy"
+    (cleared)="clearFilters()"
+  />
+
+  @if (loading()) {
+    <div class="fp-loading" role="status">
+      <span class="material-symbols-outlined fp-spin" aria-hidden="true">progress_activity</span>
+      Cargando destacados...
+    </div>
+  } @else if (filteredProducts().length > 0) {
+    <h2 class="visually-hidden">Listado de productos destacados</h2>
+    <div class="fp-grid">
+      @for (product of filteredProducts(); track product.id; let i = $index) {
+        <app-product-card [product]="product" [animationDelayMs]="animationDelay(i)" />
+      }
+    </div>
+  } @else {
+    <div class="fp-empty" role="status">
+      <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+      <p class="fp-empty-title">Sin resultados</p>
+      <p class="fp-empty-sub">
+        Intenta con otros filtros o
+        <button type="button" class="fp-link" (click)="clearFilters()">limpia la búsqueda</button>
+      </p>
+    </div>
+  }
+</div>

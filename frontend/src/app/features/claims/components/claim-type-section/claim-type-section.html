@@ -1,0 +1,24 @@
+<fieldset class="form-card" [formGroup]="form()">
+  <legend class="card-title">
+    <span class="material-symbols-outlined" aria-hidden="true">flag</span>
+    Tipo de Reclamación
+  </legend>
+  <div class="tipo-options">
+    <label class="tipo-option" [class.selected]="form().controls.tipo.value === 'RECLAMO'">
+      <input type="radio" formControlName="tipo" value="RECLAMO" />
+      <span class="material-symbols-outlined" aria-hidden="true">report</span>
+      <span>
+        <strong>Reclamo</strong>
+        <span>Disconformidad relacionada con los productos o servicios</span>
+      </span>
+    </label>
+    <label class="tipo-option" [class.selected]="form().controls.tipo.value === 'QUEJA'">
+      <input type="radio" formControlName="tipo" value="QUEJA" />
+      <span class="material-symbols-outlined" aria-hidden="true">sentiment_dissatisfied</span>
+      <span>
+        <strong>Queja</strong>
+        <span>Disconformidad relacionada con la atención al cliente</span>
+      </span>
+    </label>
+  </div>
+</fieldset>

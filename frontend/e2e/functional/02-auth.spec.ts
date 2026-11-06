@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-const USER_EMAIL = 'usuario@tienda.com';
-const USER_PASS  = 'user123';
+// Credenciales del usuario de demostración creado por `npm run seed` (backend).
+const USER_EMAIL = process.env['E2E_USER_EMAIL'] ?? 'usuario@tienda.com';
+const USER_PASS = process.env['E2E_USER_PASSWORD'] ?? 'Usuario123';
 const WRONG_PASS = 'contraseña-incorrecta';
 
 test.describe('PF-02: Autenticación', () => {

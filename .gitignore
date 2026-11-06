@@ -8,6 +8,7 @@
 # env
 **/.env
 **/.env.*
+!**/.env.example
 
 # logs
 *.log
@@ -31,3 +32,11 @@ Thumbs.db
 
 # claude
 .claude/
+# test reports
+**/playwright-report
+**/test-results
+**/.scannerwork
+
+# editores
+*.swp
+*~

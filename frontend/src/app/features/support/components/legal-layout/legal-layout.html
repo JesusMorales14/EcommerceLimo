@@ -1,0 +1,35 @@
+<div class="legal-page">
+  <section class="legal-hero">
+    <span class="material-symbols-outlined hero-icon" aria-hidden="true">{{ icon() }}</span>
+    <h1 class="hero-title">{{ heading() }}</h1>
+    @if (description()) {
+      <p class="hero-desc">{{ description() }}</p>
+    }
+    @if (updatedAt()) {
+      <span class="updated-badge">Última actualización: {{ updatedAt() }}</span>
+    }
+  </section>
+
+  <div class="legal-layout">
+    <aside class="toc">
+      <p class="toc-title" id="toc-title">Contenido</p>
+      <nav aria-labelledby="toc-title">
+        @for (section of sections(); track section.id; let i = $index) {
+          <a
+            [routerLink]="[]"
+            [fragment]="section.id"
+            [class.active]="activeSection() === section.id"
+            [attr.aria-current]="activeSection() === section.id ? 'location' : null"
+            (click)="activeSection.set(section.id)"
+          >
+            {{ i + 1 }}. {{ section.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <article class="legal-content">
+      <ng-content />
+    </article>
+  </div>
+</div>

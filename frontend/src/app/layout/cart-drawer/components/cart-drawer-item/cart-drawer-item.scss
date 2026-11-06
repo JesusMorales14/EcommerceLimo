@@ -1,0 +1,124 @@
+:host {
+  display: block;
+}
+
+.drawer-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-2);
+  align-items: flex-start;
+}
+
+.drawer-item-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--card-img-bg);
+  flex-shrink: 0;
+}
+
+.drawer-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.drawer-item-brand {
+  font-size: 10px;
+  color: var(--text-subtle);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+}
+
+.drawer-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 6px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.drawer-item-color {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 0 5px;
+
+  .drawer-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+  }
+}
+
+.drawer-item-price {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+}
+
+.drawer-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+
+  button {
+    background: var(--surface-2);
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--surface-3);
+    }
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 20px;
+    text-align: center;
+  }
+}
+
+.drawer-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--border);
+  padding: 4px;
+  flex-shrink: 0;
+  display: flex;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #ba1a1a;
+  }
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}

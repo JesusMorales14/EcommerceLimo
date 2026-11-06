@@ -1,0 +1,54 @@
+<div class="cart-overlay" [class.visible]="cart.isOpen()" (click)="close()" role="presentation"></div>
+
+<aside
+  class="cart-drawer"
+  [class.open]="cart.isOpen()"
+  [attr.aria-hidden]="!cart.isOpen()"
+  [attr.inert]="cart.isOpen() ? null : ''"
+  aria-labelledby="cart-drawer-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="drawer-header">
+    <h2 id="cart-drawer-title">
+      Mi Carro <span>({{ cart.count() }})</span>
+    </h2>
+    <button type="button" class="close-btn" (click)="close()" aria-label="Cerrar carro">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    @for (item of cart.items(); track item.product.id + (item.selectedColor ?? '')) {
+      <app-cart-drawer-item [item]="item" />
+    } @empty {
+      <div class="drawer-empty">
+        <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
+        <p>Tu carro está vacío</p>
+      </div>
+    }
+  </div>
+
+  @if (cart.count() > 0) {
+    <div class="drawer-footer">
+      <div class="drawer-subtotal">
+        <span>Subtotal</span>
+        <strong>{{ cart.total() | currencyPen }}</strong>
+      </div>
+      @if (!auth.isLoggedIn()) {
+        <div class="drawer-auth-notice">
+          <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+          <span>Iniciá sesión para continuar con tu compra</span>
+        </div>
+      }
+      <button type="button" class="btn-drawer-checkout" (click)="checkout()">
+        <span class="material-symbols-outlined" aria-hidden="true">
+          {{ auth.isLoggedIn() ? 'shopping_bag' : 'login' }}
+        </span>
+        {{ auth.isLoggedIn() ? 'Proceder al pago' : 'Iniciar sesión y pagar' }}
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </button>
+      <a routerLink="/cart" class="btn-drawer-view-cart" (click)="close()">Ver carrito completo</a>
+    </div>
+  }
+</aside>

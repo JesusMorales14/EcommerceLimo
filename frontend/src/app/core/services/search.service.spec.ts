@@ -4,7 +4,7 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { provideRouter } from '@angular/router';
 import { vi } from 'vitest';
 import { SearchService } from './search.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 import { type Product } from '../models/product.model';
 
 const mockProduct = (overrides: Partial<Product> = {}): Product => ({

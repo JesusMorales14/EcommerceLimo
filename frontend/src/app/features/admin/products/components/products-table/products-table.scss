@@ -1,0 +1,149 @@
+:host {
+  display: block;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.products-table-wrapper {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px var(--shadow);
+  overflow-x: auto;
+  border: 1.5px solid var(--border);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    background: var(--surface-2);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-2);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  tr:hover td {
+    background: var(--primary-hover);
+  }
+
+  .td-id {
+    color: var(--text-subtle);
+    font-weight: 700;
+  }
+  .td-name {
+    font-weight: 600;
+    max-width: 220px;
+  }
+  .td-price {
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .low-stock {
+    color: #dc2626;
+    font-weight: 700;
+  }
+}
+
+.product-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f4f6f3;
+}
+
+.cat-badge {
+  background: var(--surface-3);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.offer-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.td-actions {
+  text-align: center;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-edit,
+.btn-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+}
+
+.btn-edit {
+  color: #64748b;
+
+  &:hover {
+    background: #f0f4f0;
+    color: #006b2d;
+  }
+}
+
+.btn-del {
+  color: #cbd5e1;
+
+  &:hover {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.no-offer {
+  color: var(--text-subtle);
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .products-table-wrapper {
+    display: none;
+  }
+}
+
+.th-actions {
+  text-align: center;
+}

@@ -1,0 +1,18 @@
+<section class="section-block" aria-labelledby="deals-title">
+  <div class="section-head">
+    <div class="section-title-group">
+      <h2 id="deals-title">Ofertas del Día</h2>
+      <div class="timer" role="timer">
+        <span class="material-symbols-outlined" aria-hidden="true">timer</span>
+        Termina en {{ countdown() }}
+      </div>
+    </div>
+    <a [routerLink]="['/category', 'ofertas']" class="link-ver-mas">Ver todas las ofertas →</a>
+  </div>
+
+  <div class="products-row">
+    @for (product of products(); track product.id) {
+      <app-product-card [product]="product" [showDescription]="false" />
+    }
+  </div>
+</section>

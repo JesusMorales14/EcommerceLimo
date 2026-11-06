@@ -1,0 +1,8 @@
+<div class="plp-toolbar">
+  <label class="toolbar-label" for="catalog-sort">Ordenar por</label>
+  <select id="catalog-sort" class="sort-select" name="sort" [ngModel]="sort()" (ngModelChange)="sort.set($event)">
+    @for (option of options(); track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+</div>

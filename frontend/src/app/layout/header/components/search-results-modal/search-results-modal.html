@@ -1,0 +1,89 @@
+<!-- El overlay centra el modal; un clic fuera del modal lo cierra -->
+<div class="srm-overlay" role="presentation" (click)="onOverlayClick($event)">
+  <div class="srm-modal" role="dialog" aria-modal="true" aria-labelledby="srm-title">
+    <div class="srm-header">
+      <div class="srm-title-row">
+        <span class="material-symbols-outlined srm-icon" aria-hidden="true">search</span>
+        <h2 id="srm-title" class="srm-title">
+          Resultados para <em>"{{ search.query() }}"</em>
+        </h2>
+      </div>
+      <button type="button" class="srm-close" (click)="close()" aria-label="Cerrar resultados de búsqueda">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <form class="srm-search-row" role="search" (submit)="searchAgain($event)">
+      <span class="material-symbols-outlined srm-search-icon" aria-hidden="true">search</span>
+      <input
+        #searchField
+        type="search"
+        name="query"
+        [value]="searchInput()"
+        (input)="onInput($event)"
+        placeholder="Buscar de nuevo..."
+        aria-label="Buscar de nuevo"
+        class="srm-input"
+      />
+      <button type="submit" class="srm-search-btn">Buscar</button>
+    </form>
+
+    <div class="srm-body" aria-live="polite" [attr.aria-busy]="search.loading()">
+      @if (search.loading()) {
+        <div class="srm-loading">
+          <span class="material-symbols-outlined srm-spin" aria-hidden="true">progress_activity</span>
+          <span>Buscando...</span>
+        </div>
+      } @else if (!search.hasResults()) {
+        <div class="srm-empty">
+          <span class="material-symbols-outlined" aria-hidden="true">production_quantity_limits</span>
+          <p class="srm-empty-main">
+            No tenemos <strong>"{{ search.query() }}"</strong> por el momento.
+          </p>
+          <p class="srm-empty-hint">¡Haremos todo lo posible por tenerlo pronto!</p>
+          <p class="srm-empty-sub">Intentá con otro término o explorá nuestras categorías.</p>
+        </div>
+      } @else {
+        @if (search.brands().length > 0) {
+          <h3 class="srm-section-label">
+            <span class="material-symbols-outlined" aria-hidden="true">storefront</span>
+            Marcas encontradas
+            <span class="srm-section-count">{{ search.brands().length }}</span>
+          </h3>
+
+          @for (brand of search.brands(); track brand.name) {
+            <section class="srm-brand-section" [attr.aria-label]="'Marca ' + brand.name">
+              <div class="srm-brand-header">
+                <span class="srm-brand-letter" aria-hidden="true">{{ brand.name[0] }}</span>
+                <h4 class="srm-brand-name">{{ brand.name }}</h4>
+                <span class="srm-brand-count">
+                  {{ brand.products.length }}
+                  {{ brand.products.length === 1 ? 'producto' : 'productos' }}
+                </span>
+              </div>
+              <div class="srm-products-grid">
+                @for (product of brand.products; track product.id) {
+                  <app-search-result-card [product]="product" (selected)="openProduct($event)" />
+                }
+              </div>
+            </section>
+          }
+        }
+
+        @if (search.products().length > 0) {
+          <h3 class="srm-section-label" [class.srm-section-label--mt]="search.brands().length > 0">
+            <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>
+            Productos encontrados
+            <span class="srm-section-count">{{ search.products().length }}</span>
+          </h3>
+
+          <div class="srm-products-grid">
+            @for (product of search.products(); track product.id) {
+              <app-search-result-card [product]="product" [showBrand]="true" (selected)="openProduct($event)" />
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

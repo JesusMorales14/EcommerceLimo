@@ -1,0 +1,33 @@
+@let order = this.order();
+<article class="order-card" [attr.aria-labelledby]="'order-' + order.id">
+  <div class="order-card-header">
+    <div>
+      <h3 class="order-id" [id]="'order-' + order.id">Pedido #{{ order.id }}</h3>
+      <time class="order-date" [attr.datetime]="order.createdAt">{{ order.createdAt | date: 'dd MMM yyyy, HH:mm' }}</time>
+    </div>
+    <span class="status-badge" [style.background]="statusBackground()" [style.color]="statusColor()">
+      {{ order.status | orderStatus }}
+    </span>
+  </div>
+
+  @if (order.status !== 'CANCELLED') {
+    <app-order-timeline [status]="order.status" />
+  } @else {
+    <div class="order-cancelled-bar">
+      <span class="material-symbols-outlined" aria-hidden="true">cancel</span> Pedido cancelado
+    </div>
+  }
+
+  <ul class="order-items">
+    @for (item of order.items; track item.id) {
+      <li class="order-item-row">
+        <span class="oi-name">{{ item.product.name }}</span>
+        <span class="oi-qty">x{{ item.quantity }}</span>
+        <span class="oi-price">{{ item.price * item.quantity | currencyPen }}</span>
+      </li>
+    }
+  </ul>
+  <div class="order-card-footer">
+    <span class="order-total">Total: <strong>{{ order.total | currencyPen }}</strong></span>
+  </div>
+</article>

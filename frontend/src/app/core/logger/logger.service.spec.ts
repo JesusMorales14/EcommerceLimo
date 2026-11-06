@@ -10,8 +10,8 @@ describe('LoggerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(LoggerService);
-    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
   });
 
   afterEach(() => {

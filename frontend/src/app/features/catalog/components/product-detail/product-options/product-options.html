@@ -1,0 +1,39 @@
+@if (colors().length) {
+  <fieldset class="option-group">
+    <legend class="option-label">COLOR</legend>
+    <div class="color-dots">
+      @for (color of colors(); track $index) {
+        <button
+          type="button"
+          class="dot"
+          [class.active]="selectedColor() === $index"
+          [style.background]="color"
+          [attr.aria-pressed]="selectedColor() === $index"
+          [attr.aria-label]="'Color ' + color"
+          (click)="colorChange.emit($index)"
+        ></button>
+      }
+    </div>
+  </fieldset>
+}
+
+@if (sizes().length) {
+  <fieldset class="option-group">
+    <legend class="option-label">
+      TALLA: <strong>{{ selectedSize() }}</strong>
+    </legend>
+    <div class="size-chips">
+      @for (size of sizes(); track size) {
+        <button
+          type="button"
+          class="chip"
+          [class.active]="selectedSize() === size"
+          [attr.aria-pressed]="selectedSize() === size"
+          (click)="sizeChange.emit(size)"
+        >
+          {{ size }}
+        </button>
+      }
+    </div>
+  </fieldset>
+}

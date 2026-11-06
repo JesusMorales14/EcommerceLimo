@@ -1,0 +1,15 @@
+// Ajustes de modo oscuro: BOTTOM NAV
+// Se usa html[data-theme='dark'] para superar la especificidad de los estilos encapsulados.
+html[data-theme='dark'] {
+
+  .bottom-nav {
+    background: var(--nav-bg);
+    border-color: var(--nav-border);
+  }
+  .nav-tab {
+    color: var(--nav-inactive);
+  }
+  .nav-label {
+    color: var(--nav-inactive);
+  }
+}

@@ -1,41 +1,56 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
+import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { Router } from '@angular/router';
 import type { Product } from '../models/product.model';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 
+interface ToggleFavoriteResponse {
+  favorited: boolean;
+  productId: number;
+}
+
+/**
+ * Favoritos del usuario autenticado. Se sincroniza automáticamente con la
+ * sesión: carga los favoritos al iniciar sesión y los limpia al cerrarla.
+ */
 @Injectable({ providedIn: 'root' })
 export class FavoritesService {
-  private api  = inject(ApiService);
-  private auth = inject(AuthService);
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
-  private _ids   = signal<number[]>([]);
-  private _items = signal<Product[]>([]);
+  private readonly _items = signal<Product[]>([]);
 
-  favoriteIds   = this._ids.asReadonly();
-  favoriteItems = this._items.asReadonly();
-  count         = computed(() => this._ids().length);
+  readonly favoriteItems = this._items.asReadonly();
+  readonly favoriteIds = computed(() => this._items().map((product) => product.id));
+  readonly count = computed(() => this._items().length);
 
-  loadFavorites() {
-    if (!this.auth.isLoggedIn()) return;
-    this.api.get<number[]>('/favorites/ids').subscribe(ids => this._ids.set(ids));
-    this.api.get<Product[]>('/favorites').subscribe(items => this._items.set(items));
+  constructor() {
+    effect(() => {
+      const loggedIn = this.auth.isLoggedIn();
+      untracked(() => (loggedIn ? this.loadFavorites() : this._items.set([])));
+    });
   }
 
-  isFavorite(productId: number) {
-    return this._ids().includes(productId);
+  loadFavorites(): void {
+    if (!this.auth.isLoggedIn()) return;
+    this.api.get<Product[]>('/favorites').subscribe((items) => this._items.set(items));
   }
 
-  toggle(product: Product) {
-    if (!this.auth.isLoggedIn()) return;
-    this.api.post<{ favorited: boolean; productId: number }>(`/favorites/${product.id}`, {})
-      .subscribe(res => {
-        if (res.favorited) {
-          this._ids.update(ids => [...ids, res.productId]);
-          this._items.update(items => [...items, product]);
-        } else {
-          this._ids.update(ids => ids.filter(id => id !== res.productId));
-          this._items.update(items => items.filter(p => p.id !== res.productId));
-        }
-      });
+  isFavorite(productId: number): boolean {
+    return this.favoriteIds().includes(productId);
+  }
+
+  /** Agrega o quita un favorito. Si no hay sesión, lleva al login y vuelve luego. */
+  toggle(product: Product): void {
+    if (!this.auth.isLoggedIn()) {
+      void this.router.navigate(['/login'], { state: { redirect: this.router.url } });
+      return;
+    }
+    this.api.post<ToggleFavoriteResponse>(`/favorites/${product.id}`, {}).subscribe(({ favorited, productId }) =>
+      this._items.update((items) =>
+        favorited ? [...items, product] : items.filter((item) => item.id !== productId),
+      ),
+    );
   }
 }

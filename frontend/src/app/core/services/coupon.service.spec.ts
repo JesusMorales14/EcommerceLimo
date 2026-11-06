@@ -1,8 +1,9 @@
+import type { Coupon } from '../models/coupon.model';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { CouponService, type CouponResult } from './coupon.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 describe('CouponService', () => {
   let service: CouponService;
@@ -53,18 +54,18 @@ describe('CouponService', () => {
 
   describe('getAll', () => {
     it('hace GET /coupons y retorna la lista', () => {
-      let result: any[] | undefined;
+      let result: Coupon[] | undefined;
       service.getAll().subscribe(r => (result = r));
 
       const req = http.expectOne(`${base}/coupons`);
       expect(req.request.method).toBe('GET');
-      req.flush([{ id: 1, code: 'DESC10' }]);
+      req.flush([{ id: 1, code: 'DESC10' } as Coupon]);
 
       expect(result?.length).toBe(1);
     });
 
     it('maneja una lista vacía', () => {
-      let result: any[] | undefined;
+      let result: Coupon[] | undefined;
       service.getAll().subscribe(r => (result = r));
 
       http.expectOne(`${base}/coupons`).flush([]);

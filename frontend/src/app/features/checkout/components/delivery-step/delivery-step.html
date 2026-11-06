@@ -1,0 +1,103 @@
+@let delivery = store.delivery();
+<section class="checkout-step" aria-labelledby="delivery-title">
+  <h2 id="delivery-title">
+    <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span> Dirección de entrega
+  </h2>
+
+  <div class="delivery-layout">
+    <div class="delivery-form">
+      <div class="field-row">
+        <div class="field">
+          <label for="delivery-name">Nombre completo *</label>
+          <input
+            id="delivery-name"
+            name="name"
+            [ngModel]="delivery.name"
+            (ngModelChange)="store.updateDelivery({ name: $event })"
+            placeholder="Juan Pérez"
+            autocomplete="name"
+            required
+          />
+        </div>
+        <div class="field">
+          <label for="delivery-phone">Teléfono *</label>
+          <input
+            id="delivery-phone"
+            name="phone"
+            type="tel"
+            [ngModel]="delivery.phone"
+            (ngModelChange)="store.updateDelivery({ phone: $event })"
+            placeholder="+51 987 654 321"
+            autocomplete="tel"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="delivery-search">Buscar dirección en el mapa</label>
+        <div class="search-row">
+          <input
+            id="delivery-search"
+            name="search"
+            type="search"
+            [ngModel]="addressQuery()"
+            (ngModelChange)="addressQuery.set($event)"
+            placeholder="Ej: Av. Larco 1234, Miraflores"
+            (keyup.enter)="searchAddress()"
+          />
+          <button type="button" class="btn-map-search" (click)="searchAddress()" [disabled]="searching()">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span> Buscar
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="delivery-address">Dirección exacta *</label>
+        <input
+          id="delivery-address"
+          name="address"
+          [ngModel]="delivery.address"
+          (ngModelChange)="store.updateDelivery({ address: $event })"
+          placeholder="Se completa al hacer clic en el mapa, o escríbela aquí"
+          autocomplete="street-address"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="delivery-notes">Instrucciones de entrega (opcional)</label>
+        <textarea
+          id="delivery-notes"
+          name="notes"
+          rows="3"
+          [ngModel]="delivery.notes"
+          (ngModelChange)="store.updateDelivery({ notes: $event })"
+          placeholder="Ej: Dejar en portería, tocar timbre 2B, piso 3..."
+        ></textarea>
+      </div>
+
+      @if (store.hasLocation()) {
+        <div class="coords-badge" role="status">
+          <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+          Ubicación confirmada en el mapa
+        </div>
+      }
+    </div>
+
+    <app-delivery-map
+      [location]="store.hasLocation() ? { lat: delivery.lat!, lng: delivery.lng! } : null"
+      (locationPicked)="onLocationPicked($event)"
+    />
+  </div>
+
+  <div class="step-footer">
+    <a routerLink="/cart" class="btn-secondary">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Volver al carro
+    </a>
+    <button type="button" class="btn-primary" (click)="store.nextStep()">
+      Siguiente: Método de pago
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </button>
+  </div>
+</section>

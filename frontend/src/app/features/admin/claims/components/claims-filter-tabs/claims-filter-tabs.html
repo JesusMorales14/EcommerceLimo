@@ -1,0 +1,14 @@
+<div class="filter-tabs" role="group" aria-label="Filtrar por estado">
+  @for (filter of filters; track filter.value) {
+    <button
+      type="button"
+      class="filter-tab"
+      [class.active]="selected() === filter.value"
+      [attr.aria-pressed]="selected() === filter.value"
+      (click)="selected.set(filter.value)"
+    >
+      {{ filter.label }}
+      <span class="count-chip">{{ counts()[filter.value] }}</span>
+    </button>
+  }
+</div>

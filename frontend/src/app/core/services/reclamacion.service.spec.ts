@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { ReclamacionService } from './reclamacion.service';
 import { type Reclamacion } from '../models/reclamacion.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 const mockReclamacion: Reclamacion = {
   id: 1,

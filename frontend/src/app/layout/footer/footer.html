@@ -1,0 +1,49 @@
+<footer class="main-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h2 class="brand-title">{{ storeName }}</h2>
+      <p class="brand-desc">¡ENCUENTRA LOS MEJORES PRODUCTOS PARA TI EN UN SOLO LUGAR!</p>
+    </div>
+
+    @for (group of linkGroups; track group.title) {
+      <div class="footer-col">
+        <h2 class="col-title">{{ group.title | uppercase }}</h2>
+        <nav class="footer-links" [attr.aria-label]="group.title">
+          @for (link of group.links; track link.path) {
+            <a [routerLink]="link.path">{{ link.label | uppercase }}</a>
+          }
+        </nav>
+      </div>
+    }
+
+    <div class="footer-col">
+      <h2 class="col-title">SÍGUENOS</h2>
+      <div class="social-links">
+        @for (row of socialRows; track $index) {
+          <div class="card-social">
+            @for (social of row; track social.network) {
+              <a
+                [href]="social.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-btn"
+                [attr.aria-label]="social.label + ' (se abre en una nueva pestaña)'"
+              >
+                <app-social-icon [network]="social.network" [size]="18" />
+                {{ social.label }}
+              </a>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="copyright">© {{ currentYear }} {{ storeName }} - Todos los derechos reservados.</p>
+    <div class="payment-methods" aria-label="Medios de pago aceptados">
+      <span class="material-symbols-outlined" aria-hidden="true">payments</span>
+      <span class="material-symbols-outlined" aria-hidden="true">credit_card</span>
+    </div>
+  </div>
+</footer>

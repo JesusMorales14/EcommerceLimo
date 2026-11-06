@@ -1,0 +1,426 @@
+// Modal de resultados de búsqueda
+:host {
+  display: contents;
+}
+
+// ── Search Results Modal ──────────────────────────────────────────────────────
+// Note: position:fixed children inside .main-header (which has backdrop-filter)
+// need explicit width/height instead of inset:0, and a high z-index.
+// El overlay cubre el viewport completo y centra el modal con flexbox.
+// No se usa position:fixed en el modal porque .main-header tiene backdrop-filter,
+// lo que convierte al header en un containing block para sus hijos fixed,
+// rompiendo top:50%/left:50%. En su lugar el overlay (100vw/100vh) es el centrador.
+.srm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1500;
+  animation: fadeIn 0.2s ease;
+}
+
+.srm-modal {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: srmIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+// Modal header
+.srm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.srm-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.srm-icon {
+  font-size: 22px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.srm-title {
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  em {
+    font-style: normal;
+    color: var(--primary);
+  }
+}
+
+.srm-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  &:hover {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.3);
+    transform: scale(1.08);
+  }
+}
+
+// Search again bar
+.srm-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+
+.srm-search-icon {
+  font-size: 20px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.srm-input {
+  flex: 1;
+  background: var(--search-bg);
+  border: 1.5px solid var(--search-border);
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  min-width: 0;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+}
+
+.srm-search-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+
+  &:hover {
+    background: var(--primary-dark);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// Results body
+.srm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 24px;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+}
+
+// Loading & empty
+.srm-loading,
+.srm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 24px 52px;
+  color: var(--text-muted);
+  text-align: center;
+
+  .material-symbols-outlined {
+    font-size: 56px;
+    color: var(--primary);
+    opacity: 0.6;
+  }
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+  strong {
+    color: var(--text);
+  }
+}
+
+.srm-spin {
+  animation: srm-spin 1s linear infinite;
+}
+
+.srm-empty-main {
+  font-size: 15px !important;
+  font-weight: 600;
+  color: var(--text) !important;
+  line-height: 1.5;
+  max-width: 340px;
+}
+
+.srm-empty-hint {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+}
+
+.srm-empty-sub {
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+  opacity: 0.75;
+  margin-top: 2px !important;
+}
+
+@media (max-width: 480px) {
+  .srm-loading,
+  .srm-empty {
+    padding: 36px 16px 40px;
+  }
+  .srm-empty-main {
+    font-size: 14px !important;
+  }
+}
+
+// Section label (Marcas / Productos)
+.srm-section-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0;
+  margin-bottom: 14px;
+
+  .material-symbols-outlined {
+    font-size: 16px;
+    color: var(--primary);
+  }
+}
+
+.srm-section-label--mt {
+  margin-top: 24px;
+}
+
+.srm-section-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-hover);
+  border: 1px solid var(--primary-light);
+  padding: 2px 10px;
+  border-radius: 100px;
+}
+
+// Brand section
+.srm-brand-section {
+  margin-bottom: 28px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.srm-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.srm-brand-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.srm-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  flex: 1;
+}
+
+.srm-brand-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-hover);
+  border: 1px solid var(--primary-light);
+  padding: 4px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+// Product grid
+.srm-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 12px;
+}
+
+// Responsive adjustments for modal
+@media (max-width: 768px) {
+  .srm-overlay {
+    padding: 12px;
+  }
+
+  .srm-modal {
+    border-radius: 16px;
+  }
+
+  .srm-header {
+    padding: 16px 16px 12px;
+  }
+
+  .srm-search-row {
+    padding: 12px 16px;
+  }
+
+  .srm-body {
+    padding: 16px 16px 20px;
+  }
+
+  .srm-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .srm-overlay {
+    padding: 8px;
+  }
+
+  .srm-modal {
+    border-radius: 14px;
+  }
+
+  .srm-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .srm-title {
+    font-size: 14px;
+  }
+
+  .srm-search-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+@keyframes srmIn {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes srm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

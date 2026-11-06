@@ -1,32 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Header } from './components/header/header';
-import { Footer } from './components/footer/footer';
-import { BottomNav } from './components/bottom-nav/bottom-nav';
-import { CommonModule } from '@angular/common';
-import { AuthService } from './core/services/auth.service';
-import { CartService } from './core/services/cart';
-import { ChatSupport } from './components/chat-support/chat-support';
-import { CurrencyPenPipe } from './shared/pipes';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { BottomNav } from '@layout/bottom-nav/bottom-nav';
+import { CartDrawer } from '@layout/cart-drawer/cart-drawer';
+import { ChatSupport } from '@layout/chat-support/chat-support';
+import { Footer } from '@layout/footer/footer';
+import { Header } from '@layout/header/header';
 
+/** Componente raíz: define el layout (shell) de la aplicación. */
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, RouterLink, Header, Footer, BottomNav, CommonModule, ChatSupport, CurrencyPenPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterOutlet, Header, Footer, BottomNav, ChatSupport, CartDrawer],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App {
-  cartService = inject(CartService);
-  authService = inject(AuthService);
-  private router = inject(Router);
-
-  drawerCheckout() {
-    this.cartService.closeCart();
-    if (!this.authService.isLoggedIn()) {
-      void this.router.navigate(['/login'], { state: { redirect: '/checkout' } });
-    } else {
-      void this.router.navigate(['/checkout']);
-    }
-  }
-}
+export class App {}

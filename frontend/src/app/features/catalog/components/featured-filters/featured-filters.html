@@ -1,0 +1,62 @@
+<div class="fp-filters">
+  <div class="fp-filters-inner" role="search">
+    <div class="fp-search-wrap">
+      <span class="material-symbols-outlined fp-search-icon" aria-hidden="true">search</span>
+      <input
+        type="search"
+        name="featuredSearch"
+        placeholder="Buscar en destacados..."
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+        class="fp-search-input"
+        aria-label="Buscar productos destacados"
+      />
+      @if (searchText()) {
+        <button type="button" class="fp-clear-input" (click)="searchText.set('')" aria-label="Limpiar búsqueda">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      }
+    </div>
+    <div class="fp-selects">
+      @if (brands().length > 1) {
+        <select class="fp-select" name="brand" [ngModel]="brand()" (ngModelChange)="brand.set($event)" aria-label="Filtrar por marca">
+          <option value="">Todas las marcas</option>
+          @for (item of brands(); track item) {
+            <option [value]="item">{{ item }}</option>
+          }
+        </select>
+      }
+      @if (categories().length > 1) {
+        <select
+          class="fp-select"
+          name="category"
+          [ngModel]="category()"
+          (ngModelChange)="category.set($event)"
+          aria-label="Filtrar por categoría"
+        >
+          <option value="">Todas las categorías</option>
+          @for (item of categories(); track item) {
+            <option [value]="item">{{ item }}</option>
+          }
+        </select>
+      }
+      <select
+        class="fp-select fp-select--sort"
+        name="sort"
+        [ngModel]="sort()"
+        (ngModelChange)="sort.set($event)"
+        aria-label="Ordenar productos"
+      >
+        @for (option of sortOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      @if (hasActiveFilters()) {
+        <button type="button" class="fp-clear-btn" (click)="cleared.emit()">
+          <span class="material-symbols-outlined" aria-hidden="true">filter_alt_off</span>
+          Limpiar
+        </button>
+      }
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@ test.describe('PNF-01: Accesibilidad WCAG 2.1 (axe-core)', () => {
   for (const { name, path } of PAGES) {
     test(`PNF-01: "${name}" no tiene violaciones críticas de accesibilidad`, async ({ page }) => {
       await page.goto(path);
-      await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+      await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => undefined);
 
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa'])

@@ -1,98 +1,62 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# EcommerceLimo — Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST en **NestJS 11** + **Prisma 5** (PostgreSQL).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## Comandos
 
 ```bash
-$ npm install
+npm ci                     # instala dependencias y genera el cliente de Prisma
+cp .env.example .env       # configura DATABASE_URL y JWT_SECRET
+npm run db:migrate         # aplica migraciones (prisma migrate deploy)
+npm run seed               # datos de demostración (bloqueado en producción)
+npm run start:dev          # http://localhost:3000 · Swagger en http://localhost:3000/docs
+npm run test:cov           # pruebas unitarias + cobertura (umbral 85 % líneas)
+npm run test:e2e           # pruebas de integración (requiere PostgreSQL)
+npm run lint:ci            # ESLint
 ```
 
-## Compile and run the project
+## Estructura
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+src/
+├── main.ts / app.setup.ts     # arranque y configuración HTTP (Helmet, CORS, validación, Swagger)
+├── app.module.ts              # composición de módulos + rate limiting + filtro de errores global
+├── config/                    # variables de entorno validadas (fail fast) → AppConfig inyectable
+├── common/                    # transversal, sin lógica de negocio
+│   ├── decorators/            # @Auth(...roles), @CurrentUser(), @Roles()
+│   ├── guards/                # JwtAuthGuard, OptionalJwtAuthGuard, RolesGuard
+│   ├── filters/               # AllExceptionsFilter (respuesta de error uniforme, errores de Prisma)
+│   ├── interfaces/            # AuthenticatedUser, Paginated<T>
+│   └── utils/                 # escapeHtml
+├── infrastructure/            # adaptadores a servicios externos
+│   ├── prisma/                # PrismaService + TransactionRunner (Unit of Work)
+│   └── mail/                  # MailService + plantillas HTML
+└── modules/<dominio>/
+    ├── <dominio>.controller.ts   # HTTP: rutas, DTOs, autorización (sin lógica de negocio)
+    ├── <dominio>.service.ts      # casos de uso / reglas de negocio
+    ├── <dominio>.repository.ts   # acceso a datos (Prisma) — único lugar con consultas
+    ├── domain/                   # funciones puras de dominio (precios, cupones, stock…)
+    └── dto/                      # contratos de entrada validados con class-validator
 ```
 
-## Run tests
+Módulos: `auth`, `users`, `products`, `categories`, `orders`, `coupons`, `favorites`, `reviews`, `reclamaciones`, `deal-sessions`, `payments`, `dashboard`, `health`, `seo`.
 
-```bash
-# unit tests
-$ npm run test
+## Seguridad
 
-# e2e tests
-$ npm run test:e2e
+- Variables de entorno validadas al arrancar; `JWT_SECRET` de 32+ caracteres.
+- `ValidationPipe` global con `whitelist` + `forbidNonWhitelisted` (evita *mass assignment*).
+- Autorización declarativa con `@Auth(Role.ADMIN)`.
+- Helmet, CORS por lista blanca, rate limiting global (120 req/min) y más estricto en login/registro.
+- Escape de HTML en correos; errores internos sin filtrar detalles al cliente.
+- Pedidos y cupones con operaciones atómicas en transacción (sin sobreventa ni doble canje).
 
-# test coverage
-$ npm run test:cov
-```
+## Endpoints de operación
 
-## Deployment
+| Ruta | Uso |
+|---|---|
+| `GET /health` | *Readiness*: verifica la conexión a la base de datos |
+| `GET /health/live` | *Liveness*: el proceso responde |
+| `GET /sitemap.xml` | Sitemap dinámico del catálogo |
+| `GET /docs` | Swagger (solo fuera de producción) |
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Más detalle en [ARCHITECTURE.md](../ARCHITECTURE.md).

@@ -1,0 +1,38 @@
+@if (totalPages() > 1) {
+  <nav class="plp-pagination" [attr.aria-label]="label()">
+    <button
+      type="button"
+      class="page-btn"
+      [disabled]="page() === 1"
+      (click)="goTo(page() - 1)"
+      aria-label="Página anterior"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+    </button>
+    @for (token of tokens(); track $index) {
+      @if (token === 'ellipsis') {
+        <span class="page-ellipsis" aria-hidden="true">…</span>
+      } @else {
+        <button
+          type="button"
+          class="page-btn"
+          [class.active]="page() === token"
+          [attr.aria-current]="page() === token ? 'page' : null"
+          [attr.aria-label]="'Página ' + token"
+          (click)="goTo(token)"
+        >
+          {{ token }}
+        </button>
+      }
+    }
+    <button
+      type="button"
+      class="page-btn"
+      [disabled]="page() === totalPages()"
+      (click)="goTo(page() + 1)"
+      aria-label="Página siguiente"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+    </button>
+  </nav>
+}

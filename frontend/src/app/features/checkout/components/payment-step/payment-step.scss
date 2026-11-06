@@ -1,0 +1,164 @@
+@use '../../styles/checkout-shared';
+
+:host {
+  display: block;
+}
+
+// ── Step 2: Payment ───────────────────────────────────────────────────────────
+.payment-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.method-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  position: relative;
+
+  flex: 1;
+  min-width: 280px;
+  &:hover {
+    border-color: #a7d4b5;
+  }
+  &.selected {
+    border-color: #006b2d;
+    background: #f0fdf4;
+  }
+
+  .method-icon {
+    font-size: 28px;
+    color: #64748b;
+    flex-shrink: 0;
+  }
+  &.selected .method-icon {
+    color: #006b2d;
+  }
+
+  .method-text {
+    flex: 1;
+    strong {
+      display: block;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    span {
+      font-size: 12px;
+      color: #64748b;
+    }
+  }
+
+  .check {
+    color: #006b2d;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+}
+
+// ── External payment methods ──────────────────────────────────────────────────
+.external-method {
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+
+  .ext-logo {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 12px;
+  }
+
+  .ext-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+  }
+
+  &.paypal {
+    background: #fef3c7;
+    .ext-logo {
+      color: #003087;
+    }
+    .ext-icons {
+      color: #003087;
+    }
+  }
+  &.mp {
+    background: #eff6ff;
+    .ext-logo {
+      color: #009ee3;
+    }
+    .ext-icons {
+      color: #009ee3;
+    }
+  }
+}
+
+.cash-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+
+  > .material-symbols-outlined {
+    font-size: 40px;
+    color: #006b2d;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #166534;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 13px;
+    color: #15803d;
+    margin-bottom: 4px;
+  }
+  .cash-amount {
+    font-size: 14px;
+    strong {
+      font-size: 18px;
+      color: #006b2d;
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .payment-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .payment-grid .method-card {
+    flex: none;
+    width: 100%;
+    min-width: unset;
+    padding: 14px 16px;
+  }
+}

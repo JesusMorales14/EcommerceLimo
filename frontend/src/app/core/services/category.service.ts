@@ -8,7 +8,7 @@ export interface Category { id: string; label: string; icon: string; desc: strin
 export class CategoryService {
   private api = inject(ApiService);
 
-  private _categories = signal<Category[]>([]);
+  private readonly _categories = signal<Category[]>([]);
   categories = this._categories.asReadonly();
 
   load() {

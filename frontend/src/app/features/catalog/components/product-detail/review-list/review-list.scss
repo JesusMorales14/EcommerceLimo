@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.no-reviews {
+  text-align: center;
+  color: var(--text-subtle);
+  font-size: 14px;
+  padding: 32px 0;
+}
+
+.review-item {
+  border-top: 1px solid var(--border);
+  padding: 16px 0;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+
+  strong {
+    font-size: 14px;
+    color: var(--text);
+  }
+}
+
+.stars-sm {
+  color: #f59e0b;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.review-date {
+  font-size: 11px;
+  color: var(--text-subtle);
+  margin-left: auto;
+}
+
+.review-item p {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0;
+  line-height: 1.6;
+}

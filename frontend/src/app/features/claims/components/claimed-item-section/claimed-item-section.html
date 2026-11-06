@@ -1,0 +1,22 @@
+<fieldset class="form-card" [formGroup]="form()">
+  <legend class="card-title">
+    <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>
+    Identificación del Bien Contratado
+  </legend>
+  <div class="bien-options">
+    <label class="bien-option" [class.selected]="form().controls.bien.value === 'PRODUCTO'">
+      <input type="radio" formControlName="bien" value="PRODUCTO" />
+      <span class="material-symbols-outlined" aria-hidden="true">category</span>
+      <span>Producto</span>
+    </label>
+    <label class="bien-option" [class.selected]="form().controls.bien.value === 'SERVICIO'">
+      <input type="radio" formControlName="bien" value="SERVICIO" />
+      <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+      <span>Servicio</span>
+    </label>
+  </div>
+  <div class="field order-field">
+    <label for="pedidoNum">N° de Pedido (si aplica)</label>
+    <input id="pedidoNum" type="text" formControlName="pedidoNum" placeholder="Ej: ORD-2026-00123" />
+  </div>
+</fieldset>

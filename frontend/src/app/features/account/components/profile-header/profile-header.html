@@ -1,0 +1,39 @@
+@let user = auth.user();
+<div class="account-hero">
+  <div class="hero-avatar" aria-hidden="true">
+    <span class="material-symbols-outlined" aria-hidden="true">person</span>
+  </div>
+  <div class="hero-info">
+    <h1>{{ user?.name }}</h1>
+    <p>{{ user?.email }}</p>
+    @if (user?.phone) {
+      <p>{{ user?.phone }}</p>
+    }
+    @if (user?.address) {
+      <p class="address-line">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        {{ user?.address }}
+      </p>
+    }
+  </div>
+  <div class="hero-actions">
+    <button type="button" class="btn-edit" (click)="editRequested.emit()">
+      <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+      Editar perfil
+    </button>
+    @if (auth.isAdmin()) {
+      <a routerLink="/admin" class="btn-admin">
+        <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span>
+        Panel Admin
+      </a>
+    }
+    <a routerLink="/mis-reclamaciones" class="btn-reclamaciones">
+      <span class="material-symbols-outlined" aria-hidden="true">assignment</span>
+      Mis Reclamaciones
+    </a>
+    <button type="button" class="btn-logout" (click)="auth.logout()">
+      <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+      Cerrar sesión
+    </button>
+  </div>
+</div>

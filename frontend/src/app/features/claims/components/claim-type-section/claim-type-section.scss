@@ -1,0 +1,70 @@
+@use '../../styles/claim-form';
+
+:host {
+  display: block;
+}
+
+// ── Tipo options ──────────────────────────────────────────────────────────────
+.tipo-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tipo-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  input[type='radio'] { display: none; }
+
+  .material-symbols-outlined {
+    font-size: 28px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    strong {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  }
+
+  &.selected {
+    border-color: var(--primary);
+    background: var(--primary-hover);
+
+    .material-symbols-outlined { color: var(--primary); }
+    strong { color: var(--primary); }
+  }
+
+  &:hover:not(.selected) {
+    border-color: var(--primary);
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .tipo-options {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,86 @@
+@use '../../styles/checkout-shared';
+
+:host {
+  display: block;
+}
+
+// ── Step 1: Delivery ──────────────────────────────────────────────────────────
+.delivery-layout {
+  display: flex;
+  gap: 32px;
+  align-items: start;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.delivery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.search-row {
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    &:focus {
+      border-color: #006b2d;
+    }
+  }
+}
+
+.btn-map-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #006b2d;
+  color: #fff;
+  border: none;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  &:hover {
+    background: #005124;
+  }
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+.coords-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  .material-symbols-outlined {
+    font-size: 15px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .delivery-layout {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

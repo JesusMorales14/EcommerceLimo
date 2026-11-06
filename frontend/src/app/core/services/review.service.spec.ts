@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { ReviewService, type Review, type ReviewStats } from './review.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 const mockReview: Review = {
   id: 1,

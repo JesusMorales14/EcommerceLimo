@@ -1,6 +1,6 @@
 export * from './api.service';
 export * from './auth.service';
-export * from './cart';
+export * from './cart.service';
 export * from './category.service';
 export * from './coupon.service';
 export * from './deal-session.service';
@@ -12,5 +12,8 @@ export * from './recently-viewed.service';
 export * from './reclamacion.service';
 export * from './review.service';
 export * from './search.service';
+export * from './session-storage.service';
+export * from './checkout-navigation.service';
+export * from './confirm.service';
 export * from './theme.service';
 export * from './user.service';

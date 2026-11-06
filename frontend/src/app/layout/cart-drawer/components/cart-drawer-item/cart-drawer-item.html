@@ -1,0 +1,28 @@
+<div class="drawer-item">
+  <img
+    [src]="item().selectedImageUrl || item().product.images[0]"
+    [alt]="item().product.name"
+    class="drawer-item-img"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="drawer-item-info">
+    <p class="drawer-item-brand">{{ item().product.brand }}</p>
+    <p class="drawer-item-name">{{ item().product.name }}</p>
+    @if (item().selectedColor) {
+      <p class="drawer-item-color">
+        <span class="drawer-color-dot" [style.background]="item().selectedColor" aria-hidden="true"></span>
+        {{ item().selectedColor }}
+      </p>
+    }
+    <p class="drawer-item-price">{{ cart.itemPrice(item()) | currencyPen }}</p>
+    <div class="drawer-qty" role="group" [attr.aria-label]="'Cantidad de ' + item().product.name">
+      <button type="button" (click)="changeQuantity(-1)" aria-label="Quitar una unidad">−</button>
+      <span aria-live="polite">{{ item().quantity }}</span>
+      <button type="button" (click)="changeQuantity(1)" aria-label="Agregar una unidad">+</button>
+    </div>
+  </div>
+  <button type="button" class="drawer-remove-btn" (click)="remove()" [attr.aria-label]="'Eliminar ' + item().product.name">
+    <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+  </button>
+</div>

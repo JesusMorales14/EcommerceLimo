@@ -1,0 +1,20 @@
+<div class="faq-item" [class.open]="open()">
+  <h3 class="faq-heading">
+    <button
+      type="button"
+      class="faq-question"
+      [id]="'faq-q-' + faq().id"
+      [attr.aria-expanded]="open()"
+      [attr.aria-controls]="'faq-a-' + faq().id"
+      (click)="toggled.emit(faq().id)"
+    >
+      <span>{{ faq().question }}</span>
+      <span class="material-symbols-outlined faq-icon" aria-hidden="true">{{ open() ? 'expand_less' : 'expand_more' }}</span>
+    </button>
+  </h3>
+  @if (open()) {
+    <div class="faq-answer" role="region" [id]="'faq-a-' + faq().id" [attr.aria-labelledby]="'faq-q-' + faq().id">
+      {{ faq().answer }}
+    </div>
+  }
+</div>

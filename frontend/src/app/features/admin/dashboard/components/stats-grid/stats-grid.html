@@ -1,0 +1,19 @@
+<ul class="stats-grid" aria-label="Métricas de la tienda">
+  @for (card of cards(); track card.variant) {
+    <li class="stat-card" [class.warning]="card.warning">
+      <span
+        class="material-symbols-outlined stat-icon"
+        [class.products]="card.variant === 'products'"
+        [class.revenue]="card.variant === 'revenue'"
+        [class.orders]="card.variant === 'orders'"
+        [class.low-stock]="card.variant === 'low-stock'"
+        aria-hidden="true"
+        >{{ card.icon }}</span
+      >
+      <div class="stat-info">
+        <span class="stat-value">{{ card.currency ? (card.value | currencyPen) : card.value }}</span>
+        <span class="stat-label">{{ card.label }}</span>
+      </div>
+    </li>
+  }
+</ul>

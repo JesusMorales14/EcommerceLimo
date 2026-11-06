@@ -1,6 +1,6 @@
 import type { PipeTransform } from '@angular/core';
 import { Pipe } from '@angular/core';
-import { ORDER_STATUS_LABELS, type OrderStatus } from '../../core/models/order.model';
+import { ORDER_STATUS_LABELS, type OrderStatus } from '@core/models/order.model';
 
 @Pipe({ name: 'orderStatus', standalone: true, pure: true })
 export class OrderStatusPipe implements PipeTransform {

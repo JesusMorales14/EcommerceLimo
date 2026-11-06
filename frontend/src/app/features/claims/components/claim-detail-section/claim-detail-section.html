@@ -1,0 +1,31 @@
+@let detalle = form().controls.detalle;
+<fieldset class="form-card" [formGroup]="form()">
+  <legend class="card-title">
+    <span class="material-symbols-outlined" aria-hidden="true">description</span>
+    Detalle de la Reclamación
+  </legend>
+  <div class="field" [class.field-error]="detalle.touched && detalle.invalid">
+    <label for="detalle">
+      Descripción del problema * <span class="char-hint">(mínimo {{ minLength }} caracteres)</span>
+    </label>
+    <textarea
+      id="detalle"
+      formControlName="detalle"
+      rows="5"
+      maxlength="3000"
+      placeholder="Describe detalladamente lo sucedido, incluyendo fechas y cualquier información relevante..."
+      [attr.aria-invalid]="detalle.touched && detalle.invalid"
+    ></textarea>
+    <app-field-error [control]="detalle" [messages]="messages" />
+  </div>
+  <div class="field">
+    <label for="accion">Pedido o acción solicitada</label>
+    <textarea
+      id="accion"
+      formControlName="accion"
+      rows="3"
+      maxlength="1000"
+      placeholder="¿Qué solución esperas de nosotros? (reembolso, cambio de producto, etc.)"
+    ></textarea>
+  </div>
+</fieldset>
